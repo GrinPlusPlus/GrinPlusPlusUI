@@ -51,7 +51,7 @@ function Login(props) {
 
   return (
     <React.Fragment>
-      <ButtonAppNav />
+      <ButtonAppNav pageName='Login'/>
       <main className={classes.main}>
         <CssBaseline />
         <Paper className={classes.paper}>

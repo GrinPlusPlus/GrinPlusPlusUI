@@ -28,7 +28,7 @@ const styles = {
 };
 
 function ButtonAppNav(props) {
-  const { classes } = props;
+  const { classes, pageName } = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   function handleClick(event) {
@@ -59,19 +59,20 @@ function ButtonAppNav(props) {
             ))}
           </Menu>
           <Typography variant="h6" color="inherit" className={classes.grow}>
-            Wallet
+            {!!pageName ? pageName : ''}
           </Typography>
           <Button color="inherit" component={Link} to="/login">Login</Button>
           <UserMenu />
+          <SettingsModal />
         </Toolbar>
-        <SettingsModal />
       </AppBar>
     </div>
   );
 }
 
 ButtonAppNav.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  pageName: PropTypes.string,
 };
 
 export default withRouter(withStyles(styles)(ButtonAppNav));

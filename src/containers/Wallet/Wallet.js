@@ -3,7 +3,7 @@ import ButtonAppNav from '../ButtonAppNav';
 
 export default () => (
     <React.Fragment>
-        <ButtonAppNav />
+        <ButtonAppNav pageName='Wallet'/>
         <h1> Wallet page! </h1>
         <h3>Balance</h3> 
         <h4>

@@ -43,7 +43,7 @@ function SettingsModal(props) {
   return (
   <React.Fragment>
     <IconButton
-      variant="extended"
+      variant="round"
       className={classes.button}
       aria-label="Settings"
       onClick={handleClickOpen}

@@ -5,7 +5,7 @@ import TransactionsList from '../../components/TransactionsList'
 
 export default () => (
     <React.Fragment>
-        <ButtonAppNav />
+        <ButtonAppNav pageName='Transactions'/>
         <h1> Transactions page! </h1>
         <SendModal />
         <TransactionsList />
