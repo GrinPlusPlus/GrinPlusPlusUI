@@ -1,30 +1,37 @@
-import { app, BrowserWindow } from 'electron';
-import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
+import { app, BrowserWindow, ipcMain, net } from 'electron';
+//import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import { enableLiveReload } from 'electron-compile';
+import ChildProcess from 'child_process';
+import Client from './main/client/Client';
+import Server from './main/server/Server';
+import FileListener from './main/FileListener';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
-const isDevMode = process.execPath.match(/[\\/]electron/);
+//const isDevMode = process.execPath.match(/[\\/]electron/);
 
-if (isDevMode) enableLiveReload({ strategy: 'react-hmr' });
+//if (isDevMode) enableLiveReload({ strategy: 'react-hmr' });
 
 const createWindow = async () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
+    icon: __dirname + '/static/icons/GrinLogo.ico'
   });
 
+  mainWindow.setMenu(null);
+
   // and load the index.html of the app.
-  mainWindow.loadURL(`file://${__dirname}/index.html`);
+  mainWindow.loadURL(`file://${__dirname}/renderer/index.html`);
 
   // Open the DevTools.
-  if (isDevMode) {
-    await installExtension(REACT_DEVELOPER_TOOLS);
-    mainWindow.webContents.openDevTools();
-  }
+  // if (isDevMode) {
+  //   await installExtension(REACT_DEVELOPER_TOOLS);
+  //   mainWindow.webContents.openDevTools();
+  // }
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
@@ -33,6 +40,18 @@ const createWindow = async () => {
     // when you should delete the corresponding element.
     mainWindow = null;
   });
+
+  const child = ChildProcess.execFile('GrinNode.exe', ['--floonet', '--headless'], {cwd: '${__dirname}/../bin/'}, (error, stdout, stderr) => {
+    if (error) {
+      throw error;
+    }
+
+    app.quit();
+  });
+
+  Client.start();
+  Server.start();
+  FileListener.start();
 };
 
 // This method will be called when Electron has finished
@@ -45,6 +64,7 @@ app.on('window-all-closed', () => {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
+    Client.stop();
     app.quit();
   }
 });
