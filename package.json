@@ -1,8 +1,8 @@
 {
-  "name": "grinplusplusui",
-  "productName": "grinplusplusui",
-  "version": "1.0.0",
-  "description": "My Electron application description",
+  "name": "GrinPlusPlus",
+  "productName": "Grin++",
+  "version": "0.1.0",
+  "description": "Grin++ Wallet",
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
@@ -12,7 +12,7 @@
     "lint": "eslint --cache --color --ext .jsx,.js src"
   },
   "keywords": [],
-  "author": "bsmith",
+  "author": "dburkett",
   "license": "MIT",
   "config": {
     "forge": {
@@ -29,10 +29,10 @@
         ]
       },
       "electronPackagerConfig": {
-        "packageManager": "yarn"
+        "packageManager": "npm"
       },
       "electronWinstallerConfig": {
-        "name": "grinplusplusui"
+        "name": "GrinPlusPlus"
       },
       "electronInstallerDebian": {},
       "electronInstallerRedhat": {},
@@ -42,20 +42,22 @@
       },
       "windowsStoreConfig": {
         "packageName": "",
-        "name": "grinplusplusui"
+        "name": "GrinPlusPlus"
       }
     }
   },
   "dependencies": {
-    "@material-ui/core": "latest",
+    "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "latest",
     "electron": "4.0.0",
     "electron-compile": "^6.4.4",
     "electron-squirrel-startup": "^1.0.0",
+    "express": "^4.16.4",
     "prop-types": "latest",
     "react": "latest",
     "react-dom": "latest",
     "react-hot-loader": "latest",
+    "react-material-ui-form-validator": "^2.0.7",
     "react-router-dom": "latest"
   },
   "devDependencies": {

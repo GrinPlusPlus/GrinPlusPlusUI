@@ -52,7 +52,7 @@ function Wallet(props) {
 
     function FormatAmount(amount) {
       var calculatedAmount = Math.abs(amount) / Math.pow(10, 9);
-      var formatted = "G" + calculatedAmount.toFixed(9);
+      var formatted = calculatedAmount.toFixed(9) + "ツ";
       if (amount < 0) {
         formatted = "-" + formatted;
       }
@@ -62,6 +62,10 @@ function Wallet(props) {
 
     function handleSend(event) {
       setShowSendModal(true);
+    }
+
+    function handleCloseSendModal(event) {
+      setShowSendModal(false);
     }
 
     function handleReceive(event) {
@@ -105,6 +109,11 @@ function Wallet(props) {
       setRefresh(!refresh);
     }
 
+    function repostTx(txnId) {
+      ipcRenderer.sendSync('Repost', txnId); // TODO: Handle result
+      setRefresh(!refresh);
+    }
+
     const greenTheme = createMuiTheme({ palette: { primary: green } })
 
     function getActionIcon(txnId, status) {
@@ -128,8 +137,13 @@ function Wallet(props) {
             <CancelIcon/>
           </IconButton>
         );
-      }
-      else {
+      } else if (status == "Sending (Finalized)") {
+        return (
+          <IconButton onClick={function() { repostTx(txnId) }}>
+            <RefreshIcon />
+          </IconButton>
+        );
+      } else {
         return (
           <IconButton onClick={function() { cancelTx(txnId) }}>
             <CancelIcon color='error'/>
@@ -205,7 +219,7 @@ function Wallet(props) {
                  >
                    <SendIcon className={classes.extendedIcon}/> Send
                  </Fab>
-                 <SendModal showModal={showSendModal} onClose={function(){setShowSendModal(false)}}/>
+                 <SendModal showModal={showSendModal} onClose={handleCloseSendModal}/>
                </Grid>
                <Grid item xs={2}>
                  <Fab

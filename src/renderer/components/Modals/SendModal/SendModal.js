@@ -151,27 +151,27 @@ function SendModal(props) {
             >
               <FormControlLabel
                 value="file"
-                control={<Radio color="secondary" />}
+                control={<Radio/>}
                 label="File"
                 labelPlacement="end"
               />
               <FormControlLabel
                 value="http"
-                control={<Radio color="secondary" />}
+                control={<Radio/>}
                 label="http(s)"
                 labelPlacement="end"
                 disabled
               />
               <FormControlLabel
                 value="wormhole"
-                control={<Radio color="secondary" />}
+                control={<Radio/>}
                 label="Wormhole"
                 labelPlacement="end"
                 disabled
               />
               <FormControlLabel
                 value="grinbox"
-                control={<Radio color="secondary" />}
+                control={<Radio/>}
                 label="Grinbox"
                 labelPlacement="end"
                 disabled
@@ -182,7 +182,7 @@ function SendModal(props) {
           <br/>
 
           <FormControl margin="dense" required fullWidth>
-            <InputLabel htmlFor="amount">Amount(G)</InputLabel>
+            <InputLabel htmlFor="amount">Amount ツ</InputLabel>
             <Input name="amount" type="text" id="amount" autoFocus />
           </FormControl>
 
@@ -211,10 +211,10 @@ function SendModal(props) {
 
           <br/><br/>
           <Typography align='right'>
-            <Button onClick={handleClose} color="secondary">
+            <Button onClick={handleClose}>
               Cancel
             </Button>
-            <IconButton color="secondary" type="submit">
+            <IconButton type="submit">
               <SendIcon />
             </IconButton>
           </Typography>

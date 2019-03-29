@@ -1,11 +1,11 @@
 import { net } from 'electron';
 
-exports.call = function(event) {
+exports.call = function(event, portNumber) {
   const req = net.request({
     method: 'GET',
     protocol: 'http:',
     hostname: '127.0.0.1',
-    port: 13420,
+    port: portNumber,
     path: '/v1/wallet/owner/retrieve_summary_info'
   });
   req.setHeader('session_token', global.session_token);
@@ -26,6 +26,7 @@ exports.call = function(event) {
         event.returnValue = result;
       })
     } else {
+      console.log("retrieve_summary_info failed with response: " + response.statusCode);
       event.returnValue = result;
     }
   });

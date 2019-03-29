@@ -9,8 +9,10 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import Fab from '@material-ui/core/Fab';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Grid from '@material-ui/core/Grid';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Input from '@material-ui/core/Input';
@@ -18,10 +20,14 @@ import InputLabel from '@material-ui/core/InputLabel';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
 import { Redirect, withRouter } from 'react-router-dom';
 import {ipcRenderer} from 'electron';
 import ButtonAppNav from "../ButtonAppNav";
 import StatusBar from '../StatusBar';
+import TextField from '@material-ui/core/TextField';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import WalletWords from "./WalletWords"
 
 const styles = theme => ({
   main: {
@@ -53,6 +59,16 @@ const styles = theme => ({
   submit: {
     marginTop: theme.spacing.unit * 3,
   },
+  warning: {
+    display: 'inline',
+    backgroundColor: 'red',
+    color: 'white',
+    padding: '4px 8px',
+    borderRadius: '4px',
+    fontWeight: 700,
+    fontSize: '13px',
+    marginRight: '4px',
+  },
 });
 
 function Register(props) {
@@ -61,15 +77,15 @@ function Register(props) {
   const [walletSeed, setWalletSeed] = React.useState(null);
   const [showWalletSeed, setShowWalletSeed] = React.useState(false);
   const [failure, setFailure] = React.useState(false);
-  const [username, setUsername] = React.useState(null);
+  const [username, setUsername] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [confirmPassword, setConfirmPassword] = React.useState("");
 
   function handleSubmit(event) {
     event.preventDefault();
-    const data = new FormData(event.target);
-    const response = ipcRenderer.sendSync('CreateWallet', data.get('username'), data.get('password'));
+    const response = ipcRenderer.sendSync('CreateWallet', username, password);
     if (response != null && response["status_code"] == 200) {
-      sessionStorage["username"] = data.get('username').toUpperCase();
-      setUsername(data.get('username'));
+      sessionStorage["username"] = username.toUpperCase();
       setWalletSeed(response["wallet_seed"]);
       setShowWalletSeed(true);
     } else {
@@ -78,11 +94,10 @@ function Register(props) {
   }
 
   if (registered === true) {
-    return (<Redirect to='/home'/>);
+    return (<Redirect to='/wallet'/>);
   }
 
-  function handleWalletSeedClose(event) {
-    event.preventDefault();
+  function handleWalletSeedClose() {
     setRegistered(true);
   }
 
@@ -91,32 +106,32 @@ function Register(props) {
     setFailure(false);
   }
 
+  function changeUsername(e) {
+    setUsername(e.target.value);
+  }
+
+  function changePassword(e) {
+    setPassword(e.target.value);
+  }
+
+  function changeConfirmPassword(e) {
+    setConfirmPassword(e.target.value);
+  }
+
+  ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
+    if (value !== password) {
+        return false;
+    }
+    return true;
+  });
+
   return (
     <React.Fragment>
       <ButtonAppNav noMenu includeBack />
       <main className={classes.main}>
         <CssBaseline />
 
-        {/* Wallet Words Dialog */}
-        <Dialog
-          open={showWalletSeed}
-          onClose={handleWalletSeedClose}
-          aria-labelledby="form-dialog-title"
-        >
-          <DialogTitle id="form-dialog-title">Wallet Seed</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              <b>IMPORTANT!!</b> The below words are needed if you ever need to restore your wallet. Please write them down and keep them in a safe place.
-              <br/><br/>
-              <b>{walletSeed}</b>
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleWalletSeedClose} color="primary">
-              Got it!
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <WalletWords showModal={showWalletSeed} onClose={handleWalletSeedClose} walletSeed={walletSeed}/>
 
         {/* Error Dialog */}
         <Dialog
@@ -140,25 +155,53 @@ function Register(props) {
 
         <Paper className={classes.paper}>
           <Avatar src="https://avatars0.githubusercontent.com/u/45742329?s=400&u=57afc7119c701f3aeb526d6992376bee7aa60dd6&v=4" className={classes.avatar} />
-          <form className={classes.form} onSubmit={handleSubmit}>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="username">Username</InputLabel>
-              <Input id="username" name="username" autoComplete="username" autoFocus />
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="password">Password</InputLabel>
-              <Input name="password" type="password" id="password" autoComplete="new-password" />
-            </FormControl>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
+
+          <ValidatorForm
+              className={classes.form}
+              onSubmit={handleSubmit}
+          >
+              <TextValidator
+                  label="Username"
+                  onChange={changeUsername}
+                  name="username"
+                  validators={['required']}
+                  errorMessages={['this field is required']}
+                  value={username}
+                  autoFocus
+                  fullWidth
+              />
+              <TextValidator
+                  label="Password"
+                  onChange={changePassword}
+                  name="password"
+                  type="password"
+                  validators={['required']}
+                  errorMessages={['this field is required']}
+                  value={password}
+                  fullWidth
+              />
+              <br />
+              <TextValidator
+                  label="Repeat password"
+                  onChange={changeConfirmPassword}
+                  name="repeatPassword"
+                  type="password"
+                  validators={['isPasswordMatch', 'required']}
+                  errorMessages={['password mismatch', 'this field is required']}
+                  value={confirmPassword}
+                  fullWidth
+              />
+              <br />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
               >
-              Create Account
-            </Button>
-          </form>
+                Create Account
+              </Button>
+          </ValidatorForm>
         </Paper>
       </main>
       <StatusBar/>

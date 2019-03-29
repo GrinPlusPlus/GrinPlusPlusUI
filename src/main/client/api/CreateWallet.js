@@ -1,11 +1,11 @@
 import { net } from 'electron';
 
-exports.call = function(event, username, password) {
+exports.call = function(event, portNumber, username, password) {
     const req = net.request({
       method: 'POST',
       protocol: 'http:',
       hostname: '127.0.0.1',
-      port: 13420,
+      port: portNumber,
       path: '/v1/wallet/owner/create_wallet'
     });
     req.setHeader('username', username);

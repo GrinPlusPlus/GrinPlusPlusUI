@@ -24,6 +24,7 @@ import { Redirect, withRouter } from 'react-router-dom';
 import {ipcRenderer} from 'electron';
 import ButtonAppNav from "../ButtonAppNav";
 import StatusBar from '../StatusBar';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
 const styles = theme => ({
   main: {
@@ -38,7 +39,7 @@ const styles = theme => ({
     },
   },
   paper: {
-    marginTop: theme.spacing.unit * 15,
+    marginTop: theme.spacing.unit * 10,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -61,16 +62,19 @@ function Restore(props) {
   const { classes } = props;
   const [registered, setRegistered] = React.useState(false);
   const [failure, setFailure] = React.useState(false);
-  const [username, setUsername] = React.useState(null);
+  const [username, setUsername] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [walletWords, setWalletWords] = React.useState("");
 
   function handleSubmit(event) {
     event.preventDefault();
     const data = new FormData(event.target);
-    const response = ipcRenderer.sendSync('RestoreFromSeed', data.get('username'), data.get('password'), data.get('walletWords'));
+    const response = ipcRenderer.sendSync('RestoreFromSeed', username, password, walletWords);
     console.log(response);
     if (response != null && response["status_code"] == 200) {
-      sessionStorage["username"] = data.get('username').toUpperCase();
-      setUsername(data.get('username'));
+      sessionStorage["username"] = username.toUpperCase();
+      setUsername(username);
       setRegistered(true);
     } else {
       setFailure(true);
@@ -79,13 +83,36 @@ function Restore(props) {
 
   if (registered === true) {
     ipcRenderer.send('UpdateWallet');
-    return (<Redirect to='/home'/>);
+    return (<Redirect to='/wallet'/>);
   }
 
   function handleErrorClose(event) {
     event.preventDefault();
     setFailure(false);
   }
+
+  function changeUsername(e) {
+    setUsername(e.target.value);
+  }
+
+  function changePassword(e) {
+    setPassword(e.target.value);
+  }
+
+  function changeConfirmPassword(e) {
+    setConfirmPassword(e.target.value);
+  }
+
+  function changeWalletWords(e) {
+    setWalletWords(e.target.value);
+  }
+
+  ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
+    if (value !== password) {
+        return false;
+    }
+    return true;
+  });
 
   return (
     <React.Fragment>
@@ -115,29 +142,66 @@ function Restore(props) {
 
         <Paper className={classes.paper}>
           <Avatar src="https://avatars0.githubusercontent.com/u/45742329?s=400&u=57afc7119c701f3aeb526d6992376bee7aa60dd6&v=4" className={classes.avatar} />
-          <form className={classes.form} onSubmit={handleSubmit}>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="username">Username</InputLabel>
-              <Input id="username" name="username" autoComplete="username" autoFocus />
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="password">Password</InputLabel>
-              <Input name="password" type="password" id="password" autoComplete="new-password" />
-            </FormControl>
-            <br/>
-            <br/>
-            <Typography>Wallet Words:</Typography>
-            <FormControl margin="normal" required fullWidth>
-              <TextField id="walletWords" name="walletWords" autoComplete="wallet-words" variant="outlined" multiline={true} rows="3" />
-            </FormControl>
-            <Button type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    className={classes.submit}>
-              Restore Account
-            </Button>
-          </form>
+          <ValidatorForm
+              className={classes.form}
+              onSubmit={handleSubmit}
+          >
+              <TextValidator
+                  label="Username"
+                  onChange={changeUsername}
+                  name="username"
+                  validators={['required']}
+                  errorMessages={['this field is required']}
+                  value={username}
+                  margin="normal"
+                  autoFocus
+                  fullWidth
+              />
+              <TextValidator
+                  label="Password"
+                  onChange={changePassword}
+                  name="password"
+                  type="password"
+                  validators={['required']}
+                  errorMessages={['this field is required']}
+                  value={password}
+                  margin="normal"
+                  fullWidth
+              />
+              <br />
+              <TextValidator
+                  label="Repeat password"
+                  onChange={changeConfirmPassword}
+                  name="repeatPassword"
+                  type="password"
+                  validators={['isPasswordMatch', 'required']}
+                  errorMessages={['password mismatch', 'this field is required']}
+                  value={confirmPassword}
+                  margin="normal"
+                  fullWidth
+              />
+              <br />
+              <br />
+              <Typography>Wallet Words:</Typography>
+              <TextValidator
+                  onChange={changeWalletWords}
+                  name="walletWords"
+                  multiline={true}
+                  rows="3"
+                  validators={['required']}
+                  errorMessages={['this field is required']}
+                  value={walletWords}
+                  margin="normal"
+                  fullWidth
+              />
+              <Button type="submit"
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      className={classes.submit}>
+                Restore Account
+              </Button>
+          </ValidatorForm>
         </Paper>
       </main>
       <StatusBar/>

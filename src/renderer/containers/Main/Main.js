@@ -8,6 +8,7 @@ import { Redirect, withRouter } from 'react-router-dom';
 import StatusBar from '../StatusBar';
 import withStyles from '@material-ui/core/styles/withStyles';
 import ButtonAppNav from "../ButtonAppNav";
+const path = require('path');
 
 const styles = theme => ({
   main: {
@@ -35,6 +36,7 @@ const styles = theme => ({
 
 function Start(props) {
     const { classes } = props;
+    const { dark_mode } = props;
     const [login, setLogin] = React.useState(false);
     const [create, setCreate] = React.useState(false);
     const [restore, setRestore] = React.useState(false);
@@ -77,7 +79,7 @@ function Start(props) {
                 alignItems="center"
                 justify="center"
                 style={{ minHeight: '90vh' }}>
-            <img src='https://raw.githubusercontent.com/GrinPlusPlus/GrinPlusPlus/master/Logo.png' />
+            <img src={path.join(__dirname, '../../../static/img/GrinBanner.png')}/>
             <br/><br/><br/>
             <Button type="submit"
                     fullWidth
@@ -86,7 +88,7 @@ function Start(props) {
                     className={classes.submit}
                     onClick={loginClicked}
                     autoFocus>
-                Login
+                Open Wallet
             </Button>
             <Button onClick={createClicked}
                     type="submit"

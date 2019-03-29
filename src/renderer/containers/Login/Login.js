@@ -74,7 +74,7 @@ function Login(props) {
   }
 
   if (loggedIn === true) {
-    return (<Redirect to='/home'/>);
+    return (<Redirect to='/wallet'/>);
   }
 
   function handleErrorClose(event) {
@@ -95,14 +95,20 @@ function Login(props) {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">{"ERROR"}</DialogTitle>
+          <DialogTitle id="alert-dialog-title" fullWidth alignItems="center">
+            <Typography color="error" variant="h4">
+              {"ERROR"}
+            </Typography>
+          </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Failed to login. Username and/or password is wrong.
+              <Typography variant="h6">
+                Failed to login. Username and/or password is wrong.
+              </Typography>
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleErrorClose} color="primary" autoFocus>
+            <Button onClick={handleErrorClose} variant="contained" color="primary" autoFocus>
               Try Again
             </Button>
           </DialogActions>

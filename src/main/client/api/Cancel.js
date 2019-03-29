@@ -1,11 +1,11 @@
 import { net } from 'electron';
 
-exports.call = function(event, txId) {
+exports.call = function(event, portNumber, txId) {
   const req = net.request({
     method: 'POST',
     protocol: 'http:',
     hostname: '127.0.0.1',
-    port: 13420,
+    port: portNumber,
     path: '/v1/wallet/owner/cancel_tx?id=' + txId
   });
   req.setHeader('session_token', global.session_token);

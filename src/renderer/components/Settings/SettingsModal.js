@@ -9,6 +9,12 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import IconButton from "@material-ui/core/IconButton";
 import SettingsIcon from "@material-ui/icons/Settings";
+import FormLabel from '@material-ui/core/FormLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Switch from '@material-ui/core/Switch';
 import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
@@ -33,7 +39,7 @@ function SettingsModal(props) {
   const [open, setOpen] = React.useState(false);
 
   function handleClickOpen() {
-    //setOpen(true);
+    setOpen(true);
   }
 
   function handleClose() {
@@ -47,27 +53,32 @@ function SettingsModal(props) {
       aria-label="Settings"
       onClick={handleClickOpen}
     >
-      <SettingsIcon />
+      <SettingsIcon color="secondary" />
     </IconButton>
     <Dialog
       open={open}
       onClose={handleClose}
       aria-labelledby="form-dialog-title"
     >
-      <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+      <DialogTitle id="form-dialog-title">Settings</DialogTitle>
       <DialogContent>
         <DialogContentText>
           To subscribe to this website, please enter your email address here.
           We will send updates occasionally.
         </DialogContentText>
-        <TextField
-          autoFocus
-          margin="dense"
-          id="name"
-          label="Email Address"
-          type="email"
-          fullWidth
+
+        <FormControlLabel
+          control={
+            <Switch
+              disabled
+              checked={false}
+              value="mainnet"
+              color="primary"
+            />
+          }
+          label="Mainnet"
         />
+
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">

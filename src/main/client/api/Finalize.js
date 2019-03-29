@@ -1,11 +1,11 @@
 import { net } from 'electron';
 
-exports.call = function(event, slate) {
+exports.call = function(event, portNumber, slate) {
   const req = net.request({
     method: 'POST',
     protocol: 'http:',
     hostname: '127.0.0.1',
-    port: 13420,
+    port: portNumber,
     path: '/v1/wallet/owner/finalize_tx?post'
   });
   req.setHeader('session_token', global.session_token);
@@ -22,7 +22,7 @@ exports.call = function(event, slate) {
       if (response.statusCode == 200) {
         result["tx"] = JSON.parse(body);
       }
-
+      console.log("Finalize response: " + response.statusCode);
       event.returnValue = result;
     });
   });

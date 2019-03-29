@@ -1,5 +1,5 @@
 import { app, BrowserWindow, ipcMain, net } from 'electron';
-//import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
+import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import { enableLiveReload } from 'electron-compile';
 import ChildProcess from 'child_process';
 import Client from './main/client/Client';
@@ -10,9 +10,9 @@ import FileListener from './main/FileListener';
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
-//const isDevMode = process.execPath.match(/[\\/]electron/);
+const isDevMode = process.execPath.match(/[\\/]electron/);
 
-//if (isDevMode) enableLiveReload({ strategy: 'react-hmr' });
+if (isDevMode) enableLiveReload({ strategy: 'react-hmr' });
 
 const createWindow = async () => {
   // Create the browser window.
@@ -28,10 +28,10 @@ const createWindow = async () => {
   mainWindow.loadURL(`file://${__dirname}/renderer/index.html`);
 
   // Open the DevTools.
-  // if (isDevMode) {
-  //   await installExtension(REACT_DEVELOPER_TOOLS);
-  //   mainWindow.webContents.openDevTools();
-  // }
+  if (isDevMode) {
+    await installExtension(REACT_DEVELOPER_TOOLS);
+    mainWindow.webContents.openDevTools();
+  }
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
@@ -41,13 +41,13 @@ const createWindow = async () => {
     mainWindow = null;
   });
 
-  const child = ChildProcess.execFile('GrinNode.exe', ['--floonet', '--headless'], {cwd: '${__dirname}/../bin/'}, (error, stdout, stderr) => {
-    if (error) {
-      throw error;
-    }
-
-    app.quit();
-  });
+  // const child = ChildProcess.execFile('GrinNode.exe', ['--floonet', '--headless'], {cwd: '${__dirname}/../bin/'}, (error, stdout, stderr) => {
+  //   if (error) {
+  //     throw error;
+  //   }
+  //
+  //   app.quit();
+  // });
 
   Client.start();
   Server.start();
@@ -64,8 +64,8 @@ app.on('window-all-closed', () => {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
-    Client.stop();
-    app.quit();
+    //Client.stop();
+    //app.quit(); // TODO: Comment this out when releasing
   }
 });
 

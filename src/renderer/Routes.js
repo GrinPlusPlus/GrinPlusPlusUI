@@ -6,22 +6,22 @@ import Login from './containers/Login';
 import Register from './containers/Register';
 import Restore from './containers/Restore';
 import Main from './containers/Main';
-import Transactions from './containers/Transactions';
 import Wallet from './containers/Wallet';
+import Peers from './containers/Peers';
 
 
-function Routes(properties) {
+function Routes(props) {
+  const isDarkMode = props.isDarkMode;
   return (
       <Router>
       <ScrollToTop>
         <Switch>
-            <Route exact path='/' component={ Main } />
+            <Route exact path='/' render={(props) => <Main dark_mode={isDarkMode} />} />
             <Route exact path='/login' component={ Login } />
             <Route exact path='/register' component={ Register } />
             <Route exact path='/restore' component={ Restore } />
-            <Route exact path='/home' component={ Wallet } />
-            <Route exact path='/transactions' component={ Transactions } />
             <Route exact path='/wallet' component={ Wallet } />
+            <Route exact path='/peers' component={ Peers } />
         </Switch>
       </ScrollToTop>
     </Router>
@@ -29,7 +29,7 @@ function Routes(properties) {
 }
 
 Routes.propTypes = {
-    user: PropTypes.object,
+    dark_mode: PropTypes.bool,
 }
 
 export default(Routes);
