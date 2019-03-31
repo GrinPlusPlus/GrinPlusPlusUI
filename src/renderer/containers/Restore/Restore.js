@@ -23,7 +23,6 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { Redirect, withRouter } from 'react-router-dom';
 import {ipcRenderer} from 'electron';
 import ButtonAppNav from "../ButtonAppNav";
-import StatusBar from '../StatusBar';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
 const styles = theme => ({
@@ -204,7 +203,6 @@ function Restore(props) {
           </ValidatorForm>
         </Paper>
       </main>
-      <StatusBar/>
     </React.Fragment>
   );
 }

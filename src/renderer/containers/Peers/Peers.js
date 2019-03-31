@@ -2,26 +2,11 @@ import React from "react";
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
-import Paper from '@material-ui/core/Paper';
-import Fab from '@material-ui/core/Fab'
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
 import ButtonAppNav from '../ButtonAppNav';
-import WalletTabs from '../WalletTabs'
-import StatusBar from '../StatusBar'
 import {ipcRenderer} from 'electron';
-import Typography from '@material-ui/core/Typography';
-import SendModal from '../../components/Modals/SendModal';
-import IconButton from '@material-ui/core/IconButton';
-import SendIcon from "@material-ui/icons/CallMade";
-import ReceiveIcon from '@material-ui/icons/CallReceived';
-import FinalizeIcon from '@material-ui/icons/CallMerge';
 import RefreshIcon from '@material-ui/icons/Refresh';
-import CancelIcon from '@material-ui/icons/Cancel';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
-import green from '@material-ui/core/colors/green';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
 
 const styles = theme => ({
   fullWidth: {
@@ -134,7 +119,6 @@ function Peers(props) {
                <Grid item xs={2}>
                </Grid>
             </Grid>
-            <StatusBar/>
         </React.Fragment>
     );
 }

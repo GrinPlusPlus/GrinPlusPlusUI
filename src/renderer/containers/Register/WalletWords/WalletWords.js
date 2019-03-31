@@ -24,7 +24,6 @@ import Typography from '@material-ui/core/Typography';
 import { Redirect, withRouter } from 'react-router-dom';
 import {ipcRenderer} from 'electron';
 import ButtonAppNav from "../../ButtonAppNav";
-import StatusBar from '../../StatusBar';
 import TextField from '@material-ui/core/TextField';
 
 const styles = theme => ({

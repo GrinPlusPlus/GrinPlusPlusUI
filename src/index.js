@@ -14,44 +14,59 @@ const isDevMode = process.execPath.match(/[\\/]electron/);
 
 if (isDevMode) enableLiveReload({ strategy: 'react-hmr' });
 
+var statusInterval = 0;
+
 const createWindow = async () => {
-  // Create the browser window.
-  mainWindow = new BrowserWindow({
-    width: 1200,
-    height: 800,
-    icon: __dirname + '/static/icons/GrinLogo.ico'
-  });
+    // Create the browser window.
+    mainWindow = new BrowserWindow({
+        width: 1200,
+        height: 800,
+        icon: __dirname + '/static/icons/GrinLogo.ico'
+    });
 
-  mainWindow.setMenu(null);
+    mainWindow.setMenu(null);
 
-  // and load the index.html of the app.
-  mainWindow.loadURL(`file://${__dirname}/renderer/index.html`);
+    // and load the index.html of the app.
+    mainWindow.loadURL(`file://${__dirname}/renderer/index.html`);
 
-  // Open the DevTools.
-  if (isDevMode) {
-    await installExtension(REACT_DEVELOPER_TOOLS);
-    mainWindow.webContents.openDevTools();
-  }
+    // Open the DevTools.
+    if (isDevMode) {
+        await installExtension(REACT_DEVELOPER_TOOLS);
+        mainWindow.webContents.openDevTools();
+    }
 
-  // Emitted when the window is closed.
-  mainWindow.on('closed', () => {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    mainWindow = null;
-  });
+    // Emitted when the window is closed.
+    mainWindow.on('closed', () => {
+        clearInterval(statusInterval);
+        // Dereference the window object, usually you would store windows
+        // in an array if your app supports multi windows, this is the time
+        // when you should delete the corresponding element.
+        mainWindow = null;
+    });
 
-  // const child = ChildProcess.execFile('GrinNode.exe', ['--floonet', '--headless'], {cwd: '${__dirname}/../bin/'}, (error, stdout, stderr) => {
-  //   if (error) {
-  //     throw error;
-  //   }
-  //
-  //   app.quit();
-  // });
+    const child = ChildProcess.execFile('GrinNode.exe', ['--headless'], { cwd: '${__dirname}/../bin/' }, (error, stdout, stderr) => {
+        if (error) {
+            throw error;
+        }
 
-  Client.start();
-  Server.start();
-  FileListener.start();
+        app.quit();
+    });
+
+    Client.start();
+    Server.start();
+    FileListener.start();
+
+    mainWindow.webContents.on('did-finish-load', () => {
+        statusInterval = setInterval(Client.getStatus, 2000, (status) => {
+            if (mainWindow != null) {
+                if (status != null) {
+                    mainWindow.webContents.send('NODE_STATUS', status.sync_status, status.network.num_inbound, status.network.num_outbound);
+                } else {
+                    mainWindow.webContents.send('NODE_STATUS', "Failed to Connect", 0, 0);
+                }
+            }
+        });
+    });
 };
 
 // This method will be called when Electron has finished
@@ -61,20 +76,20 @@ app.on('ready', createWindow);
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    //Client.stop();
-    //app.quit(); // TODO: Comment this out when releasing
-  }
+    // On OS X it is common for applications and their menu bar
+    // to stay active until the user quits explicitly with Cmd + Q
+    if (process.platform !== 'darwin') {
+        Client.stop();
+        //app.quit(); // TODO: Comment this out when releasing
+    }
 });
 
 app.on('activate', () => {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) {
-    createWindow();
-  }
+    // On OS X it's common to re-create a window in the app when the
+    // dock icon is clicked and there are no other windows open.
+    if (mainWindow === null) {
+        createWindow();
+    }
 });
 
 // In this file you can include the rest of your app's specific main process

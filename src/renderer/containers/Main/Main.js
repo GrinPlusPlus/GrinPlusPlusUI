@@ -5,7 +5,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { Redirect, withRouter } from 'react-router-dom';
-import StatusBar from '../StatusBar';
 import withStyles from '@material-ui/core/styles/withStyles';
 import ButtonAppNav from "../ButtonAppNav";
 const path = require('path');
@@ -107,7 +106,6 @@ function Start(props) {
                 Restore Wallet
             </Button>
           </Grid>
-          <StatusBar/>
         </main>
       </React.Fragment>
     );

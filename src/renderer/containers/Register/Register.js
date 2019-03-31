@@ -24,7 +24,6 @@ import Typography from '@material-ui/core/Typography';
 import { Redirect, withRouter } from 'react-router-dom';
 import {ipcRenderer} from 'electron';
 import ButtonAppNav from "../ButtonAppNav";
-import StatusBar from '../StatusBar';
 import TextField from '@material-ui/core/TextField';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import WalletWords from "./WalletWords"
@@ -204,7 +203,6 @@ function Register(props) {
           </ValidatorForm>
         </Paper>
       </main>
-      <StatusBar/>
     </React.Fragment>
   );
 }
