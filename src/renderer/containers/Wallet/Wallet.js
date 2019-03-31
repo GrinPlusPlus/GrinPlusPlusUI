@@ -178,30 +178,36 @@ function Wallet(props) {
     var amount_locked = FormatAmount(result['amount_locked']);
     var amount_currently_spendable = FormatAmount(result['amount_currently_spendable']);
     
-    var txns = JSON.parse(result.transactions);
-    var transactions = txns.map(function (txn) {
-        var creation_date_time = new Date(0);
-        creation_date_time.setUTCSeconds((txn.creation_date_time));
-        return (
-            <React.Fragment key={txn.id}>
-                <Grid container spacing={8}>
-                    <Grid item xs={5}>
-                        <h4>{getStatus(txn, result['last_confirmed_height'])}</h4>
-                        <p>{creation_date_time.toLocaleString()}</p>
-                    </Grid>
-                    <Grid item xs={4}>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <h4 align="right">
-                            {FormatAmount(txn.amount_credited - txn.amount_debited)}
-                            {getActionIcon(txn.id, txn.type)}
-                        </h4>
-                    </Grid>
-                </Grid>
-                <Divider variant="fullWidth" />
-            </React.Fragment>
-        );
-    })
+    var transactions = "";
+
+    if (result.transactions != null) {
+        var txns = JSON.parse(result.transactions);
+        if (txns != null) {
+            transactions = txns.map(function (txn) {
+                var creation_date_time = new Date(0);
+                creation_date_time.setUTCSeconds((txn.creation_date_time));
+                return (
+                    <React.Fragment key={txn.id}>
+                        <Grid container spacing={8}>
+                            <Grid item xs={5}>
+                                <h4>{getStatus(txn, result['last_confirmed_height'])}</h4>
+                                <p>{creation_date_time.toLocaleString()}</p>
+                            </Grid>
+                            <Grid item xs={4}>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <h4 align="right">
+                                    {FormatAmount(txn.amount_credited - txn.amount_debited)}
+                                    {getActionIcon(txn.id, txn.type)}
+                                </h4>
+                            </Grid>
+                        </Grid>
+                        <Divider variant="fullWidth" />
+                    </React.Fragment>
+                );
+            });
+        }
+    }
 
     return (
         <React.Fragment>

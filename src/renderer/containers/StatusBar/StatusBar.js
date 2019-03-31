@@ -30,11 +30,14 @@ const styles = theme => ({
     },
     connections: {
         paddingLeft: '8px'
+    },
+    chainHeight: {
+        paddingLeft: '12px'
     }
 });
 
 function StatusBar(props) {
-    const { classes, status, inbound, outbound } = props;
+    const { classes, status, inbound, outbound, blockHeight, networkHeight } = props;
 
     const statusTheme = createMuiTheme({
         palette: {
@@ -79,12 +82,18 @@ function StatusBar(props) {
                 <Toolbar>
                     <MuiThemeProvider theme={statusTheme}>
                         <Grid container spacing={0} className={classes.Grid}>
-                            <Grid item xs={8}>
+                            <Grid item xs={4}>
                                 <IconButton disabled className={classes.status}>
                                     <StatusIcon color={getColor()} />
                                     <Typography inline className={classes.statusText}><b>STATUS: </b></Typography>
                                     <Typography inline color={getColor()} className={classes.statusText}><b>{getStatusText()}</b></Typography>
                                 </IconButton>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <center>
+                                    <Typography inline className={classes.chainHeight}><b>Chain: {blockHeight}</b></Typography>
+                                    <Typography inline className={classes.chainHeight}><b>Network: {networkHeight}</b></Typography>
+                                </center>
                             </Grid>
                             <Grid item xs={4}>
                                 <div style={{ textAlign: 'right' }}>
@@ -105,6 +114,8 @@ StatusBar.propTypes = {
     status: PropTypes.string.isRequired,
     inbound: PropTypes.number.isRequired,
     outbound: PropTypes.number.isRequired,
+    blockHeight: PropTypes.number.isRequired,
+    networkHeight: PropTypes.number.isRequired,
 };
 
 export default withStyles(styles)(StatusBar);

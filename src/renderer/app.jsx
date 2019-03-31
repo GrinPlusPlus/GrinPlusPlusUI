@@ -55,6 +55,8 @@ export default class App extends Component {
             status: "",
             inbound: 0,
             outbound: 0,
+            blockHeight: 0,
+            networkHeight: 0,
         };
         this.updateStatus = this.updateStatus.bind(this);
     }
@@ -75,11 +77,13 @@ export default class App extends Component {
         }
     }
 
-    updateStatus(event, status, inbound, outbound) {
+    updateStatus(event, status, inbound, outbound, blockHeight, networkHeight) {
         this.setState({
             status: status,
             inbound: inbound,
-            outbound: outbound
+            outbound: outbound,
+            blockHeight: blockHeight,
+            networkHeight: networkHeight
         });
     }
 

@@ -60,9 +60,9 @@ const createWindow = async () => {
         statusInterval = setInterval(Client.getStatus, 2000, (status) => {
             if (mainWindow != null) {
                 if (status != null) {
-                    mainWindow.webContents.send('NODE_STATUS', status.sync_status, status.network.num_inbound, status.network.num_outbound);
+                    mainWindow.webContents.send('NODE_STATUS', status.sync_status, status.network.num_inbound, status.network.num_outbound, status.chain.height, status.network.height);
                 } else {
-                    mainWindow.webContents.send('NODE_STATUS', "Failed to Connect", 0, 0);
+                    mainWindow.webContents.send('NODE_STATUS', "Failed to Connect", 0, 0, 0, 0);
                 }
             }
         });
