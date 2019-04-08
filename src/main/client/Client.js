@@ -1,83 +1,93 @@
 import { ipcMain } from 'electron';
-import CreateWallet from './api/CreateWallet';
-import RestoreWallet from './api/RestoreWallet';
-import UpdateWallet from './api/UpdateWallet';
-import Login from './api/Login';
-import Logout from './api/Logout';
-import WalletSummary from './api/WalletSummary';
-import RetrieveTransactions from './api/RetrieveTransactions';
-import Send from './api/Send';
-import Receive from './api/Receive';
-import Finalize from './api/Finalize';
-import Repost from './api/Repost';
-import Cancel from './api/Cancel';
-import Shutdown from './api/Shutdown';
-import GetConnectedPeers from './api/GetConnectedPeers';
-import GetStatus from './api/GetStatus';
 
-const ownerPort = 3420; // todo: floonet = 13420
-const nodePort = 3413; // todo: floonet = 13413
+import SendToHTTP from './SendToHTTP';
 
-exports.start = function () {
-    console.log("STARTING WALLET CLIENT");
+// Owner APIs
+import CreateWallet from './api/owner/CreateWallet';
+import RestoreWallet from './api/owner/RestoreWallet';
+import UpdateWallet from './api/owner/UpdateWallet';
+import Login from './api/owner/Login';
+import Logout from './api/owner/Logout';
+import WalletSummary from './api/owner/WalletSummary';
+import Send from './api/owner/Send';
+import Receive from './api/owner/Receive';
+import Finalize from './api/owner/Finalize';
+import Repost from './api/owner/Repost';
+import Cancel from './api/owner/Cancel';
 
+// Node APIs
+import Shutdown from './api/node/Shutdown';
+import GetConnectedPeers from './api/node/GetConnectedPeers';
+import GetStatus from './api/node/GetStatus';
+
+function StartOwnerClient() {
     ipcMain.on('CreateWallet', function (event, username, password) {
-        CreateWallet.call(event, ownerPort, username, password);
+        CreateWallet.call(event, username, password);
     });
 
     ipcMain.on("RestoreFromSeed", function (event, username, password, walletWords) {
-        RestoreWallet.call(event, ownerPort, username, password, walletWords);
+        RestoreWallet.call(event, username, password, walletWords);
     });
 
     ipcMain.on("UpdateWallet", function (event) {
-        UpdateWallet.call(event, ownerPort);
+        UpdateWallet.call(event);
     });
 
     ipcMain.on('Login', function (event, username, password) {
-        Login.call(event, ownerPort, username, password);
+        Login.call(event, username, password);
     });
 
     ipcMain.on('Logout', function (event) {
-        Logout.call(event, ownerPort);
+        Logout.call(event);
     });
 
     ipcMain.on("WalletSummary", function (event) {
-        WalletSummary.call(event, ownerPort);
-    });
-
-    ipcMain.on("RetrieveTransactions", function (event) {
-        RetrieveTransactions.call(event, ownerPort);
+        WalletSummary.call(event);
     });
 
     ipcMain.on("Send", function (event, amount) {
-        Send.call(event, ownerPort, amount);
+        Send.call(amount, function (result) {
+            event.returnValue = result;
+        });
     });
 
     ipcMain.on("Receive", function (event, slate) {
-        Receive.call(event, ownerPort, slate);
+        Receive.call(event, slate);
     });
 
     ipcMain.on("Finalize", function (event, slate) {
-        Finalize.call(event, ownerPort, slate);
+        Finalize.call(slate, function (result) {
+            event.returnValue = result;
+        });
     });
 
     ipcMain.on("Repost", function (event, walletTxId) {
-        Repost.call(event, ownerPort, walletTxId);
+        Repost.call(event, walletTxId);
     });
 
     ipcMain.on("Cancel", function (event, walletTxId) {
-        Cancel.call(event, ownerPort, walletTxId);
+        Cancel.call(event, walletTxId);
     });
+}
+
+exports.start = function () {
+    console.log("STARTING GRIN++ CLIENT");
+
+    StartOwnerClient();
 
     ipcMain.on("GetConnectedPeers", function (event) {
-        GetConnectedPeers.call(event, nodePort);
+        GetConnectedPeers.call(event);
+    });
+
+    ipcMain.on('SendToHTTP', function (event, httpAddress, amount) {
+        SendToHTTP.call(event, httpAddress, amount);
     });
 }
 
 exports.stop = function () {
-    Shutdown.call(nodePort);
+    Shutdown.call();
 }
 
 exports.getStatus = function (callback) {
-    GetStatus.call(nodePort, callback);
+    GetStatus.call(callback);
 }

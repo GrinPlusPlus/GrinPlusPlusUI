@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { ipcRenderer } from "electron";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { grey, yellow, black } from "@material-ui/core/colors";
 import Routes from "./Routes";
-import StatusBar from './containers/StatusBar';
+import StatusBar from './components/StatusBar';
 
 const yellow_theme = createMuiTheme({
     palette: {
@@ -22,6 +21,14 @@ const yellow_theme = createMuiTheme({
             "Lato",
             "sans-serif"
         ].join(",")
+    },
+    overrides: {
+        MuiDialog: {
+            paper: {
+                backgroundColor: '#DDDDDD',
+                border: '#FFEB3B 2px solid'
+            }
+        }
     }
 });
 
@@ -52,13 +59,7 @@ export default class App extends Component {
 
         this.state = {
             isDarkMode: false,
-            status: "",
-            inbound: 0,
-            outbound: 0,
-            blockHeight: 0,
-            networkHeight: 0,
         };
-        this.updateStatus = this.updateStatus.bind(this);
     }
 
     getBackgroundColor() {
@@ -75,21 +76,6 @@ export default class App extends Component {
         } else {
             return (yellow_theme);
         }
-    }
-
-    updateStatus(event, status, inbound, outbound, blockHeight, networkHeight) {
-        this.setState({
-            status: status,
-            inbound: inbound,
-            outbound: outbound,
-            blockHeight: blockHeight,
-            networkHeight: networkHeight
-        });
-    }
-
-    componentDidMount() {
-        ipcRenderer.removeAllListeners("NODE_STATUS");
-        ipcRenderer.on("NODE_STATUS", this.updateStatus);
     }
 
     render() {

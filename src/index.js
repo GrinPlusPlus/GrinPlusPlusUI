@@ -1,18 +1,22 @@
 import { app, BrowserWindow, ipcMain, net } from 'electron';
-import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
-import { enableLiveReload } from 'electron-compile';
 import ChildProcess from 'child_process';
 import Client from './main/client/Client';
 import Server from './main/server/Server';
 import FileListener from './main/FileListener';
+import IPService from './main/IPService';
+
+//import { enableLiveReload } from 'electron-compile';
+//import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
-const isDevMode = process.execPath.match(/[\\/]electron/);
+//const isDevMode = process.execPath.match(/[\\/]electron/);
 
-if (isDevMode) enableLiveReload({ strategy: 'react-hmr' });
+//if (isDevMode) {
+//    enableLiveReload({ strategy: 'react-hmr' });
+//}
 
 var statusInterval = 0;
 
@@ -29,11 +33,11 @@ const createWindow = async () => {
     // and load the index.html of the app.
     mainWindow.loadURL(`file://${__dirname}/renderer/index.html`);
 
-    // Open the DevTools.
-    if (isDevMode) {
-        await installExtension(REACT_DEVELOPER_TOOLS);
-        mainWindow.webContents.openDevTools();
-    }
+    //// Open the DevTools.
+    //if (isDevMode) {
+    //    await installExtension(REACT_DEVELOPER_TOOLS);
+    //    mainWindow.webContents.openDevTools();
+    //}
 
     // Emitted when the window is closed.
     mainWindow.on('closed', () => {
@@ -44,7 +48,7 @@ const createWindow = async () => {
         mainWindow = null;
     });
 
-    const child = ChildProcess.execFile('GrinNode.exe', ['--headless'], { cwd: '${__dirname}/../bin/' }, (error, stdout, stderr) => {
+    ChildProcess.execFile('GrinNode.exe', ['--headless'], { cwd: '${__dirname}/../bin/' }, (error, stdout, stderr) => {
         if (error) {
             throw error;
         }
@@ -55,14 +59,15 @@ const createWindow = async () => {
     Client.start();
     Server.start();
     FileListener.start();
+    IPService.start();
 
     mainWindow.webContents.on('did-finish-load', () => {
         statusInterval = setInterval(Client.getStatus, 2000, (status) => {
             if (mainWindow != null) {
                 if (status != null) {
-                    mainWindow.webContents.send('NODE_STATUS', status.sync_status, status.network.num_inbound, status.network.num_outbound, status.chain.height, status.network.height);
+                    mainWindow.webContents.send('NODE_STATUS', status.sync_status, status.network.num_inbound, status.network.num_outbound, status.header_height, status.chain.height, status.network.height);
                 } else {
-                    mainWindow.webContents.send('NODE_STATUS', "Failed to Connect", 0, 0, 0, 0);
+                    mainWindow.webContents.send('NODE_STATUS', "Failed to Connect", 0, 0, 0, 0, 0);
                 }
             }
         });
@@ -80,7 +85,10 @@ app.on('window-all-closed', () => {
     // to stay active until the user quits explicitly with Cmd + Q
     if (process.platform !== 'darwin') {
         Client.stop();
-        //app.quit(); // TODO: Comment this out when releasing
+
+        setTimeout(function () {
+            app.quit();
+        }, 5000);
     }
 });
 

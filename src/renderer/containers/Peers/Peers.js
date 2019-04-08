@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
-import ButtonAppNav from '../ButtonAppNav';
+import ButtonAppNav from '../../components/ButtonAppNav';
 import {ipcRenderer} from 'electron';
 import RefreshIcon from '@material-ui/icons/Refresh';
 

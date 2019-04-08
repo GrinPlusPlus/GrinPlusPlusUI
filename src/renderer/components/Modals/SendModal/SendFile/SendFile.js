@@ -64,7 +64,7 @@ function SendModal(props) {
         // TODO: Validate amount is a double
         const amountInNanoGrins = data.get('amount') * Math.pow(10, 9);
 
-        if (method == "file") {
+        if (value == "file") {
             const result = ipcRenderer.sendSync('Send', amountInNanoGrins);
             if (result.status_code == 200) {
                 ipcRenderer.send('SaveToFile', selectedFile, JSON.stringify(result.slate));
@@ -79,8 +79,7 @@ function SendModal(props) {
             } else {
                 setErrorMessage("Failed to send!");
             }
-        } else if (method == "http") {
-            console.log("Sending to " + httpAddress);
+        } else if (value == "http") {
             const result = ipcRenderer.sendSync('SendToHTTP', httpAddress, amountInNanoGrins);
             if (result.status_code == 200) {
                 showModal = false;
@@ -119,63 +118,6 @@ function SendModal(props) {
         return null;
     }
 
-    function getFileDisplay() {
-        if (method != "file") {
-            return "";
-        }
-
-        return (
-            <Grid container spacing={8}>
-                <Grid item xs={11}>
-                    <FormControl
-                        margin="dense"
-                        required
-                        fullWidth
-                    >
-                        <InputLabel htmlFor="destinationFile">Destination File</InputLabel>
-                        <Input
-                            name="destinationFile"
-                            type="text"
-                            id="destinationFile"
-                            value={selectedFile}
-                        />
-                    </FormControl>
-                </Grid>
-                <Grid item xs={1}>
-                    <IconButton onClick={handleSelectFile} className={classes.fileChooserButton}>
-                        <SaveAltIcon />
-                    </IconButton>
-                </Grid>
-            </Grid>
-        );
-    }
-
-    function getHTTPDisplay() {
-        if (method != "http") {
-            return "";
-        }
-
-        return (
-            <React.Fragment>
-                <FormControl
-                    margin="dense"
-                    required
-                    fullWidth
-                >
-                    <InputLabel htmlFor="URL">Address (eg. http(s)://12.34.56.78:3415)</InputLabel>
-                    <Input
-                        name="URL"
-                        type="text"
-                        id="URL"
-                        value={httpAddress}
-                        onChange={(event) => { setHttpAddress(event.target.value) }}
-                    />
-                </FormControl>
-                <br />
-            </React.Fragment>
-        );
-    }
-
     return (
         <React.Fragment>
 
@@ -194,7 +136,6 @@ function SendModal(props) {
             <Dialog
                 open={open}
                 onClose={handleClose}
-                fullWidth={true}
                 aria-labelledby="form-dialog-title"
             >
                 <DialogTitle id="form-dialog-title" disableTypography>
@@ -228,6 +169,13 @@ function SendModal(props) {
                                     labelPlacement="end"
                                 />
                                 <FormControlLabel
+                                    value="wormhole"
+                                    control={<Radio />}
+                                    label="Wormhole"
+                                    labelPlacement="end"
+                                    disabled
+                                />
+                                <FormControlLabel
                                     value="grinbox"
                                     control={<Radio />}
                                     label="Grinbox"
@@ -244,20 +192,37 @@ function SendModal(props) {
                             <Input name="amount" type="text" id="amount" autoFocus />
                         </FormControl>
 
-                        {/* SendFile*/}
-                        { getFileDisplay() }
+                        <Grid container spacing={8}>
+                            <Grid item xs={11}>
+                                <FormControl
+                                    margin="dense"
+                                    required
+                                    fullWidth
+                                >
+                                    <InputLabel htmlFor="destinationFile">Destination File</InputLabel>
+                                    <Input
+                                        name="destinationFile"
+                                        type="text"
+                                        id="destinationFile"
+                                        value={selectedFile}
+                                    />
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={1}>
+                                <IconButton onClick={handleSelectFile} className={classes.fileChooserButton}>
+                                    <SaveAltIcon />
+                                </IconButton>
+                            </Grid>
+                        </Grid>
 
-                        {/* SendHTTP*/}
-                        {getHTTPDisplay() }
-
-                        <br />
+                        <br /><br />
                         <Typography align='right'>
-                            <Button onClick={handleClose} variant="contained" color="primary">
+                            <Button onClick={handleClose}>
                                 Cancel
                             </Button>
-                            <Button type="submit" style={{ marginLeft: '10px' }} variant="contained" color="primary">
-                                Send <SendIcon />
-                            </Button>
+                            <IconButton type="submit">
+                                <SendIcon />
+                            </IconButton>
                         </Typography>
                     </form>
                 </DialogContent>

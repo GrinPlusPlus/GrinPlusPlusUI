@@ -16,7 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Redirect, withRouter } from 'react-router-dom';
 import { ipcRenderer } from 'electron';
-import ButtonAppNav from "../ButtonAppNav";
+import ButtonAppNav from "../../components/ButtonAppNav";
 
 const styles = theme => ({
     main: {

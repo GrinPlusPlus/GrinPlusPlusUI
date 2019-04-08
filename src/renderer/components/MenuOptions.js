@@ -1,12 +1,12 @@
 const MenuOptions = [
     {
-      label: "Wallet",
-      pathname: "/wallet"
+        label: 'Wallet',
+        pathname: '/wallet'
     },
     {
-      label: "Peers",
-      pathname: "/peers"
+        label: 'Peers',
+        pathname: '/peers'
     },
-  ];
+];
 
-  export default MenuOptions;
+export default MenuOptions;

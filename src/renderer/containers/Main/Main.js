@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import { Redirect, withRouter } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
-import ButtonAppNav from "../ButtonAppNav";
+import ButtonAppNav from "../../components/ButtonAppNav";
 const path = require('path');
 
 const styles = theme => ({

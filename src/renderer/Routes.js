@@ -13,7 +13,7 @@ import Peers from './containers/Peers';
 function Routes(props) {
   const isDarkMode = props.isDarkMode;
   return (
-      <Router>
+    <Router>
       <ScrollToTop>
         <Switch>
             <Route exact path='/' render={(props) => <Main dark_mode={isDarkMode} />} />

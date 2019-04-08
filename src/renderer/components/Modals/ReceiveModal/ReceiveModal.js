@@ -13,8 +13,8 @@ import FormControl from '@material-ui/core/FormControl';
 import IconButton from "@material-ui/core/IconButton";
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
-import SendIcon from "@material-ui/icons/CallMade";
-import SaveAltIcon from '@material-ui/icons/SaveAlt';
+import ReceiveIcon from "@material-ui/icons/CallReceived";
+import OpenIcon from '@material-ui/icons/FolderOpen';
 import Snackbar from '@material-ui/core/Snackbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from "@material-ui/core/styles";
@@ -37,62 +37,52 @@ const styles = theme => ({
     }
 });
 
-function SendModal(props) {
+function ReceiveModal(props) {
     const { classes, onClose } = props;
     var { showModal } = props;
-    const [open, setOpen] = React.useState(true);
     const [method, setMethod] = React.useState("file");
     const [selectedFile, setSelectedFile] = React.useState("");
     const [errorMessage, setErrorMessage] = React.useState("");
     const [httpAddress, setHttpAddress] = React.useState("");
 
-    function handleClickOpen() {
-        //setOpen(true);
+    if (httpAddress.length === 0) {
+        const ipAddress = ipcRenderer.sendSync('LookupIP');
+        if (ipAddress != null) {
+            setHttpAddress("http://" + ipAddress + ":3415");
+        }
     }
-
-    function handleClose() {
-        onClose();
+    
+    function closeModal() {
         showModal = false;
-        //setOpen(false);
+        onClose();
+        setHttpAddress("");
         setSelectedFile("");
         setErrorMessage("");
+        setMethod('file');
     }
 
-    function handleSend(event) {
-        event.preventDefault();
-        const data = new FormData(event.target);
-        // TODO: Validate amount is a double
-        const amountInNanoGrins = data.get('amount') * Math.pow(10, 9);
-
+    function handleReceive(_event) {
         if (method == "file") {
-            const result = ipcRenderer.sendSync('Send', amountInNanoGrins);
-            if (result.status_code == 200) {
-                ipcRenderer.send('SaveToFile', selectedFile, JSON.stringify(result.slate));
+            ipcRenderer.removeAllListeners('SlateOpened');
+            ipcRenderer.on('SlateOpened', (event, fileName, data) => {
+                if (data !== null) {
+                    var result = ipcRenderer.sendSync('Receive', data);
+                    if (result !== null) {
+                        if (result.status_code == 200) {
+                            closeModal();
+                            ipcRenderer.send('SaveToFile', (fileName + '.response'), JSON.stringify(result.slate));
+                        } else {
+                            setErrorMessage("Unknown error occurred!");
+                        }
+                    } else {
+                        setErrorMessage("Unknown error occurred!");
+                    }
+                }
+            });
 
-                showModal = false;
-                onClose();
-                setHttpAddress("");
-                setSelectedFile("");
-                setErrorMessage("");
-            } else if (result.status_code == 409) {
-                setErrorMessage("Insufficient Funds Available!");
-            } else {
-                setErrorMessage("Failed to send!");
-            }
+            ipcRenderer.send('OpenSlateFile', selectedFile);
         } else if (method == "http") {
-            console.log("Sending to " + httpAddress);
-            const result = ipcRenderer.sendSync('SendToHTTP', httpAddress, amountInNanoGrins);
-            if (result.status_code == 200) {
-                showModal = false;
-                onClose();
-                setHttpAddress("");
-                setSelectedFile("");
-                setErrorMessage("");
-            } else if (result.status_code == 409) {
-                setErrorMessage("Insufficient Funds Available!");
-            } else {
-                setErrorMessage("Failed to send!");
-            }
+            closeModal();
         }
     }
 
@@ -100,15 +90,17 @@ function SendModal(props) {
         setMethod(event.target.value);
     }
 
-    function handleSelectFile(event) {
-        ipcRenderer.removeAllListeners('DestinationSelected');
-        ipcRenderer.on('DestinationSelected', (event, file) => {
+    function handleSelectFile(_event) {
+        ipcRenderer.removeAllListeners('ReceiveFileSelected');
+        ipcRenderer.on('ReceiveFileSelected', (event, file) => {
             if (file !== null) {
                 setSelectedFile(file);
+            } else {
+                setSelectedFile("");
             }
         });
 
-        ipcRenderer.send('SendFile');
+        ipcRenderer.send('ReceiveFile');
     }
 
     function handleSnackbarClose(event, reason) {
@@ -125,25 +117,25 @@ function SendModal(props) {
         }
 
         return (
-            <Grid container spacing={8}>
+            <Grid container spacing={8} fullWidth>
                 <Grid item xs={11}>
                     <FormControl
                         margin="dense"
                         required
                         fullWidth
                     >
-                        <InputLabel htmlFor="destinationFile">Destination File</InputLabel>
+                        <InputLabel htmlFor="receiveFile">Transaction File</InputLabel>
                         <Input
-                            name="destinationFile"
+                            name="receiveFile"
                             type="text"
-                            id="destinationFile"
+                            id="receiveFile"
                             value={selectedFile}
                         />
                     </FormControl>
                 </Grid>
                 <Grid item xs={1}>
                     <IconButton onClick={handleSelectFile} className={classes.fileChooserButton}>
-                        <SaveAltIcon />
+                        <OpenIcon />
                     </IconButton>
                 </Grid>
             </Grid>
@@ -157,28 +149,33 @@ function SendModal(props) {
 
         return (
             <React.Fragment>
-                <FormControl
-                    margin="dense"
-                    required
-                    fullWidth
-                >
-                    <InputLabel htmlFor="URL">Address (eg. http(s)://12.34.56.78:3415)</InputLabel>
-                    <Input
-                        name="URL"
-                        type="text"
-                        id="URL"
-                        value={httpAddress}
-                        onChange={(event) => { setHttpAddress(event.target.value) }}
-                    />
-                </FormControl>
-                <br />
+                <br/>
+                <Grid container spacing={8} fullWidth>
+                    <Grid item xs={2}>
+                        <Typography style={{ marginTop: '8px' }} variant="h6">Send To: </Typography>
+                    </Grid>
+                    <Grid item xs={10}>
+                        <FormControl
+                            margin="dense"
+                            required
+                            fullWidth
+                        >
+                            <Input
+                                name="httpAddress"
+                                type="text"
+                                id="httpAddress"
+                                value={httpAddress}
+                                readOnly
+                            />
+                        </FormControl>
+                    </Grid>
+                </Grid>
             </React.Fragment>
         );
     }
 
     return (
         <React.Fragment>
-
             <Snackbar
                 autoHideDuration={4000}
                 open={errorMessage.length > 0}
@@ -192,8 +189,9 @@ function SendModal(props) {
             </Snackbar>
 
             <Dialog
-                open={open}
-                onClose={handleClose}
+                open={true}
+                onClose={closeModal}
+                size="md"
                 fullWidth={true}
                 aria-labelledby="form-dialog-title"
             >
@@ -202,11 +200,11 @@ function SendModal(props) {
                         variant='h4'
                         align='center'
                     >
-                        Send Grin
+                        Receive Grin
                     </Typography>
                 </DialogTitle>
                 <DialogContent>
-                    <form className={classes.form} onSubmit={handleSend}>
+                    <form className={classes.form} onSubmit={handleReceive}>
                         <FormControl component="fieldset" required>
                             <RadioGroup
                                 aria-label="Method"
@@ -224,7 +222,7 @@ function SendModal(props) {
                                 <FormControlLabel
                                     value="http"
                                     control={<Radio />}
-                                    label="http(s)"
+                                    label="http"
                                     labelPlacement="end"
                                 />
                                 <FormControlLabel
@@ -239,24 +237,19 @@ function SendModal(props) {
 
                         <br />
 
-                        <FormControl margin="dense" required fullWidth>
-                            <InputLabel htmlFor="amount">Amount ツ</InputLabel>
-                            <Input name="amount" type="text" id="amount" autoFocus />
-                        </FormControl>
-
-                        {/* SendFile*/}
+                        {/* ReceiveFile*/}
                         { getFileDisplay() }
 
-                        {/* SendHTTP*/}
+                        {/* ReceiveHTTP*/}
                         {getHTTPDisplay() }
 
                         <br />
                         <Typography align='right'>
-                            <Button onClick={handleClose} variant="contained" color="primary">
+                            <Button onClick={closeModal} variant="contained" color="primary">
                                 Cancel
                             </Button>
                             <Button type="submit" style={{ marginLeft: '10px' }} variant="contained" color="primary">
-                                Send <SendIcon />
+                                Receive <ReceiveIcon />
                             </Button>
                         </Typography>
                     </form>
@@ -266,10 +259,10 @@ function SendModal(props) {
     );
 }
 
-SendModal.propTypes = {
+ReceiveModal.propTypes = {
     classes: PropTypes.object.isRequired,
     showModal: PropTypes.bool,
     onClose: PropTypes.function
 };
 
-export default withStyles(styles)(SendModal);
+export default withStyles(styles)(ReceiveModal);
