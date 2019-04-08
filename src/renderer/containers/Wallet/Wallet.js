@@ -59,18 +59,24 @@ function Wallet(props) {
     }
 
     function handleFinalize(event) {
-        ipcRenderer.removeAllListeners('SlateReceived');
-        ipcRenderer.on('SlateReceived', (event, fileName, data) => {
-            if (data !== null) {
-                var result = ipcRenderer.sendSync('Finalize', data);
-                if (result !== null && result.status_code == 200) {
-                    console.log(result);
-                    ipcRenderer.send('SaveToFile', (fileName + '.finalized'), JSON.stringify(result.tx));
-                    // TODO: PostTx?
-                    setRefresh(!refresh);
-                } else {
-                    // TODO: Handle this
-                }
+        ipcRenderer.removeAllListeners('ReceiveFileSelected');
+        ipcRenderer.on('ReceiveFileSelected', (event, fileName) => {
+            if (fileName != null) {
+                ipcRenderer.removeAllListeners('SlateOpened');
+                ipcRenderer.on('SlateOpened', (event, fileOpened, data) => {
+                    if (data !== null) {
+                        var result = ipcRenderer.sendSync('Finalize', data);
+                        if (result !== null && result.status_code == 200) {
+                            ipcRenderer.send('SaveToFile', (fileName + '.finalized'), JSON.stringify(result.tx));
+                            // TODO: PostTx?
+                            setRefresh(!refresh);
+                        } else {
+                            // TODO: Handle this
+                        }
+                    }
+                });
+
+                ipcRenderer.send('OpenSlateFile', fileName);
             }
         });
 
