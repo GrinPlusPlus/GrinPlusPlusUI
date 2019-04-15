@@ -57,6 +57,14 @@ export default class App extends Component {
     constructor(props) {
         super(props);
 
+        ipcRenderer.on('Grinbox::Status', (event, status, message) => {
+            if (status == "SUCCESS") {
+                console.log("SUCCESS: " + message); // TODO: Snackbar
+            } else if (status == "ERROR") {
+                console.log("ERROR: " + message); // TODO: Snackbar
+            }
+        });
+
         this.state = {
             isDarkMode: false,
         };

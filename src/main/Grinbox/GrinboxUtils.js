@@ -1,6 +1,6 @@
 const base58 = require('bs58check');
 
-exports.parseAddress = function (address) {
+function parseAddress(address) {
     try {
         var grinboxAddress = new Object();
 
@@ -26,10 +26,15 @@ exports.parseAddress = function (address) {
             grinboxAddress["port"] = 443;
         }
 
-        base58.decode(grinboxAddress["address"]);
-
         return grinboxAddress;
     } catch (e) {
         return null;
     }
 }
+
+function parsePublicKey(b58Address) {
+    let decoded = base58.decode(b58Address);
+    return decoded.slice(2);
+}
+
+module.exports = { parseAddress, parsePublicKey }

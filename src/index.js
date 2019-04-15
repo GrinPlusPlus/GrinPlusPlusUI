@@ -4,6 +4,7 @@ import Client from './main/client/Client';
 import Server from './main/server/Server';
 import FileListener from './main/FileListener';
 import IPService from './main/IPService';
+import GrinboxConnection from './main/Grinbox/GrinboxConnection';
 
 //import { enableLiveReload } from 'electron-compile';
 //import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
@@ -12,7 +13,7 @@ import IPService from './main/IPService';
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
-//const isDevMode = process.execPath.match(/[\\/]electron/);
+const isDevMode = process.execPath.match(/[\\/]electron/);
 
 //if (isDevMode) {
 //    enableLiveReload({ strategy: 'react-hmr' });
@@ -33,22 +34,28 @@ const createWindow = async () => {
     // and load the index.html of the app.
     mainWindow.loadURL(`file://${__dirname}/renderer/index.html`);
 
-    //// Open the DevTools.
-    //if (isDevMode) {
-    //    await installExtension(REACT_DEVELOPER_TOOLS);
-    //    mainWindow.webContents.openDevTools();
-    //}
+    // Open the DevTools.
+    if (isDevMode) {
+        //await installExtension(REACT_DEVELOPER_TOOLS);
+        mainWindow.webContents.openDevTools();
+    }
 
     // Emitted when the window is closed.
-    mainWindow.on('closed', () => {
-        clearInterval(statusInterval);
-        // Dereference the window object, usually you would store windows
-        // in an array if your app supports multi windows, this is the time
-        // when you should delete the corresponding element.
-        mainWindow = null;
-    });
+    //mainWindow.on('closed', () => {
+    //    clearInterval(statusInterval);
+    //    // Dereference the window object, usually you would store windows
+    //    // in an array if your app supports multi windows, this is the time
+    //    // when you should delete the corresponding element.
+    //    mainWindow = null;
+    //});
+    
+    var binDirectory = `${__dirname}/bin/`;//`${__dirname}/resources/app/src/bin/`;
+    //if (isDevMode) {
+    //    binDirectory = `${__dirname}/bin/`;
+    //}
+    console.log(binDirectory);
 
-    ChildProcess.execFile('GrinNode.exe', ['--headless'], { cwd: '${__dirname}/../bin/' }, (error, stdout, stderr) => {
+    ChildProcess.execFile('GrinNode.exe', ['--headless'], { cwd: binDirectory }, (error, stdout, stderr) => {
         if (error) {
             throw error;
         }
@@ -60,6 +67,7 @@ const createWindow = async () => {
     Server.start();
     FileListener.start();
     IPService.start();
+    GrinboxConnection.connect(mainWindow);
 
     mainWindow.webContents.on('did-finish-load', () => {
         statusInterval = setInterval(Client.getStatus, 2000, (status) => {

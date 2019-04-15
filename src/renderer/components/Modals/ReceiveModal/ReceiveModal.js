@@ -44,11 +44,17 @@ function ReceiveModal(props) {
     const [selectedFile, setSelectedFile] = React.useState("");
     const [errorMessage, setErrorMessage] = React.useState("");
     const [httpAddress, setHttpAddress] = React.useState("");
+    const [grinboxAddress, setGrinboxAddress] = React.useState("");
 
     if (httpAddress.length === 0) {
         const ipAddress = ipcRenderer.sendSync('LookupIP');
         if (ipAddress != null) {
             setHttpAddress("http://" + ipAddress + ":3415");
+        }
+
+        const grinboxAddress = ipcRenderer.sendSync('Grinbox::GetAddress');
+        if (grinboxAddress != null) {
+            setGrinboxAddress(grinboxAddress);
         }
     }
     
@@ -81,7 +87,7 @@ function ReceiveModal(props) {
             });
 
             ipcRenderer.send('OpenSlateFile', selectedFile);
-        } else if (method == "http") {
+        } else if (method == "http" || method == "grinbox") {
             closeModal();
         }
     }
@@ -143,10 +149,10 @@ function ReceiveModal(props) {
     }
 
     function getHTTPDisplay() {
-        if (method != "http") {
+        if (method != "http" && method != "grinbox") {
             return "";
         }
-
+        
         return (
             <React.Fragment>
                 <br/>
@@ -164,7 +170,7 @@ function ReceiveModal(props) {
                                 name="httpAddress"
                                 type="text"
                                 id="httpAddress"
-                                value={httpAddress}
+                                value={method == 'http' ? httpAddress : grinboxAddress }
                                 readOnly
                             />
                         </FormControl>
@@ -230,18 +236,17 @@ function ReceiveModal(props) {
                                     control={<Radio />}
                                     label="Grinbox"
                                     labelPlacement="end"
-                                    disabled
                                 />
                             </RadioGroup>
                         </FormControl>
 
                         <br />
 
-                        {/* ReceiveFile*/}
-                        { getFileDisplay() }
+                        {/* ReceiveFile */}
+                        {getFileDisplay()}
 
-                        {/* ReceiveHTTP*/}
-                        {getHTTPDisplay() }
+                        {/* ReceiveHTTP */}
+                        {getHTTPDisplay()}
 
                         <br />
                         <Typography align='right'>

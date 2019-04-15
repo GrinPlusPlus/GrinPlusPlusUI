@@ -1,6 +1,6 @@
 import ConnectionUtils from '../../ConnectionUtils';
 
-exports.call = function (event, slate) {
+exports.call = function (slate, callback) {
     const headers = [{ name: 'session_token', value: global.session_token }];
     ConnectionUtils.ownerRequest('POST', 'receive_tx', headers, slate, function (response) {
         var result = new Object();
@@ -10,6 +10,6 @@ exports.call = function (event, slate) {
             result["slate"] = JSON.parse(response.body);
         }
 
-        event.returnValue = result;
+        callback(result);
     });
 }

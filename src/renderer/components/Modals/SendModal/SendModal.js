@@ -40,20 +40,17 @@ const styles = theme => ({
 function SendModal(props) {
     const { classes, onClose } = props;
     var { showModal } = props;
-    const [open, setOpen] = React.useState(true);
     const [method, setMethod] = React.useState("file");
     const [selectedFile, setSelectedFile] = React.useState("");
     const [errorMessage, setErrorMessage] = React.useState("");
     const [httpAddress, setHttpAddress] = React.useState("");
+    const [grinboxAddress, setGrinboxAddress] = React.useState("");
 
-    function handleClickOpen() {
-        //setOpen(true);
-    }
-
-    function handleClose() {
-        onClose();
+    function closeWindow() {
         showModal = false;
-        //setOpen(false);
+        onClose();
+        setHttpAddress("");
+        setGrinboxAddress("");
         setSelectedFile("");
         setErrorMessage("");
     }
@@ -64,35 +61,28 @@ function SendModal(props) {
         // TODO: Validate amount is a double
         const amountInNanoGrins = data.get('amount') * Math.pow(10, 9);
 
+        var result = null;
         if (method == "file") {
-            const result = ipcRenderer.sendSync('Send', amountInNanoGrins);
-            if (result.status_code == 200) {
-                ipcRenderer.send('SaveToFile', selectedFile, JSON.stringify(result.slate));
-
-                showModal = false;
-                onClose();
-                setHttpAddress("");
-                setSelectedFile("");
-                setErrorMessage("");
-            } else if (result.status_code == 409) {
-                setErrorMessage("Insufficient Funds Available!");
-            } else {
-                setErrorMessage("Failed to send!");
-            }
+            result = ipcRenderer.sendSync('Send', amountInNanoGrins);
         } else if (method == "http") {
             console.log("Sending to " + httpAddress);
-            const result = ipcRenderer.sendSync('SendToHTTP', httpAddress, amountInNanoGrins);
-            if (result.status_code == 200) {
-                showModal = false;
-                onClose();
-                setHttpAddress("");
-                setSelectedFile("");
-                setErrorMessage("");
-            } else if (result.status_code == 409) {
-                setErrorMessage("Insufficient Funds Available!");
-            } else {
-                setErrorMessage("Failed to send!");
+            result = ipcRenderer.sendSync('SendToHTTP', httpAddress, amountInNanoGrins);
+        } else if (method == "grinbox") {
+            result = ipcRenderer.sendSync('Grinbox::Send', grinboxAddress, amountInNanoGrins);
+            closeWindow();
+            return;
+        }
+        
+        if (result.status_code == 200) {
+            if (method == "file") {
+                ipcRenderer.send('SaveToFile', selectedFile, JSON.stringify(result.slate));
             }
+
+            closeWindow();
+        } else if (result.status_code == 409) {
+            setErrorMessage("Insufficient Funds Available!");
+        } else {
+            setErrorMessage("Failed to send!");
         }
     }
 
@@ -176,6 +166,32 @@ function SendModal(props) {
         );
     }
 
+    function getGrinboxDisplay() {
+        if (method != "grinbox") {
+            return "";
+        }
+
+        return (
+            <React.Fragment>
+                <FormControl
+                    margin="dense"
+                    required
+                    fullWidth
+                >
+                    <InputLabel htmlFor="Grinbox">Grinbox Address (eg. gVvGhkjfh279RDrVpdNRBTuGT14e3kvNfBLrBEHiV2DLb3HGZ3v5)</InputLabel>
+                    <Input
+                        name="Grinbox"
+                        type="text"
+                        id="Grinbox"
+                        value={grinboxAddress}
+                        onChange={(event) => { setGrinboxAddress(event.target.value) }}
+                    />
+                </FormControl>
+                <br />
+            </React.Fragment>
+        );
+    }
+
     return (
         <React.Fragment>
 
@@ -192,8 +208,8 @@ function SendModal(props) {
             </Snackbar>
 
             <Dialog
-                open={open}
-                onClose={handleClose}
+                open={true}
+                onClose={closeWindow}
                 fullWidth={true}
                 aria-labelledby="form-dialog-title"
             >
@@ -232,7 +248,6 @@ function SendModal(props) {
                                     control={<Radio />}
                                     label="Grinbox"
                                     labelPlacement="end"
-                                    disabled
                                 />
                             </RadioGroup>
                         </FormControl>
@@ -244,15 +259,18 @@ function SendModal(props) {
                             <Input name="amount" type="text" id="amount" autoFocus />
                         </FormControl>
 
-                        {/* SendFile*/}
+                        {/* SendFile */}
                         { getFileDisplay() }
 
-                        {/* SendHTTP*/}
-                        {getHTTPDisplay() }
+                        {/* SendHTTP */}
+                        {getHTTPDisplay()}
+
+                        {/* SendGrinbox */}
+                        {getGrinboxDisplay()}
 
                         <br />
                         <Typography align='right'>
-                            <Button onClick={handleClose} variant="contained" color="primary">
+                            <Button onClick={closeWindow} variant="contained" color="primary">
                                 Cancel
                             </Button>
                             <Button type="submit" style={{ marginLeft: '10px' }} variant="contained" color="primary">

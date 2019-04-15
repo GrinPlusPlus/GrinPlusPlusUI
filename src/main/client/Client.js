@@ -1,6 +1,7 @@
 import { ipcMain } from 'electron';
 
 import SendToHTTP from './SendToHTTP';
+import GrinboxConnection from '../Grinbox/GrinboxConnection';
 
 // Owner APIs
 import CreateWallet from './api/owner/CreateWallet';
@@ -34,11 +35,14 @@ function StartOwnerClient() {
     });
 
     ipcMain.on('Login', function (event, username, password) {
-        Login.call(event, username, password);
+        Login.call(event, username, password, function (secretKey, address) {
+            GrinboxConnection.subscribe(secretKey, address);
+        });
     });
 
     ipcMain.on('Logout', function (event) {
         Logout.call(event);
+        GrinboxConnection.unsubscribe();
     });
 
     ipcMain.on("WalletSummary", function (event) {
@@ -52,7 +56,9 @@ function StartOwnerClient() {
     });
 
     ipcMain.on("Receive", function (event, slate) {
-        Receive.call(event, slate);
+        Receive.call(slate, function (result) {
+            event.returnValue = result;
+        });
     });
 
     ipcMain.on("Finalize", function (event, slate) {
@@ -82,9 +88,25 @@ exports.start = function () {
     ipcMain.on('SendToHTTP', function (event, httpAddress, amount) {
         SendToHTTP.call(event, httpAddress, amount);
     });
+
+    ipcMain.on('Grinbox::Send', function (event, grinboxAddress, amount) {
+        // TODO: Validate GrinboxAddress first
+        Send.call(amount, function (result) {
+            if (result.status_code == 200) {
+                event.returnValue = GrinboxConnection.postSlate(result.slate, grinboxAddress);
+            } else {
+                event.returnValue = result;
+            }
+        })
+    });
+
+    ipcMain.on('Grinbox::GetAddress', function (event) {
+        event.returnValue = global.grinbox_address;
+    })
 }
 
 exports.stop = function () {
+    GrinboxConnection.disconnect();
     Shutdown.call();
 }
 

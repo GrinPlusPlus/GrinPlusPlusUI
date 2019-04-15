@@ -29,11 +29,12 @@
         ]
       },
       "electronPackagerConfig": {
-        "packageManager": "npm"
+        "packageManager": "npm",
+		"icon": "./src/static/icons/GrinLogo.ico"
       },
       "electronWinstallerConfig": {
         "name": "GrinPlusPlus",
-        "loadingGif": "./src/static/img/loading.gif",
+        "loadingGif": "./src/static/img/installing.gif",
         "setupIcon": "./src/static/icons/GrinLogo.ico"
       },
       "electronInstallerDebian": {},
@@ -52,18 +53,22 @@
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "latest",
     "bs58check": "^2.1.2",
+    "chacha": "^2.1.0",
     "electron": "^4.1.3",
     "electron-compile": "^6.4.4",
     "electron-squirrel-startup": "^1.0.0",
+    "elliptic": "^6.4.1",
     "express": "^4.16.4",
     "node-forge": "^0.8.2",
+    "pbkdf2": "^3.0.17",
     "prop-types": "latest",
     "react": "latest",
     "react-dom": "latest",
     "react-hot-loader": "^4.8.2",
     "react-loading": "^2.0.3",
     "react-material-ui-form-validator": "^2.0.7",
-    "react-router-dom": "latest"
+    "react-router-dom": "latest",
+    "ws": "^6.2.1"
   },
   "devDependencies": {
     "babel-plugin-transform-async-to-generator": "^6.24.1",
