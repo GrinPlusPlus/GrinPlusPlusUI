@@ -3,7 +3,7 @@ import ForeignReceive from './api/ForeignReceive';
 import Finalize from './api/owner/Finalize';
 import ConnectionUtils from './ConnectionUtils';
 
-exports.call = async function (event, httpAddress, amount) {
+async function call(event, httpAddress, amount) {
     const canConnect = await ConnectionUtils.canConnect(httpAddress, ForeignReceive.RECEIVE_TX_PATH);
     if (!canConnect) {
         event.returnValue = 'ContConnect';
@@ -39,3 +39,5 @@ exports.call = async function (event, httpAddress, amount) {
         }
     });
 };
+
+export default {call}

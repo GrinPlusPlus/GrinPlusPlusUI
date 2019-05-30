@@ -1,6 +1,6 @@
 import ConnectionUtils from '../../ConnectionUtils';
 
-exports.call = function (event, username, password, grinboxSubscriber) {
+function call(event, username, password, grinboxSubscriber) {
     const headers = [
         { name: 'username', value: username },
         { name: 'password', value: password }
@@ -18,3 +18,5 @@ exports.call = function (event, username, password, grinboxSubscriber) {
         }
     });
 }
+
+export default {call}

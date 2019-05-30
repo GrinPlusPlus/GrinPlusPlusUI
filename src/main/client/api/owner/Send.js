@@ -1,6 +1,6 @@
 import ConnectionUtils from '../../ConnectionUtils';
 
-exports.call = function (amount, callback) {
+function call(amount, callback) {
     const headers = [{ name: 'session_token', value: global.session_token }];
 
     var reqJSON = new Object();
@@ -19,3 +19,5 @@ exports.call = function (amount, callback) {
         callback(result);
     });
 }
+
+export default {call}

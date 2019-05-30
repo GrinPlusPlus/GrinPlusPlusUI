@@ -94,7 +94,7 @@ function Wallet(props) {
     }
 
     function checkForOutputs(event) {
-        ipcRenderer.send("UpdateWallet");
+        ipcRenderer.send("UpdateWallet", false);
         setTimeout(function () { setRefresh(!refresh) }, 2000);
     }
 

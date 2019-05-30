@@ -103,4 +103,4 @@ function nodeRequest(httpMethod, path, requestBody, callback) {
     localRequest(httpMethod, NODE_PORT, path, [], requestBody, callback);
 }
 
-module.exports = { OWNER_PORT, FOREIGN_PORT, NODE_PORT, buildForeignRequest, canConnect, ownerRequest, nodeRequest };
+export default { OWNER_PORT, FOREIGN_PORT, NODE_PORT, buildForeignRequest, canConnect, ownerRequest, nodeRequest };

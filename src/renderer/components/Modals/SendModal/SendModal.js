@@ -45,6 +45,7 @@ function SendModal(props) {
     const [errorMessage, setErrorMessage] = React.useState("");
     const [httpAddress, setHttpAddress] = React.useState("");
     const [grinboxAddress, setGrinboxAddress] = React.useState("");
+    const [fee, setFee] = React.useState("");
 
     function closeWindow() {
         showModal = false;
@@ -88,6 +89,17 @@ function SendModal(props) {
 
     function handleMethodChange(event) {
         setMethod(event.target.value);
+    }
+
+    function handleAmountChange(event) {
+        const result = ipcRenderer.sendSync('EstimateFee', event.target.value * Math.pow(10, 9));
+        if (result.status_code == 200) {
+            const calculatedAmount = (result.fee / Math.pow(10, 9));
+            setFee("" + calculatedAmount.toFixed(9));
+        } else {
+            setFee("");
+            setErrorMessage("Error ocurred! Insufficient funds?");
+        }
     }
 
     function handleSelectFile(event) {
@@ -178,7 +190,7 @@ function SendModal(props) {
                     required
                     fullWidth
                 >
-                    <InputLabel htmlFor="Grinbox">Grinbox Address (eg. gVvGhkjfh279RDrVpdNRBTuGT14e3kvNfBLrBEHiV2DLb3HGZ3v5)</InputLabel>
+                    <InputLabel htmlFor="Grinbox">Address (eg. gVvGhkjf...)</InputLabel>
                     <Input
                         name="Grinbox"
                         type="text"
@@ -254,10 +266,20 @@ function SendModal(props) {
 
                         <br />
 
-                        <FormControl margin="dense" required fullWidth>
-                            <InputLabel htmlFor="amount">Amount ツ</InputLabel>
-                            <Input name="amount" type="text" id="amount" autoFocus />
-                        </FormControl>
+                        <Grid container spacing={8}>
+                            <Grid item xs={8}>
+                                <FormControl margin="dense" required fullWidth>
+                                    <InputLabel htmlFor="amount">Amount ツ</InputLabel>
+                                    <Input name="amount" type="text" id="amount" onChange={handleAmountChange} autoFocus />
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <FormControl margin="dense" fullWidth>
+                                    <InputLabel htmlFor="fee">Fee ツ</InputLabel>
+                                    <Input name="fee" type="text" id="fee" value={fee} disabled />
+                                </FormControl>
+                            </Grid>
+                        </Grid>
 
                         {/* SendFile */}
                         { getFileDisplay() }
@@ -273,7 +295,7 @@ function SendModal(props) {
                             <Button onClick={closeWindow} variant="contained" color="primary">
                                 Cancel
                             </Button>
-                            <Button type="submit" style={{ marginLeft: '10px' }} variant="contained" color="primary">
+                            <Button type="submit" style={{ marginLeft: '10px' }} variant="contained" color="primary" disabled={fee.length == 0} >
                                 Send <SendIcon />
                             </Button>
                         </Typography>

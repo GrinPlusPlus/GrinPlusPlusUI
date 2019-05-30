@@ -1,6 +1,6 @@
 import ConnectionUtils from '../../ConnectionUtils';
 
-exports.call = function (event, username, password) {
+function call(event, username, password) {
     const headers = [
         { name: 'username', value: username },
         { name: 'password', value: password }
@@ -20,3 +20,5 @@ exports.call = function (event, username, password) {
         event.returnValue = result;
     });
 }
+
+export default {call}

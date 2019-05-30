@@ -6,7 +6,7 @@ const MenuOptions = [
     {
         label: 'Peers',
         pathname: '/peers'
-    },
+    }
 ];
 
 export default MenuOptions;

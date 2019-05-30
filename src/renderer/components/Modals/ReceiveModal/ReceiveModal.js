@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, clipboard } from 'electron';
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -15,6 +15,7 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import ReceiveIcon from "@material-ui/icons/CallReceived";
 import OpenIcon from '@material-ui/icons/FolderOpen';
+import CopyIcon from '@material-ui/icons/FileCopy';
 import Snackbar from '@material-ui/core/Snackbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from "@material-ui/core/styles";
@@ -148,35 +149,27 @@ function ReceiveModal(props) {
         );
     }
 
+    function handleCopy() {
+        if (method == "http") {
+            clipboard.writeText(httpAddress);
+        } else if (method == "grinbox") {
+            clipboard.writeText(grinboxAddress);
+        }
+    }
+
     function getHTTPDisplay() {
         if (method != "http" && method != "grinbox") {
             return "";
         }
         
         return (
-            <React.Fragment>
-                <br/>
-                <Grid container spacing={8} fullWidth>
-                    <Grid item xs={2}>
-                        <Typography style={{ marginTop: '8px' }} variant="h6">Send To: </Typography>
-                    </Grid>
-                    <Grid item xs={10}>
-                        <FormControl
-                            margin="dense"
-                            required
-                            fullWidth
-                        >
-                            <Input
-                                name="httpAddress"
-                                type="text"
-                                id="httpAddress"
-                                value={method == 'http' ? httpAddress : grinboxAddress }
-                                readOnly
-                            />
-                        </FormControl>
-                    </Grid>
-                </Grid>
-            </React.Fragment>
+            <p>
+                Send To:
+                <b>{method == 'http' ? httpAddress : grinboxAddress}</b>
+                <IconButton onClick={handleCopy} style={{ padding: '5px' }}>
+                    <CopyIcon fontSize='small' />
+                </IconButton>
+            </p>
         );
     }
 

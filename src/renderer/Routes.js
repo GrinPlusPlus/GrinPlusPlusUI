@@ -8,6 +8,7 @@ import Restore from './containers/Restore';
 import Main from './containers/Main';
 import Wallet from './containers/Wallet';
 import Peers from './containers/Peers';
+import Advanced from './containers/Advanced';
 
 
 function Routes(props) {
@@ -20,8 +21,9 @@ function Routes(props) {
             <Route exact path='/login' component={ Login } />
             <Route exact path='/register' component={ Register } />
             <Route exact path='/restore' component={ Restore } />
-            <Route exact path='/wallet' component={ Wallet } />
-            <Route exact path='/peers' component={ Peers } />
+            <Route exact path='/wallet' component={Wallet} />
+            <Route exact path='/peers' component={Peers} />
+            <Route exact path='/advanced' component={Advanced} />
         </Switch>
       </ScrollToTop>
     </Router>

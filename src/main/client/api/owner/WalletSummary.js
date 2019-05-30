@@ -1,6 +1,6 @@
 import ConnectionUtils from '../../ConnectionUtils';
 
-exports.call = function (event) {
+function call(event) {
     const headers = [{ name: 'session_token', value: global.session_token }];
     ConnectionUtils.ownerRequest('GET', 'retrieve_summary_info', headers, '', function (response) {
         var result = new Object();
@@ -23,3 +23,5 @@ exports.call = function (event) {
         event.returnValue = result;
     });
 }
+
+export default {call}

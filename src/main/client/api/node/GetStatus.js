@@ -1,6 +1,6 @@
 import ConnectionUtils from '../../ConnectionUtils';
 
-exports.call = function (callback) {
+function call(callback) {
     ConnectionUtils.nodeRequest('GET', '/v1/status', '', function (response) {
         if (response.status_code == 200) {
             var status = JSON.parse(response.body);
@@ -10,3 +10,5 @@ exports.call = function (callback) {
         }
     });
 }
+
+export default {call}

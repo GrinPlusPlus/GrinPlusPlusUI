@@ -1,6 +1,6 @@
 import ConnectionUtils from '../../ConnectionUtils';
 
-exports.call = function (event, username, password, wallet_words) {
+function call(event, username, password, wallet_words) {
     const headers = [
         { name: 'username', value: username },
         { name: 'password', value: password }
@@ -20,3 +20,5 @@ exports.call = function (event, username, password, wallet_words) {
         event.returnValue = result;
     });
 }
+
+export default {call}

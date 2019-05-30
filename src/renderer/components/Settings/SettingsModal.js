@@ -4,13 +4,13 @@ import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import IconButton from "@material-ui/core/IconButton";
 import SettingsIcon from "@material-ui/icons/Settings";
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import { withStyles } from "@material-ui/core/styles";
+import { ipcRenderer } from 'electron';
 
 const styles = theme => ({
     paper: {
@@ -41,15 +41,19 @@ function SettingsModal(props) {
         setOpen(false);
     }
 
+    function rescan() {
+        ipcRenderer.send("UpdateWallet", true);
+    }
+
     return (
         <React.Fragment>
-            {/*<IconButton
-      variant="round"
-      aria-label="Settings"
-      onClick={handleClickOpen}
-    >
-      <SettingsIcon color="secondary" />
-    </IconButton>{*/}
+            <IconButton
+                variant="round"
+                aria-label="Settings"
+                onClick={handleClickOpen}
+            >
+                <SettingsIcon color="secondary" />
+            </IconButton>
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -57,12 +61,8 @@ function SettingsModal(props) {
             >
                 <DialogTitle id="form-dialog-title">Settings</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
-                        To subscribe to this website, please enter your email address here.
-                        We will send updates occasionally.
-        </DialogContentText>
 
-                    <FormControlLabel
+                    {/*<FormControlLabel
                         control={
                             <Switch
                                 disabled
@@ -72,16 +72,20 @@ function SettingsModal(props) {
                             />
                         }
                         label="Mainnet"
-                    />
+                    />*/}
+
+                    <Button onClick={rescan} variant="contained" color="secondary">
+                        Rescan Blockchain
+                    </Button>
 
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} color="primary">
+                    <Button onClick={handleClose} variant="contained" color="primary">
                         Cancel
-        </Button>
-                    <Button onClick={handleClose} color="primary">
-                        Subscribe
-        </Button>
+                    </Button>
+                    <Button onClick={handleClose} variant="contained" color="primary">
+                        OK
+                    </Button>
                 </DialogActions>
             </Dialog>
         </React.Fragment>

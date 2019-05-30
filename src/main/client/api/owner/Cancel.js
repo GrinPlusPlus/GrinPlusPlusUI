@@ -1,6 +1,6 @@
 import ConnectionUtils from '../../ConnectionUtils';
 
-exports.call = function (event, txId) {
+function call(event, txId) {
     const headers = [{ name: 'session_token', value: global.session_token }];
     ConnectionUtils.ownerRequest('POST', 'cancel_tx?id=' + txId, headers, '', function (response) {
         var result = new Object();
@@ -8,3 +8,5 @@ exports.call = function (event, txId) {
         event.returnValue = result;
     });
 }
+
+export default {call}

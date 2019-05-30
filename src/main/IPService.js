@@ -1,7 +1,7 @@
 import { ipcMain } from 'electron';
 const http = require('http');
 
-exports.start = function () {
+function start() {
     var lastLookup = new Date(0);
     var ipAddress = null;
     
@@ -33,3 +33,5 @@ exports.start = function () {
         }
     });
 }
+
+export default {start}

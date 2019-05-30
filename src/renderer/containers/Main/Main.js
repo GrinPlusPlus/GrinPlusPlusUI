@@ -77,7 +77,7 @@ function Start(props) {
                 alignItems="center"
                 justify="center"
                 style={{ minHeight: '90vh' }}>
-            <img src={path.join(__dirname, '../../../static/img/GrinBanner.png')}/>
+            <img src={path.join(__dirname, './static/img/GrinBanner.png')}/>
             <br/><br/><br/>
             <Button type="submit"
                     fullWidth

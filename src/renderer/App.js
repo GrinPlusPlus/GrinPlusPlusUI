@@ -4,6 +4,8 @@ import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { grey, yellow, black } from "@material-ui/core/colors";
 import Routes from "./Routes";
 import StatusBar from './components/StatusBar';
+import Snackbar from '@material-ui/core/Snackbar';
+import CustomSnackbarContent from "./components/CustomSnackbarContent";
 
 const yellow_theme = createMuiTheme({
     palette: {
@@ -59,15 +61,25 @@ export default class App extends Component {
 
         ipcRenderer.on('Grinbox::Status', (event, status, message) => {
             if (status == "SUCCESS") {
-                console.log("SUCCESS: " + message); // TODO: Snackbar
+                this.setState({
+                    snackbarStatus: "success",
+                    snackbarMessage: message
+                });
             } else if (status == "ERROR") {
-                console.log("ERROR: " + message); // TODO: Snackbar
+                this.setState({
+                    snackbarStatus: "error",
+                    snackbarMessage: message
+                });
             }
         });
 
         this.state = {
             isDarkMode: false,
+            snackbarMessage: "",
+            snackbarStatus: "success",
         };
+
+        this.handleSnackbarClose = this.handleSnackbarClose.bind(this);
     }
 
     getBackgroundColor() {
@@ -86,12 +98,30 @@ export default class App extends Component {
         }
     }
 
+    handleSnackbarClose(event) {
+        this.setState({
+            snackbarStatus: "success",
+            snackbarMessage: "",
+        });
+    }
+
     render() {
         return (
             <React.Fragment>
                 <style>{'body { background-color: ' + this.getBackgroundColor() + '; }'}</style>
                 <MuiThemeProvider theme={this.getTheme()}>
                     <Routes {...this.state} />
+                    <Snackbar
+                        autoHideDuration={4000}
+                        open={this.state.snackbarMessage.length > 0}
+                        onClose={this.handleSnackbarClose}
+                    >
+                        <CustomSnackbarContent
+                            onClose={this.handleSnackbarClose}
+                            variant={this.state.snackbarStatus}
+                            message={this.state.snackbarMessage}
+                        />
+                    </Snackbar>
                     <StatusBar {...this.state} />
                 </MuiThemeProvider>
             </React.Fragment>

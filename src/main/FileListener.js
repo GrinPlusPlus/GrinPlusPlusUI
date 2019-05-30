@@ -1,7 +1,7 @@
 import { ipcMain, dialog, app } from 'electron';
 import fs from 'fs';
 
-exports.start = function () {
+function start() {
     const defaultPath = app.getPath('desktop');
 
     ipcMain.on("SaveToFile", function (event, fileName, value) {
@@ -58,3 +58,5 @@ exports.start = function () {
         });
     });
 }
+
+export default {start}

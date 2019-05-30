@@ -3,7 +3,7 @@ const hash = require('hash.js')
 const elliptic = require('elliptic');
 const EC = elliptic.ec;
 const secp256k1 = new EC(elliptic.curves['secp256k1']);
-const chacha = require('chacha/browser');
+const chacha = require('chacha-js');
 const base58 = require('bs58check');
 
 function signMessage(secretKey, message) {
@@ -64,4 +64,4 @@ function AEAD_Decrypt(nonce, key, ciphertext) {
     return Buffer.concat(data).toString();
 }
 
-module.exports = { signMessage, verifySignature, ECDH, PBKDF2, AEAD_Encrypt, AEAD_Decrypt }
+export default { signMessage, verifySignature, ECDH, PBKDF2, AEAD_Encrypt, AEAD_Decrypt }

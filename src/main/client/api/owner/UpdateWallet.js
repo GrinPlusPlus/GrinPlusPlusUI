@@ -1,10 +1,13 @@
 import ConnectionUtils from '../../ConnectionUtils';
 
-exports.call = function (event) {
+function call(event, fromGenesis) {
     const headers = [{ name: 'session_token', value: global.session_token }];
-    ConnectionUtils.ownerRequest('POST', 'update_wallet', headers, '', function (response) {
+    const queryString = (fromGenesis == true ? "?fromGenesis" : "");
+    ConnectionUtils.ownerRequest('POST', 'update_wallet' + queryString, headers, '', function (response) {
         var result = new Object();
         result["status_code"] = response.status_code;
         event.returnValue = result;
     });
 }
+
+export default {call}

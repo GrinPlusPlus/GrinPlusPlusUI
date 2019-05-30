@@ -37,4 +37,4 @@ function parsePublicKey(b58Address) {
     return decoded.slice(2);
 }
 
-module.exports = { parseAddress, parsePublicKey }
+export default { parseAddress, parsePublicKey }

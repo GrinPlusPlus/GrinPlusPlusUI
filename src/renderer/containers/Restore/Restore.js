@@ -83,7 +83,7 @@ function Restore(props) {
     }
 
     if (registered === true) {
-        ipcRenderer.send('UpdateWallet');
+        ipcRenderer.send('UpdateWallet', true);
         return (<Redirect to='/wallet' />);
     }
 

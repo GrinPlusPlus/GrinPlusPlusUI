@@ -1,5 +1,7 @@
 import ConnectionUtils from '../../ConnectionUtils';
 
-exports.call = function () {
+function call() {
     ConnectionUtils.nodeRequest('POST', '/v1/shutdown', '', function (_response) {});
 }
+
+export default {call}

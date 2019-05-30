@@ -1,38 +1,47 @@
-import { app, BrowserWindow, ipcMain, net } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import ChildProcess from 'child_process';
 import Client from './main/client/Client';
 import Server from './main/server/Server';
 import FileListener from './main/FileListener';
 import IPService from './main/IPService';
 import GrinboxConnection from './main/Grinbox/GrinboxConnection';
+import Updater from './main/Updater.js';
+import {version} from '../package.json';
+
+const isDevMode = process.execPath.match(/[\\/]electron/);
+const LAUNCH_NODE = !isDevMode || false;
 
 //import { enableLiveReload } from 'electron-compile';
 //import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
+
+if (isDevMode) {
+    //enableLiveReload({ strategy: 'react-hmr' });
+}
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
-const isDevMode = process.execPath.match(/[\\/]electron/);
-
-//if (isDevMode) {
-//    enableLiveReload({ strategy: 'react-hmr' });
-//}
-
 var statusInterval = 0;
+var shuttingDown = false;
 
 const createWindow = async () => {
+    if (!app.requestSingleInstanceLock()) {
+        app.quit();    
+    }
+
     // Create the browser window.
     mainWindow = new BrowserWindow({
         width: 1200,
         height: 800,
+        title: "Grin++ v" + version,
         icon: __dirname + '/static/icons/GrinLogo.ico'
     });
 
     mainWindow.setMenu(null);
 
     // and load the index.html of the app.
-    mainWindow.loadURL(`file://${__dirname}/renderer/index.html`);
+    mainWindow.loadURL(`file://${__dirname}/index.html`);
 
     // Open the DevTools.
     if (isDevMode) {
@@ -49,19 +58,18 @@ const createWindow = async () => {
     //    mainWindow = null;
     //});
     
-    var binDirectory = `${__dirname}/bin/`;//`${__dirname}/resources/app/src/bin/`;
-    //if (isDevMode) {
-    //    binDirectory = `${__dirname}/bin/`;
-    //}
+    var binDirectory = `${__dirname}/bin/`;
     console.log(binDirectory);
 
-    ChildProcess.execFile('GrinNode.exe', ['--headless'], { cwd: binDirectory }, (error, stdout, stderr) => {
-        if (error) {
-            throw error;
-        }
+    if (LAUNCH_NODE) {
+        ChildProcess.execFile('GrinNode.exe', ['--headless'], { cwd: binDirectory }, (error, stdout, stderr) => {
+            if (error) {
+                throw error;
+            }
 
-        app.quit();
-    });
+            app.quit();
+        });
+    }
 
     Client.start();
     Server.start();
@@ -70,7 +78,19 @@ const createWindow = async () => {
     GrinboxConnection.connect(mainWindow);
 
     mainWindow.webContents.on('did-finish-load', () => {
-        statusInterval = setInterval(Client.getStatus, 2000, (status) => {
+        if (!isDevMode) {
+            Updater.checkForUpdates();
+        }
+
+        function getStatus(callback) {
+            if (shuttingDown == true) {
+                return null;
+            } else {
+                return Client.getStatus(callback);
+            }
+        }
+
+        statusInterval = setInterval(getStatus, 2000, (status) => {
             if (mainWindow != null) {
                 if (status != null) {
                     mainWindow.webContents.send('NODE_STATUS', status.sync_status, status.network.num_inbound, status.network.num_outbound, status.header_height, status.chain.height, status.network.height);
@@ -92,11 +112,18 @@ app.on('window-all-closed', () => {
     // On OS X it is common for applications and their menu bar
     // to stay active until the user quits explicitly with Cmd + Q
     if (process.platform !== 'darwin') {
-        Client.stop();
+        clearInterval(statusInterval);
+        shuttingDown = true;
 
-        setTimeout(function () {
+        if (LAUNCH_NODE) {
+            Client.stop();
+
+            setTimeout(function () {
+                app.quit();
+            }, 5000);
+        } else {
             app.quit();
-        }, 5000);
+        }
     }
 });
 

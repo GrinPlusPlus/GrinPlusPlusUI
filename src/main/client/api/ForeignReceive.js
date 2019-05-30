@@ -4,7 +4,7 @@ const RECEIVE_TX_PATH = '/v1/wallet/foreign/receive_tx';
 
 exports.RECEIVE_TX_PATH = RECEIVE_TX_PATH;
 
-exports.call = function (httpAddress, slate, callback) {
+function call(httpAddress, slate, callback) {
     var result = new Object();
     result['status_code'] = 404;
 
@@ -46,3 +46,5 @@ exports.call = function (httpAddress, slate, callback) {
         callback(result);
     }
 };
+
+export default {call}

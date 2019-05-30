@@ -1,6 +1,6 @@
 import ConnectionUtils from '../../ConnectionUtils';
 
-exports.call = function (event) {
+function call(event) {
     ConnectionUtils.nodeRequest('GET', '/v1/peers/connected', '', function (response) {
         var result = new Object();
         result["status_code"] = response.status_code;
@@ -12,3 +12,5 @@ exports.call = function (event) {
         event.returnValue = result;
     });
 }
+
+export default {call}

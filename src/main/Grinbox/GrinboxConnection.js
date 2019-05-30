@@ -148,4 +148,4 @@ function unsubscribe() {
     global.grinbox_address = null
 }
 
-module.exports = { connect, disconnect, subscribe, unsubscribe, postSlate };
+export default { connect, disconnect, subscribe, unsubscribe, postSlate };

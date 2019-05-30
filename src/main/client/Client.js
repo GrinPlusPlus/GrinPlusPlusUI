@@ -13,8 +13,10 @@ import WalletSummary from './api/owner/WalletSummary';
 import Send from './api/owner/Send';
 import Receive from './api/owner/Receive';
 import Finalize from './api/owner/Finalize';
+import EstimateFee from './api/owner/EstimateFee';
 import Repost from './api/owner/Repost';
 import Cancel from './api/owner/Cancel';
+import TransactionInfo from './api/owner/TransactionInfo';
 
 // Node APIs
 import Shutdown from './api/node/Shutdown';
@@ -30,8 +32,8 @@ function StartOwnerClient() {
         RestoreWallet.call(event, username, password, walletWords);
     });
 
-    ipcMain.on("UpdateWallet", function (event) {
-        UpdateWallet.call(event);
+    ipcMain.on("UpdateWallet", function (event, fromGenesis) {
+        UpdateWallet.call(event, fromGenesis);
     });
 
     ipcMain.on('Login', function (event, username, password) {
@@ -67,6 +69,12 @@ function StartOwnerClient() {
         });
     });
 
+    ipcMain.on("EstimateFee", function (event, amount) {
+        EstimateFee.call(amount, function (result) {
+            event.returnValue = result;
+        });
+    });
+
     ipcMain.on("Repost", function (event, walletTxId) {
         Repost.call(event, walletTxId);
     });
@@ -74,9 +82,13 @@ function StartOwnerClient() {
     ipcMain.on("Cancel", function (event, walletTxId) {
         Cancel.call(event, walletTxId);
     });
+
+    ipcMain.on("TransactionInfo", function (event, walletTxId) {
+        TransactionInfo.call(event, walletTxId);
+    });
 }
 
-exports.start = function () {
+function start() {
     console.log("STARTING GRIN++ CLIENT");
 
     StartOwnerClient();
@@ -105,11 +117,13 @@ exports.start = function () {
     })
 }
 
-exports.stop = function () {
+function stop() {
     GrinboxConnection.disconnect();
     Shutdown.call();
 }
 
-exports.getStatus = function (callback) {
+function getStatus(callback) {
     GetStatus.call(callback);
 }
+
+export default {start, stop, getStatus}

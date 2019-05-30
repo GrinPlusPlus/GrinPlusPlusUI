@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { IconButton, Grid, Divider, Tooltip } from '@material-ui/core';
 import { MuiThemeProvider, createMuiTheme, withStyles } from '@material-ui/core/styles'
@@ -7,6 +7,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import ReceiveIcon from '@material-ui/icons/CallReceived';
 import SendIcon from "@material-ui/icons/CallMade";
 import green from '@material-ui/core/colors/green';
+import TxInfoModal from '../Modals/TxInfoModal';
 
 const styles = {
     root: {
@@ -29,7 +30,7 @@ const styles = {
 function Transactions(props) {
     const { classes, transactions, lastConfirmedHeight, showCanceled, repostTx, cancelTx } = props;
 
-    const greenTheme = createMuiTheme({
+    const customTheme = createMuiTheme({
         palette: {
             primary: green
         },
@@ -72,7 +73,7 @@ function Transactions(props) {
             );
         } else if (status == "Received" || status == "Coinbase") {
             return (
-                <MuiThemeProvider theme={greenTheme}>
+                <MuiThemeProvider theme={customTheme}>
                     <IconButton disabled>
                         <ReceiveIcon color='primary' />
                     </IconButton>
@@ -120,11 +121,14 @@ function Transactions(props) {
                         return (
                             <React.Fragment key={txn.id}>
                                 <Grid container spacing={8}>
-                                    <Grid item xs={5}>
-                                        <h4 className={classes.status}>{getStatus(txn, lastConfirmedHeight)}</h4>
+                                    <Grid item xs={6}>
+                                        <h4 className={classes.status}>
+                                            <TxInfoModal transactionId={txn.id} />
+                                            {getStatus(txn, lastConfirmedHeight)}
+                                        </h4>
                                         <p className={classes.creationDateTime}>{creation_date_time.toLocaleString()}</p>
                                     </Grid>
-                                    <Grid item xs={4}>
+                                    <Grid item xs={3}>
                                     </Grid>
                                     <Grid item xs={3}>
                                         <h4 className={classes.amount} align="right">
@@ -146,7 +150,7 @@ function Transactions(props) {
 
 Transactions.propTypes = {
     classes: PropTypes.object.isRequired,
-    transactions: PropTypes.object.isRequired,
+    transactions: PropTypes.string.isRequired,
     lastConfirmedHeight: PropTypes.number.isRequired,
     showCanceled: PropTypes.bool.isRequired,
     repostTx: PropTypes.func.isRequired,

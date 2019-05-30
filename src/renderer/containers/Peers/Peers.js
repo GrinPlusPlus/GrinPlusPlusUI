@@ -32,8 +32,6 @@ const styles = theme => ({
 function Peers(props) {
     const [refreshPeers, setRefreshPeers] = React.useState(false);
 
-    console.log("Refresh: " + refreshPeers);
-
     /*const greenTheme = createMuiTheme({ palette: { primary: green } })
 
     function getActionIcon(txnId, status) {

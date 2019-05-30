@@ -1,6 +1,6 @@
 import { net } from 'electron';
 
-exports.receive_tx = function (req, res) {
+function receive_tx(req, res) {
     console.log("hello");
 
     var received = "";
@@ -41,3 +41,5 @@ exports.receive_tx = function (req, res) {
         ownerReq.end();
     });
 };
+
+export default {receive_tx}
