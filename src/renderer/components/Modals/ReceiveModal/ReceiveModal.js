@@ -50,7 +50,7 @@ function ReceiveModal(props) {
     if (httpAddress.length === 0) {
         const ipAddress = ipcRenderer.sendSync('LookupIP');
         if (ipAddress != null) {
-            setHttpAddress("http://" + ipAddress + ":3415");
+            setHttpAddress(ipAddress);
         }
 
         const grinboxAddress = ipcRenderer.sendSync('Grinbox::GetAddress');

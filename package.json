@@ -1,7 +1,7 @@
 {
     "name": "GrinPlusPlus",
     "productName": "Grin++",
-    "version": "0.5.2",
+    "version": "0.5.3",
     "description": "Grin++ Wallet",
     "main": "app/background.js",
     "build": {
@@ -60,6 +60,7 @@
         "@material-ui/icons": "^3.0.2",
         "bs58check": "^2.1.2",
         "chacha-js": "^2.1.1",
+        "compressjs": "^1.0.3",
         "electron-compile": "^6.4.4",
         "electron-config": "^2.0.0",
         "electron-log": "^3.0.5",
@@ -68,6 +69,7 @@
         "express": "^4.16.4",
         "fs": "0.0.1-security",
         "fs-jetpack": "^2.1.0",
+        "ngrok": "^3.1.1",
         "pbkdf2": "^3.0.17",
         "prop-types": "latest",
         "react": "^16.8.6",

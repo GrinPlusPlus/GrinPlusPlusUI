@@ -1,32 +1,21 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { ipcRenderer } from 'electron';
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Grid from "@material-ui/core/Grid";
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import IconButton from "@material-ui/core/IconButton";
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import SendIcon from "@material-ui/icons/CallMade";
-import SaveAltIcon from '@material-ui/icons/SaveAlt';
-import Snackbar from '@material-ui/core/Snackbar';
-import Typography from '@material-ui/core/Typography';
+import {
+    Button, Dialog, DialogContent, DialogTitle, Grid, Radio, RadioGroup,
+    FormControl, FormControlLabel, Input, InputLabel, Snackbar, Typography
+} from '@material-ui/core';
+import SendIcon from "@material-ui/icons/Send";
 import { withStyles } from "@material-ui/core/styles";
 import CustomSnackbarContent from "../../CustomSnackbarContent";
+import GrinUtil from "../../../util/GrinUtil";
+import SendFile from "./SendFile";
+import SendHttp from "./SendHttp";
+import SendGrinbox from "./SendGrinbox";
 
 const styles = theme => ({
     fab: {
         margin: theme.spacing.unit
-    },
-    fileChooserButton: {
-        marginTop: theme.spacing.unit,
-        marginLeft: -theme.spacing.unit
     },
     form: {
         width: '100%', // Fix IE 11 issue.
@@ -59,7 +48,6 @@ function SendModal(props) {
     function handleSend(event) {
         event.preventDefault();
         const data = new FormData(event.target);
-        // TODO: Validate amount is a double
         const amountInNanoGrins = data.get('amount') * Math.pow(10, 9);
 
         var result = null;
@@ -75,6 +63,12 @@ function SendModal(props) {
         }
         
         if (result.status_code == 200) {
+            const original = JSON.stringify(result.slate);
+            const compressed = GrinUtil.Compress(original);
+            console.log("Original: " + original);
+            console.log("Base64: " + compressed);
+            console.log("Decompressed: " + GrinUtil.Decompress(compressed));
+
             if (method == "file") {
                 ipcRenderer.send('SaveToFile', selectedFile, JSON.stringify(result.slate));
             }
@@ -83,7 +77,7 @@ function SendModal(props) {
         } else if (result.status_code == 409) {
             setErrorMessage("Insufficient Funds Available!");
         } else {
-            setErrorMessage("Failed to send!");
+            setErrorMessage("Failed to send! Error Code: " + result.status_code);
         }
     }
 
@@ -92,121 +86,44 @@ function SendModal(props) {
     }
 
     function handleAmountChange(event) {
-        const result = ipcRenderer.sendSync('EstimateFee', event.target.value * Math.pow(10, 9));
-        if (result.status_code == 200) {
-            const calculatedAmount = (result.fee / Math.pow(10, 9));
-            setFee("" + calculatedAmount.toFixed(9));
+        if (event.target.value.length > 0) {
+            const result = ipcRenderer.sendSync('EstimateFee', event.target.value * Math.pow(10, 9));
+            if (result.status_code == 200) {
+                const calculatedAmount = (result.fee / Math.pow(10, 9));
+                setFee("" + calculatedAmount.toFixed(9));
+            } else {
+                setFee("");
+                setErrorMessage("Error ocurred! Insufficient funds?");
+            }
         } else {
             setFee("");
-            setErrorMessage("Error ocurred! Insufficient funds?");
         }
-    }
-
-    function handleSelectFile(event) {
-        ipcRenderer.removeAllListeners('DestinationSelected');
-        ipcRenderer.on('DestinationSelected', (event, file) => {
-            if (file !== null) {
-                setSelectedFile(file);
-            }
-        });
-
-        ipcRenderer.send('SendFile');
     }
 
     function handleSnackbarClose(event, reason) {
         setErrorMessage("");
     }
 
+    function shouldEnableSubmit() {
+        if (fee.length == 0) {
+            return false;
+        } else if (method == "file") {
+            return selectedFile.length > 0;
+        } else if (method == "http") {
+            return httpAddress.length > 0;
+        } else if (method == "grinbox") {
+            return grinboxAddress.length > 0;
+        }
+
+        return true;
+    }
+
     if (showModal !== true) {
         return null;
     }
 
-    function getFileDisplay() {
-        if (method != "file") {
-            return "";
-        }
-
-        return (
-            <Grid container spacing={8}>
-                <Grid item xs={11}>
-                    <FormControl
-                        margin="dense"
-                        required
-                        fullWidth
-                    >
-                        <InputLabel htmlFor="destinationFile">Destination File</InputLabel>
-                        <Input
-                            name="destinationFile"
-                            type="text"
-                            id="destinationFile"
-                            value={selectedFile}
-                        />
-                    </FormControl>
-                </Grid>
-                <Grid item xs={1}>
-                    <IconButton onClick={handleSelectFile} className={classes.fileChooserButton}>
-                        <SaveAltIcon />
-                    </IconButton>
-                </Grid>
-            </Grid>
-        );
-    }
-
-    function getHTTPDisplay() {
-        if (method != "http") {
-            return "";
-        }
-
-        return (
-            <React.Fragment>
-                <FormControl
-                    margin="dense"
-                    required
-                    fullWidth
-                >
-                    <InputLabel htmlFor="URL">Address (eg. http(s)://12.34.56.78:3415)</InputLabel>
-                    <Input
-                        name="URL"
-                        type="text"
-                        id="URL"
-                        value={httpAddress}
-                        onChange={(event) => { setHttpAddress(event.target.value) }}
-                    />
-                </FormControl>
-                <br />
-            </React.Fragment>
-        );
-    }
-
-    function getGrinboxDisplay() {
-        if (method != "grinbox") {
-            return "";
-        }
-
-        return (
-            <React.Fragment>
-                <FormControl
-                    margin="dense"
-                    required
-                    fullWidth
-                >
-                    <InputLabel htmlFor="Grinbox">Address (eg. gVvGhkjf...)</InputLabel>
-                    <Input
-                        name="Grinbox"
-                        type="text"
-                        id="Grinbox"
-                        value={grinboxAddress}
-                        onChange={(event) => { setGrinboxAddress(event.target.value) }}
-                    />
-                </FormControl>
-                <br />
-            </React.Fragment>
-        );
-    }
-
     return (
         <React.Fragment>
-
             <Snackbar
                 autoHideDuration={4000}
                 open={errorMessage.length > 0}
@@ -243,24 +160,10 @@ function SendModal(props) {
                                 onChange={handleMethodChange}
                                 row
                             >
-                                <FormControlLabel
-                                    value="file"
-                                    control={<Radio />}
-                                    label="File"
-                                    labelPlacement="end"
-                                />
-                                <FormControlLabel
-                                    value="http"
-                                    control={<Radio />}
-                                    label="http(s)"
-                                    labelPlacement="end"
-                                />
-                                <FormControlLabel
-                                    value="grinbox"
-                                    control={<Radio />}
-                                    label="Grinbox"
-                                    labelPlacement="end"
-                                />
+                                <FormControlLabel value="text" control={<Radio />} label="Text" labelPlacement="end" />
+                                <FormControlLabel value="file" control={<Radio />} label="File" labelPlacement="end" />
+                                <FormControlLabel value="http" control={<Radio />} label="Http(s)" labelPlacement="end" />
+                                <FormControlLabel value="grinbox" control={<Radio />} label="Grinbox" labelPlacement="end" />
                             </RadioGroup>
                         </FormControl>
 
@@ -281,21 +184,16 @@ function SendModal(props) {
                             </Grid>
                         </Grid>
 
-                        {/* SendFile */}
-                        { getFileDisplay() }
-
-                        {/* SendHTTP */}
-                        {getHTTPDisplay()}
-
-                        {/* SendGrinbox */}
-                        {getGrinboxDisplay()}
+                        <SendFile selected={method == "file"} selectedFile={selectedFile} setSelectedFile={setSelectedFile} />
+                        <SendHttp selected={method == "http"} httpAddress={httpAddress} setHttpAddress={setHttpAddress} />
+                        <SendGrinbox selected={method == "grinbox"} grinboxAddress={grinboxAddress} setGrinboxAddress={setGrinboxAddress} />
 
                         <br />
                         <Typography align='right'>
                             <Button onClick={closeWindow} variant="contained" color="primary">
                                 Cancel
                             </Button>
-                            <Button type="submit" style={{ marginLeft: '10px' }} variant="contained" color="primary" disabled={fee.length == 0} >
+                            <Button type="submit" style={{ marginLeft: '10px' }} variant="contained" color="primary" disabled={!shouldEnableSubmit()} >
                                 Send <SendIcon />
                             </Button>
                         </Typography>
