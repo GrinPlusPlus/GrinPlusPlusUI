@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import SettingsModal from "../../components/Settings";
+import SupportModal from "../../components/Modals/SupportModal";
 import UserMenu from "../../components/UserMenu";
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -90,7 +91,8 @@ function ButtonAppNav(props) {
   }
 
   function showSettings() {
-    if (!!noMenu ? true : false) {
+    return "";
+    /*if (!!noMenu ? true : false) {
       return (
         <React.Fragment>
           <Typography className={classes.grow}></Typography>
@@ -99,6 +101,19 @@ function ButtonAppNav(props) {
       );
     } else {
       return <SettingsModal />;
+    }*/
+  }
+
+  function showSupport() {
+    if (!!noMenu ? true : false) {
+      return (
+        <React.Fragment>
+          <Typography className={classes.grow}></Typography>
+          <SupportModal />
+        </React.Fragment>
+      );
+    } else {
+      return <SupportModal />;
     }
   }
 
@@ -122,6 +137,7 @@ function ButtonAppNav(props) {
           {showMenu()}
           {showUserMenu()}
           {showSettings()}
+          {showSupport()}
         </Toolbar>
       </AppBar>
     </div>

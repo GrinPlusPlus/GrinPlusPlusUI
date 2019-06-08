@@ -1,7 +1,8 @@
 import { net } from 'electron';
+import log from 'electron-log';
 
 function receive_tx(req, res) {
-    console.log("hello");
+    log.info("ForeignController: Receiving a transaction through the foreign API.");
 
     var received = "";
 
@@ -10,6 +11,8 @@ function receive_tx(req, res) {
     });
 
     req.on('end', () => {
+        log.debug("Received: " + received);
+
         const ownerReq = net.request({
             method: 'POST',
             protocol: 'http:',
@@ -20,16 +23,17 @@ function receive_tx(req, res) {
         ownerReq.setHeader('session_token', global.session_token);
 
         ownerReq.on('response', (response) => {
+            log.debug("Owner response status: " + response.statusCode);
+
             res.statusCode = response.statusCode;
             if (response.statusCode == 200) {
-
                 var responseStr = "";
                 response.on('data', function (chunk) {
                     responseStr += chunk;
                 });
 
                 response.on('end', function () {
-                    console.log(responseStr);
+                    log.debug("Owner response: " + responseStr);
                     res.json(JSON.parse(responseStr));
                 });
 

@@ -1,6 +1,8 @@
 import { ipcMain } from 'electron';
+import log from 'electron-log';
 
 import SendToHTTP from './SendToHTTP';
+import RequestSupport from './RequestSupport';
 import GrinboxConnection from '../Grinbox/GrinboxConnection';
 
 // Owner APIs
@@ -89,7 +91,7 @@ function StartOwnerClient() {
 }
 
 function start() {
-    console.log("STARTING GRIN++ CLIENT");
+    log.info("Starting Grin++ Client");
 
     StartOwnerClient();
 
@@ -99,6 +101,10 @@ function start() {
 
     ipcMain.on('SendToHTTP', function (event, httpAddress, amount) {
         SendToHTTP.call(event, httpAddress, amount);
+    });
+
+    ipcMain.on('SendSupportRequest', function (event, name, email, description) {
+        RequestSupport.call(event, name, email, description);
     });
 
     ipcMain.on('Grinbox::Send', function (event, grinboxAddress, amount) {

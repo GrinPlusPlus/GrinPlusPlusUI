@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, clipboard } from 'electron';
 import {
     Button, Dialog, DialogContent, DialogTitle,
     Grid, IconButton, Typography, Tooltip, Divider
@@ -9,6 +9,7 @@ import { MuiThemeProvider, createMuiTheme, withStyles } from '@material-ui/core/
 import blue from '@material-ui/core/colors/blue';
 import InfoIcon from "@material-ui/icons/Info";
 import GrinUtil from "../../../util/GrinUtil.js";
+import CopyIcon from '@material-ui/icons/FileCopy';
 
 const styles = theme => ({
     fab: {
@@ -66,8 +67,14 @@ function TxInfoModal(props) {
                     return (
                         <React.Fragment key={output.commitment}>
                             <Tooltip title="Commitment" aria-label={output.commitment}>
-                                {getField("Commitment", output.commitment.substring(0, 12) + "...")}
+                                <React.Fragment>
+                                    <b>Commitment:</b> {output.commitment.substring(0, 12) + "..."}
+                                </React.Fragment>
                             </Tooltip>
+                            <IconButton onClick={() => { clipboard.writeText(output.commitment) }} style={{ padding: '5px' }}>
+                                <CopyIcon fontSize='small' />
+                            </IconButton>
+                            <br />
 
                             {getField("Keychain Path", output.keychain_path)}
                             {getField("Amount", GrinUtil.FormatAmount(output.amount))}

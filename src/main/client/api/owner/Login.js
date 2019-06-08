@@ -1,4 +1,5 @@
 import ConnectionUtils from '../../ConnectionUtils';
+import log from 'electron-log';
 
 function call(event, username, password, grinboxSubscriber) {
     const headers = [
@@ -6,15 +7,20 @@ function call(event, username, password, grinboxSubscriber) {
         { name: 'password', value: password }
     ];
 
+    log.info("Logging in with username: " + username);
     ConnectionUtils.ownerRequest('POST', 'login', headers, '', function (response) {
+        log.info("Login status: " + response.status_code);
+
         if (response.status_code == 200) {
             const parsed = JSON.parse(response.body);
             global.session_token = parsed.session_token;
             grinboxSubscriber(parsed.grinbox_key, parsed.grinbox_address);
+        }
 
-            event.returnValue = response.status_code;
+        if (global.mainWindow != null) {
+            global.mainWindow.webContents.send('Login::Response', response.status_code);
         } else {
-            event.returnValue = response.status_code;
+            log.error("global.mainWindow is null");
         }
     });
 }

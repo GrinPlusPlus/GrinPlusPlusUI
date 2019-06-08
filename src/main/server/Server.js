@@ -1,5 +1,6 @@
 import express from 'express';
 import foreign from './controllers/ForeignController';
+import log from 'electron-log';
 
 function start() {
 
@@ -15,7 +16,7 @@ function start() {
 
     app.listen(port);
 
-    console.log('Foreign API server started on: ' + port);
+    log.info('Foreign API server started on: ' + port);
 }
 
 export default {start}

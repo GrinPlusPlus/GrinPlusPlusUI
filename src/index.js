@@ -7,8 +7,12 @@ import IPService from './main/IPService';
 import GrinboxConnection from './main/Grinbox/GrinboxConnection';
 import Updater from './main/Updater.js';
 import {version} from '../package.json';
+import ConfigLoader from './main/ConfigLoader';
+import log from 'electron-log';
+import fs from 'fs';
 
 const isDevMode = process.execPath.match(/[\\/]electron/);
+const isWindows = process.platform == "win32";
 const LAUNCH_NODE = !isDevMode || false;
 
 //import { enableLiveReload } from 'electron-compile';
@@ -21,6 +25,17 @@ if (isDevMode) {
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
+
+const binDirectory = `${__dirname}/bin/`;
+
+const config = ConfigLoader.load();
+
+log.transports.format = '[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}';
+log.transports.file.level = config.level;
+log.transports.file.maxSize = 15 * 1024 * 1024;
+log.transports.file.file = config.data_path + '/NODE/LOGS/ui.log';
+log.transports.file.stream = fs.createWriteStream(log.transports.file.file, { flags: 'a' });
+log.transports.console.level = config.level;
 
 var statusInterval = 0;
 var shuttingDown = false;
@@ -57,16 +72,18 @@ const createWindow = async () => {
     //    // when you should delete the corresponding element.
     //    mainWindow = null;
     //});
-    
-    var binDirectory = `${__dirname}/bin/`;
-    console.log(binDirectory);
 
     if (LAUNCH_NODE) {
-        ChildProcess.execFile('GrinNode.exe', ['--headless'], { cwd: binDirectory }, (error, stdout, stderr) => {
+        const nodeFileName = (isWindows ? 'GrinNode.exe' : './GrinNode');
+
+        log.info('Launching node: "' + binDirectory + nodeFileName + ' --headless"');
+        ChildProcess.execFile(nodeFileName, ['--headless'], { cwd: binDirectory }, (error, stdout, stderr) => {
             if (error) {
+                log.error('Error thrown from within execFile: ', error);
                 throw error;
             }
-
+            
+            log.info('Node shutdown normally. Calling app.quit().');
             app.quit();
         });
     }
@@ -76,6 +93,7 @@ const createWindow = async () => {
     FileListener.start();
     IPService.start();
     GrinboxConnection.connect(mainWindow);
+    global.mainWindow = mainWindow;
 
     mainWindow.webContents.on('did-finish-load', () => {
         if (!isDevMode) {
@@ -93,8 +111,10 @@ const createWindow = async () => {
         statusInterval = setInterval(getStatus, 2000, (status) => {
             if (mainWindow != null) {
                 if (status != null) {
+                    log.silly('NODE_STATUS: ' + JSON.stringify(status));
                     mainWindow.webContents.send('NODE_STATUS', status.sync_status, status.network.num_inbound, status.network.num_outbound, status.header_height, status.chain.height, status.network.height);
                 } else {
+                    log.info('Failed to connect to node.');
                     mainWindow.webContents.send('NODE_STATUS', "Failed to Connect", 0, 0, 0, 0, 0);
                 }
             }
@@ -111,20 +131,22 @@ app.on('ready', createWindow);
 app.on('window-all-closed', () => {
     // On OS X it is common for applications and their menu bar
     // to stay active until the user quits explicitly with Cmd + Q
-    if (process.platform !== 'darwin') {
+    //if (process.platform !== 'darwin') {
         clearInterval(statusInterval);
         shuttingDown = true;
+        log.info('Shutting down');
 
         if (LAUNCH_NODE) {
             Client.stop();
 
             setTimeout(function () {
+                log.warning('Node shutdown timed out. Calling app.quit().');
                 app.quit();
             }, 5000);
         } else {
             app.quit();
         }
-    }
+    //}
 });
 
 app.on('activate', () => {

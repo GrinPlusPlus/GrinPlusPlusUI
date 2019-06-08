@@ -1,4 +1,5 @@
 import ConnectionUtils from '../../ConnectionUtils';
+import log from 'electron-log';
 
 function call(event, username, password) {
     const headers = [
@@ -6,7 +7,10 @@ function call(event, username, password) {
         { name: 'password', value: password }
     ];
 
+    log.info("Creating wallet with username: " + username);
     ConnectionUtils.ownerRequest('POST', 'create_wallet', headers, '', function (response) {
+        log.info("Wallet creation status: " + response.status_code);
+
         var result = new Object();
         result["status_code"] = response.status_code;
 

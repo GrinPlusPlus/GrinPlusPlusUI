@@ -2,6 +2,7 @@ const WebSocket = require("ws");
 const NodeCrypto = require("crypto");
 import GrinboxCrypto from './Crypto';
 import GrinboxUtils from './GrinboxUtils';
+import log from 'electron-log';
 
 import Receive from '../client/api/owner/Receive';
 import Finalize from '../client/api/owner/Finalize';
@@ -11,6 +12,8 @@ var lastAction = null;
 var mainWindow = null;
 
 function encryptMessage(destination, slate) {
+    log.info("Encrypting slate for Grinbox: " + JSON.stringify(slate));
+
     // Encrypt slate
     const salt = NodeCrypto.randomBytes(8);
     const nonce = NodeCrypto.randomBytes(12);
@@ -36,6 +39,8 @@ function decryptMessage(encrypted_message, from_address) {
 }
 
 function postSlate(slate, to_address) {
+    log.info("GrinboxConnection: Preparing to post slate to " + to_address);
+
     // Create Destination
     var destination = new Object();
     destination.public_key = to_address;
@@ -55,19 +60,25 @@ function postSlate(slate, to_address) {
 
     // Send message
     const json_str = JSON.stringify(post_slate_message);
+    log.info("GrinboxConnection: Sending message " + json_str);
+
     lastAction = 'sent';
     socket.send(json_str);
 }
 
 function processSlateMessage(message) {
-    // TODO: Verify signature
+    log.info("Processing slate message: " + message.str + " from: " + message.from);
 
+    // TODO: Verify signature
     const encrypted_message = JSON.parse(message.str);
     const decrypted = decryptMessage(encrypted_message, message.from);
     const slate = JSON.parse(decrypted);
     
     if (slate.num_participants > slate.participant_data.length) {
+        log.info("GrinboxConnection: Receiving slate");
+
         Receive.call(JSON.stringify(slate), function (result) {
+            log.info("Receive result: " + JSON.stringify(result));
             if (result.status_code == 200) {
                 lastAction = 'received';
                 postSlate(result.slate, message.from);
@@ -76,7 +87,10 @@ function processSlateMessage(message) {
             }
         });
     } else {
+        log.info("GrinboxConnection: Finalizing slate");
+
         Finalize.call(JSON.stringify(slate), function (result) {
+            log.info("Finalize result: " + JSON.stringify(result));
             if (result.status_code == 200) {
                 mainWindow.webContents.send("Grinbox::Status", "SUCCESS", "Grinbox transaction finalized.");
             } else {
@@ -87,10 +101,13 @@ function processSlateMessage(message) {
 }
 
 function connect(window) {
+    log.info("GrinboxConnection: Connecting to grinbox.io");
+
     mainWindow = window;
     socket = new WebSocket("wss://grinbox.io:443");
 
     socket.onmessage = function (event) {
+        log.info("GrinboxConnection: Message received " + event.data);
         const message = JSON.parse(event.data);
         if (message.type == 'Challenge') {
             global.grinbox_challenge = message.str;
@@ -119,10 +136,13 @@ function connect(window) {
 }
 
 function disconnect() {
+    log.info("GrinboxConnection: Disconnecting from grinbox.io");
     socket = null;
 }
 
 function subscribe(secret_key, address) {
+    log.info("Subscribing to grinbox address: " + address);
+
     global.grinbox_secret_key = secret_key;
     global.grinbox_address = address;
 
@@ -138,6 +158,8 @@ function subscribe(secret_key, address) {
 }
 
 function unsubscribe() {
+    log.info("Unsubscribing from grinbox address: " + global.grinbox_address);
+
     var unsubscribe_message = new Object();
     unsubscribe_message.type = "Unsubscribe";
     unsubscribe_message.address = global.grinbox_address;

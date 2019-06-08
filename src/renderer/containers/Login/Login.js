@@ -52,19 +52,28 @@ const styles = theme => ({
 
 function Login(props) {
     const { classes } = props;
+    const [submitting, setSubmitting] = React.useState(false);
     const [loggedIn, setLoggedIn] = React.useState(false);
     const [failure, setFailure] = React.useState(false);
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
 
     function handleSubmit(event) {
-        const statusCode = ipcRenderer.sendSync('Login', username, password);
-        if (statusCode == 200) {
-            sessionStorage["username"] = username.toUpperCase();
-            setLoggedIn(true);
-        } else {
-            setFailure(true);
-        }
+        event.preventDefault();
+
+        ipcRenderer.removeAllListeners('Login::Response');
+        ipcRenderer.on('Login::Response', (event, status) => {
+            if (status == 200) {
+                sessionStorage["username"] = username.toUpperCase();
+                setLoggedIn(true);
+            } else {
+                setSubmitting(false);
+                setFailure(true);
+            }
+        });
+
+        ipcRenderer.send('Login', username, password);
+        setSubmitting(true);
     }
 
     if (loggedIn === true) {
@@ -121,17 +130,18 @@ function Login(props) {
                     <form className={classes.form} onSubmit={handleSubmit}>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="username">Username</InputLabel>
-                            <Input id="username" name="username" onChange={changeUsername} autoFocus />
+                            <Input id="username" name="username" value={username} onChange={changeUsername} autoFocus />
                         </FormControl>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="password">Password</InputLabel>
-                            <Input name="password" type="password" id="password" onChange={changePassword} />
+                            <Input name="password" type="password" id="password" value={password} onChange={changePassword} />
                         </FormControl>
                         <Button
                             type="submit"
                             fullWidth
                             variant="contained"
                             color="primary"
+                            disabled={submitting}
                             className={classes.submit}
                         >
                             Sign in
