@@ -1,6 +1,7 @@
 const { dialog } = require('electron');
 const { autoUpdater } = require('electron-updater');
-const logger = require("electron-log");
+import Client from './client/Client';
+const log = require("electron-log");
 
 
 autoUpdater.on('error', (error) => {
@@ -23,14 +24,14 @@ autoUpdater.on('update-downloaded', () => {
         buttons: ['Yes', 'No']
     }, (buttonIndex) => {
         if (buttonIndex === 0) {
+            // TODO: Close more gracefully.
             autoUpdater.quitAndInstall();
         }
     });
 });
 
 function checkForUpdates () {
-    logger.transports.file.level = "debug";
-    autoUpdater.logger = logger;
+    autoUpdater.logger = log;
 
     autoUpdater.checkForUpdates();
 }

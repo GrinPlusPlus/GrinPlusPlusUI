@@ -103,7 +103,7 @@ function start() {
         SendToHTTP.call(event, httpAddress, amount);
     });
 
-    ipcMain.on('SendSupportRequest', function (event, name, email, description) {
+    ipcMain.on('Support::SubmitRequest', function (event, name, email, description) {
         RequestSupport.call(event, name, email, description);
     });
 
@@ -120,7 +120,7 @@ function start() {
 
     ipcMain.on('Grinbox::GetAddress', function (event) {
         event.returnValue = global.grinbox_address;
-    })
+    });
 }
 
 function stop() {

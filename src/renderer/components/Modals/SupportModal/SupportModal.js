@@ -64,7 +64,7 @@ function SupportModal(props) {
         setTimeout(function () {
             setErrorMessage("Failed to submit: Operation timed out.");
             setSubmitting(false);
-        }, 1500);
+        }, 3000);
     }
 
     function getMessageDisplay() {
@@ -74,7 +74,7 @@ function SupportModal(props) {
             );
         } else if (successMessage.length > 0) {
             return (
-                <Typography color="primary">{successMessage}</Typography>
+                <Typography color="secondary">{successMessage}</Typography>
             );
         }
     }
