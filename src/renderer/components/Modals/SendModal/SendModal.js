@@ -12,6 +12,7 @@ import GrinUtil from "../../../util/GrinUtil";
 import SendFile from "./SendFile";
 import SendHttp from "./SendHttp";
 import SendGrinbox from "./SendGrinbox";
+import log from 'electron-log';
 
 const styles = theme => ({
     fab: {
@@ -54,22 +55,24 @@ function SendModal(props) {
         if (method == "file") {
             result = ipcRenderer.sendSync('Send', amountInNanoGrins);
         } else if (method == "http") {
-            console.log("Sending to " + httpAddress);
+            log.info("Sending to " + httpAddress);
             result = ipcRenderer.sendSync('SendToHTTP', httpAddress, amountInNanoGrins);
+            log.info("Sent via http(s). Result: " + JSON.stringify(result));
         } else if (method == "grinbox") {
+            log.info("Sending to " + grinboxAddress);
             result = ipcRenderer.sendSync('Grinbox::Send', grinboxAddress, amountInNanoGrins);
+            log.info("Sent via grinbox. Result: " + JSON.stringify(result));
             closeWindow();
             return;
         }
         
         if (result.status_code == 200) {
-            const original = JSON.stringify(result.slate);
-            const compressed = GrinUtil.Compress(original);
-            console.log("Original: " + original);
-            console.log("Base64: " + compressed);
-            console.log("Decompressed: " + GrinUtil.Decompress(compressed));
-
             if (method == "file") {
+                const original = JSON.stringify(result.slate);
+                const compressed = GrinUtil.Compress(original);
+                log.info("Original: " + original);
+                log.info("Base64: " + compressed);
+                log.info("Decompressed: " + GrinUtil.Decompress(compressed));
                 ipcRenderer.send('SaveToFile', selectedFile, JSON.stringify(result.slate));
             }
 
@@ -160,7 +163,6 @@ function SendModal(props) {
                                 onChange={handleMethodChange}
                                 row
                             >
-                                <FormControlLabel value="text" control={<Radio />} label="Text" labelPlacement="end" />
                                 <FormControlLabel value="file" control={<Radio />} label="File" labelPlacement="end" />
                                 <FormControlLabel value="http" control={<Radio />} label="Http(s)" labelPlacement="end" />
                                 <FormControlLabel value="grinbox" control={<Radio />} label="Grinbox" labelPlacement="end" />

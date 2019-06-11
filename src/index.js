@@ -13,7 +13,7 @@ import fs from 'fs';
 
 const isDevMode = process.execPath.match(/[\\/]electron/);
 const isWindows = process.platform == "win32";
-const LAUNCH_NODE = !isDevMode || false;
+const LAUNCH_NODE = !isDevMode || true;
 
 //import { enableLiveReload } from 'electron-compile';
 //import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
@@ -30,12 +30,21 @@ const binDirectory = `${__dirname}/bin/`;
 
 const config = ConfigLoader.load();
 
-log.transports.format = '[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}';
-log.transports.file.level = config.level;
-log.transports.file.maxSize = 15 * 1024 * 1024;
-log.transports.file.file = config.data_path + '/NODE/LOGS/ui.log';
-log.transports.file.stream = fs.createWriteStream(log.transports.file.file, { flags: 'a' });
-log.transports.console.level = config.level;
+const homedir = require('os').homedir();
+if (fs.existsSync(homedir + '/.GrinPP') || fs.mkdirSync(homedir+ '/.GrinPP')) {
+    if (fs.existsSync(homedir + '/.GrinPP/MAINNET') || fs.mkdirSync(homedir+ '/.GrinPP/MAINNET')) {
+        if (fs.existsSync(homedir + '/.GrinPP/MAINNET/NODE') || fs.mkdirSync(homedir+ '/.GrinPP/MAINNET/NODE')) {
+            if (fs.existsSync(homedir + '/.GrinPP/MAINNET/NODE/LOGS') || fs.mkdirSync(homedir + '/.GrinPP/MAINNET/NODE/LOGS')) {
+                log.transports.format = '[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}';
+                log.transports.file.level = config.level;
+                log.transports.file.maxSize = 15 * 1024 * 1024;
+                log.transports.file.file = config.data_path + '/NODE/LOGS/ui.log';
+                log.transports.file.stream = fs.createWriteStream(log.transports.file.file, { flags: 'a' });
+                log.transports.console.level = config.level;
+            }
+        }
+    }
+}
 
 var statusInterval = 0;
 var shuttingDown = false;

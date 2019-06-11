@@ -9,7 +9,7 @@ function call(amount, callback) {
     reqJSON['fee_base'] = 1000000;
     reqJSON['selection_strategy'] = "ALL";
     
-    log.info("Sending slate: " + slate);
+    log.info("Sending: " + amount);
     ConnectionUtils.ownerRequest('POST', 'issue_send_tx', headers, JSON.stringify(reqJSON), function (response) {
         var result = new Object();
         result["status_code"] = response.status_code;

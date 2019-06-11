@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { ipcRenderer } from 'electron';
 import {FormControl, Input, InputLabel } from "@material-ui/core";
 
 function SendHttp(props) {

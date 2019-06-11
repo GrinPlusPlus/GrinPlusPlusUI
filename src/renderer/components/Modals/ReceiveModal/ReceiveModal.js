@@ -157,19 +157,36 @@ function ReceiveModal(props) {
         }
     }
 
+    function getWarning() {
+        if (method != "http") {
+            return "";
+        }
+        return (
+            <center style={{fontSize: '13px', color: 'red'}}>
+                <b>
+                    Ngrok addresses are ephemeral, and a new one is generated each time you open Grin++.<br/>
+                    After requesting funds via https, you must leave Grin++ running until those funds are received.
+                </b>
+            </center>
+        )
+    }
+
     function getHTTPDisplay() {
         if (method != "http" && method != "grinbox") {
             return "";
         }
         
         return (
-            <p>
-                Send To:
-                <b>{method == 'http' ? httpAddress : grinboxAddress}</b>
-                <IconButton onClick={handleCopy} style={{ padding: '5px' }}>
-                    <CopyIcon fontSize='small' />
-                </IconButton>
-            </p>
+            <React.Fragment>
+                <p>
+                    <b>{method == 'http' ? httpAddress : grinboxAddress}</b> 
+
+                    <IconButton onClick={handleCopy} style={{ padding: '5px' }}>
+                        <CopyIcon fontSize='small' />
+                    </IconButton>
+                </p>
+                {getWarning()}
+            </React.Fragment>
         );
     }
 
@@ -204,6 +221,7 @@ function ReceiveModal(props) {
                 </DialogTitle>
                 <DialogContent>
                     <form className={classes.form} onSubmit={handleReceive}>
+                        <center>
                         <FormControl component="fieldset" required>
                             <RadioGroup
                                 aria-label="Method"
@@ -221,7 +239,7 @@ function ReceiveModal(props) {
                                 <FormControlLabel
                                     value="http"
                                     control={<Radio />}
-                                    label="http"
+                                    label="https"
                                     labelPlacement="end"
                                 />
                                 <FormControlLabel
@@ -242,6 +260,7 @@ function ReceiveModal(props) {
                         {getHTTPDisplay()}
 
                         <br />
+                        </center>
                         <Typography align='right'>
                             <Button onClick={closeModal} variant="contained" color="primary">
                                 Cancel
