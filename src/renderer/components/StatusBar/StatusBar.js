@@ -4,7 +4,7 @@ import { ipcRenderer } from 'electron';
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import StatusIcon from "@material-ui/icons/lens";
+import StatusIcon from "@material-ui/icons/Lens";
 import { red, orange } from "@material-ui/core/colors";
 import {
     MuiThemeProvider, createMuiTheme, Typography, Grid, IconButton

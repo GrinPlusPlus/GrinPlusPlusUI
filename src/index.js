@@ -10,6 +10,7 @@ import {version} from '../package.json';
 import ConfigLoader from './main/ConfigLoader';
 import log from 'electron-log';
 import fs from 'fs';
+const unhandled = require('electron-unhandled');
 
 const isDevMode = process.execPath.match(/[\\/]electron/);
 const isWindows = process.platform == "win32";
@@ -26,25 +27,28 @@ if (isDevMode) {
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
-const binDirectory = `${__dirname}/bin/`;
+let binDirectory = `${__dirname}/bin/`;
+binDirectory = binDirectory.replace('app.asar', 'app.asar.unpacked'); 
 
 const config = ConfigLoader.load();
 
 const homedir = require('os').homedir();
-if (fs.existsSync(homedir + '/.GrinPP') || fs.mkdirSync(homedir+ '/.GrinPP')) {
-    if (fs.existsSync(homedir + '/.GrinPP/MAINNET') || fs.mkdirSync(homedir+ '/.GrinPP/MAINNET')) {
-        if (fs.existsSync(homedir + '/.GrinPP/MAINNET/NODE') || fs.mkdirSync(homedir+ '/.GrinPP/MAINNET/NODE')) {
-            if (fs.existsSync(homedir + '/.GrinPP/MAINNET/NODE/LOGS') || fs.mkdirSync(homedir + '/.GrinPP/MAINNET/NODE/LOGS')) {
-                log.transports.format = '[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}';
-                log.transports.file.level = config.level;
-                log.transports.file.maxSize = 15 * 1024 * 1024;
-                log.transports.file.file = config.data_path + '/NODE/LOGS/ui.log';
-                log.transports.file.stream = fs.createWriteStream(log.transports.file.file, { flags: 'a' });
-                log.transports.console.level = config.level;
-            }
-        }
-    }
+if (!fs.existsSync(homedir + '/.GrinPP/MAINNET/NODE/LOGS')) {
+    fs.mkdirSync(homedir + '/.GrinPP/MAINNET/NODE/LOGS', { recursive: true })
 }
+
+log.transports.format = '[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}';
+log.transports.file.level = config.level;
+log.transports.file.maxSize = 15 * 1024 * 1024;
+log.transports.file.file = config.data_path + '/NODE/LOGS/ui.log';
+log.transports.file.stream = fs.createWriteStream(log.transports.file.file, { flags: 'a' });
+log.transports.console.level = config.level;
+
+
+unhandled({
+    logger: log.error,
+    showDialog: false
+});
 
 var statusInterval = 0;
 var shuttingDown = false;
@@ -56,6 +60,9 @@ const createWindow = async () => {
 
     // Create the browser window.
     mainWindow = new BrowserWindow({
+        webPreferences: {
+          nodeIntegration: true
+        },
         width: 1200,
         height: 800,
         title: "Grin++ v" + version,
@@ -89,10 +96,10 @@ const createWindow = async () => {
         ChildProcess.execFile(nodeFileName, ['--headless'], { cwd: binDirectory }, (error, stdout, stderr) => {
             if (error) {
                 log.error('Error thrown from within execFile: ', error);
-                throw error;
+            } else {
+                log.info('Node shutdown normally. Calling app.quit().');
             }
             
-            log.info('Node shutdown normally. Calling app.quit().');
             app.quit();
         });
     }
@@ -149,7 +156,7 @@ app.on('window-all-closed', () => {
             Client.stop();
 
             setTimeout(function () {
-                log.warning('Node shutdown timed out. Calling app.quit().');
+                log.warn('Node shutdown timed out. Calling app.quit().');
                 app.quit();
             }, 5000);
         } else {

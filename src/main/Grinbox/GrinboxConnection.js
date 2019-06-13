@@ -104,34 +104,38 @@ function connect(window) {
     log.info("GrinboxConnection: Connecting to grinbox.io");
 
     mainWindow = window;
-    socket = new WebSocket("wss://grinbox.io:443");
+    try {
+        socket = new WebSocket("wss://grinbox.io:443");
 
-    socket.onmessage = function (event) {
-        log.info("GrinboxConnection: Message received " + event.data);
-        const message = JSON.parse(event.data);
-        if (message.type == 'Challenge') {
-            global.grinbox_challenge = message.str;
-        } else if (message.type == 'Slate') {
-            processSlateMessage(message);
-        } else if (message.type == 'Error') {
-            if (lastAction == 'received') {
-                mainWindow.webContents.send("Grinbox::Status", "ERROR", "Failed to receive Grinbox transaction.");
-            } else if (lastAction == 'sent') {
-                mainWindow.webContents.send("Grinbox::Status", "ERROR", "Failed to send Grinbox transaction.");
+        socket.onmessage = function (event) {
+            log.info("GrinboxConnection: Message received " + event.data);
+            const message = JSON.parse(event.data);
+            if (message.type == 'Challenge') {
+                global.grinbox_challenge = message.str;
+            } else if (message.type == 'Slate') {
+                processSlateMessage(message);
+            } else if (message.type == 'Error') {
+                if (lastAction == 'received') {
+                    mainWindow.webContents.send("Grinbox::Status", "ERROR", "Failed to receive Grinbox transaction.");
+                } else if (lastAction == 'sent') {
+                    mainWindow.webContents.send("Grinbox::Status", "ERROR", "Failed to send Grinbox transaction.");
+                }
+
+                lastAction = null;
+            } else if (message.type == 'Ok') {
+                if (lastAction == 'received') {
+                    mainWindow.webContents.send("Grinbox::Status", "SUCCESS", "Grinbox transaction received.");
+                } else if (lastAction == 'sent') {
+                    mainWindow.webContents.send("Grinbox::Status", "SUCCESS", "Grinbox transaction sent.");
+                }
+
+                lastAction = null;
+            } else {
+                log.info("Unknown websocket event received: " + event.data);
             }
-
-            lastAction = null;
-        } else if (message.type == 'Ok') {
-            if (lastAction == 'received') {
-                mainWindow.webContents.send("Grinbox::Status", "SUCCESS", "Grinbox transaction received.");
-            } else if (lastAction == 'sent') {
-                mainWindow.webContents.send("Grinbox::Status", "SUCCESS", "Grinbox transaction sent.");
-            }
-
-            lastAction = null;
-        } else {
-            console.log("Unknown websocket event received: " + event.data);
         }
+    } catch (e) {
+        log.info("GrinboxConnection: Error thrown - " + e.message);
     }
 }
 
