@@ -24,6 +24,7 @@ const styles = theme => ({
         height: '28px'
     },
     status: {
+        marginLeft: '-15px',
         marginTop: '-14px'
     },
     statusText: {
@@ -48,18 +49,24 @@ class StatusBar extends React.Component {
             headerHeight: 0,
             blockHeight: 0,
             networkHeight: 0,
+            downloaded: 0,
+            totalSize: 0,
+            processed: 0
         };
         this.updateStatus = this.updateStatus.bind(this);
     }
 
-    updateStatus(event, status, inbound, outbound, headerHeight, blockHeight, networkHeight) {
+    updateStatus(event, status, inbound, outbound, headerHeight, blockHeight, networkHeight, downloaded, totalSize, processed) {
         this.setState({
             status: status,
             inbound: inbound,
             outbound: outbound,
             headerHeight: headerHeight,
             blockHeight: blockHeight,
-            networkHeight: networkHeight
+            networkHeight: networkHeight,
+            downloaded: downloaded,
+            totalSize: totalSize,
+            processed: processed
         });
     }
 
@@ -69,7 +76,7 @@ class StatusBar extends React.Component {
     }
 
     render() {
-        const { classes } = this.props;
+        const { classes, dark_mode } = this.props;
 
         const statusTheme = createMuiTheme({
             palette: {
@@ -77,7 +84,24 @@ class StatusBar extends React.Component {
                     main: '#069076',
                 },
                 secondary: orange,
-                error: red
+                error: red,
+            },
+            typography: {
+                useNextVariants: true,
+            }
+        });
+
+        const darkStatusTheme = createMuiTheme({
+            palette: {
+                primary: {
+                    main: '#069076',
+                },
+                secondary: orange,
+                error: red,
+                text: {
+                    primary: '#ffffff',
+                    secondary: '#ffffff'
+                }
             },
             typography: {
                 useNextVariants: true,
@@ -85,7 +109,7 @@ class StatusBar extends React.Component {
         });
 
         function getColor(status) {
-            if (status.startsWith("SYNCING")) {
+            if (status.startsWith("SYNCING") || status.endsWith("TXHASHSET")) {
                 return "secondary";
             } else if (status == "FULLY_SYNCED") {
                 return "primary";
@@ -94,15 +118,27 @@ class StatusBar extends React.Component {
             return "error";
         }
 
-        function getStatusText(status) {
+        function getPercentage(numerator, denominator) {
+            if (denominator <= 0) {
+                return 0;
+            } else {
+                return Math.round(100 * (numerator / denominator));
+            }
+        }
+
+        function getStatusText(state) {
+            const status = state.status;
+
             if (status == "FULLY_SYNCED") {
                 return "Running";
             } else if (status == "SYNCING_HEADERS") {
-                return "Syncing Headers";
+                return "Syncing Headers (" + getPercentage(state.headerHeight, state.networkHeight) + "%)";
             } else if (status == "SYNCING_BLOCKS") {
-                return "Syncing Blocks";
-            } else if (status.startsWith("SYNCING")) {
-                return "Syncing State";
+                return "Syncing Blocks (" + getPercentage(state.blockHeight, state.headerHeight) + "%)";
+            } else if (status == "DOWNLOADING_TXHASHSET") {
+                return "Downloading State (" + getPercentage(state.downloaded, state.totalSize) + "%)";
+            } else if (status == "PROCESSING_TXHASHSET") {
+                return "Validating State (" + state.processed + "%)";
             } else {
                 return "Not Connected";
             }
@@ -112,13 +148,13 @@ class StatusBar extends React.Component {
             <div className={classes.root}>
                 <AppBar position="fixed" color="primary" className={classes.appBar}>
                     <Toolbar>
-                        <MuiThemeProvider theme={statusTheme}>
+                        <MuiThemeProvider theme={dark_mode ? darkStatusTheme : statusTheme}>
                             <Grid container spacing={0} className={classes.Grid}>
                                 <Grid item xs={4}>
                                     <IconButton disabled className={classes.status}>
                                         <StatusIcon color={getColor(this.state.status)} />
                                         <Typography inline className={classes.statusText}><b>STATUS: </b></Typography>
-                                        <Typography inline color={getColor(this.state.status)} className={classes.statusText}><b>{getStatusText(this.state.status)}</b></Typography>
+                                        <Typography inline color={getColor(this.state.status)} className={classes.statusText}><b>{getStatusText(this.state)}</b></Typography>
                                     </IconButton>
                                 </Grid>
                                 <Grid item xs={4}>
@@ -145,6 +181,7 @@ class StatusBar extends React.Component {
 
 StatusBar.propTypes = {
     classes: PropTypes.object.isRequired,
+    dark_mode: PropTypes.bool,
 };
 
 export default withStyles(styles)(StatusBar);

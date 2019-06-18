@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, dialog } from 'electron';
 import ChildProcess from 'child_process';
 import Client from './main/client/Client';
 import Server from './main/server/Server';
@@ -14,7 +14,7 @@ const unhandled = require('electron-unhandled');
 
 const isDevMode = process.execPath.match(/[\\/]electron/);
 const isWindows = process.platform == "win32";
-const LAUNCH_NODE = !isDevMode || true;
+const LAUNCH_NODE = !isDevMode || false;
 
 //import { enableLiveReload } from 'electron-compile';
 //import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
@@ -80,15 +80,6 @@ const createWindow = async () => {
         mainWindow.webContents.openDevTools();
     }
 
-    // Emitted when the window is closed.
-    //mainWindow.on('closed', () => {
-    //    clearInterval(statusInterval);
-    //    // Dereference the window object, usually you would store windows
-    //    // in an array if your app supports multi windows, this is the time
-    //    // when you should delete the corresponding element.
-    //    mainWindow = null;
-    //});
-
     if (LAUNCH_NODE) {
         const nodeFileName = (isWindows ? 'GrinNode.exe' : './GrinNode');
 
@@ -103,6 +94,18 @@ const createWindow = async () => {
             app.quit();
         });
     }
+
+    var processing_txhashset = false;
+
+    mainWindow.on('close', (event) => {
+        if (processing_txhashset) {
+            event.preventDefault();
+            dialog.showMessageBox({
+                message: "Can't close while validating downloaded state.",
+                buttons: ["OK"]
+            });
+        }
+    });
 
     Client.start();
     Server.start();
@@ -128,10 +131,23 @@ const createWindow = async () => {
             if (mainWindow != null) {
                 if (status != null) {
                     log.silly('NODE_STATUS: ' + JSON.stringify(status));
-                    mainWindow.webContents.send('NODE_STATUS', status.sync_status, status.network.num_inbound, status.network.num_outbound, status.header_height, status.chain.height, status.network.height);
+                    processing_txhashset = (status.sync_status == "PROCESSING_TXHASHSET");
+
+                    mainWindow.webContents.send(
+                        'NODE_STATUS',
+                        status.sync_status,
+                        status.network.num_inbound,
+                        status.network.num_outbound,
+                        status.header_height,
+                        status.chain.height,
+                        status.network.height,
+                        status.state.downloaded,
+                        status.state.download_size,
+                        status.state.processing_status
+                    );
                 } else {
                     log.info('Failed to connect to node.');
-                    mainWindow.webContents.send('NODE_STATUS', "Failed to Connect", 0, 0, 0, 0, 0);
+                    mainWindow.webContents.send('NODE_STATUS', "Failed to Connect", 0, 0, 0, 0, 0, 0, 0, 0);
                 }
             }
         });
@@ -156,8 +172,20 @@ app.on('window-all-closed', () => {
             Client.stop();
 
             setTimeout(function () {
-                log.warn('Node shutdown timed out. Calling app.quit().');
-                app.quit();
+                log.warn('Node shutdown timed out.');
+
+                if (platform === 'darwin') {
+                    try {
+                        execFile('pkill', ['-f', 'GrinNode'], (err, stdout) => {
+                            log.info("pkill executed");
+                            app.quit();
+                        });
+                    } catch (e) {
+                        app.quit();
+                    }
+                } else {
+                    app.quit();
+                }
             }, 5000);
         } else {
             app.quit();

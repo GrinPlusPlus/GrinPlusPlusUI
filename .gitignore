@@ -64,3 +64,6 @@ typings/
 
 # for those people using a mac
 .DS_Store
+
+.vs/
+app/bin

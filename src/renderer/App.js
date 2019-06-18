@@ -6,6 +6,13 @@ import Routes from "./Routes";
 import StatusBar from './components/StatusBar';
 import Snackbar from '@material-ui/core/Snackbar';
 import CustomSnackbarContent from "./components/CustomSnackbarContent";
+import log from 'electron-log';
+const unhandled = require('electron-unhandled');
+
+unhandled({
+    logger: log.error,
+    showDialog: false
+});
 
 const yellow_theme = createMuiTheme({
     palette: {
@@ -35,13 +42,18 @@ const yellow_theme = createMuiTheme({
 });
 
 const dark_theme = createMuiTheme({
-    type: 'dark',
     palette: {
         secondary: {
-            main: '#ffffff'
+            main: '#ffffff',
+            contrastText: '#ffffff',
         },
         primary: {
-            main: '#000000'
+            main: '#000000',
+            contrastText: '#ffffff',
+        },
+        text: {
+            primary: '#ffffff',
+            secondary: '#ffffff',
         }
     },
     typography: {
@@ -50,7 +62,22 @@ const dark_theme = createMuiTheme({
         fontFamily: [
             "Lato",
             "sans-serif"
-        ].join(",")
+        ].join(","),
+        color: '#ffffff',
+        initial: {
+            color: '#ffffff'
+        }
+    },
+    input: {
+        color: '#000000'
+    },
+    overrides: {
+        MuiDialog: {
+            paper: {
+                backgroundColor: '#000000',
+                border: '#FFEB3B 2px solid'
+            }
+        }
     }
 });
 
@@ -122,7 +149,7 @@ export default class App extends Component {
                             message={this.state.snackbarMessage}
                         />
                     </Snackbar>
-                    <StatusBar {...this.state} />
+                    <StatusBar {...this.state} dark_mode={this.state.isDarkMode} />
                 </MuiThemeProvider>
             </React.Fragment>
         );

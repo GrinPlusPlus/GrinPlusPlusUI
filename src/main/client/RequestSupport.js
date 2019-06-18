@@ -4,11 +4,11 @@ import log from 'electron-log';
 const fs = require('fs');
 const archiver = require('archiver');
 const cloudinary = require('cloudinary').v2;
+const os = require('os');
+import { version } from '../../../package.json';
 
 const GRINPP_URL = 'https://api.grinplusplus.com';
 const SUPPORT_PATH = '/bugreports/submit.php';
-
-
 
 async function upload() {
     // set your env variable CLOUDINARY_URL or set the following configuration
@@ -81,10 +81,23 @@ async function archiveLogs(name, email, description) {
     // pipe archive data to the file
     archive.pipe(output);
 
+    var today = new Date();
+    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date + ' ' + time;
+
     var userInfo = new Object();
     userInfo.name = name;
     userInfo.email = email;
     userInfo.description = description;
+    userInfo.version = version;
+    userInfo.dateTime = dateTime;
+    userInfo.os = new Object();
+    userInfo.os.platform = os.platform();
+    userInfo.os.release = os.release();
+    userInfo.os.arch = os.arch();
+    userInfo.os.cpus = os.cpus();
+    userInfo.os.totalmem = os.totalmem();
 
     archive.append(JSON.stringify(userInfo), { name: 'UserInfo.txt' });
 

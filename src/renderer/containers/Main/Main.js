@@ -11,21 +11,11 @@ const path = require('path');
 const styles = theme => ({
   main: {
     width: 'auto',
-    display: 'block', // Fix IE 11 issue.
-    marginLeft: theme.spacing.unit * 3,
-    marginRight: theme.spacing.unit * 3,
-    [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
+    [theme.breakpoints.up(400)]: {
       width: 400,
       marginLeft: 'auto',
       marginRight: 'auto',
     },
-  },
-  paper: {
-    marginTop: theme.spacing.unit * 8,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
   },
   submit: {
     marginTop: theme.spacing.unit * 3,
@@ -33,8 +23,7 @@ const styles = theme => ({
 });
 
 function Start(props) {
-    const { classes } = props;
-    const { dark_mode } = props;
+    const { classes, dark_mode } = props;
     const [login, setLogin] = React.useState(false);
     const [create, setCreate] = React.useState(false);
     const [restore, setRestore] = React.useState(false);
