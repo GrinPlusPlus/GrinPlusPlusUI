@@ -98,6 +98,7 @@ const createWindow = async () => {
     var processing_txhashset = false;
 
     mainWindow.on('close', (event) => {
+        log.info("mainWindow.on('close')");
         if (processing_txhashset) {
             event.preventDefault();
             dialog.showMessageBox({
@@ -128,7 +129,7 @@ const createWindow = async () => {
         }
 
         statusInterval = setInterval(getStatus, 2000, (status) => {
-            if (mainWindow != null) {
+            if (mainWindow != null && shuttingDown == false) {
                 if (status != null) {
                     log.silly('NODE_STATUS: ' + JSON.stringify(status));
                     processing_txhashset = (status.sync_status == "PROCESSING_TXHASHSET");
@@ -174,13 +175,14 @@ app.on('window-all-closed', () => {
             setTimeout(function () {
                 log.warn('Node shutdown timed out.');
 
-                if (platform === 'darwin') {
+                if (!isWindows) {
                     try {
-                        execFile('pkill', ['-f', 'GrinNode'], (err, stdout) => {
+                        ChildProcess.execFile('pkill', ['-f', 'GrinNode'], (err, stdout) => {
                             log.info("pkill executed");
                             app.quit();
                         });
                     } catch (e) {
+                        log.info("pkill threw exception: " + e);
                         app.quit();
                     }
                 } else {
