@@ -12,7 +12,6 @@ import SupportModal from "../../components/Modals/SupportModal";
 import UserMenu from "../../components/UserMenu";
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import MenuOptions from '../../components/MenuOptions';
 import BackArrowIcon from '@material-ui/icons/ArrowBack';
 
 const styles = theme => ({
@@ -30,12 +29,13 @@ const styles = theme => ({
 });
 
 function ButtonAppNav(props) {
-  const { classes, pageName, noMenu, includeBack } = props;
+  const { classes, pageName, noMenu, includeBack, onClickMenu } = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [goBack, setGoBack] = React.useState(false);
 
   function handleClick(event) {
-    setAnchorEl(event.currentTarget);
+    //setAnchorEl(event.currentTarget);
+      onClickMenu();
   }
 
   function handleClose() {
@@ -53,24 +53,19 @@ function ButtonAppNav(props) {
 
   var menu = (
     <React.Fragment>
-      <IconButton
-        aria-owns={anchorEl ? 'nav-menu' : undefined}
-        className={classes.menuButton}
-        color="inherit"
-        aria-haspopup="true"
-        onClick={handleClick}
-        aria-label="Menu"
-      >
-        <MenuIcon />
-      </IconButton>
-      <Menu id="nav-menu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-        {MenuOptions.map((item, index) => (
-          <MenuItem key={index} component={Link} to={{pathname: item.pathname}}>{item.label}</MenuItem>
-        ))}
-      </Menu>
-      <Typography variant="h6" color="inherit" className={classes.grow}>
-        {!!pageName ? pageName : ''}
-      </Typography>
+        <IconButton
+            aria-owns={anchorEl ? 'nav-menu' : undefined}
+            className={classes.menuButton}
+            color="inherit"
+            aria-haspopup="true"
+            onClick={handleClick}
+            aria-label="Menu"
+        >
+            <MenuIcon />
+        </IconButton>
+        <Typography variant="h6" color="inherit" className={classes.grow}>
+            {!!pageName ? pageName : ''}
+        </Typography>
     </React.Fragment>
   );
 
@@ -90,30 +85,22 @@ function ButtonAppNav(props) {
     }
   }
 
-  function showSettings() {
-    return "";
-    /*if (!!noMenu ? true : false) {
-      return (
-        <React.Fragment>
-          <Typography className={classes.grow}></Typography>
-          <SettingsModal />
-        </React.Fragment>
-      );
-    } else {
-      return <SettingsModal />;
-    }*/
-  }
-
-  function showSupport() {
+  function showTopRightButtons() {
     if (!!noMenu ? true : false) {
       return (
         <React.Fragment>
-          <Typography className={classes.grow}></Typography>
-          <SupportModal />
+            <Typography className={classes.grow}></Typography>
+            <SettingsModal />
+            <SupportModal />
         </React.Fragment>
       );
     } else {
-      return <SupportModal />;
+        return (
+            <React.Fragment>
+                <SettingsModal />
+                <SupportModal />
+            </React.Fragment>
+        );
     }
   }
 
@@ -136,8 +123,7 @@ function ButtonAppNav(props) {
           {showBack()}
           {showMenu()}
           {showUserMenu()}
-          {showSettings()}
-          {showSupport()}
+          {showTopRightButtons()}
         </Toolbar>
       </AppBar>
     </div>
@@ -145,10 +131,11 @@ function ButtonAppNav(props) {
 }
 
 ButtonAppNav.propTypes = {
-  classes: PropTypes.object.isRequired,
-  pageName: PropTypes.string,
-  noMenu: PropTypes.bool,
-  includeBack: PropTypes.bool,
+    classes: PropTypes.object.isRequired,
+    pageName: PropTypes.string,
+    noMenu: PropTypes.bool,
+    includeBack: PropTypes.bool,
+    onClickMenu: PropTypes.func
 };
 
 export default withRouter(withStyles(styles)(ButtonAppNav));

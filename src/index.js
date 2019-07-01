@@ -1,4 +1,5 @@
 import { app, BrowserWindow, dialog } from 'electron';
+const { autoUpdater } = require('electron-updater');
 import ChildProcess from 'child_process';
 import Client from './main/client/Client';
 import Server from './main/server/Server';
@@ -85,13 +86,20 @@ const createWindow = async () => {
 
         log.info('Launching node: "' + binDirectory + nodeFileName + ' --headless"');
         ChildProcess.execFile(nodeFileName, ['--headless'], { cwd: binDirectory }, (error, stdout, stderr) => {
-            if (error) {
-                log.error('Error thrown from within execFile: ', error);
+            if (global.update_in_progress === true) {
+                autoUpdater.quitAndInstall();
             } else {
-                log.info('Node shutdown normally. Calling app.quit().');
+                if (error) {
+                    log.error('Error thrown from within execFile: ', error);
+                    dialog.showMessageBox({
+                        message: "Error occurred in GrinNode process. Try restarting Grin++. Error: \n" + error,
+                        buttons: ["OK"]
+                    });
+                } else {
+                    log.info('Node shutdown normally. Calling app.quit().');
+                    app.quit();
+                }
             }
-            
-            app.quit();
         });
     }
 
@@ -188,7 +196,7 @@ app.on('window-all-closed', () => {
                 } else {
                     app.quit();
                 }
-            }, 5000);
+            }, 10000);
         } else {
             app.quit();
         }

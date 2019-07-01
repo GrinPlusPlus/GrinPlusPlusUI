@@ -9,9 +9,13 @@ function call(event, fromGenesis) {
     ConnectionUtils.ownerRequest('POST', 'update_wallet' + queryString, headers, '', function (response) {
         log.info("Response: " + JSON.stringify(response));
 
-        var result = new Object();
-        result["status_code"] = response.status_code;
-        event.returnValue = result;
+        if (response.status_code != 200) {
+            log.error("Error updating wallet. Response: " + JSON.stringify(response));
+        }
+
+        if (global.mainWindow != null) {
+            global.mainWindow.webContents.send('UpdateWallet::Response', response.status_code);
+        }
     });
 }
 

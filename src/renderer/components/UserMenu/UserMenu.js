@@ -46,22 +46,13 @@ function UserMenu(props) {
   }
 
   return (
-    <div>
       <Button
-        aria-owns={anchorEl ? 'user-menu' : undefined}
-        aria-haspopup="true"
-        onClick={handleClick}
-        color="inherit"
+          color="inherit"
+          disabled
       >
-        <b>{sessionStorage.getItem("username")}</b>
-        <ImageAvatar />
+          <Typography color='textPrimary' variant=' inline'><b>{sessionStorage.getItem("username")}</b></Typography>
+          <ImageAvatar />
       </Button>
-      <Menu id="user-menu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-        {/*<MenuItem onClick={handleClose}>Profile</MenuItem>
-      <MenuItem onClick={handleClose}>My account</MenuItem>*/}
-        <MenuItem onClick={logout}>Logout</MenuItem>
-      </Menu>
-    </div>
   );
 }
 

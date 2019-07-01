@@ -25,10 +25,10 @@ const styles = theme => ({
     },
     status: {
         marginLeft: '-15px',
-        marginTop: '-14px'
+        marginTop: '-14px',
     },
     statusText: {
-        paddingLeft: '4px'
+        paddingLeft: '4px',
     },
     connections: {
         paddingLeft: '8px'
@@ -57,6 +57,9 @@ class StatusBar extends React.Component {
     }
 
     updateStatus(event, status, inbound, outbound, headerHeight, blockHeight, networkHeight, downloaded, totalSize, processed) {
+        global.FULLY_SYNCED = (status == 'FULLY_SYNCED');
+        global.BLOCK_HEIGHT = blockHeight;
+
         this.setState({
             status: status,
             inbound: inbound,
@@ -150,24 +153,24 @@ class StatusBar extends React.Component {
                     <Toolbar>
                         <MuiThemeProvider theme={dark_mode ? darkStatusTheme : statusTheme}>
                             <Grid container spacing={0} className={classes.Grid}>
-                                <Grid item xs={4}>
+                                <Grid item xs={3}>
                                     <IconButton disabled className={classes.status}>
                                         <StatusIcon color={getColor(this.state.status)} />
-                                        <Typography inline className={classes.statusText}><b>STATUS: </b></Typography>
-                                        <Typography inline color={getColor(this.state.status)} className={classes.statusText}><b>{getStatusText(this.state)}</b></Typography>
+                                        <Typography display='inline' color="textPrimary" className={classes.statusText}><b>Status: </b></Typography>
+                                        <Typography display='inline' color={getColor(this.state.status)} className={classes.statusText}><b>{getStatusText(this.state)}</b></Typography>
                                     </IconButton>
                                 </Grid>
-                                <Grid item xs={4}>
+                                <Grid item xs={6}>
                                     <center>
-                                        <Typography inline className={classes.chainHeight}><b>Headers: {this.state.headerHeight}</b></Typography>
-                                        <Typography inline className={classes.chainHeight}><b>Blocks: {this.state.blockHeight}</b></Typography>
-                                        <Typography inline className={classes.chainHeight}><b>Network: {this.state.networkHeight}</b></Typography>
+                                        <Typography display='inline' className={classes.chainHeight}><b>Headers: {this.state.headerHeight}</b></Typography>
+                                        <Typography display='inline' className={classes.chainHeight}><b>Blocks: {this.state.blockHeight}</b></Typography>
+                                        <Typography display='inline' className={classes.chainHeight}><b>Network: {this.state.networkHeight}</b></Typography>
                                     </center>
                                 </Grid>
-                                <Grid item xs={4}>
+                                <Grid item xs={3}>
                                     <div style={{ textAlign: 'right' }}>
-                                        <Typography inline className={classes.connections}><b>Inbound: {this.state.inbound}</b></Typography>
-                                        <Typography inline className={classes.connections}><b>Outbound: {this.state.outbound}</b></Typography>
+                                        <Typography display='inline' className={classes.connections}><b>Inbound: {this.state.inbound}</b></Typography>
+                                        <Typography display='inline' className={classes.connections}><b>Outbound: {this.state.outbound}</b></Typography>
                                     </div>
                                 </Grid>
                             </Grid>

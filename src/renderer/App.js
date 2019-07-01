@@ -53,7 +53,7 @@ const dark_theme = createMuiTheme({
         },
         text: {
             primary: '#ffffff',
-            secondary: '#ffffff',
+            secondary: '#aaaaaa',
         }
     },
     typography: {
@@ -68,14 +68,24 @@ const dark_theme = createMuiTheme({
             color: '#ffffff'
         }
     },
-    input: {
+    Input: {
         color: '#000000'
     },
     overrides: {
         MuiDialog: {
             paper: {
-                backgroundColor: '#000000',
+                backgroundColor: '#444444',
                 border: '#FFEB3B 2px solid'
+            }
+        },
+        MuiInput: {
+            root: {
+                color: '#000000'
+            }
+        },
+        MuiTypography: {
+            root: {
+                color: '#ffffff'
             }
         }
     }
@@ -101,7 +111,7 @@ export default class App extends Component {
         });
 
         this.state = {
-            isDarkMode: false,
+            isDarkMode: true,
             snackbarMessage: "",
             snackbarStatus: "success",
         };
@@ -111,7 +121,7 @@ export default class App extends Component {
 
     getBackgroundColor() {
         if (this.state.isDarkMode) {
-            return '#333333';
+            return '#444444';
         } else {
             return '#DDDDDD';
         }

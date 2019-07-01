@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { ipcRenderer } from 'electron';
-import {FormControl, Input, InputLabel } from "@material-ui/core";
+import { FormControl } from "@material-ui/core";
+import CustomTextField from '../../../CustomTextField';
 
 function SendGrinbox(props) {
     const { selected, grinboxAddress, setGrinboxAddress } = props;
@@ -17,13 +18,13 @@ function SendGrinbox(props) {
                 required
                 fullWidth
             >
-                <InputLabel htmlFor="Grinbox">Address (eg. gVvGhkjf...)</InputLabel>
-                <Input
+                <CustomTextField
                     name="Grinbox"
                     type="text"
                     id="Grinbox"
                     value={grinboxAddress}
                     onChange={(event) => { setGrinboxAddress(event.target.value) }}
+                    placeholder='Address (eg. gVvGhkjf...)'
                 />
             </FormControl>
             <br />

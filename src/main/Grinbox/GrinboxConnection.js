@@ -145,17 +145,19 @@ function disconnect() {
 }
 
 function subscribe(secret_key, address) {
-    log.info("Subscribing to grinbox address: " + address);
+    const grinbox_address = GrinboxUtils.encodePublicKey(address);
+
+    log.info("Subscribing to grinbox address: " + grinbox_address);
 
     global.grinbox_secret_key = secret_key;
-    global.grinbox_address = address;
+    global.grinbox_address = grinbox_address;
 
     let privateKey = Buffer.from(secret_key, 'hex');
     let signedChallenge = GrinboxCrypto.signMessage(privateKey, global.grinbox_challenge);
 
     var subscribe_message = new Object();
     subscribe_message.type = "Subscribe";
-    subscribe_message.address = address;
+    subscribe_message.address = grinbox_address;
     subscribe_message.signature = signedChallenge;
 
     socket.send(JSON.stringify(subscribe_message));

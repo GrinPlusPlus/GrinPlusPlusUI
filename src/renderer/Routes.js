@@ -8,8 +8,8 @@ import Restore from './containers/Restore';
 import Main from './containers/Main';
 import Wallet from './containers/Wallet';
 import Peers from './containers/Peers';
+import Outputs from './containers/Outputs';
 import Advanced from './containers/Advanced';
-
 
 function Routes(props) {
   const isDarkMode = props.isDarkMode;
@@ -23,6 +23,7 @@ function Routes(props) {
             <Route exact path='/restore' component={ Restore } />
             <Route exact path='/wallet' component={Wallet} />
             <Route exact path='/peers' component={Peers} />
+            <Route exact path='/outputs' component={Outputs} />
             <Route exact path='/advanced' component={Advanced} />
         </Switch>
       </ScrollToTop>

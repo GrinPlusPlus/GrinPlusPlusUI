@@ -8,16 +8,10 @@ import {
 import Switch from '@material-ui/core/Switch';
 import { withStyles } from "@material-ui/core/styles";
 import { ipcRenderer } from 'electron';
+import GrinDialog from '../../GrinDialog';
+import CustomTextField from '../../CustomTextField';
 
 const styles = theme => ({
-    paper: {
-        position: "absolute",
-        width: theme.spacing.unit * 50,
-        backgroundColor: theme.palette.background.paper,
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing.unit * 4,
-        outline: "none"
-    },
     fab: {
         margin: theme.spacing.unit
     },
@@ -64,7 +58,7 @@ function SupportModal(props) {
         setTimeout(function () {
             setErrorMessage("Failed to submit: Operation timed out.");
             setSubmitting(false);
-        }, 3000);
+        }, 5000);
     }
 
     function getMessageDisplay() {
@@ -88,24 +82,23 @@ function SupportModal(props) {
             >
                 <ContactSupportIcon color="secondary" />
             </IconButton>
-            <Dialog
+            <GrinDialog
                 open={open}
                 onClose={closeWindow}
-                aria-labelledby="form-dialog-title"
+                title="Report an Issue"
             >
-                <DialogTitle id="form-dialog-title">Report an Issue</DialogTitle>
                 <DialogContent>
                     { getMessageDisplay() }
                     <FormControl
                         margin="dense"
                         fullWidth
                     >
-                        <InputLabel htmlFor="name">Name</InputLabel>
-                        <Input
+                        <CustomTextField
                             name="name"
                             type="text"
                             id="name"
                             value={name}
+                            placeholder="Name"
                             onChange={(e) => { setName(e.target.value) }}
                         />
                     </FormControl>
@@ -114,12 +107,12 @@ function SupportModal(props) {
                         required
                         fullWidth
                     >
-                        <InputLabel htmlFor="email">Email</InputLabel>
-                        <Input
+                        <CustomTextField
                             name="email"
                             type="text"
                             id="email"
                             value={email}
+                            placeholder="Email"
                             onChange={(e) => { setEmail(e.target.value) }}
                         />
                     </FormControl>
@@ -128,9 +121,7 @@ function SupportModal(props) {
                         required
                         fullWidth
                     >
-                        <TextField
-                            margin="normal"
-                            variant="outlined"
+                        <CustomTextField
                             placeholder="Please enter a description of your problem."
                             rows={4}
                             fullWidth
@@ -139,7 +130,7 @@ function SupportModal(props) {
                         />
                     </FormControl>
                 </DialogContent>
-                <DialogActions>
+                <DialogActions style={{ marginRight: '15px', marginBottom: '15px' }}>
                     <Button onClick={closeWindow} variant="contained" color="primary">
                         Cancel
                     </Button>
@@ -147,7 +138,7 @@ function SupportModal(props) {
                         Submit
                     </Button>
                 </DialogActions>
-            </Dialog>
+            </GrinDialog>
         </React.Fragment>
     );
 }

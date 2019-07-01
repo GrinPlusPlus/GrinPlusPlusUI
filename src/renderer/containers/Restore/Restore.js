@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Redirect, withRouter } from 'react-router-dom';
 import { ipcRenderer } from 'electron';
-import ButtonAppNav from "../../components/ButtonAppNav";
+import SideMenu from "../../components/SideMenu";
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
 const styles = theme => ({
@@ -117,7 +117,7 @@ function Restore(props) {
 
     return (
         <React.Fragment>
-            <ButtonAppNav noMenu includeBack />
+            <SideMenu noMenu includeBack />
             <main className={classes.main}>
                 <CssBaseline />
 

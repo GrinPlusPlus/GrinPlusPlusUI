@@ -11,6 +11,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import { withStyles } from "@material-ui/core/styles";
 import { ipcRenderer } from 'electron';
+import GrinDialog from '../GrinDialog';
 
 const styles = theme => ({
     paper: {
@@ -41,8 +42,12 @@ function SettingsModal(props) {
         setOpen(false);
     }
 
-    function rescan() {
+    function scanForOutputs() {
         ipcRenderer.send("UpdateWallet", true);
+    }
+
+    function resyncBlockchain() {
+        ipcRenderer.send("ResyncBlockchain");
     }
 
     return (
@@ -54,30 +59,24 @@ function SettingsModal(props) {
             >
                 <SettingsIcon color="secondary" />
             </IconButton>
-            <Dialog
+            <GrinDialog
                 open={open}
                 onClose={handleClose}
-                aria-labelledby="form-dialog-title"
+                title="Settings"
+                maxWidth="xs"
+                fullWidth
             >
-                <DialogTitle id="form-dialog-title">Settings</DialogTitle>
                 <DialogContent>
+                    <center>
+                        <Button onClick={scanForOutputs} variant="contained" color="secondary">
+                            Scan for outputs
+                        </Button>
+                        <br /> <br />
 
-                    {/*<FormControlLabel
-                        control={
-                            <Switch
-                                disabled
-                                checked={false}
-                                value="mainnet"
-                                color="primary"
-                            />
-                        }
-                        label="Mainnet"
-                    />*/}
-
-                    <Button onClick={rescan} variant="contained" color="secondary">
-                        Rescan Blockchain
-                    </Button>
-
+                        <Button onClick={resyncBlockchain} variant="contained" color="secondary">
+                            Resync Blockchain
+                        </Button>
+                    </center>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} variant="contained" color="primary">
@@ -87,7 +86,7 @@ function SettingsModal(props) {
                         OK
                     </Button>
                 </DialogActions>
-            </Dialog>
+            </GrinDialog>
         </React.Fragment>
     );
 }

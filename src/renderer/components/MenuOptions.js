@@ -4,6 +4,10 @@ const MenuOptions = [
         pathname: '/wallet'
     },
     {
+        label: 'Outputs',
+        pathname: '/outputs'
+    },
+    {
         label: 'Peers',
         pathname: '/peers'
     }

@@ -5,7 +5,7 @@ import Divider from '@material-ui/core/Divider';
 import Fab from '@material-ui/core/Fab'
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
-import ButtonAppNav from '../../components/ButtonAppNav';
+import SideMenu from '../../components/SideMenu';
 import { ipcRenderer } from 'electron';
 import Typography from '@material-ui/core/Typography';
 import SendModal from '../../components/Modals/SendModal';
@@ -16,6 +16,7 @@ import FinalizeIcon from '@material-ui/icons/CallMerge';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import Transactions from '../../components/Transactions';
+import GrinUtil from "../../util/GrinUtil.js";
 
 const styles = theme => ({
     fullWidth: {
@@ -38,27 +39,156 @@ const styles = theme => ({
     }
 });
 
-function Wallet(props) {
-    const [showSendModal, setShowSendModal] = React.useState(false);
-    const [showReceiveModal, setShowReceiveModal] = React.useState(false);
-    const [showCanceled, setShowCanceled] = React.useState(false);
-    const [refresh, setRefresh] = React.useState(false);
+class Wallet extends React.Component {
+    constructor() {
+        super();
 
-    function FormatAmount(amount) {
-        var calculatedAmount = Math.abs(amount) / Math.pow(10, 9);
-        var formatted = calculatedAmount.toFixed(9) + "ツ";
-        if (amount < 0) {
-            formatted = "-" + formatted;
+        var summaryAmounts = new Object();
+        summaryAmounts.total = 0;
+        summaryAmounts.awaiting_confirmation = 0;
+        summaryAmounts.immature = 0;
+        summaryAmounts.locked = 0;
+        summaryAmounts.currently_spendable = 0;
+
+        this.state = {
+            transactions: null,
+            lastConfirmedHeight: 0,
+            showCanceled: false,
+            showSendModal: false,
+            showReceiveModal: false,
+            summaryAmounts: summaryAmounts,
+            buttonsDisabled: true
+        };
+
+        this.onWalletSummaryResponse = this.onWalletSummaryResponse.bind(this);
+        this.updateWallet = this.updateWallet.bind(this);
+        this.onWalletUpdated = this.onWalletUpdated.bind(this);
+        this.onCanceled = this.onCanceled.bind(this);
+        this.onReposted = this.onReposted.bind(this);
+        this.showSend = this.showSend.bind(this);
+        this.closeSend = this.closeSend.bind(this);
+        this.showReceive = this.showReceive.bind(this);
+        this.closeReceive = this.closeReceive.bind(this);
+        this.showHideCanceled = this.showHideCanceled.bind(this);
+        this.handleFinalize = this.handleFinalize.bind(this);
+        this.updateButtonState = this.updateButtonState.bind(this);
+    }
+
+    updateButtonState() {
+        if (global.FULLY_SYNCED != true || global.BLOCK_HEIGHT >= 262080) {
+            if (this.state.buttonsDisabled == false) {
+                this.setState({
+                    buttonsDisabled: true
+                });
+            }
+        } else if (this.state.buttonsDisabled == true) {
+            this.setState({
+                buttonsDisabled: false
+            });
         }
-
-        return formatted;
     }
 
-    function handleSend(event) {
-        setShowSendModal(true);
+    componentDidMount() {
+        ipcRenderer.removeAllListeners('WalletSummary::Response');
+        ipcRenderer.on('WalletSummary::Response', this.onWalletSummaryResponse);
+
+        ipcRenderer.removeAllListeners('Cancel::Response');
+        ipcRenderer.on('Cancel::Response', this.onCanceled);
+
+        ipcRenderer.removeAllListeners('Repost::Response');
+        ipcRenderer.on('Repost::Response', this.onReposted);
+
+        ipcRenderer.removeAllListeners('UpdateWallet::Response');
+        ipcRenderer.on('UpdateWallet::Response', this.onWalletUpdated);
+
+        ipcRenderer.send('WalletSummary', this.state.showCanceled);
+
+        setInterval(this.updateButtonState, 1000);
     }
 
-    function handleFinalize(event) {
+    onWalletSummaryResponse(event, statusCode, response) {
+        if (statusCode == 200) {
+            var summaryAmounts = new Object();
+            summaryAmounts.total = response.total;
+            summaryAmounts.awaiting_confirmation = response.amount_awaiting_confirmation;
+            summaryAmounts.immature = response.amount_immature;
+            summaryAmounts.locked = response.amount_locked;
+            summaryAmounts.currently_spendable = response.amount_currently_spendable;
+
+            this.setState({
+                transactions: response.transactions,
+                lastConfirmedHeight: response.last_confirmed_height,
+                summaryAmounts: summaryAmounts
+            });
+        } else {
+            log.error("WalletSummary::Response returned result " + statusCode);
+        }
+    }
+
+    updateWallet() {
+        ipcRenderer.send('UpdateWallet', this.state.showSpent, this.state.showCanceled);
+    }
+
+    onWalletUpdated(event, statusCode) {
+        if (statusCode == 200) {
+            ipcRenderer.send('WalletSummary', this.state.showCanceled);
+        } else {
+            // TODO: Show error?
+        }
+    }
+
+    onCanceled(event, statusCode) {
+        if (statusCode == 200) {
+            ipcRenderer.send('WalletSummary', this.state.showCanceled);
+        } else {
+            // TODO: Show error?
+        }
+    }
+
+    onReposted(event, statusCode) {
+        if (statusCode == 200) {
+            ipcRenderer.send('WalletSummary', this.state.showCanceled);
+        } else {
+            // TODO: Show error?
+        }
+    }
+
+    showSend(event) {
+        this.setState({
+            showSendModal: true
+        });
+    }
+
+    closeSend(event) {
+        this.setState({
+            showSendModal: false
+        });
+        this.updateWallet();
+    }
+
+    showReceive(event) {
+        this.setState({
+            showReceiveModal: true
+        });
+    }
+
+    closeReceive(event) {
+        this.setState({
+            showReceiveModal: false
+        });
+        this.updateWallet();
+    }
+
+    showHideCanceled(event) {
+        const newValue = !this.state.showCanceled;
+        this.setState({
+            showCanceled: newValue
+        });
+
+        ipcRenderer.send('WalletSummary', newValue);
+    }
+
+    handleFinalize(event) {
         ipcRenderer.removeAllListeners('ReceiveFileSelected');
         ipcRenderer.on('ReceiveFileSelected', (event, fileName) => {
             if (fileName != null) {
@@ -69,7 +199,8 @@ function Wallet(props) {
                         if (result !== null && result.status_code == 200) {
                             ipcRenderer.send('SaveToFile', (fileName + '.finalized'), JSON.stringify(result.tx));
                             // TODO: PostTx?
-                            setRefresh(!refresh);
+
+                            this.updateWallet();
                         } else {
                             // TODO: Handle this
                         }
@@ -82,121 +213,125 @@ function Wallet(props) {
 
         ipcRenderer.send('ReceiveFile');
     }
-
-    function cancelTx(txnId) {
-        ipcRenderer.sendSync('Cancel', txnId); // TODO: Handle result
-        setRefresh(!refresh);
-    }
-
-    function repostTx(txnId) {
-        ipcRenderer.sendSync('Repost', txnId); // TODO: Handle result
-        setRefresh(!refresh);
-    }
-
-    function checkForOutputs(event) {
-        ipcRenderer.send("UpdateWallet", false);
-        setTimeout(function () { setRefresh(!refresh) }, 2000);
-    }
-
-    const { classes } = props;
     
-    var result = ipcRenderer.sendSync('WalletSummary');
-    var total = FormatAmount(result['total']);
-    var amount_awaiting_confirmation = FormatAmount(result['amount_awaiting_confirmation']);
-    var amount_immature = FormatAmount(result['amount_immature']);
-    var amount_locked = FormatAmount(result['amount_locked']);
-    var amount_currently_spendable = FormatAmount(result['amount_currently_spendable']);
+    render() {
+        const { classes } = this.props;
 
-    return (
-        <React.Fragment>
-            <ButtonAppNav pageName='Wallet' />
-            <Grid container spacing={8} style={{ marginTop: '1px', marginBottom: '0px', maxHeight: 'calc(100vh - 104px)', overflow: 'auto' }} className={classes.root}>
+        //var result = ipcRenderer.sendSync('WalletSummary');
+        var total = GrinUtil.FormatAmount(this.state.summaryAmounts.total);
+        var amount_awaiting_confirmation = GrinUtil.FormatAmount(this.state.summaryAmounts.awaiting_confirmation);
+        var amount_immature = GrinUtil.FormatAmount(this.state.summaryAmounts.immature);
+        var amount_locked = GrinUtil.FormatAmount(this.state.summaryAmounts.locked);
+        var amount_currently_spendable = GrinUtil.FormatAmount(this.state.summaryAmounts.currently_spendable);
 
-                <Grid item xs={2} />
-                <Grid item xs={4}>
-                    <br />
-                    <Typography variant="h6">Spendable</Typography>
-                    <Typography variant="h4">{amount_currently_spendable}</Typography>
-                </Grid>
-                <Grid item xs={4}>
-                    <br />
-                    <Typography align="right" variant="subtitle2">
-                        Total:  {total}<br />
-                        Immature:  {amount_immature}<br />
-                        Unconfirmed:  {amount_awaiting_confirmation}<br />
-                        Locked:  {amount_locked}<br />
-                    </Typography>
-                </Grid>
-                <Grid item xs={2} />
+        return (
+            <React.Fragment>
+                <SideMenu pageName='Wallet' />
+                <Grid container spacing={2} style={{ marginTop: '1px', marginBottom: '0px', maxHeight: 'calc(100vh - 104px)', overflow: 'auto' }} className={classes.root}>
 
-                <Grid item xs={3} />
-                <Grid item xs={2}>
-                    <Fab
-                        variant="extended"
-                        className={classes.fullWidth}
-                        aria-label="Send"
-                        onClick={handleSend}
-                        color="primary"
-                    >
-                        <SendIcon className={classes.extendedIcon} /> Send
-                    </Fab>
-                    <SendModal showModal={showSendModal} onClose={(event) => { setShowSendModal(false) }} />
-                </Grid>
-                <Grid item xs={2}>
-                    <Fab
-                        variant="extended"
-                        className={classes.fullWidth}
-                        aria-label="Receive"
-                        onClick={(event) => { setShowReceiveModal(true) }}
-                        color="primary"
-                    >
-                        <ReceiveIcon className={classes.extendedIcon} /> Receive
-                    </Fab>
-                    <ReceiveModal showModal={showReceiveModal} onClose={(_event) => { setShowReceiveModal(false) }} />
-                </Grid>
-                <Grid item xs={2}>
-                    <Fab
-                        variant="extended"
-                        className={classes.fullWidth}
-                        aria-label="Finalize"
-                        onClick={handleFinalize}
-                        color="primary"
-                    >
-                        <FinalizeIcon className={classes.extendedIcon} /> Finalize
-                    </Fab>
-                </Grid>
-                <Grid item xs={3} />
-
-                <Grid item xs={2} />
-                <Grid item xs={4}>
-                    <br />
-                    <Typography variant="h5" inline><b>Transactions</b></Typography>
-                    <Button onClick={(event) => { setShowCanceled(!showCanceled) }} style={{ marginBottom: '7px' }}>
-                        ({showCanceled ? 'Hide' : 'Show'} Canceled)
-                    </Button>
-                </Grid>
-
-                <Grid item xs={4}>
-                    <div align='right'>
+                    <Grid item xs={2} />
+                    <Grid item xs={4}>
                         <br />
-                        <Button onClick={checkForOutputs}>
-                            <RefreshIcon /> Refresh
-                        </Button>
-                    </div>
-                </Grid>
-                <Grid item xs={2}>
-                </Grid>
+                        <Typography variant="h6">Spendable</Typography>
+                        <Typography variant="h4">{amount_currently_spendable}</Typography>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <br />
+                        <Typography align="right" variant="subtitle2">
+                            Total:  {total}<br />
+                            Immature:  {amount_immature}<br />
+                            Unconfirmed:  {amount_awaiting_confirmation}<br />
+                            Locked:  {amount_locked}<br />
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={2} />
 
-                <Grid item xs={2} />
-                <Grid item xs={8}>
-                    <Divider variant="fullWidth" />
-                    <Transactions transactions={result.transactions} lastConfirmedHeight={result.last_confirmed_height} showCanceled={showCanceled} repostTx={repostTx} cancelTx={cancelTx} />
+                    <Grid item xs={2} />
+                    <Grid item xs={8}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={4}>
+                                <Fab
+                                    variant="extended"
+                                    className={classes.fullWidth}
+                                    aria-label="Send"
+                                    onClick={this.showSend}
+                                    color="primary"
+                                    disabled={this.state.buttonsDisabled}
+                                    fullWidth
+                                >
+                                    <SendIcon className={classes.extendedIcon} /> Send
+                            </Fab>
+                                <SendModal showModal={this.state.showSendModal} onClose={this.closeSend} />
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Fab
+                                    variant="extended"
+                                    className={classes.fullWidth}
+                                    aria-label="Receive"
+                                    onClick={this.showReceive}
+                                    color="primary"
+                                    disabled={this.state.buttonsDisabled}
+                                    fullWidth
+                                >
+                                    <ReceiveIcon className={classes.extendedIcon} /> Receive
+                            </Fab>
+                                <ReceiveModal showModal={this.state.showReceiveModal} onClose={this.closeReceive} />
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Fab
+                                    variant="extended"
+                                    className={classes.fullWidth}
+                                    aria-label="Finalize"
+                                    onClick={this.handleFinalize}
+                                    color="primary"
+                                    disabled={this.state.buttonsDisabled}
+                                    fullWidth
+                                >
+                                    <FinalizeIcon className={classes.extendedIcon} /> Finalize
+                                </Fab>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid item xs={2} />
+
+                    <Grid item xs={2} />
+                    <Grid item xs={6}>
+                        <br />
+                        <Typography variant="h5"><b>Transactions</b>
+                            <Button onClick={this.showHideCanceled} style={{ marginBottom: '7px' }}>
+                                ({this.state.showCanceled ? 'Hide' : 'Show'} Canceled)
+                            </Button>
+                        </Typography>
+                    </Grid>
+
+                    <Grid item xs={2}>
+                        <div align='right'>
+                            <br />
+                            <Button onClick={() => { ipcRenderer.send('UpdateWallet', false) }}>
+                                <RefreshIcon /> Refresh
+                        </Button>
+                        </div>
+                    </Grid>
+                    <Grid item xs={2}>
+                    </Grid>
+
+                    <Grid item xs={2} />
+                    <Grid item xs={8}>
+                        <Divider variant="fullWidth" />
+                        <Transactions
+                            transactions={this.state.transactions}
+                            lastConfirmedHeight={this.state.last_confirmed_height}
+                            showCanceled={this.state.showCanceled}
+                            repostTx={(txnId) => { ipcRenderer.send('Repost', txnId) }}
+                            cancelTx={(txnId) => { ipcRenderer.send('Cancel', txnId) }}
+                        />
+                    </Grid>
+                    <Grid item xs={2}>
+                    </Grid>
                 </Grid>
-                <Grid item xs={2}>
-                </Grid>
-            </Grid>
-        </React.Fragment>
-    );
+            </React.Fragment>
+        );
+    }
 }
 
 Wallet.propTypes = {

@@ -12,7 +12,7 @@ import Paper from '@material-ui/core/Paper';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Redirect, withRouter } from 'react-router-dom';
 import { ipcRenderer } from 'electron';
-import ButtonAppNav from "../../components/ButtonAppNav";
+import SideMenu from "../../components/SideMenu";
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import WalletWords from "./WalletWords"
 
@@ -114,7 +114,7 @@ function Register(props) {
 
     return (
         <React.Fragment>
-            <ButtonAppNav noMenu includeBack />
+            <SideMenu noMenu includeBack />
             <main className={classes.main}>
                 <CssBaseline />
 

@@ -1,10 +1,10 @@
 import ConnectionUtils from '../../ConnectionUtils';
+import log from 'electron-log';
 
 function call(event) {
     const headers = [{ name: 'session_token', value: global.session_token }];
     ConnectionUtils.ownerRequest('GET', 'retrieve_summary_info', headers, '', function (response) {
         var result = new Object();
-        result["status_code"] = response.status_code;
 
         if (response.status_code == 200) {
             var json = JSON.parse(response.body);
@@ -17,10 +17,13 @@ function call(event) {
             result["amount_locked"] = json.amount_locked;
             result["amount_currently_spendable"] = json.amount_currently_spendable;
             result["transactions"] = JSON.stringify(json.transactions);
-            event.returnValue = result;
+        } else {
+            log.error("Error receiving wallet summary. Response: " + JSON.stringify(response));
         }
 
-        event.returnValue = result;
+        if (global.mainWindow != null) {
+            global.mainWindow.webContents.send('WalletSummary::Response', response.status_code, result);
+        }
     });
 }
 

@@ -2,17 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import { ipcRenderer, clipboard } from 'electron';
 import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import Grid from "@material-ui/core/Grid";
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import IconButton from "@material-ui/core/IconButton";
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
 import ReceiveIcon from "@material-ui/icons/CallReceived";
 import OpenIcon from '@material-ui/icons/FolderOpen';
 import CopyIcon from '@material-ui/icons/FileCopy';
@@ -20,6 +16,8 @@ import Snackbar from '@material-ui/core/Snackbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from "@material-ui/core/styles";
 import CustomSnackbarContent from "../../CustomSnackbarContent";
+import CustomTextField from "../../CustomTextField";
+import GrinDialog from '../../GrinDialog';
 
 const styles = theme => ({
     fab: {
@@ -48,15 +46,17 @@ function ReceiveModal(props) {
     const [grinboxAddress, setGrinboxAddress] = React.useState("");
 
     if (httpAddress.length === 0) {
-        const ipAddress = ipcRenderer.sendSync('LookupIP');
-        if (ipAddress != null) {
-            setHttpAddress(ipAddress);
-        }
+        setTimeout(() => {
+            const url = ipcRenderer.sendSync('LookupURL'); // TODO: This should only be attempted once. Need to make ReceiveModal a React.Component
+            if (url != null) {
+                setHttpAddress(url);
+            }
 
-        const grinboxAddress = ipcRenderer.sendSync('Grinbox::GetAddress');
-        if (grinboxAddress != null) {
-            setGrinboxAddress(grinboxAddress);
-        }
+            const grinboxAddress = ipcRenderer.sendSync('Grinbox::GetAddress');
+            if (grinboxAddress != null) {
+                setGrinboxAddress(grinboxAddress);
+            }
+        }, 200);
     }
     
     function closeModal() {
@@ -124,24 +124,24 @@ function ReceiveModal(props) {
         }
 
         return (
-            <Grid container spacing={8} fullWidth>
+            <Grid container spacing={2} fullWidth>
                 <Grid item xs={11}>
                     <FormControl
                         margin="dense"
                         required
                         fullWidth
                     >
-                        <InputLabel htmlFor="receiveFile">Transaction File</InputLabel>
-                        <Input
+                        <CustomTextField
                             name="receiveFile"
                             type="text"
                             id="receiveFile"
                             value={selectedFile}
+                            placeholder='Transaction File'
                         />
                     </FormControl>
                 </Grid>
                 <Grid item xs={1}>
-                    <IconButton onClick={handleSelectFile} className={classes.fileChooserButton}>
+                    <IconButton color='secondary' onClick={handleSelectFile} className={classes.fileChooserButton}>
                         <OpenIcon />
                     </IconButton>
                 </Grid>
@@ -165,7 +165,7 @@ function ReceiveModal(props) {
             <center style={{fontSize: '13px', color: 'red'}}>
                 <b>
                     Ngrok addresses are ephemeral, and a new one is generated each time you open Grin++.<br/>
-                    After requesting funds via https, you must leave Grin++ running until those funds are received.
+                    After requesting funds via https, you must stay logged in until those funds are received.
                 </b>
             </center>
         )
@@ -204,21 +204,13 @@ function ReceiveModal(props) {
                 />
             </Snackbar>
 
-            <Dialog
+            <GrinDialog
                 open={true}
                 onClose={closeModal}
                 size="md"
                 fullWidth={true}
-                aria-labelledby="form-dialog-title"
+                title='Receive Grin'
             >
-                <DialogTitle id="form-dialog-title" disableTypography>
-                    <Typography
-                        variant='h4'
-                        align='center'
-                    >
-                        Receive Grin
-                    </Typography>
-                </DialogTitle>
                 <DialogContent>
                     <form className={classes.form} onSubmit={handleReceive}>
                         <center>
@@ -271,7 +263,7 @@ function ReceiveModal(props) {
                         </Typography>
                     </form>
                 </DialogContent>
-            </Dialog>
+            </GrinDialog>
         </React.Fragment>
     );
 }

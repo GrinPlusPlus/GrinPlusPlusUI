@@ -6,11 +6,13 @@ function call(event, txId) {
 
     log.info("Canceling transaction " + txId);
     ConnectionUtils.ownerRequest('POST', 'cancel_tx?id=' + txId, headers, '', function (response) {
-        log.info("Cancel result: " + JSON.stringify(response));
+        if (response.status_code != 200) {
+            log.error("Error canceling transaction. Response: " + JSON.stringify(response));
+        }
 
-        var result = new Object();
-        result["status_code"] = response.status_code;
-        event.returnValue = result;
+        if (global.mainWindow != null) {
+            global.mainWindow.webContents.send('Cancel::Response', response.status_code);
+        }
     });
 }
 

@@ -3,11 +3,13 @@ import PropTypes from "prop-types";
 import { ipcRenderer } from 'electron';
 import {
     Button, Dialog, DialogContent, DialogTitle, Grid, Radio, RadioGroup,
-    FormControl, FormControlLabel, Input, InputLabel, Snackbar, Typography
+    FormControl, FormControlLabel, FilledInput, Snackbar, Typography
 } from '@material-ui/core';
+import GrinDialog from '../../GrinDialog';
 import SendIcon from "@material-ui/icons/Send";
 import { withStyles } from "@material-ui/core/styles";
 import CustomSnackbarContent from "../../CustomSnackbarContent";
+import CustomTextField from '../../CustomTextField';
 import GrinUtil from "../../../util/GrinUtil";
 import SendFile from "./SendFile";
 import SendHttp from "./SendHttp";
@@ -139,20 +141,12 @@ function SendModal(props) {
                 />
             </Snackbar>
 
-            <Dialog
+            <GrinDialog
                 open={true}
                 onClose={closeWindow}
                 fullWidth={true}
-                aria-labelledby="form-dialog-title"
+                title='Send Grin'
             >
-                <DialogTitle id="form-dialog-title" disableTypography>
-                    <Typography
-                        variant='h4'
-                        align='center'
-                    >
-                        Send Grin
-                    </Typography>
-                </DialogTitle>
                 <DialogContent>
                     <form className={classes.form} onSubmit={handleSend}>
                         <FormControl component="fieldset" required>
@@ -171,17 +165,15 @@ function SendModal(props) {
 
                         <br />
 
-                        <Grid container spacing={8}>
+                        <Grid container spacing={2}>
                             <Grid item xs={8}>
                                 <FormControl margin="dense" required fullWidth>
-                                    <InputLabel htmlFor="amount">Amount ツ</InputLabel>
-                                    <Input name="amount" type="text" id="amount" onChange={handleAmountChange} autoFocus />
+                                    <CustomTextField name="amount" type="text" id="amount" onChange={handleAmountChange} placeholder='Amount ツ' autoFocus />
                                 </FormControl>
                             </Grid>
                             <Grid item xs={4}>
                                 <FormControl margin="dense" fullWidth>
-                                    <InputLabel htmlFor="fee">Fee ツ</InputLabel>
-                                    <Input name="fee" type="text" id="fee" value={fee} disabled />
+                                    <CustomTextField name="fee" type="text" id="fee" value={fee} placeholder='Fee ツ' disabled />
                                 </FormControl>
                             </Grid>
                         </Grid>
@@ -195,13 +187,13 @@ function SendModal(props) {
                             <Button onClick={closeWindow} variant="contained" color="primary">
                                 Cancel
                             </Button>
-                            <Button type="submit" style={{ marginLeft: '10px' }} variant="contained" color="primary" disabled={!shouldEnableSubmit()} >
+                            <Button type="submit" disabledBackgroundColor='primary' style={{ marginLeft: '10px' }} variant="contained" color="primary" disabled={!shouldEnableSubmit()} >
                                 Send <SendIcon />
                             </Button>
                         </Typography>
                     </form>
                 </DialogContent>
-            </Dialog>
+            </GrinDialog>
         </React.Fragment>
     );
 }

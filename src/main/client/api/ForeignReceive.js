@@ -1,4 +1,6 @@
 import ConnectionUtils from '../ConnectionUtils';
+var jayson = require('jayson');
+import log from 'electron-log';
 
 const RECEIVE_TX_PATH = '/v1/wallet/foreign/receive_tx';
 
@@ -47,4 +49,38 @@ function call(httpAddress, slate, callback) {
     }
 };
 
-export default {call}
+function callRPC(httpAddress, slate, callback) {
+    var client = null;
+    if (httpAddress.toLowerCase().startsWith('https')) {
+        client = jayson.client.https(httpAddress + '/v2/foreign');
+    } else {
+        client = jayson.client.http(httpAddress + '/v2/foreign');
+    }
+
+    client.request('receive_tx', [slate, null, "Greetings, from Grin++!"], function (err, response) {
+        if (err != null) {
+            log.error('Receive_tx error: ');
+            log.error(err);
+            callback({
+                success: false,
+                error: err
+            });
+        } else {
+            log.info('Receive_tx response: ');
+            log.info(response)
+            if (response.result != null) {
+                callback({
+                    success: true,
+                    slate: response.result.Ok
+                });
+            } else {
+                callback({
+                    success: false,
+                    error: response.error
+                });
+            }
+        }
+    });
+}
+
+export default { call, callRPC }

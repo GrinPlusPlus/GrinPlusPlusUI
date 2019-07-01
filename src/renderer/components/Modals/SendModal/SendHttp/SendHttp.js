@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {FormControl, Input, InputLabel } from "@material-ui/core";
+import { FormControl } from "@material-ui/core";
+import CustomTextField from '../../../CustomTextField';
 
 function SendHttp(props) {
     const { selected, httpAddress, setHttpAddress } = props;
@@ -16,13 +17,13 @@ function SendHttp(props) {
                 required
                 fullWidth
             >
-                <InputLabel htmlFor="URL">Address (eg. http(s)://12.34.56.78:3415)</InputLabel>
-                <Input
+                <CustomTextField
                     name="URL"
                     type="text"
                     id="URL"
                     value={httpAddress}
                     onChange={(event) => { setHttpAddress(event.target.value) }}
+                    placeholder='Address (eg. http(s)://12.34.56.78:3415)'
                 />
             </FormControl>
             <br />

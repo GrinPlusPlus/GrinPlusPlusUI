@@ -37,4 +37,10 @@ function parsePublicKey(b58Address) {
     return decoded.slice(2);
 }
 
-export default { parseAddress, parsePublicKey }
+function encodePublicKey(hexPublicKey) {
+    let withVersion = "010B" + hexPublicKey;
+    let publicKeyBuffer = Buffer.from(withVersion, 'hex');
+    return base58.encode(publicKeyBuffer)
+}
+
+export default { parseAddress, parsePublicKey, encodePublicKey }

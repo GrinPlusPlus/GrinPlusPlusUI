@@ -17,10 +17,10 @@ async function call(event, httpAddress, amount) {
         log.info("Send Result: " + JSON.stringify(sendResult));
 
         if (sendResult.status_code == 200) {
-            ForeignReceive.call(httpAddress, JSON.stringify(sendResult.slate), function (receiveResult) {
+            ForeignReceive.callRPC(httpAddress, sendResult.slate, function (receiveResult) {
                 log.info("Receive Result: " + JSON.stringify(receiveResult));
 
-                if (receiveResult.status_code == 200) {
+                if (receiveResult.success == true) {
                     Finalize.call(JSON.stringify(receiveResult.slate), function (finalizeResult) {
                         log.info("Finalize Result: " + JSON.stringify(finalizeResult));
 

@@ -24,8 +24,8 @@ autoUpdater.on('update-downloaded', () => {
         buttons: ['Yes', 'No']
     }, (buttonIndex) => {
         if (buttonIndex === 0) {
-            // TODO: Close more gracefully.
-            autoUpdater.quitAndInstall();
+            global.update_in_progress = true;
+            Client.stop();
         }
     });
 });

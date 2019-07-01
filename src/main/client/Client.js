@@ -4,6 +4,7 @@ import log from 'electron-log';
 import SendToHTTP from './SendToHTTP';
 import RequestSupport from './RequestSupport';
 import GrinboxConnection from '../Grinbox/GrinboxConnection';
+import IPService from '../IPService';
 
 // Owner APIs
 import CreateWallet from './api/owner/CreateWallet';
@@ -19,13 +20,20 @@ import EstimateFee from './api/owner/EstimateFee';
 import Repost from './api/owner/Repost';
 import Cancel from './api/owner/Cancel';
 import TransactionInfo from './api/owner/TransactionInfo';
+import GetOutputs from './api/owner/GetOutputs';
+import GetAccounts from './api/owner/GetAccounts'; // TODO: Shouldn't be owner
 
 // Node APIs
 import Shutdown from './api/node/Shutdown';
 import GetConnectedPeers from './api/node/GetConnectedPeers';
 import GetStatus from './api/node/GetStatus';
+import ResyncBlockchain from './api/node/ResyncBlockchain';
 
 function StartOwnerClient() {
+    ipcMain.on("ResyncBlockchain", function (event, fromGenesis) {
+        ResyncBlockchain.call(event, fromGenesis);
+    });
+
     ipcMain.on('CreateWallet', function (event, username, password) {
         CreateWallet.call(event, username, password);
     });
@@ -40,12 +48,14 @@ function StartOwnerClient() {
 
     ipcMain.on('Login', function (event, username, password) {
         Login.call(event, username, password, function (secretKey, address) {
+            IPService.connect();
             GrinboxConnection.subscribe(secretKey, address);
         });
     });
 
     ipcMain.on('Logout', function (event) {
         Logout.call(event);
+        IPService.disconnect();
         GrinboxConnection.unsubscribe();
     });
 
@@ -87,6 +97,14 @@ function StartOwnerClient() {
 
     ipcMain.on("TransactionInfo", function (event, walletTxId) {
         TransactionInfo.call(event, walletTxId);
+    });
+
+    ipcMain.on("GetOutputs", function (event, showSpent, showCanceled) {
+        GetOutputs.call(event, showSpent, showCanceled);
+    });
+
+    ipcMain.on("GetAccounts", function (event) {
+        GetAccounts.call(event);
     });
 }
 

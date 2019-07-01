@@ -2,14 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import { ipcRenderer, clipboard } from 'electron';
 import {
-    Button, Dialog, DialogContent, DialogTitle,
-    Grid, IconButton, Typography, Tooltip, Divider
+    Button, DialogContent, Grid, IconButton, Typography, Tooltip, Divider
 } from '@material-ui/core';
 import { MuiThemeProvider, createMuiTheme, withStyles } from '@material-ui/core/styles'
 import blue from '@material-ui/core/colors/blue';
 import InfoIcon from "@material-ui/icons/Info";
 import GrinUtil from "../../../util/GrinUtil.js";
 import CopyIcon from '@material-ui/icons/FileCopy';
+import GrinDialog from '../../GrinDialog';
 
 const styles = theme => ({
     fab: {
@@ -68,12 +68,12 @@ function TxInfoModal(props) {
                         <React.Fragment key={output.commitment}>
                             <Tooltip title="Commitment" aria-label={output.commitment}>
                                 <React.Fragment>
-                                    <b>Commitment:</b> {output.commitment.substring(0, 12) + "..."}
+                                    <b>Commitment:</b> {output.commitment.substring(0, 12) + "..." + output.commitment.substring(54)}
+                                    <IconButton onClick={() => { clipboard.writeText(output.commitment) }} style={{ padding: '5px' }}>
+                                        <CopyIcon fontSize='small' color='primary' />
+                                    </IconButton>
                                 </React.Fragment>
                             </Tooltip>
-                            <IconButton onClick={() => { clipboard.writeText(output.commitment) }} style={{ padding: '5px' }}>
-                                <CopyIcon fontSize='small' />
-                            </IconButton>
                             <br />
 
                             {getField("Keychain Path", output.keychain_path)}
@@ -119,29 +119,19 @@ function TxInfoModal(props) {
 
     return (
         <React.Fragment>
-            <MuiThemeProvider theme={blueTheme}>
-                <Tooltip title="Info" aria-label="Transaction Info">
-                    <IconButton onClick={showDialog} style={{ padding: '2px' }}>
-                        <InfoIcon color='primary' />
-                    </IconButton>
-                </Tooltip>
-            </MuiThemeProvider>
+            <Tooltip title="Info" aria-label="Transaction Info">
+                <IconButton onClick={showDialog} style={{ padding: '2px' }}>
+                    <InfoIcon color='secondary' />
+                </IconButton>
+            </Tooltip>
 
-            <Dialog
+            <GrinDialog
                 open={showModal}
                 onClose={closeDialog}
                 fullWidth={true}
                 maxWidth='sm'
-                aria-labelledby="form-dialog-title"
+                title="Transaction Info"
             >
-                <DialogTitle id="form-dialog-title" disableTypography>
-                    <Typography
-                        variant='h6'
-                        align='center'
-                    >
-                        Transaction Info
-                    </Typography>
-                </DialogTitle>
                 <DialogContent>
                     {getInfo()}
                     <br />
@@ -151,7 +141,7 @@ function TxInfoModal(props) {
                         </Button>
                     </Typography>
                 </DialogContent>
-            </Dialog>
+            </GrinDialog>
         </React.Fragment>
     );
 }

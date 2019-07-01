@@ -16,7 +16,8 @@ import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Redirect, withRouter } from 'react-router-dom';
 import { ipcRenderer } from 'electron';
-import ButtonAppNav from "../../components/ButtonAppNav";
+import SideMenu from "../../components/SideMenu";
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = theme => ({
     main: {
@@ -47,6 +48,13 @@ const styles = theme => ({
     },
     submit: {
         marginTop: theme.spacing.unit * 3,
+    },
+    buttonProgress: {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        marginTop: -12,
+        marginLeft: -12,
     },
 });
 
@@ -95,7 +103,7 @@ function Login(props) {
 
     return (
         <React.Fragment>
-            <ButtonAppNav noMenu includeBack />
+            <SideMenu noMenu includeBack />
             <main className={classes.main}>
                 <CssBaseline />
 
@@ -146,6 +154,7 @@ function Login(props) {
                         >
                             Sign in
                         </Button>
+                        {submitting && <CircularProgress size={24} className={classes.buttonProgress} />}
                     </form>
                 </Paper>
             </main>

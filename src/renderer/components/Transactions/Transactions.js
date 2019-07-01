@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { IconButton, Grid, Divider, Tooltip } from '@material-ui/core';
+import { IconButton, Grid, Divider, Tooltip, Typography } from '@material-ui/core';
 import { MuiThemeProvider, createMuiTheme, withStyles } from '@material-ui/core/styles'
 import RefreshIcon from '@material-ui/icons/Refresh';
 import CancelIcon from '@material-ui/icons/Cancel';
@@ -120,21 +120,21 @@ function Transactions(props) {
 
                         return (
                             <React.Fragment key={txn.id}>
-                                <Grid container spacing={8}>
+                                <Grid container spacing={2}>
                                     <Grid item xs={6}>
-                                        <h4 className={classes.status}>
+                                        <Typography variant='h6' className={classes.status}>
                                             <TxInfoModal transactionId={txn.id} />
                                             {getStatus(txn, lastConfirmedHeight)}
-                                        </h4>
-                                        <p className={classes.creationDateTime}>{creation_date_time.toLocaleString()}</p>
+                                        </Typography>
+                                        <Typography variant='body1' className={classes.creationDateTime}>{creation_date_time.toLocaleString()}</Typography>
                                     </Grid>
-                                    <Grid item xs={3}>
+                                    <Grid item xs={2}>
                                     </Grid>
-                                    <Grid item xs={3}>
-                                        <h4 className={classes.amount} align="right">
+                                    <Grid item xs={4}>
+                                        <Typography variant='h6' className={classes.amount} align="right">
                                             {FormatAmount(txn.amount_credited - txn.amount_debited)}
                                             {getActionIcon(txn.id, txn.type)}
-                                        </h4>
+                                        </Typography>
                                     </Grid>
                                 </Grid>
                                 <Divider variant="fullWidth" />
