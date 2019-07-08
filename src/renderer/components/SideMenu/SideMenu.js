@@ -45,6 +45,8 @@ const styles = theme => ({
     },
     drawerPaper: {
         width: drawerWidth,
+        backgroundColor: '#000000',
+        border: '#ffffff 2px solid'
     },
     drawerHeader: {
         display: 'flex',
@@ -108,7 +110,9 @@ function SideMenu(props) {
             >
                 <List>
                     <ListItem button key='hide' onClick={handleDrawerClose}>
-                        <ListItemIcon><ChevronLeftIcon /></ListItemIcon>
+                        <ListItemIcon>
+                            <ChevronLeftIcon color="secondary" />
+                        </ListItemIcon>
                         <ListItemText secondary='Collapse/Hide' />
                     </ListItem>
                 </List>
@@ -116,21 +120,21 @@ function SideMenu(props) {
                 <List>
                     <ListItem button key='Wallet' component={Link} to={{ pathname: '/wallet' }}>
                         <ListItemIcon>
-                            <WalletIcon />
+                            <WalletIcon color="secondary" />
                         </ListItemIcon>
                         <ListItemText secondary='Wallet' />
                     </ListItem>
 
                     <ListItem button key='Outputs' component={Link} to={{ pathname: '/outputs' }}>
                         <ListItemIcon>
-                            <OutputsIcon />
+                            <OutputsIcon color="secondary" />
                         </ListItemIcon>
                         <ListItemText secondary='Outputs' />
                     </ListItem>
 
                     <ListItem button key='Peers' component={Link} to={{ pathname: '/peers' }}>
                         <ListItemIcon>
-                            <PeersIcon />
+                            <PeersIcon color="secondary" />
                         </ListItemIcon>
                         <ListItemText secondary='Peers' />
                     </ListItem>
@@ -139,7 +143,7 @@ function SideMenu(props) {
                 <List>
                     <ListItem button key='Logout' onClick={logout}>
                         <ListItemIcon>
-                            <LogoutIcon />
+                            <LogoutIcon color="secondary" />
                         </ListItemIcon>
                         <ListItemText secondary='Logout' />
                     </ListItem>

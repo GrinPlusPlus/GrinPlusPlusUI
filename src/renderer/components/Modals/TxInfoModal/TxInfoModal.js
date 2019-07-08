@@ -60,6 +60,10 @@ function TxInfoModal(props) {
     }
 
     function getOutputs(outputs) {
+        if (outputs == null) {
+            return null;
+        }
+
         return (
             outputs
                 //.sort(function (a, b) { return b.creation_date_time - a.creation_date_time })

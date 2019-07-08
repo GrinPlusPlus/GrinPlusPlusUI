@@ -183,7 +183,7 @@ function Restore(props) {
                         />
                         <br />
                         <br />
-                        <Typography>Wallet Words:</Typography>
+                        <Typography color="textSecondary">Wallet Words:</Typography>
                         <TextValidator
                             onChange={changeWalletWords}
                             name="walletWords"
@@ -201,7 +201,7 @@ function Restore(props) {
                             color="primary"
                             className={classes.submit}>
                             Restore Account
-              </Button>
+                        </Button>
                     </ValidatorForm>
                 </Paper>
             </main>

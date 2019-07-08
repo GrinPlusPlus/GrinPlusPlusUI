@@ -87,6 +87,14 @@ const dark_theme = createMuiTheme({
             root: {
                 color: '#ffffff'
             }
+        },
+        MuiListItem: {
+            button: {
+                '&:hover': {
+                    color: '#555555',
+                    backgroundColor: '#555555'
+                }
+            }
         }
     }
 });

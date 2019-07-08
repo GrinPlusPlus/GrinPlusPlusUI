@@ -52,7 +52,7 @@ function Transactions(props) {
     function getStatus(txn, lastConfirmedHeight) {
         const status = txn.type;
         if (status == "Sent" || status == "Received") {
-            if ((txn.confirmed_height + 10) > lastConfirmedHeight) {
+            if ((txn.confirmed_height + 9) > lastConfirmedHeight) {
                 return status + " (" + (lastConfirmedHeight - txn.confirmed_height + 1) + " Confirmations)";
             }
 

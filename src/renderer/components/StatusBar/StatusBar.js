@@ -156,21 +156,21 @@ class StatusBar extends React.Component {
                                 <Grid item xs={3}>
                                     <IconButton disabled className={classes.status}>
                                         <StatusIcon color={getColor(this.state.status)} />
-                                        <Typography display='inline' color="textPrimary" className={classes.statusText}><b>Status: </b></Typography>
-                                        <Typography display='inline' color={getColor(this.state.status)} className={classes.statusText}><b>{getStatusText(this.state)}</b></Typography>
+                                        <Typography display='inline' noWrap color="textPrimary" className={classes.statusText}><b>Status: </b></Typography>
+                                        <Typography display='inline' noWrap color={getColor(this.state.status)} className={classes.statusText}><b>{getStatusText(this.state)}</b></Typography>
                                     </IconButton>
                                 </Grid>
                                 <Grid item xs={6}>
                                     <center>
-                                        <Typography display='inline' className={classes.chainHeight}><b>Headers: {this.state.headerHeight}</b></Typography>
-                                        <Typography display='inline' className={classes.chainHeight}><b>Blocks: {this.state.blockHeight}</b></Typography>
-                                        <Typography display='inline' className={classes.chainHeight}><b>Network: {this.state.networkHeight}</b></Typography>
+                                        <Typography display='inline' noWrap className={classes.chainHeight}><b>Headers: {this.state.headerHeight}</b></Typography>
+                                        <Typography display='inline' noWrap className={classes.chainHeight}><b>Blocks: {this.state.blockHeight}</b></Typography>
+                                        <Typography display='inline' noWrap className={classes.chainHeight}><b>Network: {this.state.networkHeight}</b></Typography>
                                     </center>
                                 </Grid>
                                 <Grid item xs={3}>
                                     <div style={{ textAlign: 'right' }}>
-                                        <Typography display='inline' className={classes.connections}><b>Inbound: {this.state.inbound}</b></Typography>
-                                        <Typography display='inline' className={classes.connections}><b>Outbound: {this.state.outbound}</b></Typography>
+                                        <Typography display='inline' noWrap className={classes.connections}><b>Inbound: {this.state.inbound}</b></Typography>
+                                        <Typography display='inline' noWrap className={classes.connections}><b>Outbound: {this.state.outbound}</b></Typography>
                                     </div>
                                 </Grid>
                             </Grid>
