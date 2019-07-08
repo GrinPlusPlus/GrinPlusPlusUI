@@ -11,8 +11,6 @@ function load() {
     config.data_path = homedir + '/.GrinPP/MAINNET';
     configFileName = config.data_path + '/server_config.json';
 
-    settings = JSON.parse(fs.readFileSync(configFileName, 'utf-8'));
-
     ipcMain.on('Settings::Get', function (event) {
         event.returnValue = settings;
     });
@@ -20,6 +18,13 @@ function load() {
     ipcMain.on('Settings::Save', function (event, newSettings) {
         updateSettings(newSettings);
     });
+
+    if (!fs.existsSync(configFileName)) {
+        setTimeout(function () { load() }, 1000);
+        return config;
+    }
+
+    settings = JSON.parse(fs.readFileSync(configFileName, 'utf-8'));
 
     return config;
 }
