@@ -3,11 +3,6 @@ import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -16,7 +11,6 @@ import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Redirect, withRouter } from 'react-router-dom';
 import { ipcRenderer } from 'electron';
-import SideMenu from "../../components/SideMenu";
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = theme => ({
@@ -62,7 +56,7 @@ function Login(props) {
     const { classes } = props;
     const [submitting, setSubmitting] = React.useState(false);
     const [loggedIn, setLoggedIn] = React.useState(false);
-    const [failure, setFailure] = React.useState(false);
+    const [error, setError] = React.useState(null);
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
 
@@ -76,21 +70,17 @@ function Login(props) {
                 setLoggedIn(true);
             } else {
                 setSubmitting(false);
-                setFailure(true);
+                setError("Failed to login. Username and/or password is wrong.");
             }
         });
 
         ipcRenderer.send('Login', username, password);
         setSubmitting(true);
+        setError(null);
     }
 
     if (loggedIn === true) {
         return (<Redirect to='/wallet' />);
-    }
-
-    function handleErrorClose(event) {
-        event.preventDefault();
-        setFailure(false);
     }
 
     function changeUsername(e) {
@@ -101,40 +91,26 @@ function Login(props) {
         setPassword(e.target.value);
     }
 
+    function displayError() {
+        if (error != null) {
+            return (
+                <Typography variant="caption" color='error'>
+                    {error}
+                </Typography>
+            );
+        } else {
+            return "";
+        }
+    }
+
     return (
         <React.Fragment>
-            <SideMenu noMenu includeBack />
             <main className={classes.main}>
                 <CssBaseline />
-
-                {/* Error Dialog */}
-                <Dialog
-                    open={failure}
-                    onClose={handleErrorClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle id="alert-dialog-title" fullWidth alignItems="center">
-                        <Typography color="error" variant="h4">
-                            {"ERROR"}
-                        </Typography>
-                    </DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            <Typography variant="h6">
-                                Failed to login. Username and/or password is wrong.
-                            </Typography>
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleErrorClose} variant="contained" color="primary" autoFocus>
-                            Try Again
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-
                 <Paper className={classes.paper}>
                     <Avatar src="https://avatars0.githubusercontent.com/u/45742329?s=400&u=57afc7119c701f3aeb526d6992376bee7aa60dd6&v=4" className={classes.avatar} />
+                    {displayError()}
+                    {submitting && <CircularProgress size={24} className={classes.buttonProgress} />}
                     <form className={classes.form} onSubmit={handleSubmit}>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="username">Username</InputLabel>
@@ -154,7 +130,6 @@ function Login(props) {
                         >
                             Sign in
                         </Button>
-                        {submitting && <CircularProgress size={24} className={classes.buttonProgress} />}
                     </form>
                 </Paper>
             </main>

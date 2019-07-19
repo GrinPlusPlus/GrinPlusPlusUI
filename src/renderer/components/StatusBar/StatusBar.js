@@ -148,7 +148,6 @@ class StatusBar extends React.Component {
         }
 
         return (
-            <div className={classes.root}>
                 <AppBar position="fixed" color="primary" className={classes.appBar}>
                     <Toolbar>
                         <MuiThemeProvider theme={dark_mode ? darkStatusTheme : statusTheme}>
@@ -177,7 +176,6 @@ class StatusBar extends React.Component {
                         </MuiThemeProvider>
                     </Toolbar>
                 </AppBar>
-            </div>
         );
     }
 }

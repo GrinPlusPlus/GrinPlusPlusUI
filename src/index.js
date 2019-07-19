@@ -87,22 +87,23 @@ const createWindow = async () => {
                 }
             }
         });
-        setTimeout(function () {
-            const homedir = require('os').homedir();
-            if (!fs.existsSync(homedir + '/.GrinPP/MAINNET/NODE/LOGS')) {
-                fs.mkdirSync(homedir + '/.GrinPP/MAINNET/NODE/LOGS', { recursive: true })
-            }
-
-            const config = ConfigLoader.load();
-            log.transports.format = '[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}';
-            log.transports.file.level = config.level;
-            log.transports.file.maxSize = 15 * 1024 * 1024;
-            log.transports.file.file = config.data_path + '/NODE/LOGS/ui.log';
-            log.transports.file.stream = fs.createWriteStream(log.transports.file.file, { flags: 'a' });
-            log.transports.console.level = config.level;
-
-        }, 1000);
     }
+
+    setTimeout(function () {
+        const homedir = require('os').homedir();
+        if (!fs.existsSync(homedir + '/.GrinPP/MAINNET/NODE/LOGS')) {
+            fs.mkdirSync(homedir + '/.GrinPP/MAINNET/NODE/LOGS', { recursive: true })
+        }
+
+        const config = ConfigLoader.load();
+        log.transports.format = '[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}';
+        log.transports.file.level = config.level;
+        log.transports.file.maxSize = 15 * 1024 * 1024;
+        log.transports.file.file = config.data_path + '/NODE/LOGS/ui.log';
+        log.transports.file.stream = fs.createWriteStream(log.transports.file.file, { flags: 'a' });
+        log.transports.console.level = config.level;
+
+    }, 1000);
 
     var processing_txhashset = false;
 
@@ -140,7 +141,7 @@ const createWindow = async () => {
         statusInterval = setInterval(getStatus, 2000, (status) => {
             if (mainWindow != null && shuttingDown == false) {
                 if (status != null) {
-                    log.silly('NODE_STATUS: ' + JSON.stringify(status));
+                    //log.silly('NODE_STATUS: ' + JSON.stringify(status));
                     processing_txhashset = (status.sync_status == "PROCESSING_TXHASHSET");
 
                     mainWindow.webContents.send(

@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Link, Redirect, withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -31,7 +31,6 @@ const styles = theme => ({
 function ButtonAppNav(props) {
   const { classes, pageName, noMenu, includeBack, onClickMenu } = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [goBack, setGoBack] = React.useState(false);
 
   function handleClick(event) {
     //setAnchorEl(event.currentTarget);
@@ -40,15 +39,6 @@ function ButtonAppNav(props) {
 
   function handleClose() {
     setAnchorEl(null);
-  }
-
-  function handleGoBack(event) {
-    event.preventDefault();
-    setGoBack(true);
-  }
-
-  if (goBack === true) {
-    return (<Redirect to='/'/>);
   }
 
   var menu = (
@@ -104,17 +94,17 @@ function ButtonAppNav(props) {
     }
   }
 
-  function showBack() {
-    if (!!includeBack ? true : false) {
-      return (
-        <IconButton color="secondary" aria-label="Go back" onClick={handleGoBack}>
-          <BackArrowIcon/>
-        </IconButton>
-      );
-    } else {
-      return "";
+    function showBack() {
+        if (!!includeBack ? true : false) {
+            return (
+                <IconButton color="secondary" aria-label="Go back" component={Link} to={{ pathname: '/' }}>
+                    <BackArrowIcon/>
+                </IconButton>
+            );
+        } else {
+            return "";
+        }
     }
-  }
 
   return (
     <div className={classes.root}>

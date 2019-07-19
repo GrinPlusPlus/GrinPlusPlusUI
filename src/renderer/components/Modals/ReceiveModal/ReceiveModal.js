@@ -76,8 +76,9 @@ function ReceiveModal(props) {
                     var result = ipcRenderer.sendSync('Receive', data);
                     if (result !== null) {
                         if (result.status_code == 200) {
-                            closeModal();
                             ipcRenderer.send('SaveToFile', (fileName + '.response'), JSON.stringify(result.slate));
+                            ipcRenderer.send('Snackbar::Relay', "SUCCESS", "Saving response slate to: " + fileName + ".response");
+                            closeModal();
                         } else {
                             setErrorMessage("Unknown error occurred!");
                         }
@@ -182,7 +183,7 @@ function ReceiveModal(props) {
                     <b>{method == 'http' ? httpAddress : grinboxAddress}</b> 
 
                     <IconButton onClick={handleCopy} style={{ padding: '5px' }}>
-                        <CopyIcon fontSize='small' />
+                        <CopyIcon fontSize='small' color='primary' />
                     </IconButton>
                 </p>
                 {getWarning()}

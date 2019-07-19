@@ -104,6 +104,12 @@ export default class App extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            isDarkMode: true,
+            snackbarMessage: "",
+            snackbarStatus: "success",
+        };
+
         ipcRenderer.on('Grinbox::Status', (event, status, message) => {
             if (status == "SUCCESS") {
                 this.setState({
@@ -118,11 +124,19 @@ export default class App extends Component {
             }
         });
 
-        this.state = {
-            isDarkMode: true,
-            snackbarMessage: "",
-            snackbarStatus: "success",
-        };
+        ipcRenderer.on('Snackbar::Status', (event, status, message) => {
+            if (status == "SUCCESS") {
+                this.setState({
+                    snackbarStatus: "success",
+                    snackbarMessage: message
+                });
+            } else if (status == "ERROR") {
+                this.setState({
+                    snackbarStatus: "error",
+                    snackbarMessage: message
+                });
+            }
+        })
 
         this.handleSnackbarClose = this.handleSnackbarClose.bind(this);
     }
@@ -155,7 +169,7 @@ export default class App extends Component {
             <React.Fragment>
                 <style>{'body { background-color: ' + this.getBackgroundColor() + '; }'}</style>
                 <MuiThemeProvider theme={this.getTheme()}>
-                    <Routes {...this.state} />
+                    <Routes {...this.state} style={{ width: '100%' }} />
                     <Snackbar
                         autoHideDuration={4000}
                         open={this.state.snackbarMessage.length > 0}

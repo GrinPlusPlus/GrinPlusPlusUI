@@ -83,7 +83,7 @@ function processSlateMessage(message) {
                 lastAction = 'received';
                 postSlate(result.slate, message.from);
             } else {
-                mainWindow.webContents.send("Grinbox::Status", "ERROR", "Failed to receive Grinbox transaction.");
+                mainWindow.webContents.send("Snackbar::Status", "ERROR", "Failed to receive Grinbox transaction.");
             }
         });
     } else {
@@ -92,9 +92,9 @@ function processSlateMessage(message) {
         Finalize.call(JSON.stringify(slate), function (result) {
             log.info("Finalize result: " + JSON.stringify(result));
             if (result.status_code == 200) {
-                mainWindow.webContents.send("Grinbox::Status", "SUCCESS", "Grinbox transaction finalized.");
+                mainWindow.webContents.send("Snackbar::Status", "SUCCESS", "Grinbox transaction finalized.");
             } else {
-                mainWindow.webContents.send("Grinbox::Status", "ERROR", "Failed to finalize Grinbox transaction.");
+                mainWindow.webContents.send("Snackbar::Status", "ERROR", "Failed to finalize Grinbox transaction.");
             }
         });
     }
@@ -102,10 +102,16 @@ function processSlateMessage(message) {
 
 function connect(window) {
     log.info("GrinboxConnection: Connecting to grinbox.io");
+    global.grinbox_challenge = null;
 
     mainWindow = window;
     try {
         socket = new WebSocket("wss://grinbox.io:443");
+
+        socket.onerror = function (e) {
+            log.error("GrinboxConnection: Error thrown - " + e.message);
+            global.grinbox_challenge = null;
+        }
 
         socket.onmessage = function (event) {
             log.info("GrinboxConnection: Message received " + event.data);
@@ -116,17 +122,17 @@ function connect(window) {
                 processSlateMessage(message);
             } else if (message.type == 'Error') {
                 if (lastAction == 'received') {
-                    mainWindow.webContents.send("Grinbox::Status", "ERROR", "Failed to receive Grinbox transaction.");
+                    mainWindow.webContents.send("Snackbar::Status", "ERROR", "Failed to receive Grinbox transaction.");
                 } else if (lastAction == 'sent') {
-                    mainWindow.webContents.send("Grinbox::Status", "ERROR", "Failed to send Grinbox transaction.");
+                    mainWindow.webContents.send("Snackbar::Status", "ERROR", "Failed to send Grinbox transaction.");
                 }
 
                 lastAction = null;
             } else if (message.type == 'Ok') {
                 if (lastAction == 'received') {
-                    mainWindow.webContents.send("Grinbox::Status", "SUCCESS", "Grinbox transaction received.");
+                    mainWindow.webContents.send("Snackbar::Status", "SUCCESS", "Grinbox transaction received.");
                 } else if (lastAction == 'sent') {
-                    mainWindow.webContents.send("Grinbox::Status", "SUCCESS", "Grinbox transaction sent.");
+                    mainWindow.webContents.send("Snackbar::Status", "SUCCESS", "Grinbox transaction sent.");
                 }
 
                 lastAction = null;
@@ -135,7 +141,8 @@ function connect(window) {
             }
         }
     } catch (e) {
-        log.info("GrinboxConnection: Error thrown - " + e.message);
+        log.error("GrinboxConnection: Error thrown - " + e.message);
+        global.grinbox_challenge = null;
     }
 }
 
@@ -145,6 +152,11 @@ function disconnect() {
 }
 
 function subscribe(secret_key, address) {
+    if (global.grinbox_challenge == null) {
+        log.warn("Can't subscribe to grinbox address: " + grinbox_address);
+        return;
+    }
+
     const grinbox_address = GrinboxUtils.encodePublicKey(address);
 
     log.info("Subscribing to grinbox address: " + grinbox_address);
@@ -164,6 +176,11 @@ function subscribe(secret_key, address) {
 }
 
 function unsubscribe() {
+    if (global.grinbox_secret_key == null) {
+        log.warn("Can't unsubscribe from grinbox address: " + grinbox_address);
+        return;
+    }
+
     log.info("Unsubscribing from grinbox address: " + global.grinbox_address);
 
     var unsubscribe_message = new Object();

@@ -130,30 +130,34 @@ function WalletWords(props) {
     return "";
   }
 
-  function getDialogText() {
-    if (verify == false) {
-      return (
-          <DialogContentText>
-            <center>
-              <span className={classes.warning}>Important</span>
-              <b>The below words are needed if you ever need to restore your wallet.<br/>Please write them down and keep them in a safe place.</b>
-            </center>
-            <br/>
-            <b>{getWalletSeedWordsDisplay()}</b>
-          </DialogContentText>
-      );
-    } else {
-      return (
-          <DialogContentText>
-            <center>
-              <b>Please fill in the missing words to continue.</b>
-            </center>
-            <br/>
-            <b>{getWalletSeedWordsDisplay()}</b>
-          </DialogContentText>
-      );
+    function getDialogText() {
+        if (verify == false) {
+            return (
+                <DialogContentText>
+                    <center>
+                        <span className={classes.warning}>Important</span>
+                        <b>The below words are needed if you ever need to restore your wallet.<br/>Please write them down and keep them in a safe place.</b>
+                    </center>
+                    <br/>
+                    <b>
+                        {getWalletSeedWordsDisplay()}
+                    </b>
+                </DialogContentText>
+            );
+        } else {
+            return (
+                <DialogContentText>
+                    <center>
+                        <b>Please fill in the missing words to continue.</b>
+                    </center>
+                    <br/>
+                    <b>
+                        {getWalletSeedWordsDisplay()}
+                    </b>
+                </DialogContentText>
+            );
+        }
     }
-  }
 
   function showVerify(e) {
     const walletSeedWords = walletSeed.split(' ');
@@ -237,7 +241,7 @@ function WalletWords(props) {
       return (
         <Grid
           container
-          spacing={8}
+          spacing={2}
           justify="space-between"
           alignItems="center"
         >
@@ -258,23 +262,33 @@ function WalletWords(props) {
     }
   }
 
-  if (showModal !== true) {
-    return null;
-  }
+    if (showModal !== true) {
+        return null;
+    }
 
-  return (
-    <Dialog
-      open={showModal}
-      onClose={validateWords}
-      aria-labelledby="form-dialog-title"
-      maxWidth="md"
-      fullWidth
-    >
-      <DialogTitle id="form-dialog-title"><Typography variant="h4"><center>Wallet Seed</center></Typography></DialogTitle>
-      <DialogContent>{getDialogText()}</DialogContent>
-      <DialogActions>{getButtonGrid()}<br/><br/><br/></DialogActions>
-    </Dialog>
-  );
+    return (
+        <Dialog
+            open={showModal}
+            onClose={validateWords}
+            aria-labelledby="form-dialog-title"
+            maxWidth="md"
+            fullWidth
+        >
+                <DialogTitle id="form-dialog-title">
+                    <Typography variant="h4">
+                        <center>
+                            Wallet Seed
+                        </center>
+                    </Typography>
+                </DialogTitle>
+                <DialogContent>
+                    {getDialogText()}
+                </DialogContent>
+                <DialogActions>
+                    {getButtonGrid()}<br /><br /><br />
+                </DialogActions>
+        </Dialog>
+    );
 }
 
 WalletWords.propTypes = {

@@ -4,7 +4,6 @@ import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
-import SideMenu from '../../components/SideMenu';
 import {ipcRenderer} from 'electron';
 import RefreshIcon from '@material-ui/icons/Refresh';
 
@@ -36,7 +35,6 @@ function Advanced(props) {
 
     return (
         <React.Fragment>
-            <SideMenu pageName='Advanced'/>
             <br />
             {/* CONSOLE */}
         </React.Fragment>

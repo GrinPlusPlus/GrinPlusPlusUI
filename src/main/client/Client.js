@@ -139,6 +139,12 @@ function start() {
     ipcMain.on('Grinbox::GetAddress', function (event) {
         event.returnValue = global.grinbox_address;
     });
+
+    ipcMain.on('Snackbar::Relay', function (event, status, message) {
+        if (global.mainWindow != null) {
+            global.mainWindow.webContents.send("Snackbar::Status", status, message);
+        }
+    })
 }
 
 function stop() {

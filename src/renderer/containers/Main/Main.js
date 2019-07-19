@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { Button, CssBaseline, Grid, Paper } from '@material-ui/core/';
 import { Redirect, withRouter } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
-import SideMenu from "../../components/SideMenu";
-import UserAvatar from "../../components/UserMenu/ImageAvatar";
 import { ipcRenderer } from "electron";
 const path = require('path');
 
@@ -85,7 +83,6 @@ class Main extends React.Component {
 
         return (
             <React.Fragment>
-                <SideMenu open={true} noMenu />
                 <div className={classes.main}>
                     <Grid container
                         spacing={0}

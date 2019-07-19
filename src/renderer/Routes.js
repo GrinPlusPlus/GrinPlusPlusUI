@@ -10,25 +10,41 @@ import Wallet from './containers/Wallet';
 import Peers from './containers/Peers';
 import Outputs from './containers/Outputs';
 import Advanced from './containers/Advanced';
+import SideMenu from './components/SideMenu';
+
+const PropsRoute = ({ component: Component, ...props }) => (
+    <Route
+        {...props}
+        render={renderProps => (
+            <React.Fragment>
+                <SideMenu {...props} />
+                <div style={{ maxHeight: 'calc(100vh - 98px)', height: 'calc(100vh - 98px)' }}>
+                    <Component {...renderProps} {...props} />
+                </div>
+            </React.Fragment>
+        )}
+    />
+);
 
 function Routes(props) {
-  const isDarkMode = props.isDarkMode;
-  return (
-    <Router>
-      <ScrollToTop>
-        <Switch>
-            <Route exact path='/' render={(props) => <Main dark_mode={isDarkMode} />} />
-            <Route exact path='/login' component={ Login } />
-            <Route exact path='/register' component={ Register } />
-            <Route exact path='/restore' component={ Restore } />
-            <Route exact path='/wallet' component={Wallet} />
-            <Route exact path='/peers' component={Peers} />
-            <Route exact path='/outputs' component={Outputs} />
-            <Route exact path='/advanced' component={Advanced} />
-        </Switch>
-      </ScrollToTop>
-    </Router>
-  );
+    const isDarkMode = props.isDarkMode;
+
+    return (
+        <Router>
+            <ScrollToTop>
+                <Switch>
+                    <PropsRoute exact path='/' open={true} noMenu component={Main} />
+                    <PropsRoute exact path='/login' noMenu includeBack component={ Login } />
+                    <PropsRoute exact path='/register' noMenu includeBack component={ Register } />
+                    <PropsRoute exact path='/restore' noMenu includeBack component={ Restore } />
+                    <PropsRoute exact path='/wallet' pageName='Wallet' component={Wallet} />
+                    <PropsRoute exact path='/peers' pageName='Peers' component={Peers} />
+                    <PropsRoute exact path='/outputs' pageName='Outputs' component={Outputs} />
+                    <PropsRoute exact path='/advanced' pageName='Advanced' component={Advanced} />
+                </Switch>
+            </ScrollToTop>
+        </Router>
+    );
 }
 
 Routes.propTypes = {

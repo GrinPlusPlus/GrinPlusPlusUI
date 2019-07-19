@@ -21,7 +21,11 @@ function call(event, username, password) {
             result["session_token"] = session_token;
         }
 
-        event.returnValue = result;
+        if (global.mainWindow != null) {
+            global.mainWindow.webContents.send('CreateWallet::Response', result);
+        } else {
+            log.error("global.mainWindow is null");
+        }
     });
 }
 

@@ -77,15 +77,10 @@ function SideMenu(props) {
     const { classes } = props;
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
-    const [loggedOut, setLoggedOut] = React.useState(false);
 
     function logout() {
         ipcRenderer.send('Logout');
-        setLoggedOut(true);
-    }
-
-    if (loggedOut === true) {
-        return (<Redirect to='/' />);
+        setOpen(false);
     }
 
     function handleDrawerOpen() {
@@ -118,21 +113,21 @@ function SideMenu(props) {
                 </List>
                 <Divider />
                 <List>
-                    <ListItem button key='Wallet' component={Link} to={{ pathname: '/wallet' }}>
+                    <ListItem button key='Wallet' onClick={handleDrawerClose} component={Link} to={{ pathname: '/wallet' }}>
                         <ListItemIcon>
                             <WalletIcon color="secondary" />
                         </ListItemIcon>
                         <ListItemText secondary='Wallet' />
                     </ListItem>
 
-                    <ListItem button key='Outputs' component={Link} to={{ pathname: '/outputs' }}>
+                    <ListItem button key='Outputs' onClick={handleDrawerClose} component={Link} to={{ pathname: '/outputs' }}>
                         <ListItemIcon>
                             <OutputsIcon color="secondary" />
                         </ListItemIcon>
                         <ListItemText secondary='Outputs' />
                     </ListItem>
 
-                    <ListItem button key='Peers' component={Link} to={{ pathname: '/peers' }}>
+                    <ListItem button key='Peers' onClick={handleDrawerClose} component={Link} to={{ pathname: '/peers' }}>
                         <ListItemIcon>
                             <PeersIcon color="secondary" />
                         </ListItemIcon>
@@ -141,7 +136,7 @@ function SideMenu(props) {
                 </List>
                 <Divider />
                 <List>
-                    <ListItem button key='Logout' onClick={logout}>
+                    <ListItem button key='Logout' onClick={logout} component={Link} to={{ pathname: '/' }}>
                         <ListItemIcon>
                             <LogoutIcon color="secondary" />
                         </ListItemIcon>

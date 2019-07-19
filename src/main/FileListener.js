@@ -1,16 +1,15 @@
 import { ipcMain, dialog, app } from 'electron';
 import fs from 'fs';
+import log from 'electron-log';
 
 function start() {
     const defaultPath = app.getPath('desktop');
 
     ipcMain.on("SaveToFile", function (event, fileName, value) {
-        fs.writeFile(fileName, value, 'utf8', (err) => {
-            if (err) {
-                throw err;
-            }
-            console.log('Slate saved to: ' + fileName);
-        });
+        log.debug('Saving slate to ' + fileName);
+
+        fs.writeFileSync(fileName, value, 'utf8');
+        log.info('Slate successfully saved to ' + fileName);
     });
 
     ipcMain.on("SendFile", function (event) {

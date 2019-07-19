@@ -1,20 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Paper from '@material-ui/core/Paper';
+import { Avatar, Button, CssBaseline, Paper, CircularProgress, Typography } from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Redirect, withRouter } from 'react-router-dom';
 import { ipcRenderer } from 'electron';
-import SideMenu from "../../components/SideMenu";
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import WalletWords from "./WalletWords"
+import WalletWords from "./WalletWords";
+import log from 'electron-log';
 
 const styles = theme => ({
     main: {
@@ -56,6 +48,13 @@ const styles = theme => ({
         fontSize: '13px',
         marginRight: '4px',
     },
+    buttonProgress: {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        marginTop: -12,
+        marginLeft: -12,
+    },
 });
 
 function Register(props) {
@@ -63,21 +62,31 @@ function Register(props) {
     const [registered, setRegistered] = React.useState(false);
     const [walletSeed, setWalletSeed] = React.useState(null);
     const [showWalletSeed, setShowWalletSeed] = React.useState(false);
-    const [failure, setFailure] = React.useState(false);
+    const [error, setError] = React.useState(null);
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [confirmPassword, setConfirmPassword] = React.useState("");
+    const [submitting, setSubmitting] = React.useState(false);
 
     function handleSubmit(event) {
         event.preventDefault();
-        const response = ipcRenderer.sendSync('CreateWallet', username, password);
-        if (response != null && response["status_code"] == 200) {
-            sessionStorage["username"] = username.toUpperCase();
-            setWalletSeed(response["wallet_seed"]);
-            setShowWalletSeed(true);
-        } else {
-            setFailure(true);
-        }
+
+        ipcRenderer.removeAllListeners('CreateWallet::Response');
+        ipcRenderer.on('CreateWallet::Response', (event, response) => {
+            setSubmitting(false);
+            if (response != null && response["status_code"] == 200) {
+                log.silly(response);
+                sessionStorage["username"] = username.toUpperCase();
+                setWalletSeed(response.wallet_seed);
+                setShowWalletSeed(true);
+            } else {
+                setError("Failed to create user account. Account may already exist.");
+            }
+        });
+
+        ipcRenderer.send('CreateWallet', username, password);
+        setSubmitting(true);
+        setError(null);
     }
 
     if (registered === true) {
@@ -86,11 +95,6 @@ function Register(props) {
 
     function handleWalletSeedClose() {
         setRegistered(true);
-    }
-
-    function handleErrorClose(event) {
-        event.preventDefault();
-        setFailure(false);
     }
 
     function changeUsername(e) {
@@ -112,37 +116,29 @@ function Register(props) {
         return true;
     });
 
+    function displayError() {
+        if (error != null) {
+            return (
+                <Typography variant="caption" color='error'>
+                    {error}
+                </Typography>
+            );
+        } else {
+            return "";
+        }
+    }
+
     return (
         <React.Fragment>
-            <SideMenu noMenu includeBack />
             <main className={classes.main}>
                 <CssBaseline />
 
                 <WalletWords showModal={showWalletSeed} onClose={handleWalletSeedClose} walletSeed={walletSeed} />
-
-                {/* Error Dialog */}
-                <Dialog
-                    open={failure}
-                    onClose={handleErrorClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle id="alert-dialog-title">{"ERROR"}</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            Failed to create user account. Account may already exist.
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleErrorClose} variant="contained" color="primary" autoFocus>
-                            Try Again
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-
                 <Paper className={classes.paper}>
                     <Avatar src="https://avatars0.githubusercontent.com/u/45742329?s=400&u=57afc7119c701f3aeb526d6992376bee7aa60dd6&v=4" className={classes.avatar} />
 
+                    {displayError()}
+                    {submitting && <CircularProgress size={24} className={classes.buttonProgress} />}
                     <ValidatorForm
                         className={classes.form}
                         onSubmit={handleSubmit}
@@ -183,6 +179,7 @@ function Register(props) {
                             type="submit"
                             fullWidth
                             variant="contained"
+                            disabled={submitting}
                             color="primary"
                             className={classes.submit}
                         >

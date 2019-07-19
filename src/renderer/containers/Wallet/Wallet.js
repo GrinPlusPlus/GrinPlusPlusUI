@@ -5,7 +5,6 @@ import Divider from '@material-ui/core/Divider';
 import Fab from '@material-ui/core/Fab'
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
-import SideMenu from '../../components/SideMenu';
 import { ipcRenderer } from 'electron';
 import Typography from '@material-ui/core/Typography';
 import SendModal from '../../components/Modals/SendModal';
@@ -21,6 +20,8 @@ import GrinUtil from "../../util/GrinUtil.js";
 const styles = theme => ({
     fullWidth: {
         width: '100%',
+        marginLeft: '5px',
+        marginRight: '5px'
     },
     root: {
         flexGrow: 1,
@@ -217,7 +218,6 @@ class Wallet extends React.Component {
     render() {
         const { classes } = this.props;
 
-        //var result = ipcRenderer.sendSync('WalletSummary');
         var total = GrinUtil.FormatAmount(this.state.summaryAmounts.total);
         var amount_awaiting_confirmation = GrinUtil.FormatAmount(this.state.summaryAmounts.awaiting_confirmation);
         var amount_immature = GrinUtil.FormatAmount(this.state.summaryAmounts.immature);
@@ -225,9 +225,8 @@ class Wallet extends React.Component {
         var amount_currently_spendable = GrinUtil.FormatAmount(this.state.summaryAmounts.currently_spendable);
 
         return (
-            <React.Fragment>
-                <SideMenu pageName='Wallet' />
-                <Grid container spacing={2} style={{ marginTop: '1px', marginBottom: '0px', maxHeight: 'calc(100vh - 104px)', overflow: 'auto' }} className={classes.root}>
+            <div style={{ height: '100%', overflow: 'auto' }}>
+                <Grid container spacing={0} style={{ marginTop: '1px', marginBottom: '0px' }} className={classes.root}>
 
                     <Grid item xs={2} />
                     <Grid item xs={4}>
@@ -260,7 +259,7 @@ class Wallet extends React.Component {
                                     fullWidth
                                 >
                                     <SendIcon className={classes.extendedIcon} /> Send
-                            </Fab>
+                                </Fab>
                                 <SendModal showModal={this.state.showSendModal} onClose={this.closeSend} />
                             </Grid>
                             <Grid item xs={4}>
@@ -274,7 +273,7 @@ class Wallet extends React.Component {
                                     fullWidth
                                 >
                                     <ReceiveIcon className={classes.extendedIcon} /> Receive
-                            </Fab>
+                                </Fab>
                                 <ReceiveModal showModal={this.state.showReceiveModal} onClose={this.closeReceive} />
                             </Grid>
                             <Grid item xs={4}>
@@ -329,7 +328,7 @@ class Wallet extends React.Component {
                     <Grid item xs={2}>
                     </Grid>
                 </Grid>
-            </React.Fragment>
+            </div>
         );
     }
 }

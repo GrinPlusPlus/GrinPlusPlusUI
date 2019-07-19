@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from 'prop-types';
 import { Button, Divider, Grid, Tooltip, Typography, IconButton } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import SideMenu from '../../components/SideMenu';
 import { ipcRenderer, clipboard } from 'electron';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import CopyIcon from '@material-ui/icons/FileCopy';
@@ -107,7 +106,6 @@ class Outputs extends React.Component {
 
         return (
             <React.Fragment>
-                <SideMenu pageName='Outputs' />
                 <br />
                 <Grid container spacing={8} style={{ maxHeight: 'calc(100vh - 120px)', overflow: 'auto' }} className={classes.root}>
                     <Grid item xs={2} />
