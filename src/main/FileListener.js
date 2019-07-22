@@ -35,7 +35,7 @@ function start() {
                 defaultPath: defaultPath,
                 properties: ['openFile'],
                 filters: [
-                    { name: 'Tx Files', extensions: ['tx', 'response'] },
+                    { name: 'Tx Files', extensions: ['tx', 'json', 'response'] },
                     { name: 'All Files', extensions: ['*'] }
                 ]
             },

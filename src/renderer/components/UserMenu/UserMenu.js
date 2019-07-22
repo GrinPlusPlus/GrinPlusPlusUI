@@ -50,7 +50,7 @@ function UserMenu(props) {
           color="inherit"
           disabled
       >
-          <Typography color='textPrimary' variant=' inline'><b>{sessionStorage.getItem("username")}</b></Typography>
+          <Typography color='textPrimary' display='inline'><b>{sessionStorage.getItem("username")}</b></Typography>
           <ImageAvatar />
       </Button>
   );

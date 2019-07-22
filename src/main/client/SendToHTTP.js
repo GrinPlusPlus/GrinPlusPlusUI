@@ -4,7 +4,7 @@ import Finalize from './api/owner/Finalize';
 import ConnectionUtils from './ConnectionUtils';
 import log from 'electron-log';
 
-async function call(event, httpAddress, amount) {
+async function call(event, httpAddress, amount, strategy, inputs) {
     log.info("Sending to: " + httpAddress);
     const canConnect = await ConnectionUtils.canConnect(httpAddress, ForeignReceive.RECEIVE_TX_PATH);
     if (!canConnect) {
@@ -13,7 +13,7 @@ async function call(event, httpAddress, amount) {
         return;
     }
 
-    Send.call(amount, function (sendResult) {
+    Send.call(amount, strategy, inputs, function (sendResult) {
         log.info("Send Result: " + JSON.stringify(sendResult));
 
         if (sendResult.status_code == 200) {
@@ -28,17 +28,17 @@ async function call(event, httpAddress, amount) {
                             event.returnValue = finalizeResult;
                         } else {
                             log.error("Finalize failed with status: " + finalizeResult.status_code);
-                            event.returnValue = "FinalizeFailed";
+                            event.returnValue = finalizeResult;
                         }
                     });
                 } else {
                     log.error("Receive failed with status: " + receiveResult.status_code);
-                    event.returnValue = "ForeignReceiveFailed";
+                    event.returnValue = receiveResult;
                 }
             });
         } else {
             log.error("Send failed with status: " + sendResult.status_code);
-            event.returnValue = "SendSlateFailed";
+            event.returnValue = sendResult;
         }
     });
 };

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { ipcRenderer } from 'electron';
 import { FormControl } from "@material-ui/core";
-import CustomTextField from '../../../CustomTextField';
+import CustomTextField from '../../../../components/CustomTextField';
 
 function SendGrinbox(props) {
     const { selected, grinboxAddress, setGrinboxAddress } = props;

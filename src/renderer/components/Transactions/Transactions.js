@@ -150,7 +150,7 @@ function Transactions(props) {
 
 Transactions.propTypes = {
     classes: PropTypes.object.isRequired,
-    transactions: PropTypes.string.isRequired,
+    transactions: PropTypes.string,
     lastConfirmedHeight: PropTypes.number.isRequired,
     showCanceled: PropTypes.bool.isRequired,
     repostTx: PropTypes.func.isRequired,

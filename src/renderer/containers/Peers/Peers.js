@@ -46,7 +46,7 @@ const headRows = [
 ];
 
 function EnhancedTableHead(props) {
-    const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+    const { order, orderBy, rowCount, onRequestSort } = props;
     const createSortHandler = property => event => {
         onRequestSort(event, property);
     };
@@ -76,12 +76,9 @@ function EnhancedTableHead(props) {
 }
 
 EnhancedTableHead.propTypes = {
-    numSelected: PropTypes.number.isRequired,
     onRequestSort: PropTypes.func.isRequired,
-    onSelectAllClick: PropTypes.func.isRequired,
     order: PropTypes.string.isRequired,
     orderBy: PropTypes.string.isRequired,
-    rowCount: PropTypes.number.isRequired,
 };
 
 const useToolbarStyles = makeStyles(theme => ({
@@ -135,13 +132,12 @@ function Peers(props) {
     const [refreshPeers, setRefreshPeers] = React.useState(false);
 
     const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState('calories');
+    const [orderBy, setOrderBy] = React.useState('addr');
     const [dense, setDense] = React.useState(false);
 
 
     const EnhancedTableToolbar = props => {
         const classes = useToolbarStyles();
-        const { numSelected } = props;
 
         return (
             <Toolbar className={classes.root}>

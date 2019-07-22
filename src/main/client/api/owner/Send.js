@@ -1,13 +1,16 @@
 import ConnectionUtils from '../../ConnectionUtils';
 import log from 'electron-log';
 
-function call(amount, callback) {
+function call(amount, strategy, inputs, callback) {
     const headers = [{ name: 'session_token', value: global.session_token }];
 
     var reqJSON = new Object();
     reqJSON['amount'] = amount;
     reqJSON['fee_base'] = 1000000;
-    reqJSON['selection_strategy'] = "ALL";
+    reqJSON['selection_strategy'] = {
+        strategy: strategy,
+        inputs: inputs
+    };
     
     log.info("Sending: " + amount);
     ConnectionUtils.ownerRequest('POST', 'issue_send_tx', headers, JSON.stringify(reqJSON), function (response) {

@@ -4,12 +4,13 @@ import { ipcRenderer } from 'electron';
 import {Grid, FormControl, IconButton } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
-import CustomTextField from '../../../CustomTextField';
+import CustomTextField from '../../../../components/CustomTextField';
 
 const styles = theme => ({
     fileChooserButton: {
         marginTop: theme.spacing.unit,
-        marginLeft: -theme.spacing.unit
+        marginLeft: theme.spacing.unit,
+        padding: '5px'
     },
 });
 
@@ -32,28 +33,25 @@ function SendFile(props) {
     }
 
     return (
-        <Grid container spacing={2}>
-            <Grid item xs={11}>
-                <FormControl
-                    margin="dense"
-                    required
-                    fullWidth
-                >
-                    <CustomTextField
-                        name="destinationFile"
-                        type="text"
-                        id="destinationFile"
-                        value={selectedFile}
-                        placeholder='Destination File'
-                    />
-                </FormControl>
-            </Grid>
-            <Grid item xs={1}>
-                <IconButton color='secondary' onClick={handleSelectFile} className={classes.fileChooserButton}>
-                    <SaveAltIcon />
-                </IconButton>
-            </Grid>
-        </Grid>
+        <React.Fragment>
+            <FormControl
+                margin="dense"
+                required
+                style={{ width: `calc(100% - 50px)`}}
+            >
+                <CustomTextField
+                    name="destinationFile"
+                    type="text"
+                    id="destinationFile"
+                    value={selectedFile}
+                    placeholder='Destination File'
+                />
+            </FormControl>
+            <IconButton color='secondary' onClick={handleSelectFile} className={classes.fileChooserButton}>
+                <SaveAltIcon />
+            </IconButton>
+            <br />
+        </React.Fragment>
     );
 }
 

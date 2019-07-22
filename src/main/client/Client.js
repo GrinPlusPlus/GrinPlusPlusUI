@@ -63,8 +63,8 @@ function StartOwnerClient() {
         WalletSummary.call(event);
     });
 
-    ipcMain.on("Send", function (event, amount) {
-        Send.call(amount, function (result) {
+    ipcMain.on("Send", function (event, amount, strategy, inputs) {
+        Send.call(amount, strategy, inputs, function (result) {
             event.returnValue = result;
         });
     });
@@ -81,8 +81,8 @@ function StartOwnerClient() {
         });
     });
 
-    ipcMain.on("EstimateFee", function (event, amount) {
-        EstimateFee.call(amount, function (result) {
+    ipcMain.on("EstimateFee", function (event, amount, strategy, inputs) {
+        EstimateFee.call(amount, strategy, inputs, function (result) {
             event.returnValue = result;
         });
     });
@@ -117,17 +117,17 @@ function start() {
         GetConnectedPeers.call(event);
     });
 
-    ipcMain.on('SendToHTTP', function (event, httpAddress, amount) {
-        SendToHTTP.call(event, httpAddress, amount);
+    ipcMain.on('SendToHTTP', function (event, httpAddress, amount, strategy, inputs) {
+        SendToHTTP.call(event, httpAddress, amount, strategy, inputs);
     });
 
     ipcMain.on('Support::SubmitRequest', function (event, name, email, description) {
         RequestSupport.call(event, name, email, description);
     });
 
-    ipcMain.on('Grinbox::Send', function (event, grinboxAddress, amount) {
+    ipcMain.on('Grinbox::Send', function (event, grinboxAddress, amount, strategy, inputs) {
         // TODO: Validate GrinboxAddress first
-        Send.call(amount, function (result) {
+        Send.call(amount, strategy, inputs, function (result) {
             if (result.status_code == 200) {
                 event.returnValue = GrinboxConnection.postSlate(result.slate, grinboxAddress);
             } else {

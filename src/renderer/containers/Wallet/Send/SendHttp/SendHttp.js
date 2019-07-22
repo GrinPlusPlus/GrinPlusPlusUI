@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { FormControl } from "@material-ui/core";
-import CustomTextField from '../../../CustomTextField';
+import CustomTextField from '../../../../components/CustomTextField';
 
 function SendHttp(props) {
     const { selected, httpAddress, setHttpAddress } = props;

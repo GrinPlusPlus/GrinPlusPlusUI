@@ -138,6 +138,7 @@ function SettingsModal(props) {
                                                 onChange={handleChangeEnhanced}
                                                 value="enhanced"
                                                 color='secondary'
+                                                disabled={true}
                                             />
                                         }
                                         label="Use Enhanced Database"
