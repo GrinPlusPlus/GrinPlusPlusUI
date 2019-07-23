@@ -7,17 +7,16 @@ import { ipcRenderer } from "electron";
 const path = require('path');
 
 const styles = theme => ({
-  main: {
-    width: 'auto',
-    [theme.breakpoints.up(400)]: {
-      width: 400,
-      marginLeft: 'auto',
-      marginRight: 'auto',
+    main: {
+        position: 'fixed',
+        top: '50%',
+        left: '50%',
+        marginTo: '25px',
+        transform: 'translate(-50%, -50%)'
     },
-  },
-  submit: {
-    marginTop: theme.spacing.unit * 3,
-  },
+    submit: {
+        marginTop: theme.spacing(3),
+    },
 });
 
 class Main extends React.Component {
@@ -90,7 +89,6 @@ class Main extends React.Component {
                         alignItems="center"
                         justify="center"
                         style={{ minHeight: '90vh' }}>
-
                         <img src={path.join(__dirname, './static/img/GrinBanner.png')} style={{ width: '450px' }} />
 
                         <br /><br /><br />

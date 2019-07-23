@@ -8,24 +8,24 @@ import {ipcRenderer} from 'electron';
 import RefreshIcon from '@material-ui/icons/Refresh';
 
 const styles = theme => ({
-  fullWidth: {
-    width: '100%',
-  },
-  root: {
-    flexGrow: 1,
-  },
-  actionIcon: {
-    padding: 2 * theme.spacing.unit,
-    textAlign: 'center'
-  },
-  send: {
-    padding: theme.spacing.unit,
-    textAlign: 'left',
-  },
-  receive: {
-    padding: theme.spacing.unit,
-    textAlign: 'right',
-  }
+    fullWidth: {
+        width: '100%',
+    },
+    root: {
+        flexGrow: 1,
+    },
+    actionIcon: {
+        padding: theme.spacing(2),
+        textAlign: 'center'
+    },
+    send: {
+        padding: theme.spacing(1),
+        textAlign: 'left',
+    },
+    receive: {
+        padding: theme.spacing(1),
+        textAlign: 'right',
+    }
 });
 
 function Advanced(props) {

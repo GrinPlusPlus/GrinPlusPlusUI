@@ -14,17 +14,17 @@ import GrinDialog from '../GrinDialog';
 const styles = theme => ({
     paper: {
         position: "absolute",
-        width: theme.spacing.unit * 50,
+        width: theme.spacing(50),
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],
-        padding: theme.spacing.unit * 4,
+        padding: theme.spacing(4),
         outline: "none"
     },
     fab: {
-        margin: theme.spacing.unit
+        margin: theme.spacing(1)
     },
     extendedIcon: {
-        marginRight: theme.spacing.unit
+        marginRight: theme.spacing(1)
     }
 });
 

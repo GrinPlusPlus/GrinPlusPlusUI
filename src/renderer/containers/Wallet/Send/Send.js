@@ -17,14 +17,14 @@ import log from 'electron-log';
 
 const styles = theme => ({
     fab: {
-        margin: theme.spacing.unit
+        margin: theme.spacing(1)
     },
     form: {
         width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing.unit,
+        marginTop: theme.spacing(1)
     },
     extendedIcon: {
-        marginRight: theme.spacing.unit
+        marginRight: theme.spacing(1)
     }
 });
 

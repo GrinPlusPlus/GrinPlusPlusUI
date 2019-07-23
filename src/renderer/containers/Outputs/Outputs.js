@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import {
-    Button, Divider, Grid, Tooltip, Typography, IconButton,
-    Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel, Toolbar
+    Button, Divider, Grid, Tooltip, Typography,
+    IconButton, TableCell, TableRow, Toolbar
 } from '@material-ui/core';
 import { withStyles, lighten, makeStyles } from '@material-ui/core/styles';
 import { ipcRenderer, clipboard } from 'electron';
@@ -10,72 +10,7 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import CopyIcon from '@material-ui/icons/FileCopy';
 import log from 'electron-log';
 import GrinUtil from "../../util/GrinUtil.js";
-
-function desc(a, b, orderBy) {
-    if (b[orderBy] < a[orderBy]) {
-        return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-        return 1;
-    }
-    return 0;
-}
-
-function stableSort(array, cmp) {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-        const order = cmp(a[0], b[0]);
-        if (order !== 0) return order;
-        return a[1] - b[1];
-    });
-    return stabilizedThis.map(el => el[0]);
-}
-
-function getSorting(order, orderBy) {
-    return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
-}
-
-const headRows = [
-    { id: 'commitment', numeric: false, disablePadding: false, label: 'Commitment' },
-    { id: 'amount', numeric: false, disablePadding: false, label: 'Amount' },
-    { id: 'status', numeric: true, disablePadding: false, label: 'Status' },
-];
-
-function EnhancedTableHead(props) {
-    const { order, orderBy, rowCount, onRequestSort } = props;
-    const createSortHandler = property => event => {
-        onRequestSort(event, property);
-    };
-
-    return (
-        <TableHead>
-            <TableRow>
-                {headRows.map(row => (
-                    <TableCell
-                        key={row.id}
-                        align={row.numeric ? 'right' : 'left'}
-                        padding={row.disablePadding ? 'none' : 'default'}
-                        sortDirection={orderBy === row.id ? order : false}
-                    >
-                        <TableSortLabel
-                            active={orderBy === row.id}
-                            direction={order}
-                            onClick={createSortHandler(row.id)}
-                        >
-                            {row.label}
-                        </TableSortLabel>
-                    </TableCell>
-                ))}
-            </TableRow>
-        </TableHead>
-    );
-}
-
-EnhancedTableHead.propTypes = {
-    onRequestSort: PropTypes.func.isRequired,
-    order: PropTypes.string.isRequired,
-    orderBy: PropTypes.string.isRequired,
-};
+import CustomTable from '../../components/CustomTable';
 
 const useToolbarStyles = makeStyles(theme => ({
     root: {
@@ -104,28 +39,12 @@ const useToolbarStyles = makeStyles(theme => ({
 }));
 
 const styles = theme => ({
-  fullWidth: {
-    width: '100%',
-  },
-  root: {
-    flexGrow: 1,
-  },
-  actionIcon: {
-    padding: 2 * theme.spacing.unit,
-    textAlign: 'center'
-  },
-  send: {
-    padding: theme.spacing.unit,
-    textAlign: 'left',
-  },
-  receive: {
-    padding: theme.spacing.unit,
-    textAlign: 'right',
-  }
+    root: {
+        flexGrow: 1,
+    }
 });
 
 class Outputs extends React.Component {
-
     constructor() {
         super();
         this.state = {
@@ -180,6 +99,11 @@ class Outputs extends React.Component {
     render() {
         const { classes } = this.props;
 
+        const columns = [
+            { id: 'commitment', numeric: false, disablePadding: false, label: 'Commitment' },
+            { id: 'amount', numeric: false, disablePadding: false, label: 'Amount' },
+            { id: 'status', numeric: true, disablePadding: false, label: 'Status' },
+        ];
 
         const EnhancedTableToolbar = props => {
             const classes = useToolbarStyles();
@@ -204,56 +128,48 @@ class Outputs extends React.Component {
             );
         };
 
+        function handleClick(commitment) {
+            // TODO: Show output info dialog
+        }
+
+        function buildRow(output, index) {
+            return (
+                <TableRow
+                    hover
+                    onClick={event => handleClick(output.commitment)}
+                    role='hover'
+                    tabIndex={-1}
+                    key={output.commitment}
+                >
+                    <TableCell scope="row" padding="none">
+                        {output.commitment.substring(0, 20) + "..." + output.commitment.substring(46)}
+                        <IconButton onClick={() => { clipboard.writeText(output.commitment) }} style={{ padding: '5px' }}>
+                            <CopyIcon fontSize='small' />
+                        </IconButton>
+                    </TableCell>
+                    <TableCell>{GrinUtil.FormatAmount(output.amount)}</TableCell>
+                    <TableCell align="right">{output.status}</TableCell>
+                </TableRow>
+            );
+        }
+
         return (
-            <React.Fragment>
+            <div style={{ height: '100%', overflow: 'auto' }}>
                 <br />
-                <Grid container spacing={1} style={{ maxHeight: 'calc(100vh - 120px)', overflow: 'auto' }} className={classes.root}>
+                <Grid container spacing={0} className={classes.root}>
                     <Grid item xs={2} />
                     <Grid item xs={8}>
                         <EnhancedTableToolbar />
-                        <div className={classes.tableWrapper}>
-                            <Table
-                                className={classes.table}
-                                aria-labelledby="tableTitle"
-                                size='medium'
-                            >
-                                <EnhancedTableHead
-                                    order={this.state.order}
-                                    orderBy={this.state.orderBy}
-                                    onRequestSort={this.handleRequestSort}
-                                    rowCount={this.state.outputs.length}
-                                />
-                                <TableBody>
-                                    {stableSort(this.state.outputs, getSorting(this.state.order, this.state.orderBy))
-                                        .map((output, index) => {
-                                            const labelId = `enhanced-table-checkbox-${index}`;
-
-                                            return (
-                                                <TableRow
-                                                    hover
-                                                    onClick={event => handleClick(event, output.commitment)}
-                                                    role='hover'
-                                                    tabIndex={-1}
-                                                    key={output.commitment}
-                                                >
-                                                    <TableCell component="th" id={labelId} scope="row" padding="none">
-                                                        {output.commitment.substring(0, 20) + "..." + output.commitment.substring(46)}
-                                                        <IconButton onClick={() => { clipboard.writeText(output.commitment) }} style={{ padding: '5px' }}>
-                                                            <CopyIcon fontSize='small' />
-                                                        </IconButton>
-                                                    </TableCell>
-                                                    <TableCell>{GrinUtil.FormatAmount(output.amount)}</TableCell>
-                                                    <TableCell align="right">{output.status}</TableCell>
-                                                </TableRow>
-                                            );
-                                        })}
-                                </TableBody>
-                            </Table>
-                        </div>
+                        <CustomTable
+                            columns={columns}
+                            items={this.state.outputs}
+                            buildRow={buildRow}
+                            dense={true}
+                        />
                     </Grid>
                     <Grid item xs={2} />
                 </Grid>
-            </React.Fragment>
+            </div>
         );
     }
 }

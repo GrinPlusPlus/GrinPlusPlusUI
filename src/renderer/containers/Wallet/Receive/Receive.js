@@ -13,19 +13,19 @@ import CustomTextField from "../../../components/CustomTextField";
 
 const styles = theme => ({
     fab: {
-        margin: theme.spacing.unit
+        margin: theme.spacing(1)
     },
     fileChooserButton: {
-        marginTop: theme.spacing.unit,
-        marginLeft: theme.spacing.unit,
+        marginTop: theme.spacing(1),
+        marginLeft: theme.spacing(1),
         padding: '5px'
     },
     form: {
         width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing.unit,
+        marginTop: theme.spacing(1)
     },
     extendedIcon: {
-        marginRight: theme.spacing.unit
+        marginRight: theme.spacing(1)
     }
 });
 

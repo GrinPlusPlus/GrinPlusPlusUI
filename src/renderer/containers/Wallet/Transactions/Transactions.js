@@ -7,7 +7,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import ReceiveIcon from '@material-ui/icons/CallReceived';
 import SendIcon from "@material-ui/icons/CallMade";
 import green from '@material-ui/core/colors/green';
-import TxInfoModal from '../Modals/TxInfoModal';
+import TxInfoModal from '../../../components/Modals/TxInfoModal';
 
 const styles = {
     root: {

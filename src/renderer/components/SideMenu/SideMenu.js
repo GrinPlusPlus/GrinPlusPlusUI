@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, makeStyles, useTheme } from "@material-ui/core/styles";
-import { Redirect, Link } from 'react-router-dom';
+import { withStyles } from "@material-ui/core/styles";
+import { Link } from 'react-router-dom';
 import { ipcRenderer } from 'electron';
 import ButtonAppNav from '../ButtonAppNav';
 
@@ -19,25 +19,8 @@ const styles = theme => ({
     root: {
         display: 'flex',
     },
-    appBar: {
-        transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-    },
-    appBarShift: {
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: drawerWidth,
-        transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    },
     menuButton: {
         marginRight: theme.spacing(2),
-    },
-    hide: {
-        display: 'none',
     },
     drawer: {
         width: drawerWidth,
@@ -48,34 +31,10 @@ const styles = theme => ({
         backgroundColor: '#000000',
         border: '#ffffff 2px solid'
     },
-    drawerHeader: {
-        display: 'flex',
-        alignItems: 'center',
-        padding: '0 8px',
-        ...theme.mixins.toolbar,
-        justifyContent: 'flex-end',
-    },
-    content: {
-        flexGrow: 1,
-        padding: theme.spacing(3),
-        transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        marginLeft: -drawerWidth,
-    },
-    contentShift: {
-        transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-        marginLeft: 0,
-    },
 });
 
 function SideMenu(props) {
-    const { classes } = props;
-    const theme = useTheme();
+    const { classes, ...other } = props;
     const [open, setOpen] = React.useState(false);
 
     function logout() {
@@ -93,7 +52,7 @@ function SideMenu(props) {
 
     return (
         <React.Fragment>
-            <ButtonAppNav onClickMenu={handleDrawerOpen} {...props} />
+            <ButtonAppNav onClickMenu={handleDrawerOpen} {...other} />
             <Drawer
                 className={classes.drawer}
                 variant="persistent"

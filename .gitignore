@@ -67,3 +67,7 @@ typings/
 
 .vs/
 app/bin
+app/renderer.js.map
+app/renderer.js
+app/background.js.map
+app/background.js

@@ -10,7 +10,7 @@ import SendIcon from "@material-ui/icons/CallMade";
 import ReceiveIcon from '@material-ui/icons/CallReceived';
 import FinalizeIcon from '@material-ui/icons/CallMerge';
 import RefreshIcon from '@material-ui/icons/Refresh';
-import Transactions from '../../components/Transactions';
+import Transactions from './Transactions';
 import GrinUtil from "../../util/GrinUtil.js";
 import Send from './Send';
 import Receive from './Receive';
@@ -25,15 +25,15 @@ const styles = theme => ({
         flexGrow: 1,
     },
     actionIcon: {
-        padding: 2 * theme.spacing.unit,
+        padding: theme.spacing(2),
         textAlign: 'center'
     },
     send: {
-        padding: theme.spacing.unit,
+        padding: theme.spacing(1),
         textAlign: 'left',
     },
     receive: {
-        padding: theme.spacing.unit,
+        padding: theme.spacing(1),
         textAlign: 'right',
     }
 });

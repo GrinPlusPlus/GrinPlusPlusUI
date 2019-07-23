@@ -18,7 +18,7 @@ const PropsRoute = ({ component: Component, ...props }) => (
         render={renderProps => (
             <React.Fragment>
                 <SideMenu {...props} />
-                <div style={{ maxHeight: 'calc(100vh - 98px)', height: 'calc(100vh - 98px)' }}>
+                <div style={{ maxHeight: 'calc(100vh - 103px)', height: 'calc(100vh - 103px)' }}>
                     <Component {...renderProps} {...props} />
                 </div>
             </React.Fragment>

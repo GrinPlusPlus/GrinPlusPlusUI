@@ -8,8 +8,8 @@ import CustomTextField from '../../../../components/CustomTextField';
 
 const styles = theme => ({
     fileChooserButton: {
-        marginTop: theme.spacing.unit,
-        marginLeft: theme.spacing.unit,
+        marginTop: theme.spacing(1),
+        marginLeft: theme.spacing(1),
         padding: '5px'
     },
 });
