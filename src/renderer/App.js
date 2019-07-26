@@ -49,6 +49,7 @@ const dark_theme = createMuiTheme({
         },
         primary: {
             main: '#000000',
+            dark: '#111111',
             contrastText: '#ffffff',
         },
         text: {
@@ -88,12 +89,23 @@ const dark_theme = createMuiTheme({
                 color: '#ffffff'
             }
         },
+        MuiMenu: {
+            paper: {
+                backgroundColor: '#000000',
+                border: '#333333 2px solid'
+            }
+        },
         MuiListItem: {
             button: {
                 '&:hover': {
-                    color: '#555555',
+                    color: '#ffffff',
                     backgroundColor: '#555555'
                 }
+            }
+        },
+        MuiFormControlLabel: {
+            label: {
+                color: '#000000'
             }
         }
     }

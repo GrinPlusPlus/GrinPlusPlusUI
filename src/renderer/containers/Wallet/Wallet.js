@@ -104,7 +104,7 @@ class Wallet extends React.Component {
         ipcRenderer.send('WalletSummary', this.state.showCanceled);
 
         this.updateButtonInterval = setInterval(this.updateButtonState, 500);
-        this.updateWalletInterval =setInterval(this.updateWallet, 15000);
+        this.updateWalletInterval = setInterval(this.updateWallet, 15000);
     }
 
     componentWillUnmount() {

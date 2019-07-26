@@ -138,7 +138,7 @@ const createWindow = async () => {
             }
         }
 
-        statusInterval = setInterval(getStatus, 2000, (status) => {
+        statusInterval = setInterval(getStatus, 1000, (status) => {
             if (mainWindow != null && shuttingDown == false) {
                 if (status != null) {
                     //log.silly('NODE_STATUS: ' + JSON.stringify(status));

@@ -14,15 +14,15 @@ const styles = {
   },
 };
 
-function ImageAvatars(props) {
+function ImageAvatar(props) {
   const { classes } = props;
   return (
       <Avatar src="https://avatars0.githubusercontent.com/u/45742329?s=400&u=57afc7119c701f3aeb526d6992376bee7aa60dd6&v=4" className={classes.avatar} />
   );
 }
 
-ImageAvatars.propTypes = {
+ImageAvatar.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ImageAvatars);
+export default withStyles(styles)(ImageAvatar);

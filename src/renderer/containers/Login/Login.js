@@ -57,7 +57,6 @@ function Login(props) {
     const [submitting, setSubmitting] = React.useState(false);
     const [loggedIn, setLoggedIn] = React.useState(false);
     const [error, setError] = React.useState(null);
-    const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
 
     function handleSubmit(event) {
@@ -66,7 +65,7 @@ function Login(props) {
         ipcRenderer.removeAllListeners('Login::Response');
         ipcRenderer.on('Login::Response', (event, status) => {
             if (status == 200) {
-                sessionStorage["username"] = username.toUpperCase();
+                sessionStorage["username"] = window.global.loginUser.toUpperCase();
                 setLoggedIn(true);
             } else {
                 setSubmitting(false);
@@ -74,17 +73,13 @@ function Login(props) {
             }
         });
 
-        ipcRenderer.send('Login', username, password);
+        ipcRenderer.send('Login', window.global.loginUser, password);
         setSubmitting(true);
         setError(null);
     }
 
     if (loggedIn === true) {
         return (<Redirect to='/wallet' />);
-    }
-
-    function changeUsername(e) {
-        setUsername(e.target.value);
     }
 
     function changePassword(e) {
@@ -114,11 +109,11 @@ function Login(props) {
                     <form className={classes.form} onSubmit={handleSubmit}>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="username">Username</InputLabel>
-                            <Input id="username" name="username" value={username} onChange={changeUsername} autoFocus />
+                            <Input id="username" name="username" value={window.global.loginUser} disabled />
                         </FormControl>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="password">Password</InputLabel>
-                            <Input name="password" type="password" id="password" value={password} onChange={changePassword} />
+                            <Input name="password" type="password" id="password" value={password} onChange={changePassword} autoFocus />
                         </FormControl>
                         <Button
                             type="submit"

@@ -29,7 +29,8 @@ const styles = theme => ({
     drawerPaper: {
         width: drawerWidth,
         backgroundColor: '#000000',
-        border: '#ffffff 2px solid'
+        borderColor: '#ffffff',
+        borderWidth: '0px 2px'
     },
 });
 
