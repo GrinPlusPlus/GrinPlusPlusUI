@@ -63,13 +63,13 @@ class Main extends React.Component {
     componentDidMount() {
         ipcRenderer.removeAllListeners("GetAccounts::Response");
         ipcRenderer.on("GetAccounts::Response", (event, statusCode, allUsers) => {
-            if (statusCode == 200 && allUsers != null) {
-                this.setState({
-                    users: allUsers
-                });
-            } else if (statusCode == 404) {
+            if (statusCode == 404) {
                 setTimeout(ipcRenderer.send("GetAccounts"), 50);
-            }
+            } else {
+                this.setState({
+                    users: allUsers == null ? [] : allUsers
+                });
+            } 
         });
 
         ipcRenderer.send("GetAccounts");

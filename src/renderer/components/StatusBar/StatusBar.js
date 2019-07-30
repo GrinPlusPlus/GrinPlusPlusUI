@@ -5,6 +5,8 @@ import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import StatusIcon from "@material-ui/icons/Lens";
+import OutgoingIcon from "@material-ui/icons/ArrowUpward";
+import IncomingIcon from "@material-ui/icons/ArrowDownward";
 import { red, orange } from "@material-ui/core/colors";
 import {
     MuiThemeProvider, createMuiTheme, Typography, Grid, IconButton
@@ -18,23 +20,18 @@ const styles = theme => ({
         top: 'auto',
         height: 30,
         bottom: 0,
+        padding: '3px 10px'
     },
     Grid: {
-        marginTop: '-26px',
-        height: '28px'
-    },
-    status: {
-        marginLeft: '-15px',
-        marginTop: '-14px',
+        height: '24px'
     },
     statusText: {
-        paddingLeft: '4px',
+        display: 'inline-block',
+        paddingLeft: '4px'
     },
     connections: {
-        paddingLeft: '8px'
-    },
-    chainHeight: {
-        paddingLeft: '12px'
+        display: 'inline-block',
+        paddingLeft: '8px',
     }
 });
 
@@ -54,6 +51,7 @@ class StatusBar extends React.Component {
             processed: 0
         };
         this.updateStatus = this.updateStatus.bind(this);
+        this.getCenterText = this.getCenterText.bind(this);
     }
 
     updateStatus(event, status, inbound, outbound, headerHeight, blockHeight, networkHeight, downloaded, totalSize, processed) {
@@ -71,6 +69,10 @@ class StatusBar extends React.Component {
             totalSize: totalSize,
             processed: processed
         });
+    }
+
+    getCenterText() {
+        return "Headers: " + this.state.headerHeight + " Blocks: " + this.state.blockHeight + " Network: " + this.state.networkHeight;
     }
 
     componentDidMount() {
@@ -148,34 +150,26 @@ class StatusBar extends React.Component {
         }
 
         return (
-                <AppBar position="fixed" color="primary" className={classes.appBar}>
-                    <Toolbar>
-                        <MuiThemeProvider theme={dark_mode ? darkStatusTheme : statusTheme}>
-                            <Grid container spacing={0} className={classes.Grid}>
-                                <Grid item xs={3}>
-                                    <IconButton disabled className={classes.status}>
-                                        <StatusIcon color={getColor(this.state.status)} />
-                                        <Typography display='inline' noWrap color="textPrimary" className={classes.statusText}><b>Status: </b></Typography>
-                                        <Typography display='inline' noWrap color={getColor(this.state.status)} className={classes.statusText}><b>{getStatusText(this.state)}</b></Typography>
-                                    </IconButton>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <center>
-                                        <Typography display='inline' noWrap className={classes.chainHeight}><b>Headers: {this.state.headerHeight}</b></Typography>
-                                        <Typography display='inline' noWrap className={classes.chainHeight}><b>Blocks: {this.state.blockHeight}</b></Typography>
-                                        <Typography display='inline' noWrap className={classes.chainHeight}><b>Network: {this.state.networkHeight}</b></Typography>
-                                    </center>
-                                </Grid>
-                                <Grid item xs={3}>
-                                    <div style={{ textAlign: 'right' }}>
-                                        <Typography display='inline' noWrap className={classes.connections}><b>Inbound: {this.state.inbound}</b></Typography>
-                                        <Typography display='inline' noWrap className={classes.connections}><b>Outbound: {this.state.outbound}</b></Typography>
-                                    </div>
-                                </Grid>
-                            </Grid>
-                        </MuiThemeProvider>
-                    </Toolbar>
-                </AppBar>
+            <AppBar position="fixed" color="primary" className={classes.appBar}>
+                <MuiThemeProvider theme={dark_mode ? darkStatusTheme : statusTheme}>
+                    <Grid container spacing={0} className={classes.Grid}>
+                        <Grid item xs={3} style={{ height: '24px', margin: '0px' }}>
+                            <StatusIcon color={getColor(this.state.status)} />
+                            <Typography noWrap color="textPrimary" className={classes.statusText}><b>Status: </b></Typography>
+                            <Typography noWrap color={getColor(this.state.status)} className={classes.statusText}><b>{getStatusText(this.state)}</b></Typography>
+                        </Grid>
+                        <Grid item xs={6} style={{ height: '24px', textAlign: 'center' }}>
+                            <Typography display='inline' noWrap className={classes.chainHeight}>
+                                <b>{ this.getCenterText() }</b>
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={3} style={{ height: '24px', textAlign: 'right', verticalAlign: 'middle' }}>
+                            <Typography noWrap className={classes.connections}><b>{this.state.outbound} </b></Typography><OutgoingIcon color='primary' />
+                            <Typography noWrap className={classes.connections}><b>{this.state.inbound} </b></Typography><IncomingIcon color='error' />
+                        </Grid>
+                    </Grid>
+                    </MuiThemeProvider>
+            </AppBar>
         );
     }
 }

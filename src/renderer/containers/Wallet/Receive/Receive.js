@@ -33,20 +33,26 @@ function Receive(props) {
     const { classes } = props;
     const [selectedFile, setSelectedFile] = React.useState("");
     const [httpAddress, setHttpAddress] = React.useState("");
+    const [addressType, setAddressType] = React.useState("IP");
     const [grinboxAddress, setGrinboxAddress] = React.useState("");
 
     if (httpAddress.length === 0) {
         setTimeout(() => {
-            const url = ipcRenderer.sendSync('LookupURL'); // TODO: This should only be attempted once. Need to make Receive a React.Component
-            if (url != null) {
-                setHttpAddress(url);
+            const http = ipcRenderer.sendSync('LookupURL');
+            if (http.ngrok != null) {
+                // TODO: Show expiration
+                setHttpAddress(http.ngrok);
+                setAddressType("NGROK");
+            } else {
+                setHttpAddress(http.IP);
+                setAddressType("IP");
             }
 
             const grinboxAddress = ipcRenderer.sendSync('Grinbox::GetAddress');
             if (grinboxAddress != null) {
                 setGrinboxAddress(grinboxAddress);
             }
-        }, 200);
+        }, 25);
     }
     
     function closeModal() {
@@ -89,16 +95,35 @@ function Receive(props) {
         ipcRenderer.send('ReceiveFile');
     }
 
+    function getWarning() {
+        if (addressType == "IP") {
+            return (
+                <b>
+                    Advanced users only! You must configure port forwarding on port 3415 for this to work.<br />
+                    After requesting funds via http, you must leave Grin++ logged in until those funds are recevied.
+                </b>
+            );
+        } else if (addressType == "NGROK") {
+            return (
+                <b>
+                    Ngrok addresses are ephemeral, and a new one is generated each time you open Grin++.<br />
+                    After requesting funds via https, you must stay logged in until those funds are received.
+                </b>
+            );
+        } else {
+            return (
+                <b>FAILED TO RETRIEVE ADDRESS</b>
+            );
+        }
+    }
+
     return (
         <React.Fragment>
             <form className={classes.form} onSubmit={handleReceive}>
                 <center>
                     {/* ReceiveHTTP */}
                     <p style={{ fontSize: '14px', color: 'red' }}>
-                        <b>
-                            Ngrok addresses are ephemeral, and a new one is generated each time you open Grin++.<br />
-                            After requesting funds via https, you must stay logged in until those funds are received.
-                        </b>
+                        {getWarning()}
                     </p>
 
                     <Typography variant='body1' color='secondary'>

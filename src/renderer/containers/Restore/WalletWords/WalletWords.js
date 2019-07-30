@@ -52,6 +52,11 @@ const styles = theme => ({
         '& .MuiInput-underline:after': {
             borderBottomColor: 'red',
         }
+    },
+    blackLabel: {
+        '& .MuiFormControlLabel-label': {
+            color: '#000000'
+        }
     }
 });
 
@@ -196,12 +201,14 @@ function WalletWords(props) {
                         name="position"
                         onChange={updateNumWords}
                         style={{ color: '#000000' }}
+                        className={classes.blackLabel}
                     >
                         <FormControlLabel
                             value={12}
                             checked={numWords == 12}
                             control={<Radio color="primary" />}
                             label="12"
+                            className={classes.blackLabel}
                             labelPlacement="end"
                         />
                         <FormControlLabel

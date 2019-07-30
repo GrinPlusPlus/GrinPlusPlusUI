@@ -90,7 +90,9 @@ function Login(props) {
         if (error != null) {
             return (
                 <Typography variant="caption" color='error'>
-                    {error}
+                    <b>
+                        {error}
+                    </b>
                 </Typography>
             );
         } else {
@@ -108,10 +110,6 @@ function Login(props) {
                     {submitting && <CircularProgress size={24} className={classes.buttonProgress} />}
                     <form className={classes.form} onSubmit={handleSubmit}>
                         <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="username">Username</InputLabel>
-                            <Input id="username" name="username" value={window.global.loginUser} disabled />
-                        </FormControl>
-                        <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="password">Password</InputLabel>
                             <Input name="password" type="password" id="password" value={password} onChange={changePassword} autoFocus />
                         </FormControl>
@@ -120,7 +118,7 @@ function Login(props) {
                             fullWidth
                             variant="contained"
                             color="primary"
-                            disabled={submitting}
+                            disabled={submitting || password.length == 0}
                             className={classes.submit}
                         >
                             Sign in

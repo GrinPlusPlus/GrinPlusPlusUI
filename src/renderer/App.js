@@ -102,11 +102,6 @@ const dark_theme = createMuiTheme({
                     backgroundColor: '#555555'
                 }
             }
-        },
-        MuiFormControlLabel: {
-            label: {
-                color: '#000000'
-            }
         }
     }
 });
