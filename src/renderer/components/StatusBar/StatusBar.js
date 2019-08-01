@@ -71,7 +71,7 @@ class StatusBar extends React.Component {
     }
 
     getCenterText() {
-        return "Headers: " + this.state.headerHeight + " Blocks: " + this.state.blockHeight + " Network: " + this.state.networkHeight;
+        return "H: " + this.state.headerHeight + " B: " + this.state.blockHeight + " N: " + this.state.networkHeight;
     }
 
     componentDidMount() {
@@ -136,13 +136,13 @@ class StatusBar extends React.Component {
             if (status == "FULLY_SYNCED") {
                 return "Running";
             } else if (status == "SYNCING_HEADERS") {
-                return "Syncing Headers (" + getPercentage(state.headerHeight, state.networkHeight) + "%)";
+                return "1/4 Syncing Headers (" + getPercentage(state.headerHeight, state.networkHeight) + "%)";
             } else if (status == "SYNCING_BLOCKS") {
-                return "Syncing Blocks (" + getPercentage(state.blockHeight, state.headerHeight) + "%)";
+                return "4/4 Syncing Blocks (" + getPercentage(state.blockHeight, state.headerHeight) + "%)";
             } else if (status == "DOWNLOADING_TXHASHSET") {
-                return "Downloading State (" + getPercentage(state.downloaded, state.totalSize) + "%)";
+                return "2/4 Downloading State (" + getPercentage(state.downloaded, state.totalSize) + "%)";
             } else if (status == "PROCESSING_TXHASHSET") {
-                return "Validating State (" + state.processed + "%)";
+                return "3/4 Validating State (" + state.processed + "%)";
             } else {
                 return "Not Connected";
             }
@@ -152,17 +152,17 @@ class StatusBar extends React.Component {
             <AppBar position="fixed" color="primary" className={classes.appBar}>
                 <MuiThemeProvider theme={dark_mode ? darkStatusTheme : statusTheme}>
                     <Grid container spacing={0} className={classes.Grid}>
-                        <Grid item xs={3} style={{ height: '24px', margin: '0px' }}>
+                        <Grid item xs={4} style={{ height: '24px', margin: '0px' }}>
                             <StatusIcon color={getColor(this.state.status)} />
                             <Typography noWrap color="textPrimary" className={classes.statusText}><b>Status: </b></Typography>
-                            <Typography noWrap color={getColor(this.state.status)} className={classes.statusText}><b>{getStatusText(this.state)}</b></Typography>
+                            <Typography noWrap color={getColor(this.state.status)} display='inline' className={classes.statusText}><b>{getStatusText(this.state)}</b></Typography>
                         </Grid>
-                        <Grid item xs={6} style={{ height: '24px', textAlign: 'center' }}>
+                        <Grid item xs={4} style={{ height: '24px', textAlign: 'center' }}>
                             <Typography display='inline' noWrap className={classes.chainHeight}>
                                 <b>{ this.getCenterText() }</b>
                             </Typography>
                         </Grid>
-                        <Grid item xs={3} style={{ height: '24px', textAlign: 'right', verticalAlign: 'middle' }}>
+                        <Grid item xs={4} style={{ height: '24px', textAlign: 'right', verticalAlign: 'middle' }}>
                             <Typography noWrap className={classes.connections}><b>{this.state.outbound} </b></Typography><OutgoingIcon color='primary' style={{ display: 'inline-block' }} />
                             <Typography noWrap className={classes.connections}><b>{this.state.inbound} </b></Typography><IncomingIcon color='error' style={{ display: 'inline-block' }} />
                             <img src={path.join(__dirname, './static/img/canary.png')} className={classes.connections} style={{ width: '24px', height: '24px' }} />

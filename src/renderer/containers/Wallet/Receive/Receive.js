@@ -40,12 +40,12 @@ function Receive(props) {
     if (httpAddress.length === 0) {
         setTimeout(() => {
             const http = ipcRenderer.sendSync('LookupURL');
-            if (http.ngrok != null) {
+            if (http.ngrok != null && http.ngrok.length > 0) {
                 // TODO: Show expiration
                 setHttpAddress(http.ngrok);
                 setAddressType("NGROK");
             } else {
-                setHttpAddress(http.IP);
+                setHttpAddress("http://" + http.IP + ":3415");
                 setAddressType("IP");
             }
 

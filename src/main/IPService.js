@@ -35,7 +35,7 @@ function lookupIP(event) {
 
         http.get(options, function (res) {
             res.on("data", function (chunk) {
-                ipAddress = chunk;
+                ipAddress += "" + chunk;
                 lastLookup = Date.now();
                 event.returnValue = {
                     ngrok: ngrok_url,
