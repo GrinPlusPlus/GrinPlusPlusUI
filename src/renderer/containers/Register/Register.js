@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Avatar, Button, CssBaseline, Paper, CircularProgress, Typography } from '@material-ui/core';
+import { Avatar, Button, Paper, CircularProgress, Typography } from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Redirect, withRouter } from 'react-router-dom';
 import { ipcRenderer } from 'electron';
@@ -131,8 +131,6 @@ function Register(props) {
     return (
         <React.Fragment>
             <main className={classes.main}>
-                <CssBaseline />
-
                 <WalletWords showModal={showWalletSeed} onClose={handleWalletSeedClose} walletSeed={walletSeed} />
                 <Paper className={classes.paper}>
                     <Avatar src="https://avatars0.githubusercontent.com/u/45742329?s=400&u=57afc7119c701f3aeb526d6992376bee7aa60dd6&v=4" className={classes.avatar} />

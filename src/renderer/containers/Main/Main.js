@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Button, CircularProgress, Fab, Grid, Paper, Popper, Grow, ClickAwayListener, Menu, MenuList, MenuItem } from '@material-ui/core/';
 import { Redirect, withRouter } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
-import ImageAvatar from '../../components/UserMenu/ImageAvatar';
 import AddIcon from '@material-ui/icons/PersonAdd';
 import Avatar from '@material-ui/core/Avatar';
 import { ipcRenderer } from "electron";
@@ -170,8 +169,8 @@ class Main extends React.Component {
                                     style={{ margin: '5px', height: '120px', padding: '10px' }}
                                 >
                                     <center>
-                                        <Avatar src="https://avatars0.githubusercontent.com/u/45742329?s=400&u=57afc7119c701f3aeb526d6992376bee7aa60dd6&v=4" />
-                                        <br />{/* TODO: Ship this icon to avoid github call*/}
+                                        <Avatar src={path.join(__dirname, './static/img/avatar.png')} />
+                                        <br />
                                         <b>{user}</b>
                                     </center>
                                 </Button>

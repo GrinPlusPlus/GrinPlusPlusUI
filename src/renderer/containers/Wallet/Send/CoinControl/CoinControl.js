@@ -22,9 +22,10 @@ function CoinControl(props) {
     }
 
     const columns = [
-        { id: 'checkbox', numeric: false, disablePadding: false, label: 'Spend' },
-        { id: 'block_height', numeric: false, disablePadding: false, label: 'Block Height' },
-        { id: 'commitment', numeric: false, disablePadding: false, label: 'Commitment' },
+        { id: 'checkbox', numeric: false, disablePadding: true, label: 'Spend' },
+        { id: 'block_height', numeric: false, disablePadding: true, label: 'Block Height' },
+        { id: 'commitment', numeric: false, disablePadding: true, label: 'Commitment' },
+        { id: 'message', numeric: false, disablePadding: true, label: 'Message' },
         { id: 'amount', numeric: true, disablePadding: false, label: 'Amount' },
     ];
 
@@ -49,17 +50,22 @@ function CoinControl(props) {
                     <Checkbox checked={selected.includes(row.commitment)} />
                 </TableCell>
                 <TableCell component="th" scope="row" padding="none">
-                    <Typography variant='body1' display='inline'>
+                    <Typography variant='body1' display='inline' style={{ fontSize: '13px' }}>
                         {row.block_height}
                     </Typography>
                 </TableCell>
                 <TableCell component="th" scope="row" padding="none">
-                    <Typography variant='body1' display='inline'>
+                    <Typography variant='body1' display='inline' style={{ fontSize: '13px' }}>
                         {row.commitment.substr(0, 10) + "..." + row.commitment.substr(56)}
                     </Typography>
                 </TableCell>
                 <TableCell component="th" scope="row" padding="none">
-                    <Typography variant='body1' align="right">
+                    <Typography variant='body1' style={{ fontSize: '13px' }}>
+                        {row.message}
+                    </Typography>
+                </TableCell>
+                <TableCell component="th" scope="row" padding="none">
+                    <Typography variant='body1' align="right" style={{ fontSize: '13px' }}>
                         {GrinUtil.FormatAmount(row.amount)}
                     </Typography>
                 </TableCell>

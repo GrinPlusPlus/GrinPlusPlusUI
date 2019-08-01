@@ -35,6 +35,7 @@ function Receive(props) {
     const [httpAddress, setHttpAddress] = React.useState("");
     const [addressType, setAddressType] = React.useState("IP");
     const [grinboxAddress, setGrinboxAddress] = React.useState("");
+    const [message, setMessage] = React.useState("");
 
     if (httpAddress.length === 0) {
         setTimeout(() => {
@@ -58,13 +59,14 @@ function Receive(props) {
     function closeModal() {
         setHttpAddress("");
         setSelectedFile("");
+        setMessage("");
     }
 
     function handleReceive(_event) {
         ipcRenderer.removeAllListeners('SlateOpened');
         ipcRenderer.on('SlateOpened', (event, fileName, data) => {
             if (data !== null) {
-                var result = ipcRenderer.sendSync('Receive', data);
+                var result = ipcRenderer.sendSync('Receive', data, selectedFile, message);
                 if (result !== null) {
                     if (result.status_code == 200) {
                         ipcRenderer.send('SaveToFile', (fileName + '.response'), JSON.stringify(result.slate));
@@ -170,7 +172,11 @@ function Receive(props) {
                             <OpenIcon />
                         </IconButton>
                     </div>
-
+                    <div>
+                        <FormControl margin="dense" fullWidth>
+                            <CustomTextField name="message" type="text" id="message" value={message} onChange={(e) => { setMessage(e.target.value); }} placeholder='Message' />
+                        </FormControl>
+                    </div>
                     <br />
                 </center>
                 <Typography align='right'>

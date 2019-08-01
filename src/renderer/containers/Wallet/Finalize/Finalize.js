@@ -46,6 +46,7 @@ function Finalize(props) {
                 if (result !== null && result.status_code == 200) {
                     ipcRenderer.send('SaveToFile', (fileOpened + '.finalized'), JSON.stringify(result.tx));
                     ipcRenderer.send('Snackbar::Relay', "SUCCESS", "Saving response slate to: " + fileName + ".response");
+                    setSelectedFile("");
                 } else {
                     ipcRenderer.send('Snackbar::Relay', "ERROR", "Unknown error occurred!");
                 }

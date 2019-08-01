@@ -20,139 +20,166 @@ const styles = theme => ({
     }
 });
 
-function TxInfoModal(props) {
-    const { classes, transactionId } = props;
-    const [ showModal, setShowModal] = React.useState(false);
-    const [ transactionInfo, setTransactionInfo ] = React.useState(null);
+const blueTheme = createMuiTheme({
+    palette: {
+        primary: blue
+    },
+    typography: {
+        useNextVariants: true,
+    }
+});
 
-    const blueTheme = createMuiTheme({
-        palette: {
-            primary: blue
-        },
-        typography: {
-            useNextVariants: true,
-        }
-    });
+class TxInfoModal extends React.Component {
+    constructor(props) {
+        super(props);
 
-    function showDialog() {
-        // TODO: Load Info
-        const result = ipcRenderer.sendSync("TransactionInfo", transactionId);
-        if (result.status_code == 200) {
-            setTransactionInfo(result);
-            setShowModal(true);
-        }
+        this.state = {
+            transactionInfo: null
+        };
     }
 
-    function closeDialog() {
-        setShowModal(false);
+    shouldComponentUpdate(nextProps, nextState) {
+        if (nextProps.transactionId != this.props.transactionId || nextProps.showModal != this.props.showModal) {
+            if (nextProps.showModal) {
+                ipcRenderer.removeAllListeners('TransactionInfo::Response');
+                ipcRenderer.on('TransactionInfo::Response', (event, txInfo) => {
+                    if (txInfo.status_code == 200) {
+                        this.setState({
+                            transactionInfo: txInfo
+                        });
+                    }
+                });
+
+                ipcRenderer.send("TransactionInfo::Get", nextProps.transactionId);
+            } else {
+                this.setState({
+                    transactionInfo: null
+                });
+            }
+            return true;
+        } else if (nextState.transactionInfo != this.state.transactionInfo) {
+            return true;
+        }
+
+        return false;
     }
 
-    function getField(label, value) {
-        if (value == null) {
+    render() {
+        const { showModal, closeDialog } = this.props;
+
+        if (!showModal) {
             return "";
-        } else {
+        }
+
+        function getField(label, value) {
+            if (value == null) {
+                return "";
+            } else {
+                return (
+                    <React.Fragment>
+                        <b>{label}:</b> {value}<br />
+                    </React.Fragment>
+                );
+            }
+        }
+
+        function getOutputs(outputs) {
+            if (outputs == null) {
+                return null;
+            }
+
             return (
-                <React.Fragment>
-                    <b>{label}:</b> {value}<br />
-                </React.Fragment>
+                outputs
+                    //.sort(function (a, b) { return b.creation_date_time - a.creation_date_time })
+                    .map(function (output) {
+                        return (
+                            <React.Fragment key={output.commitment}>
+                                <Tooltip title="Commitment" aria-label={output.commitment}>
+                                    <React.Fragment>
+                                        <b>Commitment:</b> {output.commitment.substring(0, 12) + "..." + output.commitment.substring(54)}
+                                        <IconButton onClick={() => { clipboard.writeText(output.commitment) }} style={{ padding: '5px' }}>
+                                            <CopyIcon fontSize='small' color='primary' />
+                                        </IconButton>
+                                    </React.Fragment>
+                                </Tooltip>
+                                <br />
+
+                                {getField("Keychain Path", output.keychain_path)}
+                                {getField("Amount", GrinUtil.FormatAmount(output.amount))}
+                                {getField("Status", output.status)}
+                                {getField("MMR Index", output.mmr_index)}
+                                {getField("Block Height", output.block_height)}
+                                <Divider variant="fullWidth" />
+                            </React.Fragment>
+                        );
+                    })
             );
         }
-    }
 
-    function getOutputs(outputs) {
-        if (outputs == null) {
-            return null;
-        }
+        function getInfo(transactionInfo) {
+            if (transactionInfo === null) {
+                return "";
+            }
 
-        return (
-            outputs
-                //.sort(function (a, b) { return b.creation_date_time - a.creation_date_time })
-                .map(function (output) {
-                    return (
-                        <React.Fragment key={output.commitment}>
-                            <Tooltip title="Commitment" aria-label={output.commitment}>
-                                <React.Fragment>
-                                    <b>Commitment:</b> {output.commitment.substring(0, 12) + "..." + output.commitment.substring(54)}
-                                    <IconButton onClick={() => { clipboard.writeText(output.commitment) }} style={{ padding: '5px' }}>
-                                        <CopyIcon fontSize='small' color='primary' />
-                                    </IconButton>
-                                </React.Fragment>
-                            </Tooltip>
-                            <br />
+            return (
+                <React.Fragment>
+                    <Typography
+                        variant='body1'
+                        align='left'
+                    >
+                        {getField("ID", transactionInfo.id)}
+                        {getField("UUID", transactionInfo.slate_id)}
+                        {getField("Message", transactionInfo.slate_message)}
+                        {getField("Credited", GrinUtil.FormatAmount(transactionInfo.amount_credited))}
+                        {getField("Debited", GrinUtil.FormatAmount(transactionInfo.amount_debited))}
+                        {getField("Confirmed Height", transactionInfo.confirmed_height)}
+                        {getField("Confirmed DateTime", transactionInfo.confirmation_date_time)}
 
-                            {getField("Keychain Path", output.keychain_path)}
-                            {getField("Amount", GrinUtil.FormatAmount(output.amount))}
-                            {getField("Status", output.status)}
-                            {getField("MMR Index", output.mmr_index)}
-                            {getField("Block Height", output.block_height)}
-                            <Divider variant="fullWidth" />
-                        </React.Fragment>
-                    );
-                })
-        );
-    }
+                        <br />
+                        <b>Outputs:</b><br />
+                    </Typography>
 
-    function getInfo() {
-        if (transactionInfo === null) {
-            return "";
+                    <Divider variant="fullWidth" />
+                    {getOutputs(transactionInfo.outputs)}
+                </React.Fragment>
+            );
         }
 
         return (
             <React.Fragment>
-                <Typography
-                    variant='body1'
-                    align='left'
-                >
-                    {getField("ID", transactionInfo.id)}
-                    {getField("UUID", transactionInfo.slate_id)}
-                    {getField("Message", transactionInfo.slate_message)}
-                    {getField("Credited", GrinUtil.FormatAmount(transactionInfo.amount_credited))}
-                    {getField("Debited", GrinUtil.FormatAmount(transactionInfo.amount_debited))}
-                    {getField("Confirmed Height", transactionInfo.confirmed_height)}
-                    {getField("Confirmed DateTime", transactionInfo.confirmation_date_time)}
-
-                    <br />
-                    <b>Outputs:</b><br />
-                </Typography>
-                
-                <Divider variant="fullWidth" />
-                {getOutputs(transactionInfo.outputs)}
-            </React.Fragment>
-        );
-    }
-
-    return (
-        <React.Fragment>
-            <Tooltip title="Info" aria-label="Transaction Info">
+                {/*<Tooltip title="Info" aria-label="Transaction Info">
                 <IconButton onClick={showDialog} style={{ padding: '2px' }}>
                     <InfoIcon color='secondary' />
                 </IconButton>
-            </Tooltip>
+            </Tooltip>*/}
 
-            <GrinDialog
-                open={showModal}
-                onClose={closeDialog}
-                fullWidth={true}
-                maxWidth='sm'
-                title="Transaction Info"
-            >
-                <DialogContent>
-                    {getInfo()}
-                    <br />
-                    <Typography align='right'>
-                        <Button variant="contained" color="primary" onClick={closeDialog}>
-                            Close
-                        </Button>
-                    </Typography>
-                </DialogContent>
-            </GrinDialog>
-        </React.Fragment>
-    );
+                <GrinDialog
+                    open={showModal}
+                    onClose={closeDialog}
+                    fullWidth={true}
+                    maxWidth='sm'
+                    title="Transaction Info"
+                >
+                    <DialogContent>
+                        {getInfo(this.state.transactionInfo)}
+                        <br />
+                        <Typography align='right'>
+                            <Button variant="contained" color="primary" onClick={closeDialog}>
+                                Close
+                            </Button>
+                        </Typography>
+                    </DialogContent>
+                </GrinDialog>
+            </React.Fragment>
+        );
+    }
 }
 
 TxInfoModal.propTypes = {
     classes: PropTypes.object.isRequired,
-    transactionId: PropTypes.number.isRequired
+    transactionId: PropTypes.number.isRequired,
+    closeDialog: PropTypes.func.isRequired,
+    showModal: PropTypes.bool.isRequired
 };
 
 export default withStyles(styles)(TxInfoModal);

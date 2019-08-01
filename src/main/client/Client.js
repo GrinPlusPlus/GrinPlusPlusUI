@@ -63,14 +63,14 @@ function StartOwnerClient() {
         WalletSummary.call(event);
     });
 
-    ipcMain.on("Send", function (event, amount, strategy, inputs) {
-        Send.call(amount, strategy, inputs, function (result) {
+    ipcMain.on("Send", function (event, amount, strategy, inputs, address, message) {
+        Send.call(amount, strategy, inputs, address, message, function (result) {
             event.returnValue = result;
         });
     });
 
-    ipcMain.on("Receive", function (event, slate) {
-        Receive.call(slate, function (result) {
+    ipcMain.on("Receive", function (event, slate, address, message) {
+        Receive.call(slate, address, message, function (result) {
             event.returnValue = result;
         });
     });
@@ -95,7 +95,7 @@ function StartOwnerClient() {
         Cancel.call(event, walletTxId);
     });
 
-    ipcMain.on("TransactionInfo", function (event, walletTxId) {
+    ipcMain.on("TransactionInfo::Get", function (event, walletTxId) {
         TransactionInfo.call(event, walletTxId);
     });
 
@@ -117,17 +117,17 @@ function start() {
         GetConnectedPeers.call(event);
     });
 
-    ipcMain.on('SendToHTTP', function (event, httpAddress, amount, strategy, inputs) {
-        SendToHTTP.call(event, httpAddress, amount, strategy, inputs);
+    ipcMain.on('SendToHTTP', function (event, httpAddress, amount, strategy, inputs, message) {
+        SendToHTTP.call(event, httpAddress, amount, strategy, inputs, message);
     });
 
     ipcMain.on('Support::SubmitRequest', function (event, name, email, description) {
         RequestSupport.call(event, name, email, description);
     });
 
-    ipcMain.on('Grinbox::Send', function (event, grinboxAddress, amount, strategy, inputs) {
+    ipcMain.on('Grinbox::Send', function (event, grinboxAddress, amount, strategy, inputs, message) {
         // TODO: Validate GrinboxAddress first
-        Send.call(amount, strategy, inputs, function (result) {
+        Send.call(amount, strategy, inputs, grinboxAddress, message, function (result) {
             if (result.status_code == 200) {
                 event.returnValue = GrinboxConnection.postSlate(result.slate, grinboxAddress);
             } else {

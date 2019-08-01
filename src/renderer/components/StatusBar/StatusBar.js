@@ -2,15 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import { ipcRenderer } from 'electron';
 import { withStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
 import StatusIcon from "@material-ui/icons/Lens";
 import OutgoingIcon from "@material-ui/icons/ArrowUpward";
 import IncomingIcon from "@material-ui/icons/ArrowDownward";
 import { red, orange } from "@material-ui/core/colors";
 import {
-    MuiThemeProvider, createMuiTheme, Typography, Grid, IconButton
+    AppBar, Avatar, MuiThemeProvider, createMuiTheme, Toolbar, Typography, Grid, IconButton
 } from "@material-ui/core";
+const path = require('path');
 
 const styles = theme => ({
     root: {
@@ -164,8 +163,9 @@ class StatusBar extends React.Component {
                             </Typography>
                         </Grid>
                         <Grid item xs={3} style={{ height: '24px', textAlign: 'right', verticalAlign: 'middle' }}>
-                            <Typography noWrap className={classes.connections}><b>{this.state.outbound} </b></Typography><OutgoingIcon color='primary' />
-                            <Typography noWrap className={classes.connections}><b>{this.state.inbound} </b></Typography><IncomingIcon color='error' />
+                            <Typography noWrap className={classes.connections}><b>{this.state.outbound} </b></Typography><OutgoingIcon color='primary' style={{ display: 'inline-block' }} />
+                            <Typography noWrap className={classes.connections}><b>{this.state.inbound} </b></Typography><IncomingIcon color='error' style={{ display: 'inline-block' }} />
+                            <img src={path.join(__dirname, './static/img/canary.png')} className={classes.connections} style={{ width: '24px', height: '24px' }} />
                         </Grid>
                     </Grid>
                     </MuiThemeProvider>

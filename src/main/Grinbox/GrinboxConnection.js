@@ -77,7 +77,7 @@ function processSlateMessage(message) {
     if (slate.num_participants > slate.participant_data.length) {
         log.info("GrinboxConnection: Receiving slate");
 
-        Receive.call(JSON.stringify(slate), function (result) {
+        Receive.call(JSON.stringify(slate), message.from, "", function (result) {
             log.info("Receive result: " + JSON.stringify(result));
             if (result.status_code == 200) {
                 lastAction = 'received';

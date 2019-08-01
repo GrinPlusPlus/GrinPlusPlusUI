@@ -4,7 +4,7 @@ import Finalize from './api/owner/Finalize';
 import ConnectionUtils from './ConnectionUtils';
 import log from 'electron-log';
 
-async function call(event, httpAddress, amount, strategy, inputs) {
+async function call(event, httpAddress, amount, strategy, inputs, message) {
     log.info("Sending to: " + httpAddress);
     const canConnect = await ConnectionUtils.canConnect(httpAddress, ForeignReceive.RECEIVE_TX_PATH);
     if (!canConnect) {
@@ -13,7 +13,7 @@ async function call(event, httpAddress, amount, strategy, inputs) {
         return;
     }
 
-    Send.call(amount, strategy, inputs, function (sendResult) {
+    Send.call(amount, strategy, inputs, httpAddress, message, function (sendResult) {
         log.info("Send Result: " + JSON.stringify(sendResult));
 
         if (sendResult.status_code == 200) {

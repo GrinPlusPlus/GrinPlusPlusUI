@@ -2,8 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { ipcRenderer } from 'electron';
 import {
-    Button, Divider, Grid, Radio, RadioGroup,
-    Checkbox, FormControl, FormControlLabel, Typography
+    Button, Grid, Radio, RadioGroup, FormControl, FormControlLabel
 } from '@material-ui/core';
 import SendIcon from "@material-ui/icons/Send";
 import { withStyles } from "@material-ui/core/styles";
@@ -49,6 +48,7 @@ class Send extends React.Component {
         this.handleMethodChange = this.handleMethodChange.bind(this);
         this.handleStrategyChange = this.handleStrategyChange.bind(this);
         this.handleAmountChange = this.handleAmountChange.bind(this);
+        this.handleMessageChange = this.handleMessageChange.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.shouldEnableSubmit = this.shouldEnableSubmit.bind(this);
         this.onOutputsResponse = this.onOutputsResponse.bind(this);
@@ -62,7 +62,8 @@ class Send extends React.Component {
             httpAddress: '',
             grinboxAddress: '',
             selectedFile: '',
-            inputs: []
+            inputs: [],
+            message: ''
         });
     }
 
@@ -73,14 +74,14 @@ class Send extends React.Component {
 
         var result = null;
         if (this.state.method == "file") {
-            result = ipcRenderer.sendSync('Send', amountInNanoGrins, this.state.strategy, this.state.inputs);
+            result = ipcRenderer.sendSync('Send', amountInNanoGrins, this.state.strategy, this.state.inputs, this.state.selectedFile, this.state.message);
         } else if (this.state.method == "http") {
             log.info("Sending to " + this.state.httpAddress);
-            result = ipcRenderer.sendSync('SendToHTTP', this.state.httpAddress, amountInNanoGrins, this.state.strategy, this.state.inputs);
+            result = ipcRenderer.sendSync('SendToHTTP', this.state.httpAddress, amountInNanoGrins, this.state.strategy, this.state.inputs, this.state.message);
             log.info("Sent via http(s). Result: " + JSON.stringify(result));
         } else if (this.state.method == "grinbox") {
             log.info("Sending to " + this.state.grinboxAddress);
-            result = ipcRenderer.sendSync('Grinbox::Send', this.state.grinboxAddress, amountInNanoGrins, this.state.strategy, this.state.inputs);
+            result = ipcRenderer.sendSync('Grinbox::Send', this.state.grinboxAddress, amountInNanoGrins, this.state.strategy, this.state.inputs, this.state.message);
             log.info("Sent via grinbox. Result: " + JSON.stringify(result));
             this.clear();
             return;
@@ -173,6 +174,12 @@ class Send extends React.Component {
         this.estimateFee(event.target.value, this.state.strategy, this.state.inputs);
     }
 
+    handleMessageChange(event) {
+        this.setState({
+            message: event.target.value
+        });
+    }
+
     handleInputChange(commitment) {
         var newInputs = null;
         if (this.state.inputs.includes(commitment)) {
@@ -240,15 +247,20 @@ class Send extends React.Component {
                         </FormControl>
                     </center>
 
-                    <Grid container spacing={2}>
-                        <Grid item xs={8}>
+                    <Grid container spacing={1}>
+                        <Grid item xs={3}>
                             <FormControl margin="dense" required fullWidth>
                                 <CustomTextField name="amount" type="text" id="amount" value={this.state.amount} onChange={this.handleAmountChange} placeholder='Amount ツ' autoFocus />
                             </FormControl>
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item xs={2}>
                             <FormControl margin="dense" fullWidth>
                                 <CustomTextField name="fee" type="text" id="fee" value={this.state.fee} placeholder='Fee ツ' disabled />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={7}>
+                            <FormControl margin="dense" fullWidth>
+                                <CustomTextField name="message" type="text" id="message" value={this.state.message} onChange={this.handleMessageChange} placeholder='Message' />
                             </FormControl>
                         </Grid>
                         {/* TODO: Include Donation button */}
@@ -258,6 +270,7 @@ class Send extends React.Component {
                     <SendHttp selected={this.state.method == "http"} httpAddress={this.state.httpAddress} setHttpAddress={(value) => { this.setState({ httpAddress: value }) }} />
                     <SendGrinbox selected={this.state.method == "grinbox"} grinboxAddress={this.state.grinboxAddress} setGrinboxAddress={(value) => { this.setState({ grinboxAddress: value }) }} />
                     <br />
+
 
                     {/* Coin Selection */}
                     <Grid container spacing={0}>

@@ -35,14 +35,14 @@ function sortItems(array, order, orderBy) {
 }
 
 function CustomTable(props) {
-    const { classes, columns, items, buildRow, dense, ...other } = props;
-    const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState(''); // TODO: Pass in defaultOrderBy prop
+    const { classes, columns, items, buildRow, dense, orderBy, order, ...other } = props;
+    const [sortOrder, setSortOrder] = React.useState(props.order != null ? props.order : 'asc');
+    const [orderByCol, setOrderByCol] = React.useState(props.orderBy != null ? props.orderBy : ''); // TODO: Pass in defaultOrderBy prop
 
     function handleRequestSort(event, property) {
-        const isDesc = orderBy === property && order === 'desc';
-        setOrder(isDesc ? 'asc' : 'desc');
-        setOrderBy(property);
+        const isDesc = orderByCol === property && order === 'desc';
+        setSortOrder(isDesc ? 'asc' : 'desc');
+        setOrderByCol(property);
     }
 
     return (
@@ -56,12 +56,12 @@ function CustomTable(props) {
                 >
                     <CustomTableHeader
                         columns={columns}
-                        order={order}
-                        orderBy={orderBy}
+                        order={sortOrder}
+                        orderBy={orderByCol}
                         onRequestSort={handleRequestSort}
                     />
                     <TableBody>
-                        {sortItems(items, order, orderBy)
+                        {sortItems(items, sortOrder, orderByCol)
                             .map((row, index) => {
                                 return buildRow(row, index);
                             })}
@@ -76,12 +76,9 @@ CustomTable.propTypes = {
     columns: PropTypes.array.isRequired,
     items: PropTypes.array.isRequired,
     buildRow: PropTypes.func.isRequired,
-    dense: PropTypes.bool
+    dense: PropTypes.bool,
+    orderBy: PropTypes.string,
+    order: PropTypes.string
 };
-
-/*const CustomTable = (props) => {
-    const classes = useStylesReddit();
-    return <TextField InputProps={{ classes, disableUnderline: true }} {...props} />;
-}*/
 
 export default withStyles(styles)(CustomTable);

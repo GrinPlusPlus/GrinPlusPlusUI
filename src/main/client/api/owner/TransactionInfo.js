@@ -1,11 +1,11 @@
 import ConnectionUtils from '../../ConnectionUtils';
+import log from 'electron-log';
 
 function call(event, txId) {
     const headers = [{ name: 'session_token', value: global.session_token }];
     ConnectionUtils.ownerRequest('GET', 'retrieve_txs?id=' + txId, headers, '', function (response) {
         var result = new Object();
         result["status_code"] = response.status_code;
-
 
         if (response.status_code == 200) {
             result["body"] = response.body;
@@ -24,9 +24,15 @@ function call(event, txId) {
 
                 result["outputs"] = transaction.outputs;
             }
+        } else {
+            log.error("TransactionInfo - Failed with response:\n" + JSON.stringify(response));
         }
 
-        event.returnValue = result;
+        if (global.mainWindow != null) {
+            global.mainWindow.webContents.send('TransactionInfo::Response', result);
+        } else {
+            log.error("global.mainWindow is null");
+        }
     });
 }
 

@@ -35,10 +35,17 @@ function receive_tx(req, res) {
                 response.on('end', function () {
                     log.debug("Owner response: " + responseStr);
                     res.json(JSON.parse(responseStr));
+
+                    if (global.mainWindow != null) {
+                        global.mainWindow.webContents.send('Snackbar::Status', 'SUCCESS', 'Received transaction from ' + req.get('host'));
+                    }
                 });
 
             } else {
                 res.send("ERROR"); // TODO: Better error handling
+                if (global.mainWindow != null) {
+                    global.mainWindow.webContents.send('Snackbar::Status', 'ERROR', 'Incoming transaction from ' + req.get('host') + ' failed.');
+                }
             }
         });
         ownerReq.write(received);
