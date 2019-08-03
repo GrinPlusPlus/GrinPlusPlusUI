@@ -89,7 +89,7 @@ function Transactions(props) {
                     <CancelIcon />
                 </IconButton>
             );
-        } else if (status == "Sending (Finalized)") {
+        } else if (status == "Sending (Unconfirmed)") {
             return (
                 <Tooltip title="Repost" aria-label="Repost Transaction">
                     <IconButton style={{ padding: '3px', marginLeft: '2px', marginRight: '5px' }} onClick={function () { repostTx(txnId) }}>
@@ -107,49 +107,6 @@ function Transactions(props) {
             );
         }
     }
-
-    /*if (transactions != null) {
-        var txns = JSON.parse(transactions);
-        if (txns != null) {
-            return (
-                txns
-                    .sort(function (a, b) { return b.creation_date_time - a.creation_date_time })
-                    .map(function (txn) {
-                        if (txn.type == "Canceled" && showCanceled == false) {
-                            return "";
-                        }
-
-                        var creation_date_time = new Date(0);
-                        creation_date_time.setUTCSeconds((txn.creation_date_time));
-
-                        return (
-                            <React.Fragment key={txn.id}>
-                                <Grid container spacing={2}>
-                                    <Grid item xs={4}>
-                                        <Typography variant='h6' className={classes.status}>
-                                            <TxInfoModal transactionId={txn.id} />
-                                            {getStatus(txn, lastConfirmedHeight)}
-                                        </Typography>
-                                        <Typography variant='body1' className={classes.creationDateTime}>{creation_date_time.toLocaleString()}</Typography>
-                                    </Grid>
-                                    <Grid item xs={4}>
-                                        {txn.slate_message != null ? txn.slate_message : ''}
-                                    </Grid>
-                                    <Grid item xs={4}>
-                                        <Typography variant='h6' className={classes.amount} align="right">
-                                            {FormatAmount(txn.amount_credited - txn.amount_debited)}
-                                            {getActionIcon(txn.id, txn.type)}
-                                        </Typography>
-                                    </Grid>
-                                </Grid>
-                                <Divider variant="fullWidth" />
-                            </React.Fragment>
-                        );
-                    })
-            );
-        }
-    }*/
-
 
     const columns = [
         { id: 'status', numeric: false, disablePadding: false, label: 'Status' },
@@ -184,7 +141,7 @@ function Transactions(props) {
             return false;
         } else if (status.length >= 8 && status.substr(0, 8) == "Received") {
             return false;
-        } else if (status == "Canceled" || status == "Sending (Finalized)" || status == "Coinbase") {
+        } else if (status == "Canceled" || status == "Sending (Unconfirmed)" || status == "Coinbase") {
             return false;
         } else {
             return true;

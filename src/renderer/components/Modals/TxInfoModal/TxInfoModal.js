@@ -90,7 +90,6 @@ class TxInfoModal extends React.Component {
 
             return (
                 outputs
-                    //.sort(function (a, b) { return b.creation_date_time - a.creation_date_time })
                     .map(function (output) {
                         return (
                             <React.Fragment key={output.commitment}>
@@ -129,6 +128,7 @@ class TxInfoModal extends React.Component {
                     >
                         {getField("ID", transactionInfo.id)}
                         {getField("UUID", transactionInfo.slate_id)}
+                        {getField("Address", transactionInfo.address)}
                         {getField("Message", transactionInfo.slate_message)}
                         {getField("Credited", GrinUtil.FormatAmount(transactionInfo.amount_credited))}
                         {getField("Debited", GrinUtil.FormatAmount(transactionInfo.amount_debited))}

@@ -15,6 +15,7 @@ function call(event, txId) {
                 result["id"] = transaction.id;
                 result["slate_id"] = transaction.slate_id;
                 result["fee"] = transaction.fee;
+                result["address"] = transaction.address;
                 result["slate_message"] = transaction.slate_message;
                 result["amount_credited"] = transaction.amount_credited;
                 result["amount_debited"] = transaction.amount_debited;
