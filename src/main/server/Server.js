@@ -39,7 +39,10 @@ async function ownerReceive(slate) {
                 reject("ERROR");
             }
         });
-        ownerReq.write(JSON.stringify(slate));
+
+        var criteria = new Object();
+        criteria["slate"] = slate;
+        ownerReq.write(JSON.stringify(criteria));
         ownerReq.end();
     });
 
