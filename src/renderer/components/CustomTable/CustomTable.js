@@ -40,7 +40,7 @@ function CustomTable(props) {
     const [orderByCol, setOrderByCol] = React.useState(props.orderBy != null ? props.orderBy : ''); // TODO: Pass in defaultOrderBy prop
 
     function handleRequestSort(event, property) {
-        const isDesc = orderByCol === property && order === 'desc';
+        const isDesc = orderByCol === property && sortOrder === 'desc';
         setSortOrder(isDesc ? 'asc' : 'desc');
         setOrderByCol(property);
     }

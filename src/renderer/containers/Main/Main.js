@@ -153,7 +153,7 @@ class Main extends React.Component {
                             </Button>
 
                             <Menu open={component.state.openMenu != null} anchorEl={component.state.openMenu} color='secondary'>
-                                <MenuItem onClick={component.createClicked}>CreateNewWallet</MenuItem>
+                                <MenuItem onClick={component.createClicked}>Create New Wallet</MenuItem>
                                 <MenuItem onClick={component.restoreClicked}>Restore Wallet</MenuItem>
                             </Menu>
                         </Grid>

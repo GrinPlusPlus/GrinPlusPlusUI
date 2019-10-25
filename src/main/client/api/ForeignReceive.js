@@ -57,7 +57,7 @@ function callRPC(httpAddress, slate, callback) {
         client = jayson.client.http(httpAddress + '/v2/foreign');
     }
 
-    client.request('receive_tx', [slate, null, "Greetings, from Grin++!"], function (err, response) {
+    client.request('receive_tx', [slate, null, ""], function (err, response) {
         if (err != null) {
             log.error('Receive_tx error: ');
             log.error(err);

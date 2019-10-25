@@ -26,6 +26,11 @@ const styles = theme => ({
     },
     extendedIcon: {
         marginRight: theme.spacing(1)
+    },
+    outlineText: {
+        textShadow: '-1px 0 red, 0 1px red, 1px 0 red, 0 -1px red'
+        //-webkit-text-stroke-width: '1px',
+        //-webkit-text-stroke-color: 'black'
     }
 });
 
@@ -35,6 +40,7 @@ function Receive(props) {
     const [httpAddress, setHttpAddress] = React.useState("");
     const [addressType, setAddressType] = React.useState("IP");
     const [grinboxAddress, setGrinboxAddress] = React.useState("");
+    const [torAddress, setTorAddress] = React.useState("");
     const [message, setMessage] = React.useState("");
 
     if (httpAddress.length === 0) {
@@ -52,6 +58,11 @@ function Receive(props) {
             const grinboxAddress = ipcRenderer.sendSync('Grinbox::GetAddress');
             if (grinboxAddress != null) {
                 setGrinboxAddress(grinboxAddress);
+            }
+
+            const torAddress = ipcRenderer.sendSync('Tor::GetAddress');
+            if (torAddress != null) {
+                setTorAddress(torAddress);
             }
         }, 25);
     }
@@ -119,12 +130,51 @@ function Receive(props) {
         }
     }
 
+    function getGrinboxDisplay() {
+        if (grinboxAddress.length == 0) {
+            return (
+                <b>ERROR CONNECTING TO GRINBOX</b>
+            );
+        }
+        else {
+            return (
+                <React.Fragment>
+                    <b>{grinboxAddress}</b>
+                    <IconButton onClick={() => { clipboard.writeText(grinboxAddress) }} style={{ padding: '5px' }}>
+                        <CopyIcon fontSize='small' color='secondary' />
+                    </IconButton>
+                </React.Fragment>
+            );
+        }
+    }
+
+    function getTorDisplay() {
+        if (torAddress.length == 0) {
+            return "";
+        }
+        else {
+            return (
+                <React.Fragment>
+                    <Typography variant='body1' display='inline' color='primary' style={{ marginRight: '10px' }}>
+                        <b>TOR:</b>
+                    </Typography>
+                    <Typography variant='body1' display='inline' color='secondary'>
+                        <b>{torAddress}</b>
+                        <IconButton onClick={() => { clipboard.writeText(torAddress) }} style={{ padding: '5px' }}>
+                            <CopyIcon fontSize='small' color='secondary' />
+                        </IconButton>
+                    </Typography>
+                </React.Fragment>
+            );
+        }
+    }
+
     return (
         <React.Fragment>
             <form className={classes.form} onSubmit={handleReceive}>
                 <center>
                     {/* ReceiveHTTP */}
-                    <p style={{ fontSize: '14px', color: 'red' }}>
+                    <p style={{ fontSize: '15px', color: 'white' }} className={classes.outlineText}>
                         {getWarning()}
                     </p>
 
@@ -143,12 +193,10 @@ function Receive(props) {
                         <b>GRINBOX:</b>
                     </Typography>
                     <Typography variant='body1' display='inline' color='secondary'>
-                        <b>{grinboxAddress}</b>
-
-                        <IconButton onClick={() => { clipboard.writeText(grinboxAddress) }} style={{ padding: '5px' }}>
-                            <CopyIcon fontSize='small' color='secondary' />
-                        </IconButton>
+                        {getGrinboxDisplay()}
                     </Typography>
+
+                    {getTorDisplay()}
 
                     {/* ReceiveFile */}
                     <br /><br /><Divider variant="fullWidth" /><br />

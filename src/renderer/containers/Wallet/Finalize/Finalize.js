@@ -1,9 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { ipcRenderer, clipboard } from 'electron';
+import { ipcRenderer } from 'electron';
 import {
-    Button, Divider, Grid, Radio, RadioGroup,
-    FormControl, FormControlLabel, IconButton, Typography
+    Button, FormControl, IconButton, Typography
 } from "@material-ui/core";
 import FinalizeIcon from "@material-ui/icons/CallMerge";
 import OpenIcon from '@material-ui/icons/FolderOpen';

@@ -4,13 +4,11 @@ const elliptic = require('elliptic');
 const EC = elliptic.ec;
 const secp256k1 = new EC(elliptic.curves['secp256k1']);
 const chacha = require('chacha-js');
-const base58 = require('bs58check');
 
 function signMessage(secretKey, message) {
     const keys = secp256k1.keyFromPrivate(secretKey);
     const digest = hash.sha256().update(Buffer.from(message)).digest();
     const signature = secp256k1.sign(digest, keys, 'hex', { canonical: true }).toDER("hex");
-
     return signature.toString();
 }
 

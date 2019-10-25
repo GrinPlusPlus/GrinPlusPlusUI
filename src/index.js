@@ -5,7 +5,6 @@ import Client from './main/client/Client';
 import Server from './main/server/Server';
 import FileListener from './main/FileListener';
 import IPService from './main/IPService';
-import GrinboxConnection from './main/Grinbox/GrinboxConnection';
 import Updater from './main/Updater.js';
 import {version} from '../package.json';
 import ConfigLoader from './main/ConfigLoader';
@@ -118,12 +117,11 @@ const createWindow = async () => {
         }
     });
 
+    global.mainWindow = mainWindow;
     Client.start();
     Server.start();
     FileListener.start();
     IPService.start();
-    GrinboxConnection.connect(mainWindow);
-    global.mainWindow = mainWindow;
 
     mainWindow.webContents.on('did-finish-load', () => {
         if (!isDevMode) {
@@ -172,37 +170,33 @@ app.on('ready', createWindow);
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
-    // On OS X it is common for applications and their menu bar
-    // to stay active until the user quits explicitly with Cmd + Q
-    //if (process.platform !== 'darwin') {
-        clearInterval(statusInterval);
-        shuttingDown = true;
-        log.info('Shutting down');
+    clearInterval(statusInterval);
+    shuttingDown = true;
+    log.info('Shutting down');
 
-        if (LAUNCH_NODE) {
-            Client.stop();
+    if (LAUNCH_NODE) {
+        Client.stop();
 
-            setTimeout(function () {
-                log.warn('Node shutdown timed out.');
+        setTimeout(function () {
+            log.warn('Node shutdown timed out.');
 
-                if (!isWindows) {
-                    try {
-                        ChildProcess.execFile('pkill', ['-f', 'GrinNode'], (err, stdout) => {
-                            log.info("pkill executed");
-                            app.quit();
-                        });
-                    } catch (e) {
-                        log.info("pkill threw exception: " + e);
+            if (!isWindows) {
+                try {
+                    ChildProcess.execFile('pkill', ['-f', 'GrinNode'], (err, stdout) => {
+                        log.info("pkill executed");
                         app.quit();
-                    }
-                } else {
+                    });
+                } catch (e) {
+                    log.info("pkill threw exception: " + e);
                     app.quit();
                 }
-            }, 10000);
-        } else {
-            app.quit();
-        }
-    //}
+            } else {
+                app.quit();
+            }
+        }, 10000);
+    } else {
+        app.quit();
+    }
 });
 
 app.on('activate', () => {

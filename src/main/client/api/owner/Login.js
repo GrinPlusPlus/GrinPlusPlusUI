@@ -15,6 +15,10 @@ function call(event, username, password, grinboxSubscriber) {
             const parsed = JSON.parse(response.body);
             global.session_token = parsed.session_token;
             grinboxSubscriber(parsed.grinbox_key, parsed.grinbox_address);
+
+            if (parsed.tor_address != null) {
+                global.tor_address = parsed.tor_address;
+            }
         }
 
         if (global.mainWindow != null) {

@@ -2,8 +2,9 @@ import { ipcMain } from 'electron';
 import log from 'electron-log';
 
 import SendToHTTP from './SendToHTTP';
+import RPCSend from './api/RPCSend';
 import RequestSupport from './RequestSupport';
-import GrinboxConnection from '../Grinbox/GrinboxConnection';
+import Grinbox from '../Grinbox';
 import IPService from '../IPService';
 
 // Owner APIs
@@ -49,14 +50,14 @@ function StartOwnerClient() {
     ipcMain.on('Login', function (event, username, password) {
         Login.call(event, username, password, function (secretKey, address) {
             IPService.connect();
-            GrinboxConnection.subscribe(secretKey, address);
+            Grinbox.subscribe(secretKey, address);
         });
     });
 
     ipcMain.on('Logout', function (event) {
         Logout.call(event);
         IPService.disconnect();
-        GrinboxConnection.unsubscribe();
+        Grinbox.unsubscribe();
     });
 
     ipcMain.on("WalletSummary", function (event) {
@@ -111,14 +112,21 @@ function StartOwnerClient() {
 function start() {
     log.info("Starting Grin++ Client");
 
+    Grinbox.init()
     StartOwnerClient();
 
     ipcMain.on("GetConnectedPeers", function (event) {
         GetConnectedPeers.call(event);
     });
 
-    ipcMain.on('SendToHTTP', function (event, httpAddress, amount, strategy, inputs, message) {
-        SendToHTTP.call(event, httpAddress, amount, strategy, inputs, message);
+    ipcMain.on('SendToHTTP', function (event, address, amount, strategy, inputs, message) {
+        SendToHTTP.call(event, address, amount, strategy, inputs, message);
+    });
+
+    ipcMain.on('SendToTOR', function (event, address, amount, strategy, inputs, message) {
+        RPCSend.send(amount, strategy, inputs, address, message, function (result) {
+            event.returnValue = { status_code: 200, slate: result.slate };
+        });
     });
 
     ipcMain.on('Support::SubmitRequest', function (event, name, email, description) {
@@ -129,7 +137,8 @@ function start() {
         // TODO: Validate GrinboxAddress first
         Send.call(amount, strategy, inputs, grinboxAddress, message, function (result) {
             if (result.status_code == 200) {
-                event.returnValue = GrinboxConnection.postSlate(result.slate, grinboxAddress);
+                Grinbox.sendSlate(result.slate, grinboxAddress);
+                event.returnValue = "SENT"; // TODO: Wait for "ok" message?
             } else {
                 event.returnValue = result;
             }
@@ -137,7 +146,7 @@ function start() {
     });
 
     ipcMain.on('Grinbox::GetAddress', function (event) {
-        event.returnValue = global.grinbox_address;
+        event.returnValue = Grinbox.getAddress();
     });
 
     ipcMain.on('Snackbar::Relay', function (event, status, message) {
@@ -145,10 +154,14 @@ function start() {
             global.mainWindow.webContents.send("Snackbar::Status", status, message);
         }
     })
+
+    ipcMain.on('Tor::GetAddress', function (event) {
+        event.returnValue = global.tor_address;
+    });
 }
 
 function stop() {
-    GrinboxConnection.disconnect();
+    Grinbox.shutdown();
     Shutdown.call();
 }
 

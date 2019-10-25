@@ -7,8 +7,6 @@ function call(event, fromGenesis) {
 
     log.info("Calling update_wallet");
     ConnectionUtils.ownerRequest('POST', 'update_wallet' + queryString, headers, '', function (response) {
-        log.info("Response: " + JSON.stringify(response));
-
         if (response.status_code != 200) {
             log.error("Error updating wallet. Response: " + JSON.stringify(response));
         }
