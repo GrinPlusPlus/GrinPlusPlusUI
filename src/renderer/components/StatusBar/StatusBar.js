@@ -5,7 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 import StatusIcon from "@material-ui/icons/Lens";
 import OutgoingIcon from "@material-ui/icons/ArrowUpward";
 import IncomingIcon from "@material-ui/icons/ArrowDownward";
-import { red, orange } from "@material-ui/core/colors";
+import { red, yellow } from "@material-ui/core/colors";
 import {
     AppBar, Avatar, MuiThemeProvider, createMuiTheme, Toolbar, Typography, Grid, IconButton
 } from "@material-ui/core";
@@ -85,27 +85,10 @@ class StatusBar extends React.Component {
         const statusTheme = createMuiTheme({
             palette: {
                 primary: {
-                    main: '#069076',
+                    main: '#069076'
                 },
-                secondary: orange,
+                secondary: yellow,
                 error: red,
-            },
-            typography: {
-                useNextVariants: true,
-            }
-        });
-
-        const darkStatusTheme = createMuiTheme({
-            palette: {
-                primary: {
-                    main: '#069076',
-                },
-                secondary: orange,
-                error: red,
-                text: {
-                    primary: '#ffffff',
-                    secondary: '#ffffff'
-                }
             },
             typography: {
                 useNextVariants: true,
@@ -150,7 +133,7 @@ class StatusBar extends React.Component {
 
         return (
             <AppBar position="fixed" color="primary" className={classes.appBar}>
-                <MuiThemeProvider theme={dark_mode ? darkStatusTheme : statusTheme}>
+                <MuiThemeProvider theme={statusTheme}>
                     <Grid container spacing={0} className={classes.Grid}>
                         <Grid item xs={4} style={{ height: '24px', margin: '0px' }}>
                             <StatusIcon color={getColor(this.state.status)} />

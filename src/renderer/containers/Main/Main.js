@@ -40,6 +40,8 @@ const styles = theme => ({
     },
 });
 
+var accounts_interval = null;
+
 class Main extends React.Component {
     constructor() {
         super();
@@ -63,15 +65,27 @@ class Main extends React.Component {
         ipcRenderer.removeAllListeners("GetAccounts::Response");
         ipcRenderer.on("GetAccounts::Response", (event, statusCode, allUsers) => {
             if (statusCode == 404) {
-                setTimeout(ipcRenderer.send("GetAccounts"), 50);
+                //console.log("Calling GetAccounts");
+                //setTimeout(ipcRenderer.send("GetAccounts"), 50);
             } else {
+                clearInterval(accounts_interval);
+                accounts_interval = null;
                 this.setState({
                     users: allUsers == null ? [] : allUsers
                 });
             } 
         });
 
-        ipcRenderer.send("GetAccounts");
+        accounts_interval = setInterval(() => {
+            ipcRenderer.send("GetAccounts");
+        }, 50);
+    }
+
+    componentWillUnmount() {
+        if (accounts_interval != null) {
+            clearInterval(accounts_interval);
+            accounts_interval = null;
+        }
     }
 
     handlePopoverOpen(event) {

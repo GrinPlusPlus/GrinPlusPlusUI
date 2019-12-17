@@ -10,8 +10,6 @@ import MenuIcon from "@material-ui/icons/Menu";
 import SettingsModal from "../../components/Settings";
 import SupportModal from "../../components/Modals/SupportModal";
 import UserMenu from "../../components/UserMenu";
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import BackArrowIcon from '@material-ui/icons/ArrowBack';
 
 const styles = theme => ({
@@ -81,14 +79,14 @@ function ButtonAppNav(props) {
         <React.Fragment>
             <Typography className={classes.grow}></Typography>
             <SettingsModal />
-            <SupportModal />
+            {/*<SupportModal />*/}
         </React.Fragment>
       );
     } else {
         return (
             <React.Fragment>
                 <SettingsModal />
-                <SupportModal />
+                {/*<SupportModal />*/}
             </React.Fragment>
         );
     }

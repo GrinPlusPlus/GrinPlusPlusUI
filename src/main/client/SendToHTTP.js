@@ -4,43 +4,65 @@ import Finalize from './api/owner/Finalize';
 import ConnectionUtils from './ConnectionUtils';
 import log from 'electron-log';
 
-async function call(event, httpAddress, amount, strategy, inputs, message) {
+async function callFinalize(slate, grinjoin, callback) {
+    Finalize.call(slate, null, grinjoin, function (finalizeResult, error) {
+        log.info("Finalize Result: " + JSON.stringify(finalizeResult));
+
+        if (finalizeResult != null && finalizeResult.result != null) {
+            callback({
+                success: true,
+                status: finalizeResult
+            });
+        } else {
+            log.error("Finalize failed with error: " + JSON.stringify(finalizeResult.error));
+            callback({
+                success: false,
+                status: finalizeResult
+            });
+        }
+    });
+}
+
+async function callReceive(httpAddress, slate, grinjoin, callback) {
+    ForeignReceive.callRPC(httpAddress, slate, function (receiveResult) {
+        log.info("Receive Result: " + JSON.stringify(receiveResult));
+
+        if (receiveResult.success == true) {
+            callFinalize(receiveResult.slate, grinjoin, callback);
+        } else {
+            log.error("Receive failed with status: " + receiveResult.status_code);
+            callback({
+                success: false,
+                status: receiveResult
+            });
+        }
+    });
+}
+
+async function callSend(httpAddress, amount, strategy, inputs, message, grinjoin, callback) {
+    Send.call(amount, strategy, inputs, httpAddress, message, false, function (result) {
+        if (result.success === true) {
+            callReceive(httpAddress, result.data.slate, grinjoin, callback);
+        } else {
+            log.error("Send failed with error: " + result.message);
+            callback(result);
+        }
+    });
+}
+
+async function call(httpAddress, amount, strategy, inputs, message, grinjoin, callback) {
     log.info("Sending to: " + httpAddress);
     const canConnect = await ConnectionUtils.canConnect(httpAddress, ForeignReceive.RECEIVE_TX_PATH);
     if (!canConnect) {
         log.error("Failed to connect");
-        event.returnValue = 'CantConnect';
+        callback({
+            success: false,
+            status: 'CantConnect'
+        });
         return;
     }
 
-    Send.call(amount, strategy, inputs, httpAddress, message, function (sendResult) {
-        log.info("Send Result: " + JSON.stringify(sendResult));
-
-        if (sendResult.status_code == 200) {
-            ForeignReceive.callRPC(httpAddress, sendResult.slate, function (receiveResult) {
-                log.info("Receive Result: " + JSON.stringify(receiveResult));
-
-                if (receiveResult.success == true) {
-                    Finalize.call(JSON.stringify(receiveResult.slate), function (finalizeResult) {
-                        log.info("Finalize Result: " + JSON.stringify(finalizeResult));
-
-                        if (finalizeResult.status_code == 200) {
-                            event.returnValue = finalizeResult;
-                        } else {
-                            log.error("Finalize failed with status: " + finalizeResult.status_code);
-                            event.returnValue = finalizeResult;
-                        }
-                    });
-                } else {
-                    log.error("Receive failed with status: " + receiveResult.status_code);
-                    event.returnValue = receiveResult;
-                }
-            });
-        } else {
-            log.error("Send failed with status: " + sendResult.status_code);
-            event.returnValue = sendResult;
-        }
-    });
+    callSend(httpAddress, amount, strategy, inputs, message, grinjoin, callback);
 };
 
 export default {call}

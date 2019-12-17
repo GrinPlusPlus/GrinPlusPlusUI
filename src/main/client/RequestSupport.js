@@ -1,4 +1,4 @@
-import ConfigLoader from '../ConfigLoader';
+import Config from '../Config';
 import log from 'electron-log';
 const fs = require('fs');
 const archiver = require('archiver');
@@ -89,7 +89,7 @@ async function archiveLogs(name, email, description) {
     archive.append(JSON.stringify(userInfo), { name: 'UserInfo.txt' });
 
     // append files from a sub-directory, putting its contents at the root of archive
-    const logs_path = ConfigLoader.load().data_path + '/NODE/LOGS/';
+    const logs_path = Config.load().data_path + '/LOGS/';
     log.info("LOGS_PATH: " + logs_path);
     archive.directory(logs_path, false);
 

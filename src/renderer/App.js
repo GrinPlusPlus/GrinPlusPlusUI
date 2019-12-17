@@ -102,6 +102,24 @@ const dark_theme = createMuiTheme({
                     backgroundColor: '#555555'
                 }
             }
+        },
+        MuiButton: {
+            outlined: {
+                color: '#ffffff',
+                backgroundColor: '#000000',
+                border: '2px solid #EEE',
+                '&:hover': {
+                    background: '#111111',
+                    border: `2px solid #ffffff`
+                },
+                '&:disabled': {
+                    background: '#222222',
+                    border: `2px solid #222222`
+                },
+                selected: {
+                    background: '#ffffff'
+                }
+            }
         }
     }
 });
@@ -156,6 +174,11 @@ export default class App extends Component {
         }
     }
 
+    getBackgroundImage() {
+        // backgroundImage: `url(./static/img/bkg.png)`
+        return require('path').join(__dirname, './static/img/bkg.png');
+    }
+
     getTheme() {
         if (this.state.isDarkMode) {
             return (dark_theme);
@@ -174,7 +197,7 @@ export default class App extends Component {
     render() {
         return (
             <React.Fragment>
-                <style>{'body { background-color: ' + this.getBackgroundColor() + '; }'}</style>
+                {/*<style>{'body { background-image: ' + this.getBackgroundImage() + '; }'}</style>*/}
                 <MuiThemeProvider theme={this.getTheme()}>
                     <Routes {...this.state} style={{ width: '100%' }} />
                     <Snackbar

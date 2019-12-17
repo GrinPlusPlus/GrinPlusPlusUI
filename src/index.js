@@ -2,18 +2,18 @@ import { app, BrowserWindow, dialog } from 'electron';
 const { autoUpdater } = require('electron-updater');
 import ChildProcess from 'child_process';
 import Client from './main/client/Client';
-import Server from './main/server/Server';
 import FileListener from './main/FileListener';
 import IPService from './main/IPService';
 import Updater from './main/Updater.js';
 import {version} from '../package.json';
-import ConfigLoader from './main/ConfigLoader';
+import Config from './main/Config';
 import log from 'electron-log';
 import fs from 'fs';
 const unhandled = require('electron-unhandled');
 
 const isDevMode = process.execPath.match(/[\\/]electron/);
 const isWindows = process.platform == "win32";
+const FLOONET = false;
 const LAUNCH_NODE = !isDevMode || false;
 
 //import { enableLiveReload } from 'electron-compile';
@@ -44,6 +44,22 @@ const createWindow = async () => {
         app.quit();    
     }
 
+    if (!FLOONET) {
+        global.ports = {
+            node: 3413,
+            foreign_rpc: 3415,
+            owner: 3420,
+            owner_rpc: 3421
+        }
+    } else {
+        global.ports = {
+            node: 13413,
+            foreign_rpc: 13415,
+            owner: 13420,
+            owner_rpc: 13421
+        }
+    }
+
     // Create the browser window.
     mainWindow = new BrowserWindow({
         webPreferences: {
@@ -70,7 +86,7 @@ const createWindow = async () => {
         const nodeFileName = (isWindows ? 'GrinNode.exe' : './GrinNode');
 
         log.info('Launching node: "' + binDirectory + nodeFileName + ' --headless"');
-        ChildProcess.execFile(nodeFileName, ['--headless'], { cwd: binDirectory }, (error, stdout, stderr) => {
+        ChildProcess.execFile(nodeFileName, ['--headless', FLOONET ? '--floonet' : ''], { cwd: binDirectory }, (error, stdout, stderr) => {
             if (global.update_in_progress === true) {
                 autoUpdater.quitAndInstall();
             } else {
@@ -89,19 +105,21 @@ const createWindow = async () => {
     }
 
     setTimeout(function () {
-        const homedir = require('os').homedir();
-        if (!fs.existsSync(homedir + '/.GrinPP/MAINNET/NODE/LOGS')) {
-            fs.mkdirSync(homedir + '/.GrinPP/MAINNET/NODE/LOGS', { recursive: true })
+        try {
+            const config = Config.load();
+            log.transports.format = '[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}';
+            log.transports.file.level = config.level;
+            log.transports.file.maxSize = 15 * 1024 * 1024;
+            log.transports.file.file = config.data_path + '/LOGS/ui.log';
+            log.transports.file.stream = fs.createWriteStream(log.transports.file.file, { flags: 'a' });
+            log.transports.console.level = config.level;
+        } catch(e) {
+
         }
-
-        const config = ConfigLoader.load();
-        log.transports.format = '[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}';
-        log.transports.file.level = config.level;
-        log.transports.file.maxSize = 15 * 1024 * 1024;
-        log.transports.file.file = config.data_path + '/NODE/LOGS/ui.log';
-        log.transports.file.stream = fs.createWriteStream(log.transports.file.file, { flags: 'a' });
-        log.transports.console.level = config.level;
-
+        
+        Client.start();
+        FileListener.start();
+        IPService.start();
     }, 1000);
 
     var processing_txhashset = false;
@@ -118,10 +136,6 @@ const createWindow = async () => {
     });
 
     global.mainWindow = mainWindow;
-    Client.start();
-    Server.start();
-    FileListener.start();
-    IPService.start();
 
     mainWindow.webContents.on('did-finish-load', () => {
         if (!isDevMode) {

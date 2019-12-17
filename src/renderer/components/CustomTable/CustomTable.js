@@ -8,7 +8,7 @@ import CustomTableHeader from './CustomTableHeader';
 
 const styles = theme => ({
     root: {
-        flexGrow: 1,
+        flexGrow: 1
     }
 });
 

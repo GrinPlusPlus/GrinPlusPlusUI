@@ -84,6 +84,10 @@ function WalletWords(props) {
     const [numWords, setNumWords] = React.useState(24);
     const [words, setWords] = React.useState(new Map());
     const [validWords, setValidWords] = React.useState(new Set());
+    
+    function toInputLowercase(e) {
+        e.target.value = ("" + e.target.value).toLowerCase();
+    };
 
     function validate(validatedSet, numberOfWords) {
         var wordlist = [];
@@ -107,10 +111,10 @@ function WalletWords(props) {
 
     function changeWord(e, index) {
         var newWords = words;
-        newWords.set(index, e.target.value);
+        newWords.set(index, e.target.value.toLowerCase());
         setWords(newWords);
 
-        if (Wordlist.isWord(e.target.value)) {
+        if (Wordlist.isWord(e.target.value.toLowerCase())) {
             if (!validWords.has(index)) {
                 const newValidWords = new Set(validWords);
                 newValidWords.add(index);
@@ -160,7 +164,7 @@ function WalletWords(props) {
                         <div style={{ position: 'absolute', top: '-3px', left: '1px', margin: '0px', padding: '0px' }}>
                             {(index + 1) + "."}
                         </div>
-                        <TextField onChange={e => changeWord(e, index)} className={textFieldClassName} defaultValue={value} fullWidth />
+                        <TextField onChange={e => changeWord(e, index)} onInput={toInputLowercase} className={textFieldClassName} defaultValue={value} fullWidth />
                     </div>
                 );
             }

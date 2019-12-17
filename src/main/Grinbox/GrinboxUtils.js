@@ -43,4 +43,13 @@ function encodePublicKey(hexPublicKey) {
     return base58.encode(publicKeyBuffer)
 }
 
-export default { parseAddress, parsePublicKey, encodePublicKey }
+function isValidAddress(address) {
+    try {
+        base58.decode(address);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+export default { parseAddress, parsePublicKey, encodePublicKey, isValidAddress }

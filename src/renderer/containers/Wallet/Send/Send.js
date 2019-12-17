@@ -2,17 +2,20 @@ import React from "react";
 import PropTypes from "prop-types";
 import { ipcRenderer } from 'electron';
 import {
-    Button, Grid, Radio, RadioGroup, FormControl, FormControlLabel
+    Button, Grid, Radio, RadioGroup, Checkbox, FormControl, FormControlLabel,
+    DialogContent, DialogContentText, DialogActions, CircularProgress
 } from '@material-ui/core';
 import SendIcon from "@material-ui/icons/Send";
 import { withStyles } from "@material-ui/core/styles";
 import CustomTextField from '../../../components/CustomTextField';
-import GrinUtil from "../../../util/GrinUtil";
 import SendFile from "./SendFile";
 import SendHttp from "./SendHttp";
 import SendGrinbox from "./SendGrinbox";
 import CoinControl from './CoinControl';
 import log from 'electron-log';
+import SnackbarUtil from '../../../Util/SnackbarUtil.js';
+import GrinDialog from '../../../components/GrinDialog';
+//import GrinboxUtil from '../../../../main/Grinbox/GrinboxUtils.js';
 
 const styles = theme => ({
     fab: {
@@ -28,23 +31,27 @@ const styles = theme => ({
 });
 
 class Send extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             amount: '',
             method: 'file',
             selectedFile: '',
-            httpAddress: '',
-            grinboxAddress: '',
-            strategy: 'ALL',
+            address: '',
+            strategy: 'SMALLEST',
             fee: '',
             outputs: null,
-            inputs: []
+            inputs: [],
+            sending: false,
+            useGrinJoin: false,
+            confirmationDialog: false
         };
 
         this.clear = this.clear.bind(this);
+        this.handleClickSend = this.handleClickSend.bind(this);
         this.handleSend = this.handleSend.bind(this);
+        this.handleSendResult = this.handleSendResult.bind(this);
         this.handleMethodChange = this.handleMethodChange.bind(this);
         this.handleStrategyChange = this.handleStrategyChange.bind(this);
         this.handleAmountChange = this.handleAmountChange.bind(this);
@@ -59,56 +66,106 @@ class Send extends React.Component {
         this.setState({
             amount: '',
             fee: '',
-            httpAddress: '',
-            grinboxAddress: '',
+            address: '',
             selectedFile: '',
             inputs: [],
-            message: ''
+            message: '',
+            useGrinJoin: false,
+            sending: false,
+            confirmationDialog: false
         });
     }
 
-    handleSend(event) {
+    handleClickSend(event) {
         event.preventDefault();
-        const data = new FormData(event.target);
-        const amountInNanoGrins = data.get('amount') * Math.pow(10, 9);
 
-        var result = null;
-        if (this.state.method == "file") {
-            result = ipcRenderer.sendSync('Send', amountInNanoGrins, this.state.strategy, this.state.inputs, this.state.selectedFile, this.state.message);
-        } else if (this.state.method == "http") {
-            log.info("Sending to " + this.state.httpAddress);
-            result = ipcRenderer.sendSync('SendToHTTP', this.state.httpAddress, amountInNanoGrins, this.state.strategy, this.state.inputs, this.state.message);
-            log.info("Sent via http(s). Result: " + JSON.stringify(result));
-        } else if (this.state.method == "grinbox") {
-            log.info("Sending to " + this.state.grinboxAddress);
-            result = ipcRenderer.sendSync('Grinbox::Send', this.state.grinboxAddress, amountInNanoGrins, this.state.strategy, this.state.inputs, this.state.message);
-            log.info("Sent via grinbox. Result: " + JSON.stringify(result));
-            this.clear();
-            return;
-        }
-        
-        if (result.status_code == 200) {
-            if (this.state.method == "file") {
-                const original = JSON.stringify(result.slate);
-                const compressed = GrinUtil.Compress(original);
-                log.info("Original: " + original);
-                log.info("Base64: " + compressed);
-                log.info("Decompressed: " + GrinUtil.Decompress(compressed));
-                ipcRenderer.send('SaveToFile', this.state.selectedFile, JSON.stringify(result.slate));
+        this.setState({
+            confirmationDialog: true
+        });
+    }
+
+    handleSendResult(event, result) {
+        if (result.success === true) {
+            if (this.state.method == 'file') {
+                SnackbarUtil.Success("Transaction saved at: " + this.state.selectedFile);
+            } else {
+                SnackbarUtil.Success("Transaction sent successfully.");
             }
 
-            ipcRenderer.send('Snackbar::Relay', "SUCCESS", "Transaction sent successfully.");
             this.clear();
-        } else if (result.status_code == 409) {
-            ipcRenderer.send('Snackbar::Relay', "ERROR", "Insufficient Funds Available!");
+            this.props.showWallet();
         } else {
-            ipcRenderer.send('Snackbar::Relay', "ERROR", "Failed to send! Error Code: " + result.status_code);
+            this.setState({
+                sending: false
+            });
+        }
+    }
+
+    handleSend() {
+        const amountInNanoGrins = this.state.amount * Math.pow(10, 9);
+
+        this.setState({
+            confirmationDialog: false,
+            sending: true
+        });
+
+        if (this.state.method == "file") {
+            ipcRenderer.removeAllListeners('File::Send::Response');
+            ipcRenderer.on('File::Send::Response', this.handleSendResult);
+
+            ipcRenderer.send(
+                'File::Send',
+                amountInNanoGrins,
+                this.state.strategy,
+                this.state.inputs,
+                this.state.selectedFile,
+                this.state.message
+            );
+        } else if (this.state.method == "http") {
+            ipcRenderer.removeAllListeners('HTTP::Send::Response');
+            ipcRenderer.on('HTTP::Send::Response', this.handleSendResult);
+
+            ipcRenderer.send(
+                'HTTP::Send',
+                this.state.address,
+                amountInNanoGrins,
+                this.state.strategy,
+                this.state.inputs,
+                this.state.message,
+                this.state.useGrinJoin
+            );
+        } else if (this.state.method == 'tor') {
+                ipcRenderer.removeAllListeners('TOR::Send::Response');
+                ipcRenderer.on('TOR::Send::Response', this.handleSendResult);
+
+                ipcRenderer.send(
+                    'TOR::Send',
+                    this.state.address,
+                    amountInNanoGrins,
+                    this.state.strategy,
+                    this.state.inputs,
+                    this.state.message,
+                    this.state.useGrinJoin
+                );
+        } else if (this.state.method == "grinbox") {
+            ipcRenderer.removeAllListeners('Grinbox::Send::Response');
+            ipcRenderer.on('Grinbox::Send::Response', this.handleSendResult);
+
+            ipcRenderer.send(
+                'Grinbox::Send',
+                this.state.address,
+                amountInNanoGrins,
+                this.state.strategy,
+                this.state.inputs,
+                this.state.message
+            );
         }
     }
 
     handleMethodChange(event) {
         this.setState({
-            method: event.target.value
+            method: event.target.value,
+            address: ''
         });
     }
 
@@ -154,7 +211,7 @@ class Send extends React.Component {
                     fee: '',
                 });
 
-                ipcRenderer.send('Snackbar::Relay', "ERROR", "Insufficient Funds Available!");
+                SnackbarUtil.Error("Insufficient Funds Available!");
             }
         } else {
             this.setState({
@@ -197,15 +254,13 @@ class Send extends React.Component {
     shouldEnableSubmit() {
         if (this.state.fee.length == 0) {
             return false;
+        } else if (this.state.sending === true) {
+            return false;
         } else if (this.state.method == "file") {
             return this.state.selectedFile.length > 0;
-        } else if (this.state.method == "http") {
-            return this.state.httpAddress.length > 0;
-        } else if (this.state.method == "grinbox") {
-            return this.state.grinboxAddress.length > 0;
         }
 
-        return true;
+        return this.state.address.length > 0;
     }
 
     componentDidMount() {
@@ -228,9 +283,86 @@ class Send extends React.Component {
             );
         }
 
+        function getGrinJoinCheckbox(component) {
+            if (component.state.method != 'file' && component.state.method != 'grinbox') {
+                return (
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={component.state.useGrinJoin}
+                                onChange={() => {
+                                    var updated = !component.state.useGrinJoin;
+                                    component.setState({
+                                        useGrinJoin: updated
+                                    });
+                                }}
+                            />
+                        }
+                        label="Use GrinJoin"
+                    />
+                );
+            }
+        }
+
+        function getSendButton(component) {
+            if (component.state.sending) {
+                return (
+                    <Button type="submit" style={{ marginLeft: '10px' }} variant="contained" color="primary" disabled={true} >
+                        Sending <CircularProgress size={24} className={classes.buttonProgress} />
+                    </Button>
+                );
+            } else {
+                return (
+                    <Button type="submit" style={{ marginLeft: '10px' }} variant="contained" color="primary" disabled={!component.shouldEnableSubmit()} >
+                        Send <SendIcon />
+                    </Button>
+                    
+                );
+            }
+        }
+
+        function getGrinboxOption() {
+            if (!ipcRenderer.sendSync('Settings::IsGrinboxEnabled')) {
+                return "";
+            }
+
+            return (
+                <FormControlLabel value="grinbox" control={<Radio />} label="Grinbox" labelPlacement="end" />
+            );
+        }
+
+        function getTorOption() {
+            if (!ipcRenderer.sendSync('Settings::IsTorEnabled')) {
+                return "";
+            }
+
+            return (
+                <FormControlLabel value="tor" control={<Radio />} label="TOR" labelPlacement="end" />
+            );
+        }
+
         return (
             <React.Fragment>
-                <form className={classes.form} onSubmit={this.handleSend}>
+                <GrinDialog
+                    open={this.state.confirmationDialog}
+                    title="Send Confirmation"
+                >
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Are you sure you want to send?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleSend} color="primary">
+                            Yes
+                        </Button>
+                        <Button onClick={() => { this.setState({ confirmationDialog: false }); }} color="primary" autoFocus>
+                            No
+                        </Button>
+                    </DialogActions>
+                </GrinDialog>
+
+                <form className={classes.form} onSubmit={this.handleClickSend}>
                     <center>
                         <FormControl component="fieldset" required>
                             <RadioGroup
@@ -241,8 +373,9 @@ class Send extends React.Component {
                                 row
                             >
                                 <FormControlLabel value="file" control={<Radio />} label="File" labelPlacement="end" />
+                                {getTorOption()}
                                 <FormControlLabel value="http" control={<Radio />} label="Http(s)" labelPlacement="end" />
-                                <FormControlLabel value="grinbox" control={<Radio />} label="Grinbox" labelPlacement="end" />
+                                {getGrinboxOption()}
                             </RadioGroup>
                         </FormControl>
                     </center>
@@ -267,14 +400,13 @@ class Send extends React.Component {
                     </Grid>
 
                     <SendFile selected={this.state.method == "file"} selectedFile={this.state.selectedFile} setSelectedFile={(value) => { this.setState({ selectedFile: value }) }} />
-                    <SendHttp selected={this.state.method == "http"} httpAddress={this.state.httpAddress} setHttpAddress={(value) => { this.setState({ httpAddress: value }) }} />
-                    <SendGrinbox selected={this.state.method == "grinbox"} grinboxAddress={this.state.grinboxAddress} setGrinboxAddress={(value) => { this.setState({ grinboxAddress: value }) }} />
+                    <SendHttp selected={this.state.method != "file"} address={this.state.address} setAddress={(value) => { this.setState({ address: value }) }} />
                     <br />
 
 
                     {/* Coin Selection */}
                     <Grid container spacing={0}>
-                        <Grid item xs={8}>
+                        <Grid item xs={6}>
                             <FormControl component="fieldset" required>
                                 <RadioGroup
                                     aria-label="Coin Selection Strategy"
@@ -283,15 +415,14 @@ class Send extends React.Component {
                                     onChange={this.handleStrategyChange}
                                     row
                                 >
-                                    <FormControlLabel value="ALL" control={<Radio />} label="Default" labelPlacement="end" />
+                                    <FormControlLabel value="SMALLEST" control={<Radio />} label="Default" labelPlacement="end" />
                                     <FormControlLabel value="CUSTOM" control={<Radio />} label="Custom" labelPlacement="end" />
                                 </RadioGroup>
                             </FormControl>
                         </Grid>
-                        <Grid item xs={4} style={{ textAlign: 'right' }}>
-                            <Button type="submit" style={{ marginLeft: '10px' }} variant="contained" color="primary" disabled={!this.shouldEnableSubmit()} >
-                                Send <SendIcon />
-                            </Button>
+                        <Grid item xs={6} style={{ textAlign: 'right' }}>
+                            { getGrinJoinCheckbox(this) }
+                            { getSendButton(this) }
                         </Grid>
                     </Grid>
 
@@ -303,7 +434,8 @@ class Send extends React.Component {
 }
 
 Send.propTypes = {
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    showWallet: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(Send);

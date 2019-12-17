@@ -101,7 +101,7 @@ class Outputs extends React.Component {
 
         const columns = [
             { id: 'commitment', numeric: false, disablePadding: true, label: 'Commitment' },
-            { id: 'message', numeric: false, disablePadding: false, label: 'Message' },
+            { id: 'label', numeric: false, disablePadding: false, label: 'Label' },
             { id: 'amount', numeric: false, disablePadding: false, label: 'Amount' },
             { id: 'status', numeric: true, disablePadding: false, label: 'Status' },
         ];
@@ -148,7 +148,7 @@ class Outputs extends React.Component {
                             <CopyIcon fontSize='small' />
                         </IconButton>
                     </TableCell>
-                    <TableCell>{output.message != null ? output.message : ""}</TableCell>
+                    <TableCell>{output.label != null ? output.label : ""}</TableCell>
                     <TableCell>{GrinUtil.FormatAmount(output.amount)}</TableCell>
                     <TableCell align="right">{output.status}</TableCell>
                 </TableRow>

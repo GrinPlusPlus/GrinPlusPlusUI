@@ -25,7 +25,7 @@ function CoinControl(props) {
         { id: 'checkbox', numeric: false, disablePadding: true, label: 'Spend' },
         { id: 'block_height', numeric: false, disablePadding: true, label: 'Block Height' },
         { id: 'commitment', numeric: false, disablePadding: true, label: 'Commitment' },
-        { id: 'message', numeric: false, disablePadding: true, label: 'Message' },
+        { id: 'label', numeric: false, disablePadding: true, label: 'Label' },
         { id: 'amount', numeric: true, disablePadding: false, label: 'Amount' },
     ];
 
@@ -61,7 +61,7 @@ function CoinControl(props) {
                 </TableCell>
                 <TableCell component="th" scope="row" padding="none">
                     <Typography variant='body1' style={{ fontSize: '13px' }}>
-                        {row.message}
+                        {row.label}
                     </Typography>
                 </TableCell>
                 <TableCell component="th" scope="row" padding="none">

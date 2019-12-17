@@ -5,7 +5,7 @@ import {AppContainer} from 'react-hot-loader';
 const render = () => {
     const App = require('./App').default;
     ReactDOM.render(
-        <AppContainer><App /></AppContainer>,
+        <AppContainer><App/></AppContainer>,
         document.getElementById('App')
     );
 }

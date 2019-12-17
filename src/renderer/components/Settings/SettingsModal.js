@@ -32,7 +32,8 @@ function SettingsModal(props) {
     const { classes } = props;
     const [open, setOpen] = React.useState(false);
     const [loaded, setLoaded] = React.useState(false);
-    const [enhanced, setEnhanced] = React.useState(false);
+    const [grinboxEnabled, setGrinboxEnabled] = React.useState(false);
+    const [torEnabled, setTorEnabled] = React.useState(true);
     const [savedSettings, setSavedSettings] = React.useState(null);
     const [settings, setSettings] = React.useState(null);
 
@@ -43,10 +44,9 @@ function SettingsModal(props) {
             const loadedSettings = ipcRenderer.sendSync('Settings::Get');
             setSavedSettings(JSON.parse(JSON.stringify(loadedSettings)));
             setSettings(JSON.parse(JSON.stringify(loadedSettings)));
+            setGrinboxEnabled(isGrinboxEnabled(JSON.parse(JSON.stringify(loadedSettings))));
+            setTorEnabled(isTorEnabled(JSON.parse(JSON.stringify(loadedSettings))));
             setLoaded(true);
-            setEnhanced(isEnhancedDB(loadedSettings));
-        } else {
-            setEnhanced(isEnhancedDB(savedSettings));
         }
     }
 
@@ -77,30 +77,52 @@ function SettingsModal(props) {
         ipcRenderer.send("ResyncBlockchain");
     }
 
-    function isEnhancedDB(newSettings) {
-        console.log(newSettings);
-        if (newSettings == null || newSettings.WALLET == null || newSettings.WALLET.DATABASE == null) {
+    function isGrinboxEnabled(newSettings) {
+        console.log(JSON.stringify(newSettings));
+        if (newSettings == null || newSettings.WALLET == null) {
             return false;
         }
 
-        return newSettings.WALLET.DATABASE == "SQLITE";
+        return newSettings.WALLET.ENABLE_GRINBOX == true;
     }
 
-    function handleChangeEnhanced(event) {
-        var database = (event.target.checked ? 'SQLITE' : 'ROCKSDB');
+    function isTorEnabled(newSettings) {
+        console.log(JSON.stringify(newSettings));
+        if (newSettings == null || newSettings.TOR == null) {
+            return true;
+        }
 
+        return newSettings.TOR.ENABLE_TOR !== false;
+    }
+
+    function handleChangeEnableTOR(event) {
+        var newSettings = settings;
+        if (newSettings == null) {
+            return;
+        }
+
+        if (newSettings.TOR == null) {
+            newSettings.TOR = { ENABLE_TOR: event.target.checked };
+        } else {
+            newSettings.TOR.ENABLE_TOR = event.target.checked;
+        }
+        setSettings(newSettings);
+        setTorEnabled(event.target.checked);
+    };
+
+    function handleChangeEnableGrinbox(event) {
         var newSettings = settings;
         if (newSettings == null) {
             return;
         }
 
         if (newSettings.WALLET == null) {
-            newSettings.WALLET = { DATABASE: database };
+            newSettings.WALLET = { ENABLE_GRINBOX: event.target.checked };
         } else {
-            newSettings.WALLET.DATABASE = database;
+            newSettings.WALLET.ENABLE_GRINBOX = event.target.checked;
         }
         setSettings(newSettings);
-        setEnhanced(isEnhancedDB(newSettings));
+        setGrinboxEnabled(event.target.checked);
     };
 
     return (
@@ -134,14 +156,25 @@ function SettingsModal(props) {
                                     <FormControlLabel
                                         control={
                                             <Checkbox
-                                                checked={enhanced}
-                                                onChange={handleChangeEnhanced}
-                                                value="enhanced"
+                                                checked={torEnabled}
+                                                onChange={handleChangeEnableTOR}
+                                                value="tor"
                                                 color='secondary'
-                                                disabled={true}
                                             />
                                         }
-                                        label="Use Enhanced Database"
+                                        label="Enable TOR"
+                                    />
+
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                checked={grinboxEnabled}
+                                                onChange={handleChangeEnableGrinbox}
+                                                value="grinbox"
+                                                color='secondary'
+                                            />
+                                        }
+                                        label="Enable Grinbox"
                                     />
                                 </Paper>
                             </Grid>

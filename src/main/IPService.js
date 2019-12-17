@@ -1,8 +1,10 @@
 import { ipcMain } from 'electron';
 import log from 'electron-log';
 const http = require('http');
+const localtunnel = require('localtunnel');
 
-var ngrok_url = "";
+var tunnel = null;
+var proxy_url = "";
 var ipAddress = "";
 var lastLookup = null;
 var expiration = null;
@@ -35,10 +37,10 @@ function lookupIP(event) {
 
         http.get(options, function (res) {
             res.on("data", function (chunk) {
-                ipAddress += "" + chunk;
+                ipAddress = "" + chunk + ":" + global.listener_port;
                 lastLookup = Date.now();
                 event.returnValue = {
-                    ngrok: ngrok_url,
+                    proxy: proxy_url,
                     IP: ipAddress,
                     expiration: expiration
                 };
@@ -49,7 +51,7 @@ function lookupIP(event) {
         });
     } else {
         event.returnValue = event.returnValue = {
-            ngrok: ngrok_url,
+            proxy: proxy_url,
             IP: ipAddress,
             expiration: expiration
         };
@@ -57,40 +59,39 @@ function lookupIP(event) {
 }
 
 function connect($callback) {
-    if (process.platform !== 'darwin') {
-        const ngrok = require('ngrok');
 
-        (async function ($callback) {
-            if (ngrok_url.length > 0) {
-                ngrok.disconnect(ngrok_url);
-            }
+    (async function ($callback) {
+        if (tunnel != null) {
+            tunnel.close();
+        }
+        
+        expiration = new Date();
+        expiration.setTime(expiration.getTime() + (8 * 60 * 60 * 1000));
 
-            ngrok_url = "";
-            expiration = new Date();
-            expiration.setTime(expiration.getTime() + (8 * 60 * 60 * 1000));
+        tunnel = await localtunnel({
+            port: global.listener_port,
+            host: 'http://localtunnel.me'
+        });
+    
+        // the assigned public url for your tunnel
+        // i.e. https://abcdefgjhij.localtunnel.me
+        proxy_url = tunnel.url.replace('https://', 'http://');
+        
+        tunnel.on('close', () => {
+            proxy_url = "";
+        });
 
-            ngrok_url = await ngrok.connect({
-                proto: 'http', // http|tcp|tls, defaults to http
-                addr: 3415, // port or network address, defaultst to 80
-                //auth: 'user:pwd', // http basic authentication for tunnel
-                region: 'us', // one of ngrok regions (us, eu, au, ap), defaults to us
-                binPath: function (value) { return value.replace('app.asar', 'app.asar.unpacked'); }
-            });
-
-            if ($callback != null) {
-                $callback();
-            }
-        })($callback);
-    } else if ($callback != null) {
-        $callback();
-    }
+        
+        if ($callback != null) {
+            $callback();
+        }
+    })($callback);
 }
 
 function disconnect() {
-    ngrok_url = "";
-    if (process.platform !== 'darwin') {
-        const ngrok = require('ngrok');
-        ngrok.disconnect();
+    proxy_url = "";
+    if (tunnel != null) {
+        tunnel.close();
     }
 }
 

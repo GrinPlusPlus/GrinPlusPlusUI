@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
 import { ipcRenderer } from 'electron';
 import Typography from '@material-ui/core/Typography';
+import WalletIcon from '@material-ui/icons/AccountBalanceWallet';
 import SendIcon from "@material-ui/icons/CallMade";
 import ReceiveIcon from '@material-ui/icons/CallReceived';
 import FinalizeIcon from '@material-ui/icons/CallMerge';
@@ -20,6 +21,16 @@ const styles = theme => ({
     fullWidth: {
         width: `calc(100% - 10px)`,
         margin: '5px'
+    },
+    fullWidthSelected: {
+        width: `calc(100% - 10px)`,
+        margin: '5px',
+        backgroundColor: 'white',
+        color: 'black',
+        '&:hover': {
+            background: 'white',
+            color: 'black',
+        }
     },
     root: {
         flexGrow: 1,
@@ -207,15 +218,15 @@ class Wallet extends React.Component {
         function showSelectedView(component) {
             if (component.state.selectedView == 'SEND') {
                 return (
-                    <Send />
+                    <Send showWallet={component.showWallet} />
                 );
             } else if (component.state.selectedView == 'RECEIVE') {
                 return (
-                    <Receive />
+                    <Receive showWallet={component.showWallet} />
                 );
             } else if (component.state.selectedView == 'FINALIZE') {
                 return (
-                    <Finalize />
+                    <Finalize showWallet={component.showWallet} />
                 )
             } else {
                 return (
@@ -273,34 +284,33 @@ class Wallet extends React.Component {
                     <Grid item xs={2} />
                     <Grid item xs={2}>
                         <Button
-                            variant="contained"
-                            className={classes.fullWidth}
+                            variant="outlined"
+                            className={this.state.selectedView == "WALLET" ? classes.fullWidthSelected : classes.fullWidth }
                             aria-label="Wallet"
                             onClick={this.showWallet}
-                            color={this.state.selectedView == "WALLET" ? "inherit" : "primary"}
+                            fullWidth
                         >
-                            <SendIcon className={classes.extendedIcon} /> Wallet
+                            <WalletIcon className={classes.extendedIcon} /> Wallet
                         </Button>
                     </Grid>
                     <Grid item xs={2}>
                         <Button
-                            variant="contained"
-                            className={classes.fullWidth}
+                            variant="outlined"
+                            className={this.state.selectedView == "SEND" ? classes.fullWidthSelected : classes.fullWidth }
                             aria-label="Send"
                             onClick={this.showSend}
-                            color={this.state.selectedView == "SEND" ? "inherit" : "primary"}
                             disabled={this.state.buttonsDisabled}
+                            fullWidth
                         >
                             <SendIcon className={classes.extendedIcon} /> Send
                         </Button>
                     </Grid>
                     <Grid item xs={2}>
                         <Button
-                            variant="contained"
-                            className={classes.fullWidth}
+                            variant="outlined"
+                            className={this.state.selectedView == "RECEIVE" ? classes.fullWidthSelected : classes.fullWidth }
                             aria-label="Receive"
                             onClick={this.showReceive}
-                            color={this.state.selectedView == "RECEIVE" ? "inherit" : "primary"}
                             disabled={this.state.buttonsDisabled}
                             fullWidth
                         >
@@ -309,11 +319,10 @@ class Wallet extends React.Component {
                     </Grid>
                     <Grid item xs={2}>
                         <Button
-                            variant="contained"
-                            className={classes.fullWidth}
+                            variant="outlined"
+                            className={this.state.selectedView == "FINALIZE" ? classes.fullWidthSelected : classes.fullWidth }
                             aria-label="Finalize"
                             onClick={this.showFinalize}
-                            color={this.state.selectedView == "FINALIZE" ? "inherit" : "primary"}
                             disabled={this.state.buttonsDisabled}
                             fullWidth
                         >

@@ -12,7 +12,7 @@ function start() {
         log.info('Slate successfully saved to ' + fileName);
     });
 
-    ipcMain.on("SendFile", function (event) {
+    ipcMain.on('ChooseDestination', function (event) {
         dialog.showSaveDialog(
             {
                 defaultPath: defaultPath,
@@ -29,7 +29,7 @@ function start() {
         );
     });
 
-    ipcMain.on("ReceiveFile", function (event) {
+    ipcMain.on("ChooseInputFile", function (event) {
         dialog.showOpenDialog(
             {
                 defaultPath: defaultPath,

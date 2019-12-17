@@ -1,20 +1,27 @@
-import ConnectionUtils from '../../ConnectionUtils';
-import log from 'electron-log';
+import RPCClient from '../RPCClient';
 
-function call(slate, callback) {
-    const headers = [{ name: 'session_token', value: global.session_token }];
-    
-    log.info("Finalizing slate: " + slate);
-    ConnectionUtils.ownerRequest('POST', 'finalize_tx?post', headers, slate, function (response) {
-        var result = new Object();
-        result["status_code"] = response.status_code;
+const GRINJOIN_ADDRESS = "grinjoin5pzzisnne3naxx4w2knwxsyamqmzfnzywnzdk7ra766u7vid";
 
-        if (response.status_code == 200) {
-            result["tx"] = JSON.parse(response.body);
-        }
-        
-        log.info("Result: " + JSON.stringify(result));
-        callback(result);
+function call(slate, file, grinjoin, callback) {
+    var reqJSON = new Object();
+    reqJSON['session_token'] = global.session_token;
+    reqJSON['slate'] = slate;
+
+    if (file != null) {
+        reqJSON['file'] = file;
+    }
+
+    var postJSON = new Object();
+    if (grinjoin == true) {
+        postJSON['method'] = 'JOIN';
+        postJSON['grinjoin_address'] = GRINJOIN_ADDRESS;
+    } else {
+        postJSON['method'] = 'STEM';
+    }
+    reqJSON["post_tx"] = postJSON;
+
+    RPCClient.call('finalize', reqJSON, function (result, error) {
+        callback(result, error);
     });
 }
 

@@ -25,7 +25,7 @@ function SendFile(props) {
             }
         });
 
-        ipcRenderer.send('SendFile');
+        ipcRenderer.send('ChooseDestination');
     }
 
     if (selected != true) {

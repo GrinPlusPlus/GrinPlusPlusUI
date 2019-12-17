@@ -1,17 +1,13 @@
 import { net } from 'electron';
 import { URL } from 'url';
 
-const OWNER_PORT = 3420;
-const FOREIGN_PORT = 3415;
-const NODE_PORT = 3413;
-
 function getPort(url) {
     var port = url.port;
     if (port.length == 0) {
         if (url.protocol == "https:") {
             port = "443";
         } else {
-            port = '' + FOREIGN_PORT;
+            port = '' + global.ports.foreign_rpc;
         }
     }
 
@@ -96,11 +92,11 @@ function localRequest(httpMethod, portNumber, path, headers, requestBody, callba
 }
 
 function ownerRequest(httpMethod, action, headers, requestBody, callback) {
-    localRequest(httpMethod, OWNER_PORT, '/v1/wallet/owner/' + action, headers, requestBody, callback);
+    localRequest(httpMethod, global.ports.owner, '/v1/wallet/owner/' + action, headers, requestBody, callback);
 }
 
 function nodeRequest(httpMethod, path, requestBody, callback) {
-    localRequest(httpMethod, NODE_PORT, path, [], requestBody, callback);
+    localRequest(httpMethod, global.ports.node, path, [], requestBody, callback);
 }
 
-export default { OWNER_PORT, FOREIGN_PORT, NODE_PORT, buildForeignRequest, canConnect, ownerRequest, nodeRequest };
+export default { buildForeignRequest, canConnect, ownerRequest, nodeRequest };

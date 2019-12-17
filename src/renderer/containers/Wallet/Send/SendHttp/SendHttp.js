@@ -4,7 +4,7 @@ import { FormControl } from "@material-ui/core";
 import CustomTextField from '../../../../components/CustomTextField';
 
 function SendHttp(props) {
-    const { selected, httpAddress, setHttpAddress } = props;
+    const { selected, address, setAddress } = props;
 
     if (selected != true) {
         return null;
@@ -21,9 +21,9 @@ function SendHttp(props) {
                     name="URL"
                     type="text"
                     id="URL"
-                    value={httpAddress}
-                    onChange={(event) => { setHttpAddress(event.target.value) }}
-                    placeholder='Address (eg. http(s)://12.34.56.78:3415)'
+                    value={address}
+                    onChange={(event) => { setAddress(event.target.value) }}
+                    placeholder='Address'
                 />
             </FormControl>
             <br />
@@ -33,8 +33,8 @@ function SendHttp(props) {
 
 SendHttp.propTypes = {
     selected: PropTypes.bool,
-    httpAddress: PropTypes.string,
-    setHttpAddress: PropTypes.func
+    address: PropTypes.string,
+    setAddress: PropTypes.func
 };
 
 export default SendHttp;

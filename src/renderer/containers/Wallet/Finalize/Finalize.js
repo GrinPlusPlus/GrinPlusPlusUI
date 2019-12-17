@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { ipcRenderer } from 'electron';
 import {
-    Button, FormControl, IconButton, Typography
+    Button, FormControl, FormControlLabel, Checkbox, IconButton, Typography
 } from "@material-ui/core";
 import FinalizeIcon from "@material-ui/icons/CallMerge";
 import OpenIcon from '@material-ui/icons/FolderOpen';
@@ -28,12 +28,9 @@ const styles = theme => ({
 });
 
 function Finalize(props) {
-    const { classes } = props;
+    const { classes, showWallet } = props;
     const [selectedFile, setSelectedFile] = React.useState("");
-    
-    function clear() {
-        setSelectedFile("");
-    }
+    const [useGrinJoin, setUseGrinJoin] = React.useState(false);
 
     function handleFinalize(e) {
         e.preventDefault();
@@ -41,14 +38,18 @@ function Finalize(props) {
         ipcRenderer.removeAllListeners('SlateOpened');
         ipcRenderer.on('SlateOpened', (event, fileOpened, data) => {
             if (data !== null) {
-                var result = ipcRenderer.sendSync('Finalize', data);
-                if (result !== null && result.status_code == 200) {
-                    ipcRenderer.send('SaveToFile', (fileOpened + '.finalized'), JSON.stringify(result.tx));
-                    ipcRenderer.send('Snackbar::Relay', "SUCCESS", "Saving response slate to: " + fileName + ".response");
-                    setSelectedFile("");
-                } else {
-                    ipcRenderer.send('Snackbar::Relay', "ERROR", "Unknown error occurred!");
-                }
+                ipcRenderer.removeAllListeners('File::Finalize::Response');
+                ipcRenderer.on('File::Finalize::Response', (event, result) => {
+                    if (result.success === true) {
+                        ipcRenderer.send('Snackbar::Relay', "SUCCESS", "Finalize slate saved to: " + fileOpened + ".finalized");
+                        setSelectedFile("");
+                        showWallet();
+                    } else {
+                        ipcRenderer.send('Snackbar::Relay', "ERROR", "Error occurred: " + JSON.stringify(result.data));
+                    }
+                });
+
+                ipcRenderer.send('File::Finalize', JSON.parse(data), (fileOpened + '.finalized'), useGrinJoin);
             }
         });
 
@@ -65,7 +66,7 @@ function Finalize(props) {
             }
         });
 
-        ipcRenderer.send('ReceiveFile');
+        ipcRenderer.send('ChooseInputFile');
     }
 
     return (
@@ -96,6 +97,19 @@ function Finalize(props) {
                     <br />
                 </center>
                 <Typography align='right'>
+                    
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={useGrinJoin}
+                                onChange={() => {
+                                    var updated = !useGrinJoin;
+                                    setUseGrinJoin(updated);
+                                }}
+                            />
+                        }
+                        label="Use GrinJoin"
+                    />
                     <Button type="submit" style={{ marginLeft: '10px' }} disabled={selectedFile.length == 0} variant="contained" color="primary">
                         Finalize <FinalizeIcon />
                     </Button>
@@ -106,7 +120,8 @@ function Finalize(props) {
 }
 
 Finalize.propTypes = {
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    showWallet: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(Finalize);
