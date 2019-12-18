@@ -138,7 +138,7 @@ class Main extends React.Component {
         function getAccountsDisplay(component) {
             if (component.state.users === null) {
                 return (
-                    <CircularProgress size={24} />
+                    <CircularProgress size={24} color="secondary" />
                 );
             }
 

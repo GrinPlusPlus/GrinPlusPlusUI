@@ -85,7 +85,7 @@ class StatusBar extends React.Component {
         const statusTheme = createMuiTheme({
             palette: {
                 primary: {
-                    main: '#069076'
+                    main: '#069076',
                 },
                 secondary: yellow,
                 error: red,
@@ -137,7 +137,7 @@ class StatusBar extends React.Component {
                     <Grid container spacing={0} className={classes.Grid}>
                         <Grid item xs={4} style={{ height: '24px', margin: '0px' }}>
                             <StatusIcon color={getColor(this.state.status)} />
-                            <Typography noWrap color="textPrimary" className={classes.statusText}><b>Status: </b></Typography>
+                            <Typography noWrap style={{color: 'white'}} className={classes.statusText}><b>Status: </b></Typography>
                             <Typography noWrap color={getColor(this.state.status)} display='inline' className={classes.statusText}><b>{getStatusText(this.state)}</b></Typography>
                         </Grid>
                         <Grid item xs={4} style={{ height: '24px', textAlign: 'center' }}>

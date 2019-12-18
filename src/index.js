@@ -124,17 +124,6 @@ const createWindow = async () => {
 
     var processing_txhashset = false;
 
-    mainWindow.on('close', (event) => {
-        log.info("mainWindow.on('close')");
-        if (processing_txhashset) {
-            event.preventDefault();
-            dialog.showMessageBox({
-                message: "Can't close while validating downloaded state.",
-                buttons: ["OK"]
-            });
-        }
-    });
-
     global.mainWindow = mainWindow;
 
     mainWindow.webContents.on('did-finish-load', () => {
@@ -175,6 +164,46 @@ const createWindow = async () => {
             }
         });
     });
+
+
+    mainWindow.on('close', (event) => {
+        log.info("mainWindow.on('close')");
+        if (processing_txhashset) {
+            event.preventDefault();
+            dialog.showMessageBox({
+                message: "Can't close while validating downloaded state.",
+                buttons: ["OK"]
+            });
+        } else {
+            clearInterval(statusInterval);
+            shuttingDown = true;
+            log.info('Shutting down');
+
+            if (LAUNCH_NODE) {
+                Client.stop();
+
+                setTimeout(function () {
+                    log.warn('Node shutdown timed out.');
+
+                    if (!isWindows) {
+                        try {
+                            ChildProcess.execFile('pkill', ['-f', 'GrinNode'], (err, stdout) => {
+                                log.info("pkill executed");
+                                app.quit();
+                            });
+                        } catch (e) {
+                            log.info("pkill threw exception: " + e);
+                            app.quit();
+                        }
+                    } else {
+                        app.quit();
+                    }
+                }, 10000);
+            } else {
+                app.quit();
+            }
+        }
+    });
 };
 
 // This method will be called when Electron has finished
@@ -184,33 +213,6 @@ app.on('ready', createWindow);
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
-    clearInterval(statusInterval);
-    shuttingDown = true;
-    log.info('Shutting down');
-
-    if (LAUNCH_NODE) {
-        Client.stop();
-
-        setTimeout(function () {
-            log.warn('Node shutdown timed out.');
-
-            if (!isWindows) {
-                try {
-                    ChildProcess.execFile('pkill', ['-f', 'GrinNode'], (err, stdout) => {
-                        log.info("pkill executed");
-                        app.quit();
-                    });
-                } catch (e) {
-                    log.info("pkill threw exception: " + e);
-                    app.quit();
-                }
-            } else {
-                app.quit();
-            }
-        }, 10000);
-    } else {
-        app.quit();
-    }
 });
 
 app.on('activate', () => {
