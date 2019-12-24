@@ -19,7 +19,7 @@ We will be building both GrinPlusPlus and the UI, if you already have GrinPlusPl
 6. ```mkdir build```
 7. ```cd build```
 8. ```cmake ..```
-9. ```cmake --build```
+9. ```cmake --build .```
 10. ```Go run the node and let it sync...```
 11. ```GrinPlusPlus/bin/<Configuration>. You're looking for GrinNode```
 12. I dont think this step matters, but you might as well run GrinNode and let it fully synchronize before moving to the next step
