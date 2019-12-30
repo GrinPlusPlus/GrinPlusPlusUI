@@ -10,19 +10,27 @@ var lastLookup = null;
 var expiration = null;
 
 function start() {
-    ipcMain.on('LookupURL', (event) => {
+    ipcMain.on('LookupProxy', (event) => {
         const currentDate = new Date();
         if (expiration == null || currentDate > expiration) {
             connect(() => {
-                lookupIP(event);
+                if (global.mainWindow != null) {
+                    global.mainWindow.webContents.send("LookupProxy::Response", proxy_url, expiration);
+                }
             });
         } else {
-            lookupIP(event);
+            if (global.mainWindow != null) {
+                global.mainWindow.webContents.send("LookupProxy::Response", proxy_url, expiration);
+            }
         }
+    });
+
+    ipcMain.on('LookupIP', (event) => {
+        lookupIP();
     });
 }
 
-function lookupIP(event) {
+function lookupIP() {
     const currentDate = Date.now();
     const secondsSinceLastLookup = (currentDate - lastLookup) / 1000;
 
@@ -37,24 +45,23 @@ function lookupIP(event) {
 
         http.get(options, function (res) {
             res.on("data", function (chunk) {
-                ipAddress = "" + chunk + ":" + global.listener_port;
+                ipAddress = "http://" + chunk + ":" + global.listener_port;
                 lastLookup = Date.now();
-                event.returnValue = {
-                    proxy: proxy_url,
-                    IP: ipAddress,
-                    expiration: expiration
-                };
+                if (global.mainWindow != null) {
+                    global.mainWindow.webContents.send("LookupIP::Response", ipAddress, global.listener_port);
+                }
             });
         }).on('error', function (e) {
             log.error("Failed to retrieve IP: " + e.message);
-            event.returnValue = ipAddress;
+
+            if (global.mainWindow != null) {
+                global.mainWindow.webContents.send("LookupIP::Response", ipAddress, global.listener_port);
+            }
         });
     } else {
-        event.returnValue = event.returnValue = {
-            proxy: proxy_url,
-            IP: ipAddress,
-            expiration: expiration
-        };
+        if (global.mainWindow != null) {
+            global.mainWindow.webContents.send("LookupIP::Response", ipAddress, global.listener_port);
+        }
     }
 }
 
@@ -65,22 +72,27 @@ function connect($callback) {
             tunnel.close();
         }
         
-        expiration = new Date();
-        expiration.setTime(expiration.getTime() + (8 * 60 * 60 * 1000));
+        try {
+            expiration = new Date();
+            expiration.setTime(expiration.getTime() + (8 * 60 * 60 * 1000));
 
-        tunnel = await localtunnel({
-            port: global.listener_port,
-            host: 'http://localtunnel.me'
-        });
-    
-        // the assigned public url for your tunnel
-        // i.e. https://abcdefgjhij.localtunnel.me
-        proxy_url = tunnel.url.replace('https://', 'http://');
+            log.info("Connecting to localtunnel");
+            tunnel = await localtunnel({
+                port: global.listener_port,
+                host: 'http://localtunnel.me'
+            });
+            log.info("Connected");
         
-        tunnel.on('close', () => {
-            proxy_url = "";
-        });
-
+            // the assigned public url for your tunnel
+            // i.e. https://abcdefgjhij.localtunnel.me
+            proxy_url = tunnel.url.replace('https://', 'http://');
+            
+            tunnel.on('close', () => {
+                proxy_url = "";
+            });
+        } catch (e) {
+            log.info("localtunnel error: " + e.message);
+        }
         
         if ($callback != null) {
             $callback();
