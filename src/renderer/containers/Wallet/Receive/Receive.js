@@ -100,29 +100,37 @@ class Receive extends React.Component {
         /*setHttpAddress("");
         setSelectedFile("");
         setMessage("");*/
+        this.props.showWallet();
     }
 
-    handleReceive(_event) {
+    handleReceive(event) {
+        event.preventDefault();
         ipcRenderer.removeAllListeners('SlateOpened');
         ipcRenderer.on('SlateOpened', (event, fileName, data) => {
             if (data !== null) {
                 try {
                     var outFile = fileName + '.response';
-                    var result = ipcRenderer.sendSync('ReceiveFile', JSON.parse(data), outFile, message);
-                    if (result.success) {
-                        ipcRenderer.send('Snackbar::Relay', "SUCCESS", "Response saved to: " + outFile);
-                        this.closeModal();
-                    } else {
-                        // TODO: What if already received?
-                        ipcRenderer.send('Snackbar::Relay', "ERROR", JSON.stringify(result.data));
-                    }
+
+                    ipcRenderer.removeAllListeners('File::Receive::Response');
+                    ipcRenderer.on('File::Receive::Response', (event, result) => {
+                        console.log("File::Receive::Response");
+                        if (result.success) {
+                            ipcRenderer.send('Snackbar::Relay', "SUCCESS", "Response saved to: " + outFile);
+                            this.closeModal();
+                        } else {
+                            // TODO: What if already received?
+                            ipcRenderer.send('Snackbar::Relay', "ERROR", JSON.stringify(result.data));
+                        }
+                    });
+                    ipcRenderer.send('File::Receive', JSON.parse(data), outFile, this.state.message);
                 } catch (e) {
+                    console.log(e.message);
                     ipcRenderer.send('Snackbar::Relay', "ERROR", "Unknown error occurred!");
                 }
             }
         });
 
-        ipcRenderer.send('OpenSlateFile', selectedFile);
+        ipcRenderer.send('OpenSlateFile', this.state.selectedFile);
     }
 
     handleSelectFile(_event) {

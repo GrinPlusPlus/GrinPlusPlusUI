@@ -154,7 +154,7 @@ function StartOwnerClient() {
         });
     });
 
-    ipcMain.on('ReceiveFile', function (event, slate, file, message) {
+    ipcMain.on('File::Receive', function (event, slate, file, message) {
         var reqJSON = new Object();
         reqJSON['session_token'] = global.session_token;
         reqJSON['slate'] = slate;
@@ -165,7 +165,7 @@ function StartOwnerClient() {
         }
 
         RPCClient.call('receive', reqJSON, function (result, error) {
-            returnResult('ReceiveFile', result, error);
+            returnResult('File::Receive', result, error);
         });
     });
 
