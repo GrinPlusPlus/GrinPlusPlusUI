@@ -32,6 +32,7 @@ autoUpdater.on('update-downloaded', () => {
 
 function checkForUpdates () {
     autoUpdater.logger = log;
+    autoUpdater.autoDownload = false;
 
     autoUpdater.checkForUpdates();
 }

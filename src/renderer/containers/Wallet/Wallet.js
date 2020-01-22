@@ -86,7 +86,7 @@ class Wallet extends React.Component {
     }
 
     updateButtonState() {
-        if (global.FULLY_SYNCED != true || global.BLOCK_HEIGHT >= 524160) {
+        if (global.FULLY_SYNCED != true) {
             if (this.state.buttonsDisabled == false) {
                 this.setState({
                     buttonsDisabled: true

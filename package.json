@@ -1,7 +1,7 @@
 {
   "name": "GrinPlusPlus",
   "productName": "Grin++",
-  "version": "0.7.2",
+  "version": "0.7.4",
   "description": "Grin++ Wallet",
   "main": "app/background.js",
   "build": {
@@ -117,7 +117,7 @@
     "@babel/preset-react": "^7.7.4",
     "babel-loader": "^8.0.6",
     "electron": "^5.0.13",
-    "electron-builder": "^20.44.4",
+    "electron-builder": "^22.2.0",
     "electron-devtools-installer": "^2.2.4",
     "electron-notarize": "^0.1.1",
     "friendly-errors-webpack-plugin": "^1.7.0",
