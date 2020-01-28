@@ -2,7 +2,6 @@ import { ipcMain } from 'electron';
 import log from 'electron-log';
 
 import SendToHTTP from './SendToHTTP';
-import RequestSupport from './RequestSupport';
 import Config from '../Config';
 import RPCClient from './api/RPCClient';
 import Strings from '../../Strings.js';
@@ -243,10 +242,6 @@ function start() {
                 );
             }
         });
-    });
-
-    ipcMain.on('Support::SubmitRequest', function (event, name, email, description) {
-        RequestSupport.call(event, name, email, description);
     });
 
     ipcMain.on('Snackbar::Relay', function (event, status, message) {
