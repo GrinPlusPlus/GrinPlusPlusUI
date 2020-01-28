@@ -55,6 +55,29 @@
     },
     "dmg": {
       "artifactName": "Grin++ ${version} Setup.${ext}"
+    },
+    "linux": {
+      "target": [
+        "deb",
+        "appImage"
+      ],
+      "icon": "app/static/icons",
+      "category": "Finance"
+    },
+    "deb": {
+      "depends": [
+        "gconf2",
+        "gconf-service",
+        "libnotify4",
+        "libappindicator1",
+        "libxtst6",
+        "libnss3",
+        "libasound2"
+      ],
+      "artifactName": "GrinPlusPlus ${version}.${ext}"
+    },
+    "appImage": {
+      "artifactName": "GrinPlusPlus ${version}.${ext}"
     }
   },
   "author": "David Burkett",
@@ -64,6 +87,8 @@
     "publish:win64": "webpack --config=build/webpack.app.config.js --env=production && electron-builder -w -p 'always' --config.nsis.artifactName=\"${productName} ${version} Setup x64.${ext}\"",
     "dist:mac": "webpack --config=build/webpack.app.config.js --env=production && electron-builder",
     "publish:mac": "webpack --config=build/webpack.app.config.js --env=production && electron-builder -p 'always'",
+    "dist:linux": "webpack --config=build/webpack.app.config.js --env=production && electron-builder -l",
+    "publish:linux": "webpack --config=build/webpack.app.config.js --env=production && electron-builder -l -p 'always'",
     "postinstall": "electron-builder install-app-deps",
     "preunit": "webpack --config=build/webpack.unit.config.js --env=test --display=none",
     "unit": "electron-mocha temp/specs.js --renderer --require source-map-support/register",
