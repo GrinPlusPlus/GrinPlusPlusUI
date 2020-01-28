@@ -3,9 +3,7 @@ import log from 'electron-log';
 
 import SendToHTTP from './SendToHTTP';
 import RequestSupport from './RequestSupport';
-import Grinbox from '../Grinbox';
 import Config from '../Config';
-import IPService from '../IPService';
 import RPCClient from './api/RPCClient';
 import Strings from '../../Strings.js';
 
@@ -57,7 +55,7 @@ function StartOwnerClient() {
                 global.mainWindow.webContents.send(name + '::Response',
                     {
                         success: true,
-                        data: result.data
+                        data: result.result
                     }
                 );
             }
@@ -83,20 +81,11 @@ function StartOwnerClient() {
     });
 
     ipcMain.on('Login', function (event, username, password) {
-        Login.call(event, username, password, function (secretKey, address) {
-            IPService.connect();
-
-            if (Config.isGrinboxEnabled()) {
-                console.log(secretKey);
-                Grinbox.subscribe(secretKey, address);
-            }
-        });
+        Login.call(event, username, password);
     });
 
     ipcMain.on('Logout', function (event) {
         Logout.call(event);
-        IPService.disconnect();
-        Grinbox.unsubscribe();
     });
 
     ipcMain.on("WalletSummary", function (event) {
@@ -189,6 +178,15 @@ function StartOwnerClient() {
         });
     });
 
+    ipcMain.on('Tor::Retry', function (event) {
+        var reqJSON = new Object();
+        reqJSON['session_token'] = global.session_token;
+        
+        RPCClient.call('retry_tor', reqJSON, function (result, error) {
+            returnResult('Tor::Retry', result, error);
+        });
+    });
+
     ipcMain.on("EstimateFee", function (event, amount, strategy, inputs) {
         EstimateFee.call(amount, strategy, inputs, function (result) {
             event.returnValue = result;
@@ -219,10 +217,6 @@ function StartOwnerClient() {
 
 function start() {
     log.info("Starting Grin++ Client");
-
-    if (Config.isGrinboxEnabled()) {
-        Grinbox.init();
-    }
 
     StartOwnerClient();
 
@@ -255,23 +249,6 @@ function start() {
         RequestSupport.call(event, name, email, description);
     });
 
-    ipcMain.on('Grinbox::Send', function (event, grinboxAddress, amount, strategy, inputs, message) {
-        // TODO: Validate GrinboxAddress first
-        Send.call(amount, strategy, inputs, grinboxAddress, message, false, function (result) {
-            if (result.success === true) {
-                Grinbox.sendSlate(result.slate, grinboxAddress);
-                event.returnValue = "SENT"; // TODO: Wait for "ok" message?
-            } else {
-                log.error("Send failed with error: " + result.message);
-                event.returnValue = result;
-            }
-        });
-    });
-
-    ipcMain.on('Grinbox::GetAddress', function (event) {
-        event.returnValue = Grinbox.getAddress();
-    });
-
     ipcMain.on('Snackbar::Relay', function (event, status, message) {
         if (global.mainWindow != null) {
             global.mainWindow.webContents.send("Snackbar::Status", status, message);
@@ -283,9 +260,28 @@ function start() {
     });
 }
 
-function stop() {
-    Grinbox.shutdown();
+function stop(callback) {
+    global.shutdown_handler = callback;
     Shutdown.call();
+    
+    setTimeout(function () {
+        log.warn('Node shutdown timed out.');
+        global.shutdown_handler = null;
+
+        if (!isWindows) {
+            try {
+                ChildProcess.execFile('pkill', ['-f', 'GrinNode'], (err, stdout) => {
+                    log.info("pkill executed");
+                    callback();
+                });
+            } catch (e) {
+                log.info("pkill threw exception: " + e);
+                callback();
+            }
+        } else {
+            callback();
+        }
+    }, 10000);
 }
 
 function getStatus(callback) {

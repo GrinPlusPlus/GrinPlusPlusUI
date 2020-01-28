@@ -135,20 +135,6 @@ export default class App extends Component {
             snackbarStatus: "success",
         };
 
-        ipcRenderer.on('Grinbox::Status', (event, status, message) => {
-            if (status == "SUCCESS") {
-                this.setState({
-                    snackbarStatus: "success",
-                    snackbarMessage: message
-                });
-            } else if (status == "ERROR") {
-                this.setState({
-                    snackbarStatus: "error",
-                    snackbarMessage: message
-                });
-            }
-        });
-
         ipcRenderer.on('Snackbar::Status', (event, status, message) => {
             if (status == "SUCCESS") {
                 this.setState({

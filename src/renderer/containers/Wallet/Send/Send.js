@@ -10,12 +10,10 @@ import { withStyles } from "@material-ui/core/styles";
 import CustomTextField from '../../../components/CustomTextField';
 import SendFile from "./SendFile";
 import SendHttp from "./SendHttp";
-import SendGrinbox from "./SendGrinbox";
 import CoinControl from './CoinControl';
 import log from 'electron-log';
-import SnackbarUtil from '../../../Util/SnackbarUtil.js';
+import SnackbarUtil from '../../../util/SnackbarUtil.js';
 import GrinDialog from '../../../components/GrinDialog';
-//import GrinboxUtil from '../../../../main/Grinbox/GrinboxUtils.js';
 
 const styles = theme => ({
     fab: {
@@ -147,18 +145,6 @@ class Send extends React.Component {
                     this.state.message,
                     this.state.useGrinJoin
                 );
-        } else if (this.state.method == "grinbox") {
-            ipcRenderer.removeAllListeners('Grinbox::Send::Response');
-            ipcRenderer.on('Grinbox::Send::Response', this.handleSendResult);
-
-            ipcRenderer.send(
-                'Grinbox::Send',
-                this.state.address,
-                amountInNanoGrins,
-                this.state.strategy,
-                this.state.inputs,
-                this.state.message
-            );
         }
     }
 
@@ -284,7 +270,7 @@ class Send extends React.Component {
         }
 
         function getGrinJoinCheckbox(component) {
-            if (component.state.method != 'file' && component.state.method != 'grinbox') {
+            if (component.state.method != 'file') {
                 return (
                     <FormControlLabel
                         control={
@@ -321,21 +307,12 @@ class Send extends React.Component {
             }
         }
 
-        function getGrinboxOption() {
-            if (!ipcRenderer.sendSync('Settings::IsGrinboxEnabled')) {
-                return "";
-            }
-
-            return (
-                <FormControlLabel value="grinbox" control={<Radio />} label="Grinbox" labelPlacement="end" />
-            );
-        }
-
         function getTorOption() {
-            if (!ipcRenderer.sendSync('Settings::IsTorEnabled')) {
+            const torAddress = ipcRenderer.sendSync('Tor::GetAddress');
+            if (torAddress == null || torAddress.length == 0) {
                 return "";
             }
-
+            
             return (
                 <FormControlLabel value="tor" control={<Radio />} label="TOR" labelPlacement="end" />
             );
@@ -375,7 +352,6 @@ class Send extends React.Component {
                                 <FormControlLabel value="file" control={<Radio />} label="File" labelPlacement="end" />
                                 {getTorOption()}
                                 <FormControlLabel value="http" control={<Radio />} label="Http(s)" labelPlacement="end" />
-                                {getGrinboxOption()}
                             </RadioGroup>
                         </FormControl>
                     </center>

@@ -1,7 +1,7 @@
 import ConnectionUtils from '../../ConnectionUtils';
 import log from 'electron-log';
 
-function call(event, username, password, grinboxSubscriber) {
+function call(event, username, password) {
     const headers = [
         { name: 'username', value: username },
         { name: 'password', value: password }
@@ -20,8 +20,6 @@ function call(event, username, password, grinboxSubscriber) {
             }
 
             global.listener_port = parsed.listener_port;
-            
-            grinboxSubscriber(parsed.grinbox_key, parsed.grinbox_address);
         }
 
         if (global.mainWindow != null) {

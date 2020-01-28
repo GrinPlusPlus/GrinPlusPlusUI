@@ -3,7 +3,6 @@ const { autoUpdater } = require('electron-updater');
 import ChildProcess from 'child_process';
 import Client from './main/client/Client';
 import FileListener from './main/FileListener';
-import IPService from './main/IPService';
 import Updater from './main/Updater.js';
 import {version} from '../package.json';
 import Config from './main/Config';
@@ -35,6 +34,8 @@ unhandled({
     logger: log.error,
     showDialog: false
 });
+
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 
 var statusInterval = 0;
 var shuttingDown = false;
@@ -87,18 +88,25 @@ const createWindow = async () => {
 
         log.info('Launching node: "' + binDirectory + nodeFileName + ' --headless"');
         ChildProcess.execFile(nodeFileName, ['--headless', FLOONET ? '--floonet' : ''], { cwd: binDirectory }, (error, stdout, stderr) => {
-            if (global.update_in_progress === true) {
-                autoUpdater.quitAndInstall();
+            if (error) {
+                log.error('Error thrown from within execFile: ', error);
+                log.error('stdout: ' +  stdout);
+                log.error('stderr: ' +  stderr);
+                var message = "Error occurred. If another node is already running, please close it and try again.\nOtherwise, try deleting %userprofile%/.GrinPP/MAINNET/NODE and reopening Grin++.\nError: \n" + error;
+                message += '\n\nOutput: \n' + stdout + '\n' + stderr;
+                dialog.showMessageBox({
+                    message: message,
+                    buttons: ["OK"]
+                }, () => {
+                    if (global.shutdown_handler != null) {
+                        global.shutdown_handler();
+                    }
+                });
             } else {
-                if (error) {
-                    log.error('Error thrown from within execFile: ', error);
-                    dialog.showMessageBox({
-                        message: "Error occurred in GrinNode process. Try restarting Grin++. Error: \n" + error,
-                        buttons: ["OK"]
-                    });
-                } else {
-                    log.info('Node shutdown normally. Calling app.quit().');
-                    app.quit();
+                log.info('Node shutdown normally. Calling app.quit().');
+                
+                if (global.shutdown_handler != null) {
+                    global.shutdown_handler();
                 }
             }
         });
@@ -119,7 +127,6 @@ const createWindow = async () => {
         
         Client.start();
         FileListener.start();
-        IPService.start();
     }, 1000);
 
     var processing_txhashset = false;
@@ -180,25 +187,7 @@ const createWindow = async () => {
             log.info('Shutting down');
 
             if (LAUNCH_NODE) {
-                Client.stop();
-
-                setTimeout(function () {
-                    log.warn('Node shutdown timed out.');
-
-                    if (!isWindows) {
-                        try {
-                            ChildProcess.execFile('pkill', ['-f', 'GrinNode'], (err, stdout) => {
-                                log.info("pkill executed");
-                                app.quit();
-                            });
-                        } catch (e) {
-                            log.info("pkill threw exception: " + e);
-                            app.quit();
-                        }
-                    } else {
-                        app.quit();
-                    }
-                }, 10000);
+                Client.stop(() => { app.quit(); });
             } else {
                 app.quit();
             }

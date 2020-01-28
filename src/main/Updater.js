@@ -9,6 +9,7 @@ autoUpdater.on('error', (error) => {
 })
 
 autoUpdater.on('update-available', () => {
+    log.info('update-available: Downloading update');
     autoUpdater.downloadUpdate();
 })
 
@@ -17,6 +18,7 @@ autoUpdater.on('update-not-available', () => {
 })
 
 autoUpdater.on('update-downloaded', () => {
+    log.info('update-downloaded: Prompting to install');
     dialog.showMessageBox({
         type: 'info',
         title: 'Update Available',
@@ -24,8 +26,11 @@ autoUpdater.on('update-downloaded', () => {
         buttons: ['Yes', 'No']
     }, (buttonIndex) => {
         if (buttonIndex === 0) {
-            global.update_in_progress = true;
-            Client.stop();
+            log.info('User chose to install');
+            Client.stop(() => {
+                log.info('Client stopped. Calling quitAndInstall');
+                autoUpdater.quitAndInstall(true, true);
+            });
         }
     });
 });

@@ -5,7 +5,6 @@ import fs from 'fs';
 var loaded = false;
 var settings = null;
 var configFileName = null;
-var grinbox_enabled = false;
 var tor_enabled = true;
 
 function load() {
@@ -29,7 +28,6 @@ function load() {
         config.data_path = settings.DATA_PATH;
     }
 
-    grinbox_enabled = settings.WALLET != null && settings.WALLET.ENABLE_GRINBOX === true;
     tor_enabled = settings.TOR == null || settings.TOR.ENABLE_TOR !== false;
 
     if (!loaded) {
@@ -37,14 +35,6 @@ function load() {
 
         ipcMain.on('Settings::Get', function (event) {
             event.returnValue = settings;
-        });
-
-        ipcMain.on('Settings::IsGrinboxEnabled', function (event) {
-            event.returnValue = grinbox_enabled;
-        });
-
-        ipcMain.on('Settings::IsTorEnabled', function (event) {
-            event.returnValue = tor_enabled;
         });
 
         ipcMain.on('Settings::Save', function (event, newSettings) {
@@ -72,8 +62,4 @@ function updateSettings(newSettings) {
     });
 }
 
-function isGrinboxEnabled() {
-    return grinbox_enabled;
-}
-
-export default { load, getSettings, updateSettings, isGrinboxEnabled }
+export default { load, getSettings, updateSettings }

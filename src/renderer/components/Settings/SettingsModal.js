@@ -32,8 +32,6 @@ function SettingsModal(props) {
     const { classes } = props;
     const [open, setOpen] = React.useState(false);
     const [loaded, setLoaded] = React.useState(false);
-    const [grinboxEnabled, setGrinboxEnabled] = React.useState(false);
-    const [torEnabled, setTorEnabled] = React.useState(true);
     const [savedSettings, setSavedSettings] = React.useState(null);
     const [settings, setSettings] = React.useState(null);
 
@@ -42,10 +40,9 @@ function SettingsModal(props) {
 
         if (!loaded) {
             const loadedSettings = ipcRenderer.sendSync('Settings::Get');
-            setSavedSettings(JSON.parse(JSON.stringify(loadedSettings)));
-            setSettings(JSON.parse(JSON.stringify(loadedSettings)));
-            setGrinboxEnabled(isGrinboxEnabled(JSON.parse(JSON.stringify(loadedSettings))));
-            setTorEnabled(isTorEnabled(JSON.parse(JSON.stringify(loadedSettings))));
+            const settings = JSON.parse(JSON.stringify(loadedSettings));
+            setSavedSettings(settings);
+            setSettings(settings);
             setLoaded(true);
         }
     }
@@ -77,59 +74,11 @@ function SettingsModal(props) {
         ipcRenderer.send("ResyncBlockchain");
     }
 
-    function isGrinboxEnabled(newSettings) {
-        console.log(JSON.stringify(newSettings));
-        if (newSettings == null || newSettings.WALLET == null) {
-            return false;
-        }
-
-        return newSettings.WALLET.ENABLE_GRINBOX == true;
-    }
-
-    function isTorEnabled(newSettings) {
-        console.log(JSON.stringify(newSettings));
-        if (newSettings == null || newSettings.TOR == null) {
-            return true;
-        }
-
-        return newSettings.TOR.ENABLE_TOR !== false;
-    }
-
-    function handleChangeEnableTOR(event) {
-        var newSettings = settings;
-        if (newSettings == null) {
-            return;
-        }
-
-        if (newSettings.TOR == null) {
-            newSettings.TOR = { ENABLE_TOR: event.target.checked };
-        } else {
-            newSettings.TOR.ENABLE_TOR = event.target.checked;
-        }
-        setSettings(newSettings);
-        setTorEnabled(event.target.checked);
-    };
-
-    function handleChangeEnableGrinbox(event) {
-        var newSettings = settings;
-        if (newSettings == null) {
-            return;
-        }
-
-        if (newSettings.WALLET == null) {
-            newSettings.WALLET = { ENABLE_GRINBOX: event.target.checked };
-        } else {
-            newSettings.WALLET.ENABLE_GRINBOX = event.target.checked;
-        }
-        setSettings(newSettings);
-        setGrinboxEnabled(event.target.checked);
-    };
-
     return (
         <React.Fragment>
             <IconButton
                 variant="round"
-                aria-label="Settings"
+                aria-label="Advanced"
                 onClick={handleClickOpen}
             >
                 <SettingsIcon color="secondary" />
@@ -139,66 +88,22 @@ function SettingsModal(props) {
                 onClose={handleClose}
                 title="Settings"
                 maxWidth="sm"
-                fullWidth
             >
                 <DialogContent>
                     <center>
-                        <Grid container justify='center' spacing={2}>
-                            <Grid item xs={6}>
-                                <Paper style={{ height: '100%', backgroundColor: 'rgba(150, 150, 150, .4)' }}>
-                                    <center>
-                                        <Typography variant='h6'>
-                                            Wallet
-                                        </Typography>
-                                    </center>
-                                    <br />
+                        <Paper style={{ height: '100%', width: '250px', backgroundColor: 'rgba(150, 150, 150, .4)' }}>
+                            <br />
 
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox
-                                                checked={torEnabled}
-                                                onChange={handleChangeEnableTOR}
-                                                value="tor"
-                                                color='secondary'
-                                            />
-                                        }
-                                        label="Enable TOR"
-                                    />
+                            <Button onClick={scanForOutputs} variant="contained" color="secondary">
+                                Scan for outputs
+                            </Button>
+                            <br /> <br />
 
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox
-                                                checked={grinboxEnabled}
-                                                onChange={handleChangeEnableGrinbox}
-                                                value="grinbox"
-                                                color='secondary'
-                                            />
-                                        }
-                                        label="Enable Grinbox"
-                                    />
-                                </Paper>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Paper style={{ height: '100%', backgroundColor: 'rgba(150, 150, 150, .4)' }}>
-                                    <center>
-                                        <Typography variant='h6'>
-                                            Other
-                                        </Typography>
-                                    </center>
-                                    <br />
-
-                                    <Button onClick={scanForOutputs} variant="contained" color="secondary">
-                                        Scan for outputs
-                                    </Button>
-                                    <br /> <br />
-
-                                    <Button onClick={resyncBlockchain} variant="contained" color="secondary">
-                                        Resync Blockchain
-                                    </Button>
-                                    <br /><br />
-                                </Paper>
-                            </Grid>
-                        </Grid>
+                            <Button onClick={resyncBlockchain} variant="contained" color="secondary">
+                                Resync Blockchain
+                            </Button>
+                            <br /><br />
+                        </Paper>
                     </center>
                 </DialogContent>
                 <center>

@@ -1,9 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { ipcRenderer, clipboard } from 'electron';
+import { ipcRenderer, clipboard, shell } from 'electron';
 import {
-    Button, Divider, Grid, Radio, RadioGroup,
-    FormControl, FormControlLabel, IconButton, Typography
+    Button, Divider, Link, FormControl, IconButton, Typography
 } from "@material-ui/core";
 import ReceiveIcon from "@material-ui/icons/CallReceived";
 import OpenIcon from '@material-ui/icons/FolderOpen';
@@ -45,61 +44,36 @@ class Receive extends React.Component {
 
         this.state = {
             selectedFile: "",
-            ipAddress: "",
-            proxyAddress: "",
-            grinboxAddress: "",
             torAddress: "",
             message: "",
-            listenerPort: 0
         }
 
         this.closeModal = this.closeModal.bind(this);
         this.handleReceive = this.handleReceive.bind(this);
         this.handleSelectFile = this.handleSelectFile.bind(this);
-        this.onIPResponse = this.onIPResponse.bind(this);
-        this.onProxyResponse = this.onProxyResponse.bind(this);
-    }
-
-    onIPResponse(event, ipAddress, listenerPort) {
-        if (ipAddress != null) {
-            this.setState({
-                ipAddress: ipAddress,
-                listenerPort: listenerPort
-            });
-        }
-    }
-
-    onProxyResponse(event, proxyAddress) {
-        if (proxyAddress != null) {
-            this.setState({
-                proxyAddress: proxyAddress
-            });
-        }
     }
 
     componentDidMount() {
-        ipcRenderer.removeAllListeners('LookupProxy::Response');
-        ipcRenderer.on('LookupProxy::Response', this.onProxyResponse);
-        ipcRenderer.send('LookupProxy');
-
-        ipcRenderer.removeAllListeners('LookupIP::Response');
-        ipcRenderer.on('LookupIp::Response', this.onIPResponse);
-        ipcRenderer.send('LookupIP');
-
         setTimeout(() => {
-            const grinboxAddress = ipcRenderer.sendSync('Grinbox::GetAddress');
             const torAddress = ipcRenderer.sendSync('Tor::GetAddress');
             this.setState({
-                grinboxAddress: grinboxAddress === null ? "" : grinboxAddress,
                 torAddress: torAddress === null ? "" : torAddress
             });
         }, 25);
+        
+        ipcRenderer.removeAllListeners('Tor::Retry::Response');
+        ipcRenderer.on('Tor::Retry::Response', (event, result) => {
+            if (result.success) {
+                if (result.data.status == 'SUCCESS') {
+                    this.setState({
+                        torAddress: result.data.tor_address
+                    });
+                }
+            }
+        });
     }
     
     closeModal() {
-        /*setHttpAddress("");
-        setSelectedFile("");
-        setMessage("");*/
         this.props.showWallet();
     }
 
@@ -153,128 +127,62 @@ class Receive extends React.Component {
     render() {
         const { classes } = this.props;
 
-        function getGrinboxAddress(component) {
-            if (component.state.grinboxAddress.length == 0) {
+        function getTorAddress(torAddress) {
+            if (torAddress == null || torAddress.length == 0) {
                 return (
-                    <Typography variant='body1' display='inline' color='error'>
-                        <b>ERROR CONNECTING</b>
-                    </Typography>
+                    <React.Fragment>
+                    <p style={{ fontSize: '16px', color: 'red' }}>
+                            <b>ERROR: Failed to connect to TOR</b>
+                            <IconButton onClick={() => { ipcRenderer.send('Tor::Retry') }}>
+                                <RefreshIcon fontSize='small' color='secondary' />
+                            </IconButton>
+                            <br />
+                        </p>
+                        <Typography variant='body1' display='inline' color='secondary'>
+                            Help: <b><Link color='secondary' style={{cursor: 'pointer'}} onClick={() => { shell.openExternal('https://grinplusplus.github.io/support'); }}>https://grinplusplus.github.io/support</Link></b>
+                        </Typography>
+                    </React.Fragment>
                 );
             } else {
                 return (
-                    <Typography variant='body1' display='inline' color='secondary'>
-                        <b>{component.state.grinboxAddress}</b>
-                        <IconButton onClick={() => { clipboard.writeText(component.state.grinboxAddress) }} style={{ padding: '5px' }}>
-                            <CopyIcon fontSize='small' color='secondary' />
-                        </IconButton>
-                    </Typography>
+                    <React.Fragment>
+                        <br /><br />
+                        <Typography variant='body1' display='inline' color='secondary' style={{ marginRight: '10px' }}>
+                            <b className={classes.unselectable}>TOR:</b>
+                        </Typography>
+                        <Typography variant='body1' display='inline' color='secondary'>
+                            <b>{torAddress}</b>
+                            <IconButton onClick={() => { clipboard.writeText(torAddress) }} style={{ padding: '5px' }}>
+                                <CopyIcon fontSize='small' color='secondary' />
+                            </IconButton>
+                        </Typography>
+                    </React.Fragment>
                 );
             }
         }
 
-        function getGrinboxDisplay(component) {
-            return (
-                <React.Fragment>
-                    <Typography variant='body1' display='inline' color='secondary' style={{ marginRight: '10px' }}>
-                        <b className={classes.unselectable}>GRINBOX:</b>
-                    </Typography>
-                    {getGrinboxAddress(component)}
-                </React.Fragment>
-            );
-        }
-
-        function getTorAddress(component) {
-            if (component.state.torAddress.length == 0) {
-                return (
-                    <Typography variant='body1' display='inline' color='error'>
-                        <b>ERROR CONNECTING</b>
-                    </Typography>
-                );
-            } else {
-                return (
-                    <Typography variant='body1' display='inline' color='secondary'>
-                        <b>{component.state.torAddress}</b>
-                        <IconButton onClick={() => { clipboard.writeText(component.state.torAddress) }} style={{ padding: '5px' }}>
-                            <CopyIcon fontSize='small' color='secondary' />
-                        </IconButton>
-                    </Typography>
-                );
-            }
-        }
-
-        function getTorDisplay(component) {
-            return (
-                <React.Fragment>
-                    <Typography variant='body1' display='inline' color='secondary' style={{ marginRight: '10px' }}>
-                        <b className={classes.unselectable}>TOR:</b>
-                    </Typography>
-                    {getTorAddress(component)}
-                </React.Fragment>
-            );
-        }
-
-        function getAddressDisplay(component) {
-            const torEnabled = ipcRenderer.sendSync('Settings::IsTorEnabled');
-            const grinboxEnabled = ipcRenderer.sendSync('Settings::IsGrinboxEnabled');
-            if (!torEnabled && !grinboxEnabled) {
+        function getUrlDisplay(torAddress) {
+            if (torAddress == null || torAddress.length == 0) {
                 return "";
-            }
-
-            return (
-                <React.Fragment>
-                    <br /><Divider variant="fullWidth" /><br />
-
-                    {torEnabled ? getTorDisplay(component) : ""}
-                    {grinboxEnabled ? getGrinboxDisplay(component) : ""}
-                </React.Fragment>
-            );
-        }
-
-        function getUrlDisplay(component) {
-            if (component.state.proxyAddress != null && component.state.proxyAddress.length > 0) {
-                return (
-                    <React.Fragment>
-                        <p style={{ fontSize: '15px', color: 'red' }}>
-                            <b>
-                                localtunnel addresses are ephemeral, and a new one is generated each time you open Grin++.<br />
-                                After requesting funds via https, you must stay logged in until those funds are received.
-                            </b>
-                        </p>
-                        <Typography variant='body1' color='secondary'>
-                            <b>{component.state.proxyAddress}</b>
-
-                            <IconButton onClick={() => { clipboard.writeText(component.state.proxyAddress)}} style={{ padding: '5px' }}>
-                                <CopyIcon fontSize='small' color='secondary' />
-                            </IconButton>
-                        </Typography>
-                    </React.Fragment>
-                );
-            } else  if (component.state.ipAddress != null && component.state.ipAddress.length > 0) {
-                return (
-                    <React.Fragment>
-                        <p style={{ fontSize: '15px', color: 'red' }}>
-                            <b>
-                                Advanced users only! You must configure port forwarding on port {component.state.listenerPort} for this to work.<br />
-                                After requesting funds via http, you must leave Grin++ logged in until those funds are recevied.
-                            </b>
-                        </p>
-                        <Typography variant='body1' color='secondary'>
-                            <b>{component.state.ipAddress}</b>
-
-                            <IconButton onClick={() => { clipboard.writeText(component.state.ipAddress)}} style={{ padding: '5px' }}>
-                                <CopyIcon fontSize='small' color='secondary' />
-                            </IconButton>
-                        </Typography>
-                    </React.Fragment>
-                );
-            } else {
-                return (
+                /*return (
                     <p style={{ fontSize: '15px', color: 'red' }}>
-                        <b>FAILED TO RETRIEVE ADDRESS</b>
-                        <IconButton onClick={() => { ipcRenderer.send('LookupProxy') }}>
+                        <b>ERROR: Failed to connect to TOR</b>
+                        <IconButton onClick={() => { ipcRenderer.send('RetryTor') }}>
                             <RefreshIcon fontSize='small' color='secondary' />
                         </IconButton>
                     </p>
+                );*/
+            } else {
+                const url = "http://" + torAddress + ".grinplusplus.com";
+                return (
+                    <Typography variant='body1' color='secondary'>
+                        <br /><br />
+                        <b>{url}</b>
+
+                        <IconButton onClick={() => { clipboard.writeText(url)}} style={{ padding: '5px' }}>
+                            <CopyIcon fontSize='small' color='secondary' />
+                        </IconButton>
+                    </Typography>
                 );
             }
         }
@@ -284,8 +192,10 @@ class Receive extends React.Component {
                 <form className={classes.form} onSubmit={this.handleReceive}>
                     <center>
                         {/* ReceiveHTTP */}
-                        {getUrlDisplay(this)}
-                        {getAddressDisplay(this)}
+                        {getUrlDisplay(this.state.torAddress)}
+
+                        {/* TOR */}
+                        {getTorAddress(this.state.torAddress)}
 
                         {/* ReceiveFile */}
                         <br /><br /><Divider variant="fullWidth" /><br />
@@ -309,6 +219,7 @@ class Receive extends React.Component {
                                 <OpenIcon />
                             </IconButton>
                         </div>
+
                         <div>
                             <FormControl margin="dense" fullWidth>
                                 <CustomTextField name="message" type="text" id="message" value={this.state.message} onChange={(e) => { this.setState({message: e.target.value}); }} placeholder='Message' />
