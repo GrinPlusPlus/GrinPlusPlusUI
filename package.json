@@ -1,7 +1,7 @@
 {
   "name": "GrinPlusPlus",
   "productName": "Grin++",
-  "version": "0.7.6",
+  "version": "0.7.7",
   "description": "Grin++ Wallet",
   "main": "app/background.js",
   "build": {
