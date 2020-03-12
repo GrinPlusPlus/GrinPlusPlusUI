@@ -109,8 +109,26 @@ class StatusBar extends React.Component {
             if (denominator <= 0) {
                 return 0;
             } else {
-                return Math.round(100 * (numerator / denominator));
+                const result = Math.round(100 * (numerator / denominator));
+                return result < 100 ? result : 99;
             }
+        }
+
+        function getBlockPercentage(blockHeight, headerHeight) {
+            if (headerHeight < 2880 || blockHeight < 2880) {
+                return getPercentage(blockHeight, headerHeight);
+            }
+
+            if (headerHeight - blockHeight > 2880) {
+                return 0;
+            }
+
+            var remaining = getPercentage(headerHeight - blockHeight, 2880);
+            if (remaining <= 0) {
+                remaining = 1;
+            }
+
+            return 100 - remaining;
         }
 
         function getStatusText(state) {
@@ -121,7 +139,7 @@ class StatusBar extends React.Component {
             } else if (status == "SYNCING_HEADERS") {
                 return "1/4 Syncing Headers (" + getPercentage(state.headerHeight, state.networkHeight) + "%)";
             } else if (status == "SYNCING_BLOCKS") {
-                return "4/4 Syncing Blocks (" + getPercentage(state.blockHeight, state.headerHeight) + "%)";
+                return "4/4 Syncing Blocks (" + getBlockPercentage(state.blockHeight, state.headerHeight) + "%)";
             } else if (status == "DOWNLOADING_TXHASHSET") {
                 return "2/4 Downloading State (" + getPercentage(state.downloaded, state.totalSize) + "%)";
             } else if (status == "PROCESSING_TXHASHSET") {
