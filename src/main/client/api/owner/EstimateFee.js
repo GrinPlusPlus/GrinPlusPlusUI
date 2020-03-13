@@ -11,7 +11,7 @@ function call(amount, strategy, inputs, callback) {
         inputs: inputs
     };
 
-    ConnectionUtils.ownerRequest('GET', 'estimate_fee', headers, JSON.stringify(reqJSON), function (response) {
+    ConnectionUtils.ownerRequest('POST', 'estimate_fee', headers, JSON.stringify(reqJSON), function (response) {
         var result = new Object();
         result["status_code"] = response.status_code;
 
