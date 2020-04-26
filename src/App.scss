@@ -1,0 +1,121 @@
+$pt-link-color: #ffff14;
+$pt-intent-primary: #ffff14;
+$pt-outline-color: #293742;
+$pt-outline-color: #293742;
+$pt-text-color: #ffffff;
+$pt-dark-app-background-color: #21242d;
+$pt-dark-popover-box-shadow: $pt-intent-primary;
+
+@import "~@blueprintjs/core/src/blueprint.scss";
+@import "@blueprintjs/core/src/blueprint.scss";
+
+.content {
+  overflow: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 95%;
+}
+
+.footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: #1f2a32;
+  font-size: small;
+
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
+}
+
+.bp3-input {
+  color: #000000;
+}
+.bp3-navbar {
+  background-color: #000000 !important;
+}
+.bp3-tab,
+.bp3-tab:hover,
+.bp3-tab:active {
+  outline-color: #293742;
+}
+.bp3-drawer.bp3-dark {
+  background-color: #000000 !important;
+}
+
+.sending_not_finalized,
+.sending_finalized {
+  text-align: center;
+}
+
+.sent {
+  text-align: right;
+}
+
+.canceled {
+  background-color: #5c7080 !important;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+td {
+  vertical-align: middle;
+}
+
+.transactions {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.transactions td,
+.transactions th {
+  border: 1px solid #1f2a32;
+  padding: 3px;
+}
+
+.transactions td {
+  font-size: 14px;
+}
+
+.transactions tr:nth-child(even) {
+  background-color: #171920;
+}
+
+.transactions tr:hover {
+  background-color: #1d2028;
+  cursor: pointer;
+}
+
+.transactions th {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  text-align: left;
+  background-color: #e6e600;
+  color: black;
+}
+
+.transactions b {
+  font-size: 14px;
+}
+
+.transactions p {
+  font-size: 12px;
+}
+
+.show {
+  display: table-row;
+}
+.hide {
+  display: none;
+}

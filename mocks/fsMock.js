@@ -1,0 +1,5 @@
+// mocks/fsMock.js
+jest.mock("fs", () => ({
+  readFileSync: () =>
+    '{"CLIENT_MODE":"FAST_SYNC","DANDELION":{"EMBARGO_SECS":180,"PATIENCE_SECS":10,"RELAY_SECS":600,"STEM_PROBABILITY":90},"DATA_PATH":"/Users/davidtavarez/.GrinPP/MAINNET/","LOGGER":{"LOG_LEVEL":"DEBUG"},"P2P":{"MAX_PEERS":50,"MIN_PEERS":10},"SERVER":{"REST_API_PORT":3413},"WALLET":{"DATABASE":"SQLITE","MIN_CONFIRMATIONS":10}}'
+}));
