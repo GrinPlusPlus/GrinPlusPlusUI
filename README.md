@@ -18,6 +18,26 @@ Grin++ offers several advantages. Here are just a few:
 - Passwords never stored in memory.
 - Send/Receive coins via Tor.
 
+### Building
+
+#### macOS
+
+```bash
+#!/usr/bin/env bash
+
+git submodule update --init
+cd GrinPlusPlus
+rm -Rf buiLd
+mkdir build && cd build
+export CC=gcc-9 && export CXX=g++-9
+clear
+cmake ..
+cmake --build . --config RelWithDebInfo
+cd ..
+npm install
+npm run dev
+```
+
 #### Now, Let's talk about Grin a little bit
 
 Grin is implements a Mimblewimble blockchain and fills the gaps required for a full blockchain and cryptocurrency deployment. The main goal and characteristics of the Grin project are:
