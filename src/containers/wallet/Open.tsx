@@ -47,10 +47,14 @@ export default function OpenWalletContainer() {
       password: password,
     })
       .then((success: boolean) => {
+        require("electron-log").info(
+          "User logged in... redirecting to Wallet..."
+        );
         setWaitingResponse(false);
         history.push("/wallet");
       })
       .catch((error: { message: any }) => {
+        require("electron-log").info(error.message);
         Toaster.create({ position: Position.TOP }).show({
           message: error.message,
           intent: Intent.DANGER,

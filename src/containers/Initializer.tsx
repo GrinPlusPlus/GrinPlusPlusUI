@@ -14,13 +14,21 @@ export default function InitializerContainer() {
   const { getAccounts } = useStoreActions((actions) => actions.signinModel);
 
   useEffect(() => {
-    if (!isWalletInitialized) initializeWallet();
+    require("electron-log").info("");
+    if (!isWalletInitialized) {
+      require("electron-log").info("Initializing Wallet.");
+      initializeWallet();
+    }
     const interval = setInterval(async () => {
-      await getAccounts();
+      require("electron-log").info("Trying to get the local accounts...");
       if (accounts !== undefined) {
-        setInterval(history.push("/login"));
+        require("electron-log").info(
+          "Status 200 received, redirecting to Login..."
+        );
+        history.push("/login");
       }
-    }, 1000);
+      await getAccounts();
+    }, 500);
     return () => clearInterval(interval);
   }, [isWalletInitialized, initializeWallet, history, accounts, getAccounts]);
 

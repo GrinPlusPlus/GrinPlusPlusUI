@@ -24,6 +24,7 @@ export default function CreateWalletContainer() {
     create,
     setHiddenSeed,
     setHiddenSeedWord,
+    setGeneratedSeed,
   } = useStoreActions((actions) => actions.createWallet);
   const { status } = useStoreState((state) => state.nodeSummary);
 
@@ -40,9 +41,26 @@ export default function CreateWalletContainer() {
   }, [username, password, create]);
 
   const onContinueButtonClicked = useCallback(async () => {
-    if (hiddenSeed.length > 0 && seedsMatched) history.push("/wallet");
+    if (hiddenSeed.length > 0 && seedsMatched) {
+      setUsername("");
+      setPassword("");
+      setPasswordConfirmation("");
+      setHiddenSeed([]);
+      setGeneratedSeed([]);
+      history.push("/wallet");
+    }
     setHiddenSeed(hideSeedWords({ seed: [...generatedSeed], words: 5 }));
-  }, [generatedSeed, hiddenSeed, seedsMatched, history, setHiddenSeed]);
+  }, [
+    generatedSeed,
+    hiddenSeed,
+    seedsMatched,
+    history,
+    setHiddenSeed,
+    setUsername,
+    setPassword,
+    setGeneratedSeed,
+    setPasswordConfirmation,
+  ]);
 
   const onWordChange = useCallback(
     (word: string, position: number) => {

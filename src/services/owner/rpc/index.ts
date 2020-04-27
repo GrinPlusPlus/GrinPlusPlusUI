@@ -67,6 +67,9 @@ export class OwnerRPCApi extends BaseApi {
     if (address === "") {
       delete params["address"];
     }
+    require("electron-log").info(`${address}`);
+    require("electron-log").info(`${params}`);
+
     return await this.makeRPCRequest(
       this.getRequestURL("tx_send"),
       "send",
@@ -129,6 +132,7 @@ export class OwnerRPCApi extends BaseApi {
   }
 
   public async getWalletAddress(token: string): Promise<string> {
+    require("electron-log").info(`Trying to get wallet Address...`);
     return await this.makeRPCRequest(
       this.getRequestURL("tor_address"),
       "retry_tor",
@@ -136,6 +140,7 @@ export class OwnerRPCApi extends BaseApi {
         session_token: token,
       }
     ).then((response) => {
+      require("electron-log").info(response.result);
       return response.result?.status === "SUCCESS"
         ? response.result.tor_address
         : "";

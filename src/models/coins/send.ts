@@ -340,6 +340,10 @@ const sendCoinsModel: SendCoinsModel = {
         return `Destination address is invalid`;
       }
 
+      require("electron-log").info(
+        `Trying to send grins using: ${type} to adress: ${payload.address}`
+      );
+
       updateLogs(`Sending ${payload.amount} ツ to ${payload.address} ...`);
 
       // Let's clean a bit
