@@ -1,10 +1,10 @@
-import LogoComponent from '../components/shared/Logo';
-import React, { useEffect } from 'react';
-import RestoreWalletContainer from './wallet/Restore';
-import StatusBarContainer from './common/StatusBar';
-import { Form, HorizontallyCenter } from '../components/styled';
-import { useHistory } from 'react-router-dom';
-import { useStoreActions } from '../hooks';
+import { LogoComponent } from "../components/shared/Logo";
+import React, { useEffect } from "react";
+import RestoreWalletContainer from "./wallet/Restore";
+import { StatusBarContainer } from "./common/StatusBar";
+import { Form, HorizontallyCenter } from "../components/styled";
+import { useHistory } from "react-router-dom";
+import { useStoreActions } from "../hooks";
 import {
   Alignment,
   Button,

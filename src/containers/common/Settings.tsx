@@ -1,8 +1,8 @@
-import React, { useCallback } from 'react';
-import SettingsComponent from '../components/extras/Settings';
-import { useStoreActions, useStoreState } from '../hooks';
+import React, { useCallback } from "react";
+import SettingsComponent from "../../components/extras/Settings";
+import { useStoreActions, useStoreState } from "../../hooks";
 
-export default function SettingsContainer() {
+export const SettingsContainer = () => {
   const {
     mininumPeers,
     maximumPeers,
@@ -11,11 +11,11 @@ export default function SettingsContainer() {
     nodeBinaryPath,
     useGrinJoin,
     grinJoinAddress,
-    isConfirmationDialogOpen
-  } = useStoreState(state => state.settings);
-  const { status } = useStoreState(state => state.nodeSummary);
-  const { floonet } = useStoreState(state => state.settings.defaultSettings);
-  const { isNodeRunning } = useStoreState(state => state.wallet);
+    isConfirmationDialogOpen,
+  } = useStoreState((state) => state.settings);
+  const { status } = useStoreState((state) => state.nodeSummary);
+  const { floonet } = useStoreState((state) => state.settings.defaultSettings);
+  const { isNodeRunning } = useStoreState((state) => state.wallet);
 
   const {
     setMininumPeers,
@@ -23,10 +23,10 @@ export default function SettingsContainer() {
     setConfirmations,
     setGrinJoinUse,
     setGrinJoinAddress,
-    toggleConfirmationDialog
-  } = useStoreActions(actions => actions.settings);
+    toggleConfirmationDialog,
+  } = useStoreActions((actions) => actions.settings);
   const { restartNode, reSyncBlockchain } = useStoreActions(
-    state => state.wallet
+    (state) => state.wallet
   );
 
   const toggleDialog = useCallback(() => {
@@ -65,4 +65,4 @@ export default function SettingsContainer() {
       confirmReSyncBlockchainCb={confirmReSyncBlockchain}
     />
   );
-}
+};

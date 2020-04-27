@@ -146,5 +146,6 @@ export const getDefaultSettings = function(
 
 export const verifyNodePath = function(defaultPath: string): boolean {
   defaultPath = require("path").join(defaultPath, getCommand());
+  require("electron-log").info(`Node Location: ${defaultPath}`);
   return require("fs").existsSync(defaultPath);
 };

@@ -1,26 +1,20 @@
-import React, { useEffect } from 'react';
-import SendContainer from './transaction/Send';
-import SettingsContainer from './Settings';
-import StatusBarContainer from './common/StatusBar';
-import { Redirect, useHistory } from 'react-router-dom';
-import { useStoreActions, useStoreState } from '../hooks';
+import React, { useEffect } from "react";
+import SendContainer from "./transaction/Send";
+import { StatusBarContainer } from "./common/StatusBar";
+import { Redirect, useHistory } from "react-router-dom";
+import { useStoreActions, useStoreState } from "../hooks";
 import {
   Alignment,
   Button,
-  Drawer,
   Navbar,
   NavbarDivider,
   NavbarGroup,
   NavbarHeading,
-  Position,
 } from "@blueprintjs/core";
 
 export default function SendGrinContainer() {
   let history = useHistory();
   const { token, isLoggedIn } = useStoreState((state) => state.session);
-  const { showSettings } = useStoreState((state) => state.ui);
-  const { toggleSettings } = useStoreActions((actions) => actions.ui);
-  const { logout } = useStoreActions((actions) => actions.session);
   const { updateSummaryInterval } = useStoreState(
     (state) => state.walletSummary
   );
@@ -69,25 +63,6 @@ export default function SendGrinContainer() {
           <NavbarDivider />
           <NavbarHeading>Send Grins ツ</NavbarHeading>
         </NavbarGroup>
-        <NavbarGroup align={Alignment.RIGHT} className="bp3-dark">
-          <Button
-            minimal={true}
-            large={true}
-            icon="cog"
-            onClick={() => {
-              toggleSettings();
-            }}
-          />
-          <NavbarDivider />
-          <Button
-            minimal={true}
-            large={true}
-            icon="log-out"
-            onClick={() => {
-              logout(token);
-            }}
-          />
-        </NavbarGroup>
       </Navbar>
       <div className="content">
         <SendContainer />
@@ -95,19 +70,6 @@ export default function SendGrinContainer() {
       <div className="footer">
         <StatusBarContainer />
       </div>
-      <Drawer
-        className="bp3-dark"
-        position={Position.RIGHT}
-        icon="cog"
-        onClose={() => {
-          toggleSettings();
-        }}
-        title="Settings"
-        isOpen={showSettings}
-        size={Drawer.SIZE_STANDARD}
-      >
-        <SettingsContainer />
-      </Drawer>
     </div>
   );
 }

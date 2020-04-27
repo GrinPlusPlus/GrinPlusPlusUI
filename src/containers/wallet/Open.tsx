@@ -1,44 +1,34 @@
-import NoAccountsComponent from '../../components/extras/NoAccounts';
-import OpenWalletComponent from '../../components/wallet/open/OpenWallet';
-import React, { useCallback, useEffect } from 'react';
-import {
-  Card,
-  Icon,
-  Intent,
-  Position,
-  Text,
-  Toaster
-  } from '@blueprintjs/core';
-import { useHistory } from 'react-router-dom';
-import { useStoreActions, useStoreState } from '../../hooks';
+import React, { useCallback, Suspense } from "react";
+import { Card, Icon, Intent, Position, Text, Toaster } from "@blueprintjs/core";
+import { useHistory } from "react-router-dom";
+import { useStoreActions, useStoreState } from "../../hooks";
+import { LoadingComponent } from "../../components/extras/Loading";
 
-export default function OpenWalletContainer() {
+const NoAccountsComponent = React.lazy(() =>
+  import("../../components/extras/NoAccounts").then((module) => ({
+    default: module.NoAccountsComponent,
+  }))
+);
+
+const OpenWalletComponent = React.lazy(() =>
+  import("../../components/wallet/open/OpenWallet").then((module) => ({
+    default: module.OpenWalletComponent,
+  }))
+);
+
+const renderLoader = () => <LoadingComponent />;
+
+export const OpenWalletContainer = () => {
   let history = useHistory();
-  const {
-    username,
-    password,
-    accounts,
-    retryInterval,
-    waitingResponse,
-  } = useStoreState((state) => state.signinModel);
+  const { username, password, accounts, waitingResponse } = useStoreState(
+    (state) => state.signinModel
+  );
   const {
     setUsername,
     setPassword,
     login,
-    getAccounts,
     setWaitingResponse,
   } = useStoreActions((actions) => actions.signinModel);
-
-  useEffect(() => {
-    async function fetchData() {
-      await getAccounts();
-    }
-    if (accounts === undefined) fetchData();
-    const interval = setInterval(async () => {
-      if (accounts === undefined) fetchData();
-    }, retryInterval);
-    return () => clearInterval(interval);
-  }, [getAccounts, accounts, retryInterval]);
 
   const onOpenWalletButtonClicked = useCallback(async () => {
     setWaitingResponse(true);
@@ -47,10 +37,14 @@ export default function OpenWalletContainer() {
       password: password,
     })
       .then((success: boolean) => {
+        require("electron-log").info(
+          "User logged in... redirecting to Wallet..."
+        );
         setWaitingResponse(false);
         history.push("/wallet");
       })
       .catch((error: { message: any }) => {
+        require("electron-log").info(error.message);
         Toaster.create({ position: Position.TOP }).show({
           message: error.message,
           intent: Intent.DANGER,
@@ -92,8 +86,8 @@ export default function OpenWalletContainer() {
   );
 
   return (
-    <div>
-      {accounts ? (
+    <Suspense fallback={renderLoader()}>
+      {accounts !== undefined && accounts?.length > 1 ? (
         <OpenWalletComponent
           username={username}
           password={password}
@@ -109,6 +103,6 @@ export default function OpenWalletContainer() {
       ) : (
         <NoAccountsComponent />
       )}
-    </div>
+    </Suspense>
   );
-}
+};

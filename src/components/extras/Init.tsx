@@ -1,12 +1,7 @@
-import GrinPPBannerComponent from '../shared/GrinPPBanner';
-import React from 'react';
-import { Center, HorizontallyCenter } from '../styled';
-import {
-  Icon,
-  Intent,
-  Spinner,
-  Text
-  } from '@blueprintjs/core';
+import { GrinPPBannerComponent } from "../shared/GrinPPBanner";
+import React from "react";
+import { Center, HorizontallyCenter } from "../styled";
+import { Icon, Intent, Spinner, Text } from "@blueprintjs/core";
 
 export type InitComponentProps = {
   isInitialized: boolean;

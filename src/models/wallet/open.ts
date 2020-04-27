@@ -42,7 +42,8 @@ const openWallet: SigninModel = {
     state.password = password;
   }),
   setAccounts: action((state, accounts) => {
-    state.accounts = accounts?.sort();
+    if(accounts === null) state.accounts = [];
+    else state.accounts = accounts.sort();
   }),
   setWaitingResponse: action((state, waiting) => {
     state.waitingResponse = waiting;

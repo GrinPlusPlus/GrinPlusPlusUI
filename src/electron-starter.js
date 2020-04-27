@@ -2,7 +2,7 @@ const electron = require("electron");
 const path = require("path");
 const url = require("url");
 const log = require("electron-log");
-const { dialog } = require('electron');
+const { dialog } = require("electron");
 const { autoUpdater } = require("electron-updater");
 const isDevMode = process.execPath.match(/[\\/]electron/);
 
@@ -62,33 +62,34 @@ function closeGrinNode(callback) {
   });
 }
 
-autoUpdater.on('error', () => {
+autoUpdater.on("error", () => {
   //dialog.showErrorBox('Error: ', error == null ? "unknown" : (error.stack || error).toString())
-})
+});
 
-autoUpdater.on('update-available', () => {
-  log.info('update-available: Downloading update');
+autoUpdater.on("update-available", () => {
+  log.info("update-available: Downloading update");
   autoUpdater.downloadUpdate();
-})
+});
 
-autoUpdater.on('update-not-available', () => { })
+autoUpdater.on("update-not-available", () => {});
 
-autoUpdater.on('update-downloaded', () => {
-  log.info('update-downloaded: Prompting to install');
+autoUpdater.on("update-downloaded", () => {
+  log.info("update-downloaded: Prompting to install");
   const buttonIndex = dialog.showMessageBoxSync({
-      type: 'info',
-      title: 'Update Available',
-      message: 'A new version of Grin++ is available. Would you like to update now?',
-      buttons: ['Yes', 'No']
+    type: "info",
+    title: "Update Available",
+    message:
+      "A new version of Grin++ is available. Would you like to update now?",
+    buttons: ["Yes", "No"],
   });
-  
-  log.info('buttonIndex: ' + buttonIndex);
+
+  log.info("buttonIndex: " + buttonIndex);
   if (buttonIndex === 0) {
-      log.info('User chose to install');
-      closeGrinNode(() => {
-        log.info('Client stopped. Calling quitAndInstall');
-        autoUpdater.quitAndInstall(true, true);
-      });
+    log.info("User chose to install");
+    closeGrinNode(() => {
+      log.info("Client stopped. Calling quitAndInstall");
+      autoUpdater.quitAndInstall(true, true);
+    });
   }
 });
 
@@ -128,7 +129,7 @@ function createWindow() {
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
   }
-  
+
   if (!isDevMode) {
     checkForUpdates();
   }
@@ -144,11 +145,10 @@ function createWindow() {
   mainWindow.on("close", () => {
     closeGrinNode(() => {
       app.quit();
-    })
+    });
   });
 
-  mainWindow.once("ready-to-show", () => {
-  });
+  mainWindow.once("ready-to-show", () => {});
 
   app.applicationMenu = null;
 }

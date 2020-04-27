@@ -1,19 +1,20 @@
-import React from 'react';
-import { HorizontallyCenter } from '../styled';
+import React from "react";
+import { HorizontallyCenter } from "../styled";
 
-export default function GrinPPBannerComponent() {
+export const GrinPPBannerComponent = () => {
   return (
     <HorizontallyCenter>
       <img
-        src={require('path').join(__dirname, "./statics/images/banner.png")}
+        src="./statics/images/banner.png"
         alt=""
+        width="350px"
         style={{
           maxWidth: "350px",
           height: "auto",
           marginTop: "50px",
-          marginBottom: "10px"
+          marginBottom: "10px",
         }}
       />
     </HorizontallyCenter>
   );
-}
+};

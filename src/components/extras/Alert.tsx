@@ -1,12 +1,12 @@
-import React from 'react';
-import { Intent, Toast, Toaster } from '@blueprintjs/core';
+import React from "react";
+import { Intent, Toast, Toaster } from "@blueprintjs/core";
 
 export type AlertProps = {
   message: string | undefined;
   setMessage: (message: string | undefined) => void;
 };
 
-export default function AlertComponent({ message, setMessage }: AlertProps) {
+export const AlertComponent = ({ message, setMessage }: AlertProps) => {
   return (
     <div>
       {message ? (
@@ -26,4 +26,4 @@ export default function AlertComponent({ message, setMessage }: AlertProps) {
       )}
     </div>
   );
-}
+};

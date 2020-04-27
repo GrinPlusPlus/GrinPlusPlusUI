@@ -1,7 +1,7 @@
-import ConnectedPeersComponent from '../../components/node/ConnectedPeers';
-import React, { useCallback } from 'react';
-import { Icon, Popover, PopoverInteractionKind } from '@blueprintjs/core';
-import { StatusBarContent } from '../../components/styled';
+import ConnectedPeersComponent from "../../components/node/ConnectedPeers";
+import React, { useCallback } from "react";
+import { Icon, Popover, PopoverInteractionKind } from "@blueprintjs/core";
+import { StatusBarContent } from "../../components/styled";
 
 type StatusBarProps = {
   intent: "none" | "primary" | "success" | "warning" | "danger" | undefined;
@@ -15,7 +15,7 @@ type StatusBarProps = {
   onOpeningCb: () => void;
 };
 
-export default function StatusBarComponent({
+export const StatusBarComponent = ({
   intent,
   status,
   headers,
@@ -23,7 +23,7 @@ export default function StatusBarComponent({
   network,
   connectedPeers,
   onOpeningCb,
-}: StatusBarProps) {
+}: StatusBarProps) => {
   const renderGonnectedPeers = useCallback(() => {
     let table: JSX.Element[] = [];
     if (connectedPeers === undefined) return table;
@@ -98,4 +98,4 @@ export default function StatusBarComponent({
       </div>
     </StatusBarContent>
   );
-}
+};

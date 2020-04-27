@@ -1,4 +1,4 @@
-import { BaseApi } from './../../api';
+import { BaseApi } from "./../../api";
 
 export class NodeAPI extends BaseApi {
   public get url(): string {
@@ -23,8 +23,6 @@ export class NodeAPI extends BaseApi {
       "get"
     ).then((response) => {
       const data = JSON.parse(response);
-
-      console.log(data);
 
       return {
         headerHeight: data.header_height,

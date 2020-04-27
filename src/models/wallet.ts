@@ -128,8 +128,10 @@ const wallet: WalletModel = {
         const isInstalled = nodeService.verifyNodePath(
           defaultSettings.binaryPath
         );
-        if (!isInstalled) throw new Error("Node isn't installed.");
+        
         actions.setIsNodeInstalled(isInstalled);
+        
+        if (!isInstalled) throw new Error("Node isn't installed.");
 
         // if the node is running we should stop it
         if (nodeService.isNodeRunning()) {

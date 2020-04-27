@@ -1,15 +1,14 @@
-import React from 'react';
-import { Button, Intent } from '@blueprintjs/core';
-import { HorizontallyCenter } from '../styled';
-import { useHistory } from 'react-router-dom';
+import React from "react";
+import { Button, Intent } from "@blueprintjs/core";
+import { HorizontallyCenter } from "../styled";
+import { useHistory } from "react-router-dom";
 
-export default function NoAccountsComponent() {
+export const NoAccountsComponent = () => {
   let history = useHistory();
 
   return (
     <div style={{ width: "100%" }}>
       <br />
-
       <Button
         intent={Intent.PRIMARY}
         style={{ color: "black", width: "200px" }}
@@ -29,4 +28,4 @@ export default function NoAccountsComponent() {
       </HorizontallyCenter>
     </div>
   );
-}
+};

@@ -1,10 +1,10 @@
-import CreateWalletContainer from './wallet/Create';
-import LogoComponent from '../components/shared/Logo';
-import React, { useEffect } from 'react';
-import StatusBar from './common/StatusBar';
-import { Form, HorizontallyCenter } from '../components/styled';
-import { useHistory } from 'react-router-dom';
-import { useStoreActions } from '../hooks';
+import CreateWalletContainer from "./wallet/Create";
+import { LogoComponent } from "../components/shared/Logo";
+import React, { useEffect } from "react";
+import { StatusBarContainer } from "./common/StatusBar";
+import { Form, HorizontallyCenter } from "../components/styled";
+import { useHistory } from "react-router-dom";
+import { useStoreActions } from "../hooks";
 import {
   Alignment,
   Button,
@@ -48,7 +48,7 @@ export default function SignUpContainer() {
         </Form>
       </div>
       <div className="footer">
-        <StatusBar />
+        <StatusBarContainer />
       </div>
     </div>
   );

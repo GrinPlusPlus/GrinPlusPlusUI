@@ -1,7 +1,7 @@
-import classNames from 'classnames';
-import InputPasswordComponent from '../../../components/custom/InputPassword';
-import React from 'react';
-import { AccountListContent } from '../../styled';
+import classNames from "classnames";
+import InputPasswordComponent from "../../../components/custom/InputPassword";
+import React from "react";
+import { AccountListContent } from "../../styled";
 import {
   Button,
   Classes,
@@ -21,7 +21,7 @@ type OpenWalletProps = {
   waitingResponse: boolean;
 };
 
-export default function OpenWalletComponent({
+export const OpenWalletComponent = ({
   username,
   password,
   accounts,
@@ -29,7 +29,7 @@ export default function OpenWalletComponent({
   olverlayCb,
   loginButtonCb,
   waitingResponse,
-}: OpenWalletProps) {
+}: OpenWalletProps) => {
   const classes = classNames("bp3-dark", Classes.CARD, Classes.ELEVATION_4);
 
   return (
@@ -87,4 +87,4 @@ export default function OpenWalletComponent({
       <AccountListContent>{accounts}</AccountListContent>
     </div>
   );
-}
+};

@@ -1,12 +1,12 @@
-import AlertComponent from '../components/extras/Alert';
-import DashboardContainer from './dashboard/Dashboard';
-import React, { useEffect } from 'react';
-import SettingsContainer from './Settings';
-import StatusBarContainer from './common/StatusBar';
-import { Redirect } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
-import { useStoreActions, useStoreState } from '../hooks';
-import { WalletUsername } from '../components/styled';
+import { AlertComponent } from "../components/extras/Alert";
+import DashboardContainer from "./dashboard/Dashboard";
+import React, { useEffect } from "react";
+import { SettingsContainer } from "./common/Settings";
+import { StatusBarContainer } from "./common/StatusBar";
+import { Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { useStoreActions, useStoreState } from "../hooks";
+import { WalletUsername } from "../components/styled";
 import {
   Alignment,
   Button,
@@ -82,7 +82,7 @@ export default function WalletContainer() {
       <Navbar>
         <NavbarGroup align={Alignment.LEFT}>
           <img
-            src={require('path').join(__dirname, "/statics/images/grin@2x.png")}
+            src={require("path").join(__dirname, "/statics/images/grin@2x.png")}
             alt=""
             style={{
               maxWidth: "35px",
