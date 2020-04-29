@@ -26,8 +26,8 @@ export const StatusBarContainer = () => {
     (actions) => actions.nodeSummary
   );
 
-  useInterval(() => {
-    checkStatus()
+  useInterval(async () => {
+    await checkStatus()
       .then((status: INodeStatus) => updateStatus(status))
       .catch(() => updateStatus(undefined));
   }, updateInterval);
