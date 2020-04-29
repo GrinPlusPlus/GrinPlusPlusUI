@@ -174,7 +174,7 @@ export const cleanTxType = function(type: string): string {
 };
 
 export const useInterval = function(callback: any, delay: number) {
-  const savedCallback = useRef();
+  const savedCallback = useRef(callback);
 
   // Remember the latest function.
   useEffect(() => {
