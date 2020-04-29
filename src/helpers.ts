@@ -1,5 +1,6 @@
-import { Intent } from '@blueprintjs/core';
-import { ISeed } from './interfaces/ISeed';
+import { Intent } from "@blueprintjs/core";
+import { ISeed } from "./interfaces/ISeed";
+import { useEffect, useRef } from "react";
 
 export const getPercentage = function(
   numerator?: number,
@@ -170,4 +171,24 @@ export const cleanTxType = function(type: string): string {
     .join("")
     .split(")")
     .join("");
+};
+
+export const useInterval = function(callback: any, delay: number) {
+  const savedCallback = useRef();
+
+  // Remember the latest function.
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  // Set up the interval.
+  useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+    if (delay !== null) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
 };

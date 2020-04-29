@@ -1,23 +1,12 @@
 import { BaseApi } from "./../../api";
+import { INodeStatus } from "../../../interfaces/INodeStatus";
 
 export class NodeAPI extends BaseApi {
   public get url(): string {
     return this.getURL("node");
   }
 
-  public async getStatus(): Promise<{
-    headerHeight: number;
-    status: string;
-    agent: string;
-    headers: number;
-    blocks: number;
-    network: { height: number; outbound: number; inbound: number };
-    state: {
-      downloaded: number;
-      downloadSize: number;
-      processingStatus: number;
-    };
-  }> {
+  public async getStatus(): Promise<INodeStatus> {
     return await this.makeRESTRequest(
       this.getRequestURL("node_status"),
       "get"

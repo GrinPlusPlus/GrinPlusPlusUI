@@ -30,7 +30,7 @@ export default function InitializerContainer() {
         history.push("/login");
       }
       await getAccounts();
-    }, 500);
+    }, 1000);
     return () => clearInterval(interval);
   }, [getAccounts, accounts, history]);
 

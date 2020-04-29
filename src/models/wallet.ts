@@ -1,11 +1,6 @@
-import {
-  Action,
-  action,
-  Thunk,
-  thunk
-  } from 'easy-peasy';
-import { Injections } from '../store';
-import { StoreModel } from '.';
+import { Action, action, Thunk, thunk } from "easy-peasy";
+import { Injections } from "../store";
+import { StoreModel } from ".";
 
 export interface WalletModel {
   isNodeInstalled: boolean;
@@ -128,9 +123,9 @@ const wallet: WalletModel = {
         const isInstalled = nodeService.verifyNodePath(
           defaultSettings.binaryPath
         );
-        
+
         actions.setIsNodeInstalled(isInstalled);
-        
+
         if (!isInstalled) throw new Error("Node isn't installed.");
 
         // if the node is running we should stop it
@@ -171,39 +166,46 @@ const wallet: WalletModel = {
     }
   ),
   checkNodeHealth: thunk(
-    (actions, payload, { injections, getStoreState, getStoreActions }) => {
-      const { nodeService, utilsService } = injections;
+    (
+      actions,
+      payload,
+      { injections, getStoreState, getStoreActions }
+    ): Promise<boolean> => {
+      return new Promise((resolve, reject) => {
+        const { nodeService, utilsService } = injections;
 
-      const defaultSettings = nodeService.getDefaultSettings(); // Read defaults.json
+        const defaultSettings = nodeService.getDefaultSettings(); // Read defaults.json
 
-      const settingsActions = getStoreActions().settings;
-      settingsActions.setDefaultSettings(defaultSettings); // Update state
+        const settingsActions = getStoreActions().settings;
+        settingsActions.setDefaultSettings(defaultSettings); // Update state
 
-      // Check if we can find the node...
-      const isInstalled = nodeService.verifyNodePath(
-        defaultSettings.binaryPath
-      );
-      if (!isInstalled) throw new Error("Node isn't installed.");
-      actions.setIsNodeInstalled(isInstalled);
-
-      // Let's double check if the Node is running...
-      const isRunning = nodeService.isNodeRunning();
-      if (!isRunning) throw new Error("Node isn't running.");
-      actions.setIsNodeRunning(isRunning);
-
-      settingsActions.setNodeBinaryPath(
-        `${nodeService.getCommandPath(defaultSettings.binaryPath)}`
-      );
-      settingsActions.setNodeDataPath(
-        nodeService.getNodeDataPath(defaultSettings.floonet)
-      );
-      settingsActions.setGrinJoinAddress(defaultSettings.grinJoinAddress);
-      actions.setMessage("");
-      if (!getStoreState().receiveCoinsModel.responsesDestination) {
-        getStoreActions().receiveCoinsModel.setResponsesDestination(
-          utilsService.getHomePath()
+        // Check if we can find the node...
+        const isInstalled = nodeService.verifyNodePath(
+          defaultSettings.binaryPath
         );
-      }
+        if (!isInstalled) reject("Node isn't installed.");
+        actions.setIsNodeInstalled(isInstalled);
+
+        // Let's double check if the Node is running...
+        const isRunning = nodeService.isNodeRunning();
+        if (!isRunning) reject("Node isn't running.");
+        actions.setIsNodeRunning(isRunning);
+
+        settingsActions.setNodeBinaryPath(
+          `${nodeService.getCommandPath(defaultSettings.binaryPath)}`
+        );
+        settingsActions.setNodeDataPath(
+          nodeService.getNodeDataPath(defaultSettings.floonet)
+        );
+        settingsActions.setGrinJoinAddress(defaultSettings.grinJoinAddress);
+        actions.setMessage("");
+        if (!getStoreState().receiveCoinsModel.responsesDestination) {
+          getStoreActions().receiveCoinsModel.setResponsesDestination(
+            utilsService.getHomePath()
+          );
+        }
+        resolve(true);
+      });
     }
   ),
 };

@@ -1,12 +1,8 @@
-import {
-  Action,
-  action,
-  Thunk,
-  thunk
-  } from 'easy-peasy';
-import { getStateColor, getStateText } from '../helpers';
-import { Injections } from '../store';
-import { StoreModel } from '.';
+import { Action, action, Thunk, thunk } from "easy-peasy";
+import { getStateColor, getStateText } from "../helpers";
+import { Injections } from "../store";
+import { StoreModel } from ".";
+import { INodeStatus } from "../interfaces/INodeStatus";
 
 export interface NodeSummaryModel {
   status: string;
@@ -89,7 +85,11 @@ const nodeSummary: NodeSummaryModel = {
     state.network = node.network;
   }),
   checkStatus: thunk(
-    async (actions, payload, { injections, getStoreState }) => {
+    async (
+      actions,
+      payload,
+      { injections, getStoreState }
+    ): Promise<INodeStatus> => {
       const { nodeService } = injections;
       const apiSettings = getStoreState().settings.defaultSettings;
       const api = new nodeService.REST(
@@ -98,10 +98,7 @@ const nodeSummary: NodeSummaryModel = {
         apiSettings.ip,
         apiSettings.mode
       );
-      await api
-        .getStatus()
-        .then((status) => actions.updateStatus(status))
-        .catch((error) => actions.updateStatus(undefined));
+      return await api.getStatus();
     }
   ),
   updateConnectedPeers: thunk(

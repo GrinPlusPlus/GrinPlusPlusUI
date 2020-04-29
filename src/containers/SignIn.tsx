@@ -1,7 +1,5 @@
-import React, { useEffect, Suspense } from "react";
+import React, { Suspense } from "react";
 import { HorizontallyCenter } from "../components/styled";
-import { useStoreActions } from "../hooks";
-import { useHistory } from "react-router-dom";
 import { WalletDrawer } from "./common/WalletDrawer";
 import { LoadingComponent } from "../components/extras/Loading";
 
@@ -32,17 +30,6 @@ const StatusBarContainer = React.lazy(() =>
 const renderLoader = () => <LoadingComponent />;
 
 export default function SignInContainer() {
-  let history = useHistory();
-
-  const { checkNodeHealth } = useStoreActions((actions) => actions.wallet);
-  useEffect(() => {
-    try {
-      checkNodeHealth();
-    } catch (error) {
-      history.push("/error");
-    }
-  });
-
   return (
     <Suspense fallback={renderLoader()}>
       <div>
