@@ -3,7 +3,6 @@ import { HorizontallyCenter } from "../components/styled";
 import { useStoreActions } from "../hooks";
 import { useHistory } from "react-router-dom";
 import { WalletDrawer } from "./common/WalletDrawer";
-
 import { LoadingComponent } from "../components/extras/Loading";
 
 const GrinPPBannerComponent = React.lazy(() =>
