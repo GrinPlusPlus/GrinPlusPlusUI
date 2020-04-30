@@ -2,7 +2,7 @@ import InputPasswordComponent from "../../custom/InputPassword";
 import React from "react";
 import WalletSeedInputComponent from "../../shared/WalletSeedInput";
 import { ISeed } from "../../../interfaces/ISeed";
-import { SubmitButton } from "../../styled";
+import { SubmitButton, HorizontallyCenter } from "../../styled";
 import {
   Button,
   FormGroup,
@@ -80,12 +80,15 @@ export const RecoverWalletComponent = ({
           <Radio label="21" value="21" />
           <Radio label="24" value="24" />
         </RadioGroup>
-        <WalletSeedInputComponent
-          seed={seed}
-          onWordChangeCb={onWordChangeCb}
-          length={+seedLength}
-        />
+        <HorizontallyCenter>
+          <WalletSeedInputComponent
+            seed={seed}
+            onWordChangeCb={onWordChangeCb}
+            length={+seedLength}
+          />
+        </HorizontallyCenter>
       </div>
+      <br />
       <SubmitButton>
         <Button
           data-testid="restore-wallet-button"
