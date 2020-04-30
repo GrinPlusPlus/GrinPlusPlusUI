@@ -3,21 +3,24 @@ import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useStoreActions, useStoreState } from "../hooks";
 import { useInterval } from "../helpers";
+import { INodeStatus } from "../interfaces/INodeStatus";
 
 export default function InitializerContainer() {
   let history = useHistory();
   const { message, initializingError, isWalletInitialized } = useStoreState(
     (state) => state.wallet
   );
-  const { accounts } = useStoreState((state) => state.signinModel);
 
   const {
     initializeWallet,
     setMessage,
     setInitializingError,
   } = useStoreActions((state) => state.wallet);
-  const { getAccounts, setAccounts } = useStoreActions(
-    (actions) => actions.signinModel
+
+  const { status } = useStoreState((state) => state.nodeSummary);
+
+  const { checkStatus, updateStatus } = useStoreActions(
+    (actions) => actions.nodeSummary
   );
 
   useEffect(() => {
@@ -33,21 +36,21 @@ export default function InitializerContainer() {
   });
 
   useInterval(async () => {
-    if (accounts !== undefined) {
+    if (status.toLowerCase() !== "not connected") {
       require("electron-log").info(
-        "Accounts received, API's up! Redirecting to Login..."
+        "STATUS received, the API's up! Redirecting to Login..."
       );
       history.push("/login");
       return;
     }
     if (initializingError) return;
-    require("electron-log").info("Trying to get the local accounts...");
-    await getAccounts().then((accounts: string[]) => setAccounts(accounts));
-  }, 1000);
+    require("electron-log").info("Trying to get the Node status...");
+    await checkStatus().then((status: INodeStatus) => updateStatus(status));
+  }, 500);
 
   return (
     <InitComponent
-      isInitialized={accounts !== undefined}
+      isInitialized={status.toLowerCase() !== "not connected"}
       error={initializingError}
       message={message}
     />

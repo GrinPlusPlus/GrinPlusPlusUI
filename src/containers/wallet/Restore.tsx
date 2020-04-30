@@ -39,7 +39,7 @@ export const RestoreWalletContainer = () => {
 
   const onWordChange = useCallback(
     (word: string, position: number) => {
-      setSeedWord({ word: word, position: position });
+      setSeedWord({ word: word, position: position - 1 });
     },
     [setSeedWord]
   );

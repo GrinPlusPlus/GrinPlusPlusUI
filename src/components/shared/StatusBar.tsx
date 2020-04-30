@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { Icon } from "@blueprintjs/core";
 import { StatusBarContent } from "../../components/styled";
 
@@ -8,40 +8,13 @@ type StatusBarProps = {
   headers: number;
   blocks: number;
   network: { height: number; outbound: number; inbound: number };
-  connectedPeers:
-    | { address: string; agent: string; direction: string }[]
-    | undefined;
 };
 
 export const StatusBarComponent = ({
   intent,
   status,
   network,
-  connectedPeers,
 }: StatusBarProps) => {
-  const renderGonnectedPeers = useCallback(() => {
-    let table: JSX.Element[] = [];
-    if (connectedPeers === undefined) return table;
-    table = connectedPeers.map((peer) => {
-      return (
-        <tr
-          key={peer.address}
-          style={{
-            fontSize: "12px",
-          }}
-        >
-          <td>
-            <Icon icon="dot" />
-          </td>
-          <td>{peer.address}</td>
-          <td>{peer.agent}</td>
-          <td>{peer.direction}</td>
-        </tr>
-      );
-    });
-    return table;
-  }, [connectedPeers]);
-
   return (
     <StatusBarContent>
       <div style={{ paddingLeft: "10px", width: "40%" }}>

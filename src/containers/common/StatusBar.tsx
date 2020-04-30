@@ -20,9 +20,8 @@ export const StatusBarContainer = () => {
     network,
     updateInterval,
   } = useStoreState((state) => state.nodeSummary);
-  const { connectedPeers } = useStoreState((state) => state.nodeSummary);
 
-  const { checkStatus, updateConnectedPeers, updateStatus } = useStoreActions(
+  const { checkStatus, updateStatus } = useStoreActions(
     (actions) => actions.nodeSummary
   );
 
@@ -40,7 +39,6 @@ export const StatusBarContainer = () => {
         headers={headers}
         blocks={blocks}
         network={network}
-        connectedPeers={connectedPeers}
       />
     </Suspense>
   );

@@ -49,7 +49,7 @@ export const OpenWalletComponent = ({
             left: "50%",
             position: "fixed",
             transform: "translate(-50%, -50%)",
-            backgroundColor: "#000000",
+            backgroundColor: "#090b0b",
           }}
         >
           <div style={{ marginBottom: "8px", fontSize: "14px" }}>

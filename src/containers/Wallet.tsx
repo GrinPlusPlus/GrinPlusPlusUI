@@ -82,7 +82,7 @@ export default function WalletContainer() {
       <Navbar>
         <NavbarGroup align={Alignment.LEFT}>
           <img
-            src={require("path").join(__dirname, "/statics/images/grin@2x.png")}
+            src={"/statics/images/grin@2x.png"}
             alt=""
             style={{
               maxWidth: "35px",

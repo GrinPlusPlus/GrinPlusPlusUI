@@ -1,7 +1,7 @@
-import React, { useCallback } from 'react';
-import { Flex } from '../styled';
-import { FormGroup, InputGroup, Tag } from '@blueprintjs/core';
-import { ISeed } from '../../interfaces/ISeed';
+import React, { useCallback } from "react";
+import { Flex } from "../styled";
+import { FormGroup, InputGroup, Tag } from "@blueprintjs/core";
+import { ISeed } from "../../interfaces/ISeed";
 
 type WalletSeedInputComponentTrops = {
   seed: ISeed[];
@@ -33,7 +33,7 @@ export default function WalletSeedInputComponent({
                 value={word.text}
                 disabled={word.disabled}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  onWordChangeCb(e.target.value, +e.target.id - 1)
+                  onWordChangeCb(e.target.value, +e.target.id)
                 }
                 rightElement={
                   <Tag style={{ fontFamily: "Verdana", fontSize: "11px" }}>

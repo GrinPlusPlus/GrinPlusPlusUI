@@ -63,7 +63,7 @@ export const CreateWalletComponent = ({
       </FormGroup>
       <FormGroup
         label={"Password"}
-        helperText="Password should be at least 12 characters length."
+        helperText={`Password should be at least ${minPasswordLength} characters length.`}
         labelFor="create-wallet-password"
         labelInfo={true}
       >
@@ -104,6 +104,7 @@ export const CreateWalletComponent = ({
       <Dialog
         isOpen={receivedSeed.length > 0}
         title="Wallet Seed"
+        isCloseButtonShown={false}
         className="bp3-dark"
       >
         {SeedValidationComponent}

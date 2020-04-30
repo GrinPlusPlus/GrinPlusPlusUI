@@ -1,11 +1,6 @@
-import {
-  action,
-  Action,
-  ThunkOn,
-  thunkOn
-  } from 'easy-peasy';
-import { Injections } from '../store';
-import { StoreModel } from '.';
+import { action, Action, ThunkOn, thunkOn } from "easy-peasy";
+import { Injections } from "../store";
+import { StoreModel } from ".";
 
 interface IWalletSettings {
   ip: string;
@@ -46,8 +41,8 @@ const settings: SettingsModel = {
     ip: "127.0.0.1",
     protocol: "http",
     mode: "DEV",
-    binaryPath: "./GrinPlusPlus/bin",
-    floonet: true,
+    binaryPath: ".\\GrinPlusPlus\\bin\\RelWithDebInfo",
+    floonet: false,
     minimumPeers: 15,
     maximumPeers: 50,
     minimumConfirmations: 10,

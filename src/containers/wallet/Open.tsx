@@ -1,4 +1,4 @@
-import React, { useCallback, Suspense } from "react";
+import React, { useCallback, Suspense, useEffect } from "react";
 import { Card, Icon, Intent, Position, Text, Toaster } from "@blueprintjs/core";
 import { useHistory } from "react-router-dom";
 import { useStoreActions, useStoreState } from "../../hooks";
@@ -19,6 +19,7 @@ const renderLoader = () => null;
 
 export const OpenWalletContainer = () => {
   let history = useHistory();
+
   const { username, password, accounts, waitingResponse } = useStoreState(
     (state) => state.signinModel
   );
@@ -28,6 +29,16 @@ export const OpenWalletContainer = () => {
     login,
     setWaitingResponse,
   } = useStoreActions((actions) => actions.signinModel);
+
+  const { getAccounts, setAccounts } = useStoreActions(
+    (actions) => actions.signinModel
+  );
+
+  useEffect(() => {
+    (async function() {
+      await getAccounts().then((accounts: string[]) => setAccounts(accounts));
+    })();
+  });
 
   const onOpenWalletButtonClicked = useCallback(async () => {
     setWaitingResponse(true);
@@ -86,7 +97,11 @@ export const OpenWalletContainer = () => {
 
   return (
     <Suspense fallback={renderLoader()}>
-      {accounts !== undefined && accounts?.length > 1 ? (
+      {accounts === undefined ? (
+        renderLoader()
+      ) : accounts.length === 0 ? (
+        <NoAccountsComponent />
+      ) : (
         <OpenWalletComponent
           username={username}
           password={password}
@@ -99,8 +114,6 @@ export const OpenWalletContainer = () => {
           waitingResponse={waitingResponse}
           loginButtonCb={onOpenWalletButtonClicked}
         />
-      ) : (
-        <NoAccountsComponent />
       )}
     </Suspense>
   );

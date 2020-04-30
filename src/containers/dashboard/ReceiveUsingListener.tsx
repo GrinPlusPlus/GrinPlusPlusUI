@@ -1,8 +1,8 @@
-import React from 'react';
-import ReceiveUsingListenerComponent from '../../components/transaction/receive/ReceiveUsingListener';
-import { HorizontallyCenter, Title } from '../../components/styled';
-import { Spinner, Text } from '@blueprintjs/core';
-import { useStoreState } from '../../hooks';
+import React from "react";
+import ReceiveUsingListenerComponent from "../../components/transaction/receive/ReceiveUsingListener";
+import { HorizontallyCenter, Title } from "../../components/styled";
+import { Spinner, Text } from "@blueprintjs/core";
+import { useStoreState } from "../../hooks";
 
 export default function ReceiveUsingListenerContainer() {
   const { address } = useStoreState((state) => state.session);
@@ -25,12 +25,10 @@ export default function ReceiveUsingListenerContainer() {
           />
         ) : (
           <div>
-            <br />
             <HorizontallyCenter>
               <Spinner size={30} />
               <Text>trying to get your address, please wait...</Text>
             </HorizontallyCenter>
-            <br />
             <br />
           </div>
         )}
