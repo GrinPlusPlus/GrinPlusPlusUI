@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import SettingsComponent from "../../components/extras/Settings";
+import { SettingsComponent } from "../../components/extras/Settings";
 import { useStoreActions, useStoreState } from "../../hooks";
 
 export const SettingsContainer = () => {

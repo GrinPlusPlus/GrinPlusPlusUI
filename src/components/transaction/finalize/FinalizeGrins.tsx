@@ -1,5 +1,5 @@
-import React from 'react';
-import { Title } from '../../styled';
+import React from "react";
+import { Title } from "../../styled";
 import {
   Button,
   ControlGroup,
@@ -14,11 +14,11 @@ type FinalizeProps = {
   onFinalizeButtonClickedCb: () => void;
 };
 
-export default function FinalizeComponent({
+export const FinalizeComponent = ({
   responseFile,
   setFileToFinalizeCb,
   onFinalizeButtonClickedCb,
-}: FinalizeProps) {
+}: FinalizeProps) => {
   return (
     <div>
       <Title>Finalize</Title>
@@ -54,4 +54,4 @@ export default function FinalizeComponent({
       </FormGroup>
     </div>
   );
-}
+};

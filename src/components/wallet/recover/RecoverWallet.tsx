@@ -1,6 +1,6 @@
-import InputPasswordComponent from "../../custom/InputPassword";
+import { InputPasswordComponent } from "../../custom/InputPassword";
 import React from "react";
-import WalletSeedInputComponent from "../../shared/WalletSeedInput";
+import { WalletSeedInputComponent } from "../../shared/WalletSeedInput";
 import { ISeed } from "../../../interfaces/ISeed";
 import { SubmitButton, HorizontallyCenter } from "../../styled";
 import {

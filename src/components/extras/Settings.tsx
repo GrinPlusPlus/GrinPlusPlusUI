@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Alert,
   Button,
@@ -12,8 +12,8 @@ import {
   NumericInput,
   Slider,
   Switch,
-  Text
-  } from '@blueprintjs/core';
+  Text,
+} from "@blueprintjs/core";
 
 type SettingsProps = {
   status: string;
@@ -37,7 +37,7 @@ type SettingsProps = {
   confirmReSyncBlockchainCb: () => void;
 };
 
-export default function SettingsComponent({
+export const SettingsComponent = ({
   status,
   floonet,
   useGrinJoin,
@@ -56,8 +56,8 @@ export default function SettingsComponent({
   setConfirmationsCb,
   restartNodeCb,
   toggleConfirmationDialogCb,
-  confirmReSyncBlockchainCb
-}: SettingsProps) {
+  confirmReSyncBlockchainCb,
+}: SettingsProps) => {
   return (
     <div>
       <div className={Classes.DIALOG_BODY}>
@@ -90,7 +90,7 @@ export default function SettingsComponent({
             data-testid="mininum-number-peers-input"
             id="mininum-number-peers"
             value={mininumPeers}
-            onValueChange={value => setMininumPeersCb(value)}
+            onValueChange={(value) => setMininumPeersCb(value)}
           />
         </FormGroup>
         <FormGroup
@@ -101,7 +101,7 @@ export default function SettingsComponent({
             data-testid="maximum-number-peers-input"
             id="maximum-number-peers"
             value={maximumPeers}
-            onValueChange={value => setMaximumPeersCb(value)}
+            onValueChange={(value) => setMaximumPeersCb(value)}
           />
         </FormGroup>
         <FormGroup label={"Confirmations"}>
@@ -113,7 +113,7 @@ export default function SettingsComponent({
             data-testid="confirmations-slider"
             value={confirmations}
             showTrackFill={false}
-            onChange={value => setConfirmationsCb(value)}
+            onChange={(value) => setConfirmationsCb(value)}
           />
         </FormGroup>
         <Divider />
@@ -175,4 +175,4 @@ export default function SettingsComponent({
       </Alert>
     </div>
   );
-}
+};

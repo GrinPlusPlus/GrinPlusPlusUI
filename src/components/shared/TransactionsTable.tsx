@@ -1,12 +1,7 @@
-import React from 'react';
-import {
-  Button,
-  Icon,
-  Intent,
-  Text
-  } from '@blueprintjs/core';
-import { cleanTxType, getTxIcon, getTxIntent } from '../../helpers';
-import { ITransaction } from '../../interfaces/ITransaction';
+import React from "react";
+import { Button, Icon, Intent, Text } from "@blueprintjs/core";
+import { cleanTxType, getTxIcon, getTxIntent } from "../../helpers";
+import { ITransaction } from "../../interfaces/ITransaction";
 
 type TransactionsTableProps = {
   transactions: ITransaction[];
@@ -16,13 +11,13 @@ type TransactionsTableProps = {
   onRepostTransactionButtonClickedCb: (transactionId: number) => void;
 };
 
-export default function TransactionsTableComponent({
+export const TransactionsTableComponent = ({
   transactions,
   transactionOpened,
   openTransactionCb,
   onCancelTransactionButtonClickedCb,
   onRepostTransactionButtonClickedCb,
-}: TransactionsTableProps) {
+}: TransactionsTableProps) => {
   const listTransactions = (rows: ITransaction[]) => {
     let table: JSX.Element[] = [];
     rows.forEach((transaction) => {
@@ -153,4 +148,4 @@ export default function TransactionsTableComponent({
       )}
     </div>
   );
-}
+};

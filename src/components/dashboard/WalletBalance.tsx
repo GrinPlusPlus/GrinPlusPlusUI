@@ -1,7 +1,7 @@
-import NumberFormat from 'react-number-format';
-import React from 'react';
-import { BalanceSuffix, Flex, SpendableBalance } from '../styled';
-import { Text, Tooltip } from '@blueprintjs/core';
+import NumberFormat from "react-number-format";
+import React from "react";
+import { BalanceSuffix, Flex, SpendableBalance } from "../styled";
+import { Text, Tooltip } from "@blueprintjs/core";
 
 export type WalletBalanceProps = {
   total: number;
@@ -10,13 +10,13 @@ export type WalletBalanceProps = {
   unconfirmed: number;
   locked: number;
 };
-export default function WalletBalanceComponent({
+export const WalletBalanceComponent = ({
   total,
   spendable,
   immature,
   unconfirmed,
   locked,
-}: WalletBalanceProps) {
+}: WalletBalanceProps) => {
   return (
     <div>
       <Text>Spendable:</Text>
@@ -91,4 +91,4 @@ export default function WalletBalanceComponent({
       </Flex>
     </div>
   );
-}
+};

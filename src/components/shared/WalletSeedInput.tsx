@@ -9,11 +9,11 @@ type WalletSeedInputComponentTrops = {
   length: number;
 };
 
-export default function WalletSeedInputComponent({
+export const WalletSeedInputComponent = ({
   seed,
   onWordChangeCb,
   length,
-}: WalletSeedInputComponentTrops) {
+}: WalletSeedInputComponentTrops) => {
   const walletSeedTable = useCallback(() => {
     let table = [];
 
@@ -50,4 +50,4 @@ export default function WalletSeedInputComponent({
   }, [seed, onWordChangeCb, length]);
 
   return <div>{walletSeedTable()}</div>;
-}
+};

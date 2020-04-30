@@ -1,14 +1,9 @@
-import React, { useCallback } from 'react';
-import WalletActivityComponent from '../../components/dashboard/WalletActivity';
-import {
-  Alert,
-  Intent,
-  Position,
-  Toaster
-  } from '@blueprintjs/core';
-import { useStoreActions, useStoreState } from '../../hooks';
+import React, { useCallback } from "react";
+import { WalletActivityComponent } from "../../components/dashboard/WalletActivity";
+import { Alert, Intent, Position, Toaster } from "@blueprintjs/core";
+import { useStoreActions, useStoreState } from "../../hooks";
 
-export default function WalletActivitiyContainer() {
+export const WalletActivitiyContainer = () => {
   const {
     getAllTransactions,
     getTransactionsReceived,
@@ -87,4 +82,4 @@ export default function WalletActivitiyContainer() {
       </Alert>
     </div>
   );
-}
+};

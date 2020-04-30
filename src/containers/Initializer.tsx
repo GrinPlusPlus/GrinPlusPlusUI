@@ -1,4 +1,4 @@
-import InitComponent from "../components/extras/Init";
+import { InitComponent } from "../components/extras/Init";
 import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useStoreActions, useStoreState } from "../hooks";

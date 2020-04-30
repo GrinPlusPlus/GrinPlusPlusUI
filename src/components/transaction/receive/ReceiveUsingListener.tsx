@@ -1,16 +1,16 @@
-import React from 'react';
-import { Button, Intent } from '@blueprintjs/core';
+import React from "react";
+import { Button, Intent } from "@blueprintjs/core";
 
 type ReceiveUsingListenerProps = {
   address: string;
   httpAddress: string;
   shortenHttpAddress: string;
 };
-export default function ReceiveUsingListenerComponent({
+export const ReceiveUsingListenerComponent = ({
   address,
   httpAddress,
   shortenHttpAddress,
-}: ReceiveUsingListenerProps) {
+}: ReceiveUsingListenerProps) => {
   return (
     <div>
       <div style={{ marginTop: "15px" }}>
@@ -35,4 +35,4 @@ export default function ReceiveUsingListenerComponent({
       </div>
     </div>
   );
-}
+};

@@ -1,13 +1,13 @@
-import React from 'react';
-import { Dropper, HorizontallyCenter } from '../../styled';
-import { useDropzone } from 'react-dropzone';
+import React from "react";
+import { Dropper, HorizontallyCenter } from "../../styled";
+import { useDropzone } from "react-dropzone";
 
 type ReceiveUsingFileProps = {
   onResponseFilesDroppedCb: (files: File[]) => void;
 };
-export default function ReceiveUsingFileComponent({
+export const ReceiveUsingFileComponent = ({
   onResponseFilesDroppedCb,
-}: ReceiveUsingFileProps) {
+}: ReceiveUsingFileProps) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: onResponseFilesDroppedCb,
   });
@@ -24,4 +24,4 @@ export default function ReceiveUsingFileComponent({
       </Dropper>
     </div>
   );
-}
+};

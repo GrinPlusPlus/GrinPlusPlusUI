@@ -1,10 +1,8 @@
-import React from 'react';
+import React from "react";
 
 type ConnectedPeersProps = { peers: JSX.Element[] };
 
-export default function ConnectedPeersComponent({
-  peers
-}: ConnectedPeersProps) {
+export const ConnectedPeersComponent = ({ peers }: ConnectedPeersProps) => {
   return (
     <table style={{ width: "400px" }}>
       <tbody>
@@ -24,4 +22,4 @@ export default function ConnectedPeersComponent({
       </tbody>
     </table>
   );
-}
+};

@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import InputPasswordComponent from "../../../components/custom/InputPassword";
+import { InputPasswordComponent } from "../../../components/custom/InputPassword";
 import React from "react";
 import { AccountListContent } from "../../styled";
 import {

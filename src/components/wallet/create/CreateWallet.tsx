@@ -1,4 +1,4 @@
-import InputPasswordComponent from "../../../components/custom/InputPassword";
+import { InputPasswordComponent } from "../../../components/custom/InputPassword";
 import React from "react";
 import { SubmitButton } from "../../styled";
 import {

@@ -1,10 +1,10 @@
 import React from "react";
-import ReceiveUsingListenerComponent from "../../components/transaction/receive/ReceiveUsingListener";
+import { ReceiveUsingListenerComponent } from "../../components/transaction/receive/ReceiveUsingListener";
 import { HorizontallyCenter, Title } from "../../components/styled";
 import { Spinner, Text } from "@blueprintjs/core";
 import { useStoreState } from "../../hooks";
 
-export default function ReceiveUsingListenerContainer() {
+export const ReceiveUsingListenerContainer = () => {
   const { address } = useStoreState((state) => state.session);
 
   return (
@@ -35,4 +35,4 @@ export default function ReceiveUsingListenerContainer() {
       </div>
     </div>
   );
-}
+};

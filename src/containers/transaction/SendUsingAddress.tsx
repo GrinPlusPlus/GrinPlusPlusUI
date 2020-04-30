@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import React, { useCallback } from "react";
-import SendUsingAddressComponent from "../../components/transaction/send/SendUsingAddress";
+import { SendUsingAddressComponent } from "../../components/transaction/send/SendUsingAddress";
 import { useHistory } from "react-router-dom";
 import { useStoreActions, useStoreState } from "../../hooks";
 import {

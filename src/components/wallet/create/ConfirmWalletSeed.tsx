@@ -1,5 +1,5 @@
 import React from "react";
-import WalletSeedInputComponent from "../../../components/shared/WalletSeedInput";
+import { WalletSeedInputComponent } from "../../../components/shared/WalletSeedInput";
 import { Button, Callout, Classes, Intent } from "@blueprintjs/core";
 
 type CreateWalletProps = {

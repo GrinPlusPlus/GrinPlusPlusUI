@@ -1,10 +1,10 @@
-import Finalize from "./Finalize";
-import Logs from "./Logs";
+import { FinalizeContainer } from "./Finalize";
+import { LogsContainer } from "./Logs";
 import React from "react";
-import ReceiveUsingFile from "./ReceiveUsingFile";
-import ReceiveUsingListener from "./ReceiveUsingListener";
-import WalletActivitiy from "./WalletActivity";
-import WalletBalance from "./WalletBalance";
+import { ReceiveUsingFileContainer } from "./ReceiveUsingFile";
+import { ReceiveUsingListenerContainer } from "./ReceiveUsingListener";
+import { WalletActivitiyContainer } from "./WalletActivity";
+import { WalletBalanceContainer } from "./WalletBalance";
 import { Button, Intent } from "@blueprintjs/core";
 import { Content, Flex } from "../../components/styled";
 import { useHistory } from "react-router-dom";
@@ -16,7 +16,7 @@ export const DashboardContainer = () => {
     <Content>
       <div style={{ width: "45%", margin: "15px" }}>
         <Flex>
-          <WalletBalance />
+          <WalletBalanceContainer />
           <div
             style={{
               width: "100%",
@@ -39,20 +39,20 @@ export const DashboardContainer = () => {
           </div>
         </Flex>
         <div style={{ marginTop: "20px" }}>
-          <ReceiveUsingListener />
+          <ReceiveUsingListenerContainer />
           <div style={{ marginTop: "30px" }}>
-            <ReceiveUsingFile />
+            <ReceiveUsingFileContainer />
           </div>
         </div>
         <div style={{ marginTop: "30px" }}>
-          <Finalize />
+          <FinalizeContainer />
         </div>
         <div style={{ marginTop: "30px" }}>
-          <Logs />
+          <LogsContainer />
         </div>
       </div>
       <div style={{ width: "55%", margin: "10px" }}>
-        <WalletActivitiy />
+        <WalletActivitiyContainer />
       </div>
     </Content>
   );
