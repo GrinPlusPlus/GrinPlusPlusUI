@@ -1,11 +1,6 @@
-import {
-  Action,
-  action,
-  Thunk,
-  thunk
-  } from 'easy-peasy';
-import { Injections } from '../../store';
-import { StoreModel } from '..';
+import { Action, action, Thunk, thunk } from "easy-peasy";
+import { Injections } from "../../store";
+import { StoreModel } from "..";
 
 export interface SigninModel {
   username: string;
@@ -42,23 +37,26 @@ const openWallet: SigninModel = {
     state.password = password;
   }),
   setAccounts: action((state, accounts) => {
-    if(accounts === null) state.accounts = [];
+    if (accounts === null) state.accounts = [];
     else state.accounts = accounts.sort();
   }),
   setWaitingResponse: action((state, waiting) => {
     state.waitingResponse = waiting;
   }),
   getAccounts: thunk(
-    async (actions, payload, { injections, getStoreState }) => {
+    async (
+      actions,
+      payload,
+      { injections, getStoreState }
+    ): Promise<string[]> => {
       const { ownerService } = injections;
       const apiSettings = getStoreState().settings.defaultSettings;
-      const accounts = await new ownerService.REST(
+      return await new ownerService.REST(
         apiSettings.floonet,
         apiSettings.protocol,
         apiSettings.ip,
         apiSettings.mode
       ).getAccounts();
-      actions.setAccounts(accounts);
     }
   ),
   login: thunk(
