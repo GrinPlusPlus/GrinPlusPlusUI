@@ -25,6 +25,7 @@ export const WalletDrawer = () => {
       }
       isOpen={showSettings}
       size={Drawer.SIZE_SMALL}
+      style={{ paddingTop: "32px" }}
     >
       <SettingsContainer />
     </Drawer>

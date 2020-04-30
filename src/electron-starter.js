@@ -110,7 +110,9 @@ function createWindow() {
     width: 1200,
     height: 790,
     resizable: false,
-    backgroundColor: "#0e1111",
+    frame: false,
+    titleBarStyle: "hidden",
+    backgroundColor: "#0D0D0D",
     title: "Grin++ v" + app.getVersion(),
     webPreferences: {
       nodeIntegration: true,

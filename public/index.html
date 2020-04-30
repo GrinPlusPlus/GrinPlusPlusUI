@@ -15,5 +15,13 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <script>
+      const customTitlebar = require("custom-electron-titlebar");
+
+      new customTitlebar.Titlebar({
+        backgroundColor: customTitlebar.Color.fromHex("#222222"),
+        maximizable: false,
+      });
+    </script>
   </body>
 </html>

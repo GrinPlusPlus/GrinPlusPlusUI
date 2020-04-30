@@ -18,6 +18,7 @@
     "@types/uuid": "^7.0.3",
     "acorn": "^7.1.1",
     "classnames": "^2.2.6",
+    "custom-electron-titlebar": "^3.2.2-hotfix62",
     "easy-peasy": "^3.3.0",
     "electron-log": "^4.1.1",
     "electron-updater": "^4.3.1",
