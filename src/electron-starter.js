@@ -6,6 +6,9 @@ const { dialog } = require("electron");
 const { autoUpdater } = require("electron-updater");
 const isDevMode = process.execPath.match(/[\\/]electron/);
 
+const powerSaveBlocker = require("electron").powerSaveBlocker;
+powerSaveBlocker.start("prevent-app-suspension");
+
 const BrowserWindow = electron.BrowserWindow;
 // Module to control application life.
 const app = electron.app;

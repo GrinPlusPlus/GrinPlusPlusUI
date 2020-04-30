@@ -92,13 +92,12 @@ const nodeSummary: NodeSummaryModel = {
     ): Promise<INodeStatus> => {
       const { nodeService } = injections;
       const apiSettings = getStoreState().settings.defaultSettings;
-      const api = new nodeService.REST(
+      return await new nodeService.REST(
         apiSettings.floonet,
         apiSettings.protocol,
         apiSettings.ip,
         apiSettings.mode
-      );
-      return await api.getStatus();
+      ).getStatus();
     }
   ),
   updateConnectedPeers: thunk(

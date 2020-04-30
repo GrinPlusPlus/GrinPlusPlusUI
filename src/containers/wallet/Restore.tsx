@@ -1,4 +1,4 @@
-import React, { useCallback, Suspense } from "react";
+import React, { useCallback } from "react";
 import { Intent } from "@blueprintjs/core";
 import { Position, Toaster } from "@blueprintjs/core";
 import { useHistory } from "react-router-dom";

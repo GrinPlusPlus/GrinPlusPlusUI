@@ -3,6 +3,7 @@ import { Form, HorizontallyCenter } from "../components/styled";
 import { LoadingComponent } from "../components/extras/Loading";
 import { useHistory } from "react-router-dom";
 import { Button } from "@blueprintjs/core";
+import { useStoreActions } from "../hooks";
 
 const LogoComponent = React.lazy(() =>
   import("../components/shared/Logo").then((module) => ({
@@ -31,10 +32,18 @@ const StatusBarContainer = React.lazy(() =>
 const renderLoader = () => <LoadingComponent />;
 
 export const RestoreContainer = () => {
+  const { setInitialValues } = useStoreActions(
+    (actions) => actions.createWallet
+  );
+
   let history = useHistory();
+
   return (
     <Suspense fallback={renderLoader()}>
-      <NavigationBarContainer title="Restore Wallet" />
+      <NavigationBarContainer
+        title="Restore Wallet"
+        onExit={() => setInitialValues()}
+      />
       <div className="content">
         <HorizontallyCenter>
           <LogoComponent />

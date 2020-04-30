@@ -1,16 +1,8 @@
-import {
-  Action,
-  action,
-  Computed,
-  computed,
-  Thunk,
-  thunk
-  } from 'easy-peasy';
-import { generateEmptySeed, getSeedWords } from '../../helpers';
-import { Injections } from '../../store';
-import { ISeed } from '../../interfaces/ISeed';
-import { StoreModel } from '..';
-
+import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy";
+import { generateEmptySeed, getSeedWords } from "../../helpers";
+import { Injections } from "../../store";
+import { ISeed } from "../../interfaces/ISeed";
+import { StoreModel } from "..";
 
 export interface RestoreWalletModel {
   username: string;
@@ -18,28 +10,40 @@ export interface RestoreWalletModel {
   seed: ISeed[];
   seedLength: string;
   setSeed: Action<RestoreWalletModel, ISeed[]>;
+  setInitialValues: Action<RestoreWalletModel>;
   setUsername: Action<RestoreWalletModel, string>;
   setPassword: Action<RestoreWalletModel, string>;
   setSeedLength: Action<RestoreWalletModel, string>;
-  setSeedWord: Action < RestoreWalletModel, {
-    word: string;
-    position: number
-  }
-  > ;
-  restore: Thunk < RestoreWalletModel, {
-    username: string;
-    password: string;
-    seed: ISeed[];
-  }
-  , Injections, StoreModel > ;
+  setSeedWord: Action<
+    RestoreWalletModel,
+    {
+      word: string;
+      position: number;
+    }
+  >;
+  restore: Thunk<
+    RestoreWalletModel,
+    {
+      username: string;
+      password: string;
+      seed: ISeed[];
+    },
+    Injections,
+    StoreModel
+  >;
   isSeedCompleted: Computed<RestoreWalletModel, boolean>;
 }
 
 const restoreWallet: RestoreWalletModel = {
-  username: '',
-  password: '',
+  username: "",
+  password: "",
   seed: generateEmptySeed(),
-  seedLength: '24',
+  seedLength: "24",
+  setInitialValues: action((state) => {
+    state.username = "";
+    state.password = "";
+    state.seed = generateEmptySeed();
+  }),
   setUsername: action((state, payload) => {
     state.username = payload;
   }),
@@ -56,30 +60,39 @@ const restoreWallet: RestoreWalletModel = {
     state.seed = seed;
   }),
   restore: thunk(
-      async (
-          actions, payload, {injections, getStoreActions, getStoreState}) => {
-        const {ownerService} = injections;
-        const apiSettings = getStoreState().settings.defaultSettings;
-        return await new ownerService
-            .REST(
-                apiSettings.floonet, apiSettings.protocol, apiSettings.ip,
-                apiSettings.mode)
-            .restoreWallet(
-                payload.username, payload.password, getSeedWords(payload.seed))
-            .then((response) => {
-              if (typeof response === 'string') {
-                throw new Error(response);
-              }
-              actions.setUsername('');
-              actions.setPassword('');
-              actions.setSeed([]);
-              getStoreActions().session.updateSession({
-                username: response.username,
-                token: response.token,
-                address: '',
-              });
-            });
-      }),
+    async (
+      actions,
+      payload,
+      { injections, getStoreActions, getStoreState }
+    ) => {
+      const { ownerService } = injections;
+      const apiSettings = getStoreState().settings.defaultSettings;
+      return await new ownerService.REST(
+        apiSettings.floonet,
+        apiSettings.protocol,
+        apiSettings.ip,
+        apiSettings.mode
+      )
+        .restoreWallet(
+          payload.username,
+          payload.password,
+          getSeedWords(payload.seed)
+        )
+        .then((response) => {
+          if (typeof response === "string") {
+            throw new Error(response);
+          }
+          actions.setUsername("");
+          actions.setPassword("");
+          actions.setSeed([]);
+          getStoreActions().session.updateSession({
+            username: response.username,
+            token: response.token,
+            address: "",
+          });
+        });
+    }
+  ),
   isSeedCompleted: computed((state) => {
     let filled: number = 0;
     state.seed.forEach((word) => {

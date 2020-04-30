@@ -33,6 +33,8 @@ $pt-dark-popover-box-shadow: $pt-intent-primary;
   -moz-user-select: none; /* Old versions of Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
+
+  background-color: #090b0b !important;
 }
 
 .bp3-input {
@@ -48,7 +50,7 @@ $pt-dark-popover-box-shadow: $pt-intent-primary;
   outline-color: #293742;
 }
 .bp3-drawer.bp3-dark {
-  background-color: #000000 !important;
+  background-color: #090b0b !important;
 }
 
 .sending_not_finalized,

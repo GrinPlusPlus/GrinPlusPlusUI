@@ -11,9 +11,10 @@ import { useHistory } from "react-router-dom";
 
 type NavBarProps = {
   title: string;
+  onExit?: () => void;
 };
 
-export const NavigationBarContainer = ({ title }: NavBarProps) => {
+export const NavigationBarContainer = ({ title, onExit }: NavBarProps) => {
   let history = useHistory();
   return (
     <Navbar>
@@ -21,7 +22,10 @@ export const NavigationBarContainer = ({ title }: NavBarProps) => {
         <Button
           minimal={true}
           icon="arrow-left"
-          onClick={() => history.goBack()}
+          onClick={() => {
+            if (onExit) onExit();
+            history.goBack();
+          }}
         />
         <NavbarDivider />
         <NavbarHeading>{title}</NavbarHeading>

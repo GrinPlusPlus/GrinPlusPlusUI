@@ -1,4 +1,4 @@
-import React, { useCallback, Suspense } from "react";
+import React, { Suspense } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
 import { useInterval } from "../../helpers";
 import { INodeStatus } from "../../interfaces/INodeStatus";
@@ -32,10 +32,6 @@ export const StatusBarContainer = () => {
       .catch(() => updateStatus(undefined));
   }, updateInterval);
 
-  const _updateConnectedPeers = useCallback(async () => {
-    await updateConnectedPeers();
-  }, [updateConnectedPeers]);
-
   return (
     <Suspense fallback={renderLoader()}>
       <StatusBarComponent
@@ -44,7 +40,6 @@ export const StatusBarContainer = () => {
         headers={headers}
         blocks={blocks}
         network={network}
-        onOpeningCb={_updateConnectedPeers}
         connectedPeers={connectedPeers}
       />
     </Suspense>
