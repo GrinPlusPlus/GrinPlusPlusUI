@@ -2,20 +2,38 @@ import { Intent } from "@blueprintjs/core";
 import { ISeed } from "./interfaces/ISeed";
 import { useEffect, useRef } from "react";
 
-export const getPercentage = function(
-  numerator?: number,
-  denominator?: number
+const keys: any = {
+};
+
+enum StateKeys = {
+  FULLY_SYNCED: 'Running',
+    NOT_CONNECTED: 'Waiting for Peers',
+      DOWNLOADING_TXHASHSET: `2/4 Downloading State (${getPercentage(downloaded, totalSize)}%)`,
+        PROCESSING_TXHASHSET: `3/4 Validating State (${processed}%)`,
+          SYNCING_HEADERS: `1/4 Syncing Headers (${getPercentage(
+            headerHeight,
+            networkHeight
+          )}%)`,
+
+            SYNCING_BLOCKS: `4/4 Syncing Blocks (${getBlockPercentage(
+              blockHeight,
+              headerHeight
+            )}%)`,
+
+}
+export const getPercentage = function (
+  numerator = 0,
+  denominator = 0
 ) {
   if (!numerator || !denominator) return 0;
-  if (denominator <= 0) {
-    return 0;
-  } else {
+  else if (denominator < 0) return 0;
+  else {
     const result = Math.round(100 * (numerator / denominator));
     return result < 100 ? result : 99;
   }
 };
 
-export const getBlockPercentage = function(
+export const getBlockPercentage = function (
   blockHeight?: number,
   headerHeight?: number
 ) {
@@ -35,7 +53,7 @@ export const getBlockPercentage = function(
   return 100 - remaining;
 };
 
-export const getStateText = function(
+export const getStateText = (
   state: string,
   headerHeight?: number,
   networkHeight?: number,
@@ -43,33 +61,26 @@ export const getStateText = function(
   downloaded?: number,
   totalSize?: number,
   processed?: number
-): string {
-  if (!state) return "Not Connected";
-  switch (state) {
-    case "FULLY_SYNCED":
-      return "Running";
-    case "SYNCING_HEADERS":
-      return `1/4 Syncing Headers (${getPercentage(
-        headerHeight,
-        networkHeight
-      )}%)`;
-    case "SYNCING_BLOCKS":
-      return `4/4 Syncing Blocks (${getBlockPercentage(
-        blockHeight,
-        headerHeight
-      )}%)`;
-    case "DOWNLOADING_TXHASHSET":
-      return `2/4 Downloading State (${getPercentage(downloaded, totalSize)}%)`;
-    case "PROCESSING_TXHASHSET":
-      return `3/4 Validating State (${processed}%)`;
-    case "NOT_CONNECTED":
-      return "Waiting for Peers";
-    default:
-      return "Not Connected";
-  }
-};
+): string => {
+  const keys: any = {
+    FULLY_SYNCED: 'Running',
+    NOT_CONNECTED: 'Waiting for Peers',
+    DOWNLOADING_TXHASHSET: `2/4 Downloading State (${getPercentage(downloaded, totalSize)}%)`,
+    PROCESSING_TXHASHSET: `3/4 Validating State (${processed}%)`,
+    SYNCING_HEADERS: `1/4 Syncing Headers (${getPercentage(
+      headerHeight,
+      networkHeight
+    )}%)`,
 
-export const getStateColor = function(state: string): string {
+    SYNCING_BLOCKS: `4/4 Syncing Blocks (${getBlockPercentage(
+      blockHeight,
+      headerHeight
+    )}%)`,
+  }
+  return keys[state] || 'Not connected'
+}
+
+export const getStateColor = function (state: string): string {
   if (!state) return Intent.DANGER;
   if (state.startsWith("SYNCING") || state.endsWith("TXHASHSET")) {
     return Intent.WARNING;
@@ -79,7 +90,7 @@ export const getStateColor = function(state: string): string {
   return Intent.DANGER;
 };
 
-export const generateEmptySeed = function(): ISeed[] {
+export const generateEmptySeed = function (): ISeed[] {
   const seed = new Array<ISeed>();
   let i = 1;
   do {
@@ -92,7 +103,7 @@ export const generateEmptySeed = function(): ISeed[] {
   return seed;
 };
 
-export const getSeedWords = function(seed: ISeed[]): string {
+export const getSeedWords = function (seed: ISeed[]): string {
   let words: string = "";
   seed.forEach((element) => {
     if (element.text.length > 0) {
@@ -102,7 +113,7 @@ export const getSeedWords = function(seed: ISeed[]): string {
   return words.trim();
 };
 
-export const hideSeedWords = function(payload: {
+export const hideSeedWords = function (payload: {
   seed: ISeed[];
   words: number;
 }): ISeed[] {
@@ -120,7 +131,7 @@ export const hideSeedWords = function(payload: {
   return newSeed;
 };
 
-export const getDateAsString = function(date: Date): string {
+export const getDateAsString = function (date: Date): string {
   return (
     date.getFullYear() +
     ("0" + (date.getMonth() + 1)).slice(-2) +
@@ -132,7 +143,7 @@ export const getDateAsString = function(date: Date): string {
   );
 };
 
-export const getTxIcon = function(type: string): any {
+export const getTxIcon = function (type: string): any {
   if (type.indexOf("sent") > -1) {
     return "arrow-top-right";
   } else if (type.indexOf("received") > -1 || type.indexOf("coinbase") > -1) {
@@ -147,7 +158,7 @@ export const getTxIcon = function(type: string): any {
   return "dot";
 };
 
-export const getTxIntent = function(type: string): any {
+export const getTxIntent = function (type: string): any {
   if (type.indexOf("sent") > -1) {
     return Intent.PRIMARY;
   } else if (type.indexOf("received") > -1 || type.indexOf("coinbase") > -1) {
@@ -162,7 +173,7 @@ export const getTxIntent = function(type: string): any {
   return Intent.NONE;
 };
 
-export const cleanTxType = function(type: string): string {
+export const cleanTxType = function (type: string): string {
   return type
     .toLowerCase()
     .split(" ")
@@ -173,7 +184,7 @@ export const cleanTxType = function(type: string): string {
     .join("");
 };
 
-export const useInterval = function(callback: any, delay: number) {
+export const useInterval = function (callback: any, delay: number) {
   const savedCallback = useRef(callback);
 
   // Remember the latest function.
