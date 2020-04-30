@@ -45,8 +45,8 @@ export const validateOnion = (url: string): boolean => {
 };
 
 export const validateAddress = (address: string): "http" | "tor" | false => {
-  if (validateUrl(address)) return "http";
-  else if (validateOnion(address)) return "tor";
+  if (validateOnion(address)) return "tor";
+  else if (validateUrl(address)) return "http";
   return false;
 };
 

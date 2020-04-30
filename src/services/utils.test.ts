@@ -40,5 +40,13 @@ describe("Utils", () => {
       )
     ).toBe(true);
   });
-  test("validateAddress()", () => {});
+  test("validateAddress()", () => {
+    expect(validateAddress("http://duckduckgo.com")).toBe("http");
+    expect(
+      validateAddress(
+        "http://jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid.onion"
+      )
+    ).toBe("tor");
+    expect(validateAddress("thisisnotavalidurl")).toBe(false);
+  });
 });
