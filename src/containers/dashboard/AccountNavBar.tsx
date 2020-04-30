@@ -4,7 +4,6 @@ import {
   Alignment,
   Button,
   Navbar,
-  NavbarDivider,
   NavbarGroup,
   NavbarHeading,
 } from "@blueprintjs/core";
