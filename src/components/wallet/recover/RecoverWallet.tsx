@@ -1,8 +1,8 @@
-import InputPasswordComponent from '../../custom/InputPassword';
-import React from 'react';
-import WalletSeedInputComponent from '../../shared/WalletSeedInput';
-import { ISeed } from '../../../interfaces/ISeed';
-import { SubmitButton } from '../../styled';
+import InputPasswordComponent from "../../custom/InputPassword";
+import React from "react";
+import WalletSeedInputComponent from "../../shared/WalletSeedInput";
+import { ISeed } from "../../../interfaces/ISeed";
+import { SubmitButton } from "../../styled";
 import {
   Button,
   FormGroup,
@@ -26,7 +26,7 @@ type RecoverWalletProps = {
   onButtonClickedCb: () => void;
 };
 
-export default function RecoverWalletComponent({
+export const RecoverWalletComponent = ({
   username,
   password,
   isSeedCompleted,
@@ -38,7 +38,7 @@ export default function RecoverWalletComponent({
   setSeedLengthCb,
   onWordChangeCb,
   onButtonClickedCb,
-}: RecoverWalletProps) {
+}: RecoverWalletProps) => {
   return (
     <div data-testid="restore-wallet">
       <FormGroup label={"Username"}>
@@ -91,7 +91,7 @@ export default function RecoverWalletComponent({
           data-testid="restore-wallet-button"
           text="Restore Wallet"
           intent={Intent.PRIMARY}
-          style={{ color: "black" }}
+          style={{ color: "black", width: "200px" }}
           onClick={onButtonClickedCb}
           disabled={
             !(username !== "" && password !== "" && isSeedCompleted) ||
@@ -101,4 +101,4 @@ export default function RecoverWalletComponent({
       </SubmitButton>
     </div>
   );
-}
+};

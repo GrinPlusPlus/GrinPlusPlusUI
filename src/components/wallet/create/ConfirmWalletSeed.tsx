@@ -1,11 +1,6 @@
-import React from 'react';
-import WalletSeedInputComponent from '../../../components/shared/WalletSeedInput';
-import {
-  Button,
-  Callout,
-  Classes,
-  Intent
-  } from '@blueprintjs/core';
+import React from "react";
+import WalletSeedInputComponent from "../../../components/shared/WalletSeedInput";
+import { Button, Callout, Classes, Intent } from "@blueprintjs/core";
 
 type CreateWalletProps = {
   seedsMatched: boolean;
@@ -23,13 +18,13 @@ type CreateWalletProps = {
   onButtonClickedCb: () => void;
 };
 
-export default function WalletSeedConfirmation({
+export const WalletSeedConfirmation = ({
   seedsMatched,
   partiallyHiddenSeed,
   receivedSeed,
   onWordChangeCb,
   onButtonClickedCb,
-}: CreateWalletProps) {
+}: CreateWalletProps) => {
   return (
     <div className={Classes.DIALOG_BODY}>
       <Callout intent="none">
@@ -62,4 +57,4 @@ export default function WalletSeedConfirmation({
       </div>
     </div>
   );
-}
+};

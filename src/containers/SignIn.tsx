@@ -29,7 +29,7 @@ const StatusBarContainer = React.lazy(() =>
 
 const renderLoader = () => <LoadingComponent />;
 
-export default function SignInContainer() {
+export const SignInContainer = () => {
   return (
     <Suspense fallback={renderLoader()}>
       <div>
@@ -50,4 +50,4 @@ export default function SignInContainer() {
       </div>
     </Suspense>
   );
-}
+};

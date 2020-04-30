@@ -1,6 +1,6 @@
-import InputPasswordComponent from '../../../components/custom/InputPassword';
-import React from 'react';
-import { SubmitButton } from '../../styled';
+import InputPasswordComponent from "../../../components/custom/InputPassword";
+import React from "react";
+import { SubmitButton } from "../../styled";
 import {
   Button,
   Dialog,
@@ -27,7 +27,7 @@ type CreateWalletProps = {
   SeedValidationComponent: React.ReactNode;
 };
 
-export default function CreateWalletComponent({
+export const CreateWalletComponent = ({
   username,
   password,
   confirmation,
@@ -39,7 +39,7 @@ export default function CreateWalletComponent({
   setConfirmationCb,
   signUpButtonCb,
   SeedValidationComponent,
-}: CreateWalletProps) {
+}: CreateWalletProps) => {
   return (
     <div data-testid="create-wallet">
       <FormGroup
@@ -89,8 +89,8 @@ export default function CreateWalletComponent({
         <Button
           data-testid="create-wallet-button"
           intent={Intent.PRIMARY}
-          style={{ color: "black" }}
           text="Create Wallet"
+          style={{ color: "black", width: "200px" }}
           onClick={signUpButtonCb}
           disabled={
             !(
@@ -110,4 +110,4 @@ export default function CreateWalletComponent({
       </Dialog>
     </div>
   );
-}
+};

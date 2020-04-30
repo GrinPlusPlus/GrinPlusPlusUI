@@ -2,7 +2,6 @@ import React, { useCallback, Suspense } from "react";
 import { Card, Icon, Intent, Position, Text, Toaster } from "@blueprintjs/core";
 import { useHistory } from "react-router-dom";
 import { useStoreActions, useStoreState } from "../../hooks";
-import { LoadingComponent } from "../../components/extras/Loading";
 
 const NoAccountsComponent = React.lazy(() =>
   import("../../components/extras/NoAccounts").then((module) => ({
@@ -16,7 +15,7 @@ const OpenWalletComponent = React.lazy(() =>
   }))
 );
 
-const renderLoader = () => <LoadingComponent />;
+const renderLoader = () => null;
 
 export const OpenWalletContainer = () => {
   let history = useHistory();

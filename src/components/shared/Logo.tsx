@@ -7,6 +7,7 @@ export const LogoComponent = () => {
       <img
         src="./statics/images/grin@2x.png"
         alt=""
+        width="60px"
         style={{
           maxWidth: "60px",
           height: "auto",

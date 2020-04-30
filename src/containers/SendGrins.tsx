@@ -15,7 +15,7 @@ import {
   Position,
 } from "@blueprintjs/core";
 
-export default function SendGrinContainer() {
+export const SendGrinContainer = () => {
   let history = useHistory();
   const { token, isLoggedIn } = useStoreState((state) => state.session);
   const { showSettings } = useStoreState((state) => state.ui);
@@ -110,4 +110,4 @@ export default function SendGrinContainer() {
       </Drawer>
     </div>
   );
-}
+};
