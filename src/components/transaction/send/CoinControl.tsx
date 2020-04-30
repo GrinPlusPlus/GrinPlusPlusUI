@@ -1,5 +1,5 @@
-import React from 'react';
-import { Checkbox, Radio, RadioGroup } from '@blueprintjs/core';
+import React from "react";
+import { Checkbox, Radio, RadioGroup } from "@blueprintjs/core";
 
 type CoinControlProps = {
   strategy: string;
@@ -16,13 +16,13 @@ type CoinControlProps = {
   updateInputsCb: (commitment: string) => void;
 };
 
-export default function CoinControlComponent({
+export const CoinControlComponent = ({
   strategy,
   inputsTable,
   inputs,
   setStrategyCb,
   updateInputsCb,
-}: CoinControlProps) {
+}: CoinControlProps) => {
   const listInputs = (
     inputsList: {
       amount: number;
@@ -118,4 +118,4 @@ export default function CoinControlComponent({
       </div>
     </div>
   );
-}
+};

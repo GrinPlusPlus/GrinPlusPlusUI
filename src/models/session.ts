@@ -53,7 +53,7 @@ const session: SessionModel = {
     }
   ),
   isLoggedIn: computed((state) => {
-    return state.username?.length > 0 && state.token?.length > 0;
+    return state.username.length > 0 && state.token.length > 0;
   }),
 };
 

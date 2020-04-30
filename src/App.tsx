@@ -1,12 +1,12 @@
-import ErrorContainer from "./containers/Error";
-import InitializerContainer from "./containers/Initializer";
+import { ErrorContainer } from "./containers/Error";
+import { InitializerContainer } from "./containers/Initializer";
 import React from "react";
 import { RestoreContainer } from "./containers/Recover";
 import { SendGrinContainer } from "./containers/SendGrins";
 import { SignInContainer } from "./containers/SignIn";
 import { SignUpContainer } from "./containers/SingUp";
 import store from "./store";
-import WalletContainer from "./containers/Wallet";
+import { WalletContainer } from "./containers/Wallet";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { StoreProvider } from "easy-peasy";
 import "./App.scss";

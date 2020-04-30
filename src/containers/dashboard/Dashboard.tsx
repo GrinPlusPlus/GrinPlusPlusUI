@@ -1,15 +1,15 @@
-import Finalize from './Finalize';
-import Logs from './Logs';
-import React from 'react';
-import ReceiveUsingFile from './ReceiveUsingFile';
-import ReceiveUsingListener from './ReceiveUsingListener';
-import WalletActivitiy from './WalletActivity';
-import WalletBalance from './WalletBalance';
-import { Button, Intent } from '@blueprintjs/core';
-import { Content, Flex } from '../../components/styled';
-import { useHistory } from 'react-router-dom';
+import Finalize from "./Finalize";
+import Logs from "./Logs";
+import React from "react";
+import ReceiveUsingFile from "./ReceiveUsingFile";
+import ReceiveUsingListener from "./ReceiveUsingListener";
+import WalletActivitiy from "./WalletActivity";
+import WalletBalance from "./WalletBalance";
+import { Button, Intent } from "@blueprintjs/core";
+import { Content, Flex } from "../../components/styled";
+import { useHistory } from "react-router-dom";
 
-export default function DashboardContainer() {
+export const DashboardContainer = () => {
   let history = useHistory();
 
   return (
@@ -56,4 +56,4 @@ export default function DashboardContainer() {
       </div>
     </Content>
   );
-}
+};

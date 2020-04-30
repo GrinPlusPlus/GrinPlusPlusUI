@@ -1,8 +1,8 @@
-import CoinControlComponent from '../../components/transaction/send/CoinControl';
-import React, { useCallback } from 'react';
-import { useStoreActions, useStoreState } from '../../hooks';
+import { CoinControlComponent } from "../../components/transaction/send/CoinControl";
+import React, { useCallback } from "react";
+import { useStoreActions, useStoreState } from "../../hooks";
 
-export default function CoinControlContainer() {
+export const CoinControlContainer = () => {
   const { strategy, inputsTable, inputs } = useStoreState(
     (state) => state.sendCoinsModel
   );
@@ -35,4 +35,4 @@ export default function CoinControlContainer() {
       inputs={inputs}
     />
   );
-}
+};

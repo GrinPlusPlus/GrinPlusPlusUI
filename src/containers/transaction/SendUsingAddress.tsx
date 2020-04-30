@@ -1,8 +1,8 @@
-import classNames from 'classnames';
-import React, { useCallback } from 'react';
-import SendUsingAddressComponent from '../../components/transaction/send/SendUsingAddress';
-import { useHistory } from 'react-router-dom';
-import { useStoreActions, useStoreState } from '../../hooks';
+import classNames from "classnames";
+import React, { useCallback } from "react";
+import SendUsingAddressComponent from "../../components/transaction/send/SendUsingAddress";
+import { useHistory } from "react-router-dom";
+import { useStoreActions, useStoreState } from "../../hooks";
 import {
   Intent,
   Position,
@@ -13,7 +13,7 @@ import {
   Text,
 } from "@blueprintjs/core";
 
-export default function SendUsingAddressContainer() {
+export const SendUsingAddressContainer = () => {
   let history = useHistory();
 
   const { spendable } = useStoreState((state) => state.walletSummary);
@@ -110,4 +110,4 @@ export default function SendUsingAddressContainer() {
       </Overlay>
     </div>
   );
-}
+};

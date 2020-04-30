@@ -1,6 +1,6 @@
-import React from 'react';
-import { Flex } from '../../styled';
-import { FormGroup, InputGroup } from '@blueprintjs/core';
+import React from "react";
+import { Flex } from "../../styled";
+import { FormGroup, InputGroup } from "@blueprintjs/core";
 
 type TransactionAmountProps = {
   amount: string;
@@ -9,12 +9,12 @@ type TransactionAmountProps = {
   onAmountChangeCb: (amount: string) => void;
 };
 
-export default function TransactionAmountComponent({
+export const TransactionAmountComponent = ({
   amount,
   fee,
   spendable,
   onAmountChangeCb,
-}: TransactionAmountProps) {
+}: TransactionAmountProps) => {
   return (
     <Flex>
       <FormGroup label="Amount" labelFor="amount" inline={true}>
@@ -55,4 +55,4 @@ export default function TransactionAmountComponent({
       </FormGroup>
     </Flex>
   );
-}
+};

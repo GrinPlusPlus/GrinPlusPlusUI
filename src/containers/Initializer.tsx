@@ -5,7 +5,7 @@ import { useStoreActions, useStoreState } from "../hooks";
 import { useInterval } from "../helpers";
 import { INodeStatus } from "../interfaces/INodeStatus";
 
-export default function InitializerContainer() {
+export const InitializerContainer = () => {
   let history = useHistory();
   const { message, initializingError, isWalletInitialized } = useStoreState(
     (state) => state.wallet
@@ -55,4 +55,4 @@ export default function InitializerContainer() {
       message={message}
     />
   );
-}
+};

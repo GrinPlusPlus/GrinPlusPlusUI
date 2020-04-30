@@ -1,14 +1,15 @@
-import React from 'react';
-import { Content } from '../../styled';
+import React from "react";
+import { Content } from "../../styled";
 
 type SpendableProps = {
   spendable: number;
 };
 
-export default function SpendableComponent({ spendable }: SpendableProps) {
+export const SpendableComponent = ({ spendable }: SpendableProps) => {
   return (
     <Content>
-      Spendable: <b>{`${spendable.toFixed(6)} ツ`}</b>
+      Spendable :
+      <b style={{ marginLeft: "10px" }}>{`${spendable.toFixed(6)} ツ`}</b>
     </Content>
   );
-}
+};

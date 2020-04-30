@@ -1,15 +1,15 @@
-import React from 'react';
-import { FormGroup, InputGroup } from '@blueprintjs/core';
+import React from "react";
+import { FormGroup, InputGroup } from "@blueprintjs/core";
 
 type TransactionMessageProps = {
   message: string;
   setMessageCb: (message: string) => void;
 };
 
-export default function TransactionMessageComponent({
+export const TransactionMessageComponent = ({
   message,
   setMessageCb,
-}: TransactionMessageProps) {
+}: TransactionMessageProps) => {
   return (
     <FormGroup helperText="This message is optional.">
       <InputGroup
@@ -23,4 +23,4 @@ export default function TransactionMessageComponent({
       />
     </FormGroup>
   );
-}
+};
