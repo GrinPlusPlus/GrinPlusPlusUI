@@ -2,25 +2,6 @@ import { Intent } from "@blueprintjs/core";
 import { ISeed } from "./interfaces/ISeed";
 import { useEffect, useRef } from "react";
 
-const keys: any = {
-};
-
-enum StateKeys = {
-  FULLY_SYNCED: 'Running',
-    NOT_CONNECTED: 'Waiting for Peers',
-      DOWNLOADING_TXHASHSET: `2/4 Downloading State (${getPercentage(downloaded, totalSize)}%)`,
-        PROCESSING_TXHASHSET: `3/4 Validating State (${processed}%)`,
-          SYNCING_HEADERS: `1/4 Syncing Headers (${getPercentage(
-            headerHeight,
-            networkHeight
-          )}%)`,
-
-            SYNCING_BLOCKS: `4/4 Syncing Blocks (${getBlockPercentage(
-              blockHeight,
-              headerHeight
-            )}%)`,
-
-}
 export const getPercentage = function (
   numerator = 0,
   denominator = 0
