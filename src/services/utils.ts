@@ -96,7 +96,11 @@ export const saveAs = async (
   return { canceled: results.canceled, filePath: results.filePath };
 };
 
-export const cleanOnionURL = (url: string): string =>{
+export const cleanOnionURL = (url: string): string => {
+  if (url.length === 56) {
+    const v3 = "[a-z2-7]{56}";
+    if (new RegExp(`${v3}`).test(url)) return url;
+  }
   const parsed = new URL(url);
   return parsed.hostname.replace(".onion","");
 }

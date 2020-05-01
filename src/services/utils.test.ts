@@ -52,14 +52,17 @@ describe("Utils", () => {
   });
   test("cleanOnionURL()", () => {
     expect(
+      cleanOnionURL("jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid")
+    ).toEqual("jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid");
+    expect(
       cleanOnionURL(
         "http://jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid.onion"
       )
-    ).toBe("jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid");
+    ).toEqual("jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid");
     expect(
       cleanOnionURL(
         "http://jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid.onion/"
       )
-    ).toBe("jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid");
+    ).toEqual("jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid");
   });
 });
