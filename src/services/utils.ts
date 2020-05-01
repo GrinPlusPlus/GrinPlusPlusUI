@@ -95,3 +95,8 @@ export const saveAs = async (
   });
   return { canceled: results.canceled, filePath: results.filePath };
 };
+
+export const cleanOnionURL = (url: string): string =>{
+  const parsed = new URL(url);
+  return parsed.hostname.replace(".onion","");
+}

@@ -5,6 +5,7 @@ import {
   validateUrl,
   validateOnion,
   validateAddress,
+  cleanOnionURL,
 } from "./utils";
 
 describe("Utils", () => {
@@ -48,5 +49,17 @@ describe("Utils", () => {
       )
     ).toBe("tor");
     expect(validateAddress("thisisnotavalidurl")).toBe(false);
+  });
+  test("cleanOnionURL()", () => {
+    expect(
+      cleanOnionURL(
+        "http://jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid.onion"
+      )
+    ).toBe("jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid");
+    expect(
+      cleanOnionURL(
+        "http://jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid.onion/"
+      )
+    ).toBe("jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid");
   });
 });

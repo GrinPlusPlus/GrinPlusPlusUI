@@ -331,20 +331,24 @@ const sendCoinsModel: SendCoinsModel = {
       const defaultSettings = getStoreState().settings.defaultSettings;
       const updateLogs = getStoreActions().wallet.updateLogs;
 
-      const type = utilsService.validateAddress(payload.address);
+      let destinationAddress = payload.address;
+      const type = utilsService.validateAddress(destinationAddress);
       if (!type) {
         actions.setWaitingResponse(false);
         updateLogs(
-          `ERROR: Destination address is invalid (${payload.address})`
+          `ERROR: Destination address is invalid (${destinationAddress})`
         );
         return `Destination address is invalid`;
       }
+      if (type === "tor") {
+        destinationAddress = utilsService.cleanOnionURL(destinationAddress);
+      }
 
       require("electron-log").info(
-        `Trying to send grins using: ${type} to adress: ${payload.address}`
+        `Trying to send grins using: ${type} to adress: ${destinationAddress}`
       );
 
-      updateLogs(`Sending ${payload.amount} ツ to ${payload.address} ...`);
+      updateLogs(`Sending ${payload.amount} ツ to ${destinationAddress} ...`);
 
       // Let's clean a bit
       actions.setInitialValues();
@@ -363,7 +367,7 @@ const sendCoinsModel: SendCoinsModel = {
           payload.inputs,
           payload.method,
           payload.grinJoinAddress,
-          payload.address
+          destinationAddress
         );
         if (typeof response === "string") {
           actions.setWaitingResponse(false);
@@ -374,7 +378,7 @@ const sendCoinsModel: SendCoinsModel = {
         updateLogs(`${payload.amount} ツ SENT😁👍`);
         return true;
       } else if (type === "http") {
-        const address = payload.address.replace(/\/?$/, "/");
+        const address = destinationAddress.replace(/\/?$/, "/");
 
         if (!(await foreingService.RPC.check(address))) {
           actions.setWaitingResponse(false);
