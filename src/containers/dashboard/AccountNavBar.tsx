@@ -51,8 +51,8 @@ export const AccountNavBarContainer = () => {
           minimal={true}
           large={true}
           icon="log-out"
-          onClick={() => {
-            logout(token);
+          onClick={async () => {
+            await logout(token);
           }}
         />
       </NavbarGroup>
