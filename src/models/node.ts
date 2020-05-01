@@ -3,6 +3,7 @@ import { getStateColor, getStateText } from "../helpers";
 import { Injections } from "../store";
 import { StoreModel } from ".";
 import { INodeStatus } from "../interfaces/INodeStatus";
+import { IPeer } from "../interfaces/IPeer";
 
 export interface NodeSummaryModel {
   status: string;
@@ -16,7 +17,7 @@ export interface NodeSummaryModel {
   };
   userAgent: string;
   updateInterval: number;
-  connectedPeers: { address: string; agent: string; direction: string }[];
+  connectedPeers: IPeer[];
   updateStatus: Action<
     NodeSummaryModel,
     | {
@@ -38,16 +39,8 @@ export interface NodeSummaryModel {
     | undefined
   >;
   checkStatus: Thunk<NodeSummaryModel, undefined, Injections, StoreModel>;
-  setConnectedPeers: Action<
-    NodeSummaryModel,
-    { address: string; agent: string; direction: string }[]
-  >;
-  updateConnectedPeers: Thunk<
-    NodeSummaryModel,
-    undefined,
-    Injections,
-    StoreModel
-  >;
+  getConnectedPeers: Thunk<NodeSummaryModel, undefined, Injections, StoreModel>;
+  setConnectedPeers: Action<NodeSummaryModel, IPeer[]>;
 }
 
 const nodeSummary: NodeSummaryModel = {
@@ -100,8 +93,12 @@ const nodeSummary: NodeSummaryModel = {
       ).getStatus();
     }
   ),
-  updateConnectedPeers: thunk(
-    async (actions, payload, { injections, getStoreState }) => {
+  getConnectedPeers: thunk(
+    async (
+      actions,
+      payload,
+      { injections, getStoreState }
+    ): Promise<IPeer[]> => {
       const { nodeService } = injections;
       const apiSettings = getStoreState().settings.defaultSettings;
       const api = new nodeService.REST(
@@ -110,9 +107,7 @@ const nodeSummary: NodeSummaryModel = {
         apiSettings.ip,
         apiSettings.mode
       );
-      await api
-        .getConnectedPeers()
-        .then((peers) => actions.setConnectedPeers(peers));
+      return await api.getConnectedPeers();
     }
   ),
   setConnectedPeers: action((state, peers) => {

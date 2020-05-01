@@ -1,10 +1,15 @@
 import React from "react";
+import { IPeer } from "../../interfaces/IPeer";
 
-type ConnectedPeersProps = { peers: JSX.Element[] };
+export type ConnectedPeersProps = { peers: IPeer[] };
 
 export const ConnectedPeersComponent = ({ peers }: ConnectedPeersProps) => {
   return (
-    <table style={{ width: "100%" }}>
+    <table
+      className="transactions"
+      style={{ width: "100%" }}
+      data-testid="peer-table"
+    >
       <tbody>
         <tr>
           <td></td>
@@ -18,7 +23,15 @@ export const ConnectedPeersComponent = ({ peers }: ConnectedPeersProps) => {
             <b>Direction</b>
           </td>
         </tr>
-        {peers}
+        {peers.map((peer: IPeer) => {
+          return (
+            <tr key={peer.address}>
+              <td>{peer.address}</td>
+              <td>{peer.agent}</td>
+              <td>{peer.direction}</td>
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );

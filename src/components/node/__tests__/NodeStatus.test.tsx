@@ -1,6 +1,6 @@
 import { NodeStatusComponent, NodeStatusProps } from "../NodeStatus";
 import React from "react";
-import { fireEvent, render, waitForElement } from "@testing-library/react";
+import { render } from "@testing-library/react";
 
 function renderNodeStatusComponent(props: Partial<NodeStatusProps> = {}) {
   const defaultProps: NodeStatusProps = {

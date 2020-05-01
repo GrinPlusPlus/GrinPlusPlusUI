@@ -9,6 +9,8 @@ import store from "./store";
 import { WalletContainer } from "./containers/Wallet";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { StoreProvider } from "easy-peasy";
+import { StatusContainer } from "./containers/Status";
+
 import "./App.scss";
 
 const App: React.FC = () => {
@@ -30,6 +32,9 @@ const App: React.FC = () => {
           </Route>
           <Route path="/login">
             <SignInContainer />
+          </Route>
+          <Route path="/status">
+            <StatusContainer />
           </Route>
           <Route path="/error">
             <ErrorContainer />

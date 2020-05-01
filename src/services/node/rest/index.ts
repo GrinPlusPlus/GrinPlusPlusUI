@@ -1,5 +1,6 @@
 import { BaseApi } from "./../../api";
 import { INodeStatus } from "../../../interfaces/INodeStatus";
+import { IPeer } from "../../../interfaces/IPeer";
 
 export class NodeAPI extends BaseApi {
   public get url(): string {
@@ -48,9 +49,7 @@ export class NodeAPI extends BaseApi {
       .catch((error) => false);
   }
 
-  public async getConnectedPeers(): Promise<
-    { address: string; agent: string; direction: string }[]
-  > {
+  public async getConnectedPeers(): Promise<IPeer[]> {
     return await this.makeRESTRequest(
       this.getRequestURL("connected_peers"),
       "get"
