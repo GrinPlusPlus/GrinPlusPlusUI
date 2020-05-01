@@ -4,7 +4,7 @@ type ConnectedPeersProps = { peers: JSX.Element[] };
 
 export const ConnectedPeersComponent = ({ peers }: ConnectedPeersProps) => {
   return (
-    <table style={{ width: "400px" }}>
+    <table style={{ width: "100%" }}>
       <tbody>
         <tr>
           <td></td>

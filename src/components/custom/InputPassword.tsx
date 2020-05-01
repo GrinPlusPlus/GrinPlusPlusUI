@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, InputGroup, Intent } from "@blueprintjs/core";
 
-type InputPasswordProps = {
+export type InputPasswordProps = {
   password: string;
   cb: (password: string) => void;
   autoFocus: boolean;
@@ -19,6 +19,7 @@ export const InputPasswordComponent = ({
   const [showPassword, setShowPassword] = useState(false);
   return (
     <InputGroup
+      data-testid="password-field"
       className="bp3-dark"
       style={{ backgroundColor: "#21242D" }}
       type={showPassword ? "text" : "password"}
