@@ -20,7 +20,7 @@ describe("<ConnectedPeersComponent />", () => {
     const table = (await findByTestId("peer-table")) as HTMLTableElement;
     expect(table.rows.length).toBe(2);
     expect(table.rows[1].outerHTML).toBe(
-      "<tr><td>127.0.0.1</td><td>Grin++</td><td>outbound</td></tr>"
+      '<tr style="cursor: default;"><td>127.0.0.1</td><td>Grin++</td><td>outbound</td></tr>'
     );
   });
 });

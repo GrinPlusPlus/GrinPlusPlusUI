@@ -7,25 +7,23 @@ export const ConnectedPeersComponent = ({ peers }: ConnectedPeersProps) => {
   return (
     <table
       className="transactions"
-      style={{ width: "100%" }}
+      style={{ width: "500px" }}
       data-testid="peer-table"
     >
       <tbody>
         <tr>
-          <td></td>
-          <td>
-            <b>Address</b>
-          </td>
-          <td>
-            <b>Agent</b>
-          </td>
-          <td>
-            <b>Direction</b>
-          </td>
+          <th>Address</th>
+          <th>Agent</th>
+          <th>Direction</th>
         </tr>
         {peers.map((peer: IPeer) => {
           return (
-            <tr key={peer.address}>
+            <tr
+              key={peer.address}
+              style={{
+                cursor: "default",
+              }}
+            >
               <td>{peer.address}</td>
               <td>{peer.agent}</td>
               <td>{peer.direction}</td>

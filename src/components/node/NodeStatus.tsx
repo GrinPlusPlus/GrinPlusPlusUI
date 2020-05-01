@@ -12,18 +12,18 @@ export const NodeStatusComponent = ({
   network,
 }: NodeStatusProps) => {
   return (
-    <table style={{ width: "100%" }}>
+    <table className="transactions" style={{ width: "500px" }}>
       <tbody>
         <tr>
-          <td>
+          <th>
             <b>Headers</b>
-          </td>
-          <td>
+          </th>
+          <th>
             <b>Blocks</b>
-          </td>
-          <td>
+          </th>
+          <th>
             <b>Network</b>
-          </td>
+          </th>
         </tr>
         <tr>
           <td data-testid="headers">{headers}</td>

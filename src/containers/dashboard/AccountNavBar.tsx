@@ -39,6 +39,12 @@ export const AccountNavBarContainer = () => {
       <NavbarGroup align={Alignment.RIGHT} className="bp3-dark">
         <Button
           minimal={true}
+          icon="ip-address"
+          onClick={() => history.push("/Status")}
+        />
+        <NavbarDivider />
+        <Button
+          minimal={true}
           large={true}
           icon="log-out"
           onClick={() => {
