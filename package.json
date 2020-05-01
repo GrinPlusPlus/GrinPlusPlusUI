@@ -20,7 +20,7 @@
     "classnames": "^2.2.6",
     "custom-electron-titlebar": "^3.2.2-hotfix62",
     "easy-peasy": "^3.3.0",
-    "electron-log": "^4.1.1",
+    "electron-log": "^4.1.2",
     "electron-updater": "^4.3.1",
     "immutability-helper": "^3.0.2",
     "node-fetch": "^2.6.0",
