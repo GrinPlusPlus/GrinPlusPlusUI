@@ -186,9 +186,7 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "electron": "<rootDir>/mocks/electronMock.js",
-      "fs": "<rootDir>/mocks/fsMock.js",
-      "child_process": "<rootDir>/mocks/childProcessMock.js"
+      "electron": "<rootDir>/mocks/electronMock.js"
     }
   }
 }
