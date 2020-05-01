@@ -6,10 +6,14 @@ import {
   Navbar,
   NavbarGroup,
   NavbarHeading,
+  NavbarDivider,
 } from "@blueprintjs/core";
 import { WalletUsername } from "./../../components/styled";
+import { useHistory } from "react-router-dom";
 
 export const AccountNavBarContainer = () => {
+  let history = useHistory();
+
   const { username, token } = useStoreState((state) => state.session);
   const { toggleSettings } = useStoreActions((actions) => actions.ui);
   const { logout } = useStoreActions((actions) => actions.session);
