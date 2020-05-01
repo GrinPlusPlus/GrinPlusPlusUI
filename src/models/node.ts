@@ -1,9 +1,14 @@
-import { Action, action, Thunk, thunk } from "easy-peasy";
-import { getStateColor, getStateText } from "../helpers";
-import { Injections } from "../store";
-import { StoreModel } from ".";
-import { INodeStatus } from "../interfaces/INodeStatus";
-import { IPeer } from "../interfaces/IPeer";
+import {
+  Action,
+  action,
+  Thunk,
+  thunk
+  } from 'easy-peasy';
+import { getStateColor, getStateText } from '../helpers';
+import { Injections } from '../store';
+import { INodeStatus } from '../interfaces/INodeStatus';
+import { IPeer } from '../interfaces/IPeer';
+import { StoreModel } from '.';
 
 export interface NodeSummaryModel {
   status: string;
@@ -17,6 +22,7 @@ export interface NodeSummaryModel {
   };
   userAgent: string;
   updateInterval: number;
+  waitingResponse: boolean;
   connectedPeers: IPeer[];
   updateStatus: Action<
     NodeSummaryModel,
@@ -41,6 +47,7 @@ export interface NodeSummaryModel {
   checkStatus: Thunk<NodeSummaryModel, undefined, Injections, StoreModel>;
   getConnectedPeers: Thunk<NodeSummaryModel, undefined, Injections, StoreModel>;
   setConnectedPeers: Action<NodeSummaryModel, IPeer[]>;
+  setWaitingResponse: Action<NodeSummaryModel, boolean>;
 }
 
 const nodeSummary: NodeSummaryModel = {
@@ -52,6 +59,7 @@ const nodeSummary: NodeSummaryModel = {
   userAgent: "",
   updateInterval: 1000,
   connectedPeers: [],
+  waitingResponse: false,
   updateStatus: action((state, node) => {
     if (node === undefined) {
       state.status = getStateText("");
@@ -116,6 +124,9 @@ const nodeSummary: NodeSummaryModel = {
     for (let index = 0; index < peers.length; index++) {
       state.connectedPeers.push(peers[index]);
     }
+  }),
+  setWaitingResponse: action((state, waiting) => {
+    state.waitingResponse = waiting;
   }),
 };
 

@@ -1,6 +1,6 @@
-import { Intent } from "@blueprintjs/core";
-import { ISeed } from "./interfaces/ISeed";
-import { useEffect, useRef } from "react";
+import { Intent } from '@blueprintjs/core';
+import { ISeed } from './interfaces/ISeed';
+import { useEffect, useRef } from 'react';
 
 export const getPercentage = function(
   numerator?: number,
@@ -44,6 +44,9 @@ export const getStateText = function(
   totalSize?: number,
   processed?: number
 ): string {
+
+  require("electron-log").info(state);
+
   if (!state) return "Not Connected";
   switch (state) {
     case "FULLY_SYNCED":

@@ -16,53 +16,42 @@ const app = electron.app;
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
-function isProcessRunning(processName, cb) {
-  const cmd = (() => {
-    switch (process.platform) {
-      case "win32":
-        return `tasklist`;
-      case "darwin":
-        return `ps -ax`;
-      case "linux":
-        return `ps -A`;
-      default:
-        return false;
-    }
-  })();
-  require("child_process").exec(cmd, (err, stdout, stderr) => {
-    cb(stdout.toLowerCase().indexOf(processName.toLowerCase()) > -1);
-    log.error(stderr);
-    log.error(err);
-  });
+function isRunning(win, mac, linux) {
+  const plat = process.platform
+  const cmd = plat == 'win32' ? 'tasklist' : (plat == 'darwin' ? 'ps -ax | grep ' + mac : (plat == 'linux' ? 'ps -A' : ''))
+  const proc = plat == 'win32' ? win : (plat == 'darwin' ? mac : (plat == 'linux' ? linux : ''))
+  if (cmd === '' || proc === '') {
+    throw new Error("Unknown platform")
+  }
+  var stdout = require('child_process').execSync(cmd).toString();
+  return (stdout.toLowerCase().indexOf(proc.toLowerCase()) > -1)
 }
 
-function closeGrinNode(callback) {
-  isProcessRunning("GrinNode", (status) => {
-    if (status == true) {
-      const filePath = require("path").join(
-        require("electron").app.getAppPath(),
-        "defaults.json"
-      );
-      let settings = JSON.parse(require("fs").readFileSync(filePath, "utf8"));
-      let request = require("request");
-      let options = {
-        url: `http://${settings.ip}:${
-          settings.floonet ? settings.ports.node + 10000 : settings.ports.node
+function closeGrinNode(cb) {
+  var running = isRunning('GrinNode.exe', 'GrinNode', 'GrinNode');
+  log.error(running);
+  if (!running) { log.info("GrinNode does not appear to be running. Calling app.quit()"); }
+  else {
+    const filePath = require("path").join(
+      require("electron").app.getAppPath(),
+      "defaults.json"
+    );
+    let settings = JSON.parse(require("fs").readFileSync(filePath, "utf8"));
+    let request = require("request");
+    let options = {
+      url: `http://${settings.ip}:${
+        settings.floonet ? settings.ports.node + 10000 : settings.ports.node
         }/v1/shutdown`,
-        method: "post",
-      };
-      request(options, (error, response, body) => {
-        log.info("Shutdown API called");
-        log.error(error);
-        log.info(response);
-        log.info(body);
-        callback();
-      });
-    } else {
-      log.info("GrinNode does not appear to be running. Calling app.quit()");
-      callback();
-    }
-  });
+      method: "post",
+    };
+    request(options, (error, response, body) => {
+      log.info("Shutdown API called");
+      log.error(error);
+      log.info(response);
+      log.info(body);
+    });
+  }
+  cb();
 }
 
 autoUpdater.on("error", () => {
@@ -111,7 +100,6 @@ function createWindow() {
     height: 790,
     resizable: false,
     frame: false,
-    titleBarStyle: "hidden",
     backgroundColor: "#0D0D0D",
     title: "Grin++ v" + app.getVersion(),
     webPreferences: {

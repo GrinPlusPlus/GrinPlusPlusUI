@@ -1,7 +1,7 @@
-import React, { Suspense } from "react";
-import { useStoreActions, useStoreState } from "../../hooks";
-import { useInterval } from "../../helpers";
-import { INodeStatus } from "../../interfaces/INodeStatus";
+import React, { Suspense } from 'react';
+import { INodeStatus } from '../../interfaces/INodeStatus';
+import { useInterval } from '../../helpers';
+import { useStoreActions, useStoreState } from '../../hooks';
 
 const StatusBarComponent = React.lazy(() =>
   import("../../components/shared/StatusBar").then((module) => ({
@@ -19,16 +19,19 @@ export const StatusBarContainer = () => {
     blocks,
     network,
     updateInterval,
+    waitingResponse,
   } = useStoreState((state) => state.nodeSummary);
 
-  const { checkStatus, updateStatus } = useStoreActions(
+  const { checkStatus, updateStatus, setWaitingResponse } = useStoreActions(
     (actions) => actions.nodeSummary
   );
 
   useInterval(async () => {
+    if (waitingResponse) return;
+    setWaitingResponse(true);
     await checkStatus()
-      .then((status: INodeStatus) => updateStatus(status))
-      .catch(() => updateStatus(undefined));
+      .then((status: INodeStatus) => { setWaitingResponse(false); updateStatus(status); })
+      .catch(() => { setWaitingResponse(false); updateStatus(undefined);})
   }, updateInterval);
 
   return (
