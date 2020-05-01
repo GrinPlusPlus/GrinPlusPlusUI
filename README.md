@@ -40,7 +40,7 @@ npm run dev
 
 #### Now, Let's talk about Grin a little bit
 
-Grin is implements a Mimblewimble blockchain and fills the gaps required for a full blockchain and cryptocurrency deployment. The main goal and characteristics of the Grin project are:
+Grin is a lightweight implementation of the Mimblewimble protocol. The main goal and characteristics of the Grin project are:
 
 - **Privacy by default**. This enables complete fungibility without precluding the ability to selectively disclose information as needed.
 - **Scales** mostly with the number of users and minimally with the number of transactions (<100 byte kernel), resulting in a large space saving compared to other blockchains.
