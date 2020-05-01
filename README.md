@@ -29,9 +29,7 @@ git submodule update --init
 cd GrinPlusPlus
 rm -Rf buiLd
 mkdir build && cd build
-export CC=gcc-9 && export CXX=g++-9
-clear
-cmake ..
+CC=gcc-9 CXX=g++-9 cmake ..
 cmake --build . --config RelWithDebInfo
 cd ..
 npm install
