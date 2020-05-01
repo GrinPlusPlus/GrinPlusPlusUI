@@ -13,6 +13,8 @@ export interface ReceiveCoinsModel {
   setResponsesDestination: Action<ReceiveCoinsModel, string>;
   receiveTx: Thunk<ReceiveCoinsModel, File[], Injections, StoreModel>;
   getAddress: Thunk<ReceiveCoinsModel, string, Injections, StoreModel>;
+  waitingResponse: boolean;
+  setWaitingResponse: Action<ReceiveCoinsModel, boolean>;
 }
 
 const receiveCoinsModel: ReceiveCoinsModel = {
@@ -83,6 +85,12 @@ const receiveCoinsModel: ReceiveCoinsModel = {
   ),
   getAddress: thunk(
     async (actions, token, { injections, getStoreState, getStoreActions }) => {
+      if (
+        getStoreState().walletSummary.waitingResponse ||
+        getStoreState().session.address.length === 56
+      )
+        return;
+      actions.setWaitingResponse(true);
       const { ownerService } = injections;
       const apiSettings = getStoreState().settings.defaultSettings;
       const address = await new ownerService.RPC(
@@ -92,8 +100,13 @@ const receiveCoinsModel: ReceiveCoinsModel = {
         apiSettings.mode
       ).getWalletAddress(token);
       getStoreActions().session.setAddress(address);
+      actions.setWaitingResponse(false);
     }
   ),
+  waitingResponse: false,
+  setWaitingResponse: action((state, waiting) => {
+    state.waitingResponse = waiting;
+  }),
 };
 
 export default receiveCoinsModel;

@@ -1,13 +1,13 @@
-import { FinalizeContainer } from "./Finalize";
-import { LogsContainer } from "./Logs";
-import React from "react";
-import { ReceiveUsingFileContainer } from "./ReceiveUsingFile";
-import { ReceiveUsingListenerContainer } from "./ReceiveUsingListener";
-import { WalletActivitiyContainer } from "./WalletActivity";
-import { WalletBalanceContainer } from "./WalletBalance";
-import { Button, Intent } from "@blueprintjs/core";
-import { Content, Flex } from "../../components/styled";
-import { useHistory } from "react-router-dom";
+import React from 'react';
+import { Button, Intent } from '@blueprintjs/core';
+import { Content, Flex } from '../../components/styled';
+import { FinalizeContainer } from './Finalize';
+import { LogsContainer } from './Logs';
+import { ReceiveUsingFileContainer } from './ReceiveUsingFile';
+import { ReceiveUsingListenerContainer } from './ReceiveUsingListener';
+import { useHistory } from 'react-router-dom';
+import { WalletActivitiyContainer } from './WalletActivity';
+import { WalletBalanceContainer } from './WalletBalance';
 
 export const DashboardContainer = () => {
   let history = useHistory();

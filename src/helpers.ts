@@ -44,9 +44,6 @@ export const getStateText = function(
   totalSize?: number,
   processed?: number
 ): string {
-
-  require("electron-log").info(state);
-
   if (!state) return "Not Connected";
   switch (state) {
     case "FULLY_SYNCED":
@@ -79,7 +76,7 @@ export const getStateColor = function(state: string): string {
   } else if (state === "FULLY_SYNCED") {
     return Intent.SUCCESS;
   }
-  return Intent.DANGER;
+  return Intent.WARNING;
 };
 
 export const generateEmptySeed = function(): ISeed[] {

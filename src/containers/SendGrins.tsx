@@ -1,9 +1,9 @@
-import React, { Suspense } from "react";
-import { Redirect } from "react-router-dom";
-import { useStoreActions, useStoreState } from "../hooks";
+import React, { Suspense } from 'react';
+import { LoadingComponent } from '../components/extras/Loading';
+import { Redirect } from 'react-router-dom';
+import { useInterval } from '../helpers';
+import { useStoreActions, useStoreState } from '../hooks';
 
-import { LoadingComponent } from "../components/extras/Loading";
-import { useInterval } from "../helpers";
 
 const NavBarContainer = React.lazy(() =>
   import("./common/NavigationBar").then((module) => ({
@@ -31,7 +31,7 @@ export const SendGrinContainer = () => {
     (state) => state.walletSummary
   );
 
-  const { getWalletSummary } = useStoreActions(
+  const { updateWalletSummary: getWalletSummary } = useStoreActions(
     (actions) => actions.walletSummary
   );
 

@@ -1,8 +1,9 @@
-import { AlertComponent } from "../components/extras/Alert";
-import React, { useEffect, Suspense } from "react";
-import { Redirect } from "react-router-dom";
-import { useStoreActions, useStoreState } from "../hooks";
-import { LoadingComponent } from "../components/extras/Loading";
+import React, { Suspense, useEffect } from 'react';
+import { AlertComponent } from '../components/extras/Alert';
+import { LoadingComponent } from '../components/extras/Loading';
+import { Redirect } from 'react-router-dom';
+import { useInterval } from '../helpers';
+import { useStoreActions, useStoreState } from '../hooks';
 
 const AccountNavBarContainer = React.lazy(() =>
   import("./dashboard/AccountNavBar").then((module) => ({
@@ -43,25 +44,17 @@ export const WalletContainer = () => {
   const { alert } = useStoreState((state) => state.ui);
 
   const { setAlert } = useStoreActions((actions) => actions.ui);
-  const { getWalletSummary } = useStoreActions(
+  const { updateWalletSummary } = useStoreActions(
     (actions) => actions.walletSummary
   );
   const { getAddress } = useStoreActions(
     (actions) => actions.receiveCoinsModel
   );
-
-  useEffect(() => {
-    async function init(t: string) {
-      await getWalletSummary(t);
-    }
-    init(token);
-    const interval = setInterval(async () => {
-      await getWalletSummary(token);
-    }, updateSummaryInterval);
-
-    return () => clearInterval(interval);
-  }, [getWalletSummary, token, updateSummaryInterval]);
-
+  
+  useInterval(async () => {
+    await updateWalletSummary(token);
+   }, updateSummaryInterval);
+  
   useEffect(() => {
     async function init(t: string) {
       await getAddress(t);
@@ -74,7 +67,7 @@ export const WalletContainer = () => {
       return () => clearInterval(interval);
     }
   }, [address, getAddress, token, retryInterval]);
-
+ 
   return (
     <Suspense fallback={renderLoader()}>
       {!isLoggedIn ? <Redirect to="/login" /> : null}
