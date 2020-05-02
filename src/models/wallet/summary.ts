@@ -75,7 +75,7 @@ const walletSummary: WalletSummaryModel = {
   immature: 0,
   unconfirmed: 0,
   locked: 0,
-  updateSummaryInterval: 1000,
+  updateSummaryInterval: 5000,
   selectedTx: -1,
   transactions: undefined,
   setSelectedTx: action((state, id) => {
