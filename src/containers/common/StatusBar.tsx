@@ -1,7 +1,7 @@
-import React, { Suspense, useEffect } from "react";
-import { useStoreActions, useStoreState } from "../../hooks";
-import { useHistory } from "react-router-dom";
-import { Alert, Intent } from "@blueprintjs/core";
+import React, { Suspense, useEffect } from 'react';
+import { Alert, Intent } from '@blueprintjs/core';
+import { useHistory } from 'react-router-dom';
+import { useStoreActions, useStoreState } from '../../hooks';
 
 const StatusBarComponent = React.lazy(() =>
   import("../../components/shared/StatusBar").then((module) => ({
@@ -20,7 +20,7 @@ export const StatusBarContainer = () => {
     network,
     updateInterval,
   } = useStoreState((state) => state.nodeSummary);
-  const { isNodeRunning } = useStoreState((state) => state.wallet);
+  const { nodeHealthCheck } = useStoreState((state) => state.wallet);
   const { checkStatus, updateStatus } = useStoreActions(
     (actions) => actions.nodeSummary
   );
@@ -62,7 +62,7 @@ export const StatusBarContainer = () => {
       <Alert
         className="bp3-dark"
         confirmButtonText="Restart Wallet"
-        isOpen={!isNodeRunning}
+        isOpen={!nodeHealthCheck}
         intent={Intent.WARNING}
         onClose={() => history.push("/")}
       >

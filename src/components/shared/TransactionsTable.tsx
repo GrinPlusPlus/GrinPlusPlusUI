@@ -1,9 +1,14 @@
-import React from "react";
-import { cleanTxType, cutAdddres, getTxIcon, getTxIntent } from "../../helpers";
-import { Icon, Text } from "@blueprintjs/core";
-import { ITransaction } from "../../interfaces/ITransaction";
-import { TansactionDetailsComponent } from "../transaction/Details";
-import { formatDistance } from "date-fns";
+import React from 'react';
+import {
+  cleanTxType,
+  cutAdddres,
+  getTxIcon,
+  getTxIntent
+  } from '../../helpers';
+import { formatDistance } from 'date-fns';
+import { Icon, Text } from '@blueprintjs/core';
+import { ITransaction } from '../../interfaces/ITransaction';
+import { TansactionDetailsComponent } from '../transaction/Details';
 
 type TransactionsTableProps = {
   transactions: ITransaction[];
@@ -75,9 +80,7 @@ export const TransactionsTableComponent = ({
                 transaction.slateMessage ? transaction.slateMessage : "n/a"
               }
               fee={transaction.fee.toFixed(8)}
-              date={`${date.substring(0, 10)} ${date.substring(
-                date.length - 8
-              )}`}
+              date={date}
               onCancelTransactionButtonClickedCb={
                 onCancelTransactionButtonClickedCb
               }

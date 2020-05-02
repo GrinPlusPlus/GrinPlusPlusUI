@@ -1,12 +1,16 @@
-import { Action, action, Thunk, thunk } from "easy-peasy";
-import { Injections } from "../../store";
-import { StoreModel } from "..";
+import {
+  Action,
+  action,
+  Thunk,
+  thunk
+  } from 'easy-peasy';
+import { Injections } from '../../store';
+import { StoreModel } from '..';
 
 export interface SigninModel {
   username: string;
   password: string;
   accounts: string[] | undefined;
-  retryInterval: number;
   waitingResponse: boolean;
   setUsername: Action<SigninModel, string>;
   setPassword: Action<SigninModel, string>;
@@ -28,7 +32,6 @@ const openWallet: SigninModel = {
   username: "",
   password: "",
   accounts: undefined,
-  retryInterval: 1000,
   waitingResponse: false,
   setUsername: action((state, username) => {
     state.username = username;
