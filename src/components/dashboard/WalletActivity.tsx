@@ -1,8 +1,8 @@
-import React from 'react';
-import TransactionsTableComponent from '../shared/TransactionsTable';
-import { ITransaction } from '../../interfaces/ITransaction';
-import { Tab, Tabs } from '@blueprintjs/core';
-import { Title } from '../styled';
+import React from "react";
+import { TransactionsTableComponent } from "../shared/TransactionsTable";
+import { ITransaction } from "../../interfaces/ITransaction";
+import { Tab, Tabs } from "@blueprintjs/core";
+import { Title } from "../styled";
 
 type WalletActivityProps = {
   all: ITransaction[];
@@ -17,7 +17,7 @@ type WalletActivityProps = {
   onRepostTransactionButtonClickedCb: (transactionId: number) => void;
 };
 
-export default function WalletActivityComponent({
+export const WalletActivityComponent = ({
   all,
   received,
   sent,
@@ -28,7 +28,7 @@ export default function WalletActivityComponent({
   openTransactionCb,
   onCancelTransactionButtonClickedCb,
   onRepostTransactionButtonClickedCb,
-}: WalletActivityProps) {
+}: WalletActivityProps) => {
   return (
     <div>
       <Title>Transactions</Title>
@@ -157,4 +157,4 @@ export default function WalletActivityComponent({
       </Tabs>
     </div>
   );
-}
+};

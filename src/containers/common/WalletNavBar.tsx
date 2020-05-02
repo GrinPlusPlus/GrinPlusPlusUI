@@ -23,6 +23,12 @@ export const WalletNavBarContainer = () => {
             toggleSettings();
           }}
         />
+        <NavbarDivider />
+        <Button
+          minimal={true}
+          icon="ip-address"
+          onClick={() => history.push("/status")}
+        />
       </NavbarGroup>
       <NavbarGroup align={Alignment.RIGHT}>
         <Button
@@ -34,7 +40,7 @@ export const WalletNavBarContainer = () => {
         <NavbarDivider />
         <Button
           minimal={true}
-          icon="heatmap"
+          icon="layers"
           text="Restore"
           onClick={() => history.push("/restore")}
         />

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Button, Intent } from '@blueprintjs/core';
+import React from "react";
+import { Button, Intent } from "@blueprintjs/core";
 
 type SendGrinsButtonsProps = {
   amount: number;
@@ -9,13 +9,13 @@ type SendGrinsButtonsProps = {
   onSendButtonClickedCb: () => void;
 };
 
-export default function SendUsingAddressComponent({
+export const SendUsingAddressComponent = ({
   amount,
   spendable,
   inputsSelected,
   isAddressValid,
   onSendButtonClickedCb,
-}: SendGrinsButtonsProps) {
+}: SendGrinsButtonsProps) => {
   return (
     <Button
       intent={Intent.PRIMARY}
@@ -29,4 +29,4 @@ export default function SendUsingAddressComponent({
       Send
     </Button>
   );
-}
+};

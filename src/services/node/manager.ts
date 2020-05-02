@@ -46,21 +46,6 @@ export const getConfigFilePath = function(floonet: boolean = false): string {
   return `${getNodeDataPath(floonet)}/server_config.json`;
 };
 
-export const getConfigValue = function(file: string, property: string): number {
-  const data = require("fs").readFileSync(file, "utf8");
-  let settings = JSON.parse(data);
-  if (["MIN_PEERS", "MAX_PEERS"].includes(property)) {
-    if (settings["P2P"][property]) return +settings["P2P"][property];
-    if (property === "MIN_PEERS") return 15;
-    if (property === "MAX_PEERS") return 50;
-  } else if (property === "MIN_CONFIRMATIONS") {
-    if (settings["WALLET"][property])
-      return +settings["WALLET"]["MIN_CONFIRMATIONS"];
-    return 10;
-  }
-  return -1;
-};
-
 export const updateSettings = function(
   file: string,
   property: "MIN_PEERS" | "MAX_PEERS" | "MIN_CONFIRMATIONS" | undefined,

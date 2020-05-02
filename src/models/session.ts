@@ -1,13 +1,6 @@
-import {
-  Action,
-  action,
-  Computed,
-  computed,
-  Thunk,
-  thunk
-  } from 'easy-peasy';
-import { Injections } from '../store';
-import { StoreModel } from '.';
+import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy";
+import { Injections } from "../store";
+import { StoreModel } from ".";
 
 export interface SessionModel {
   username: string;
@@ -54,11 +47,13 @@ const session: SessionModel = {
           getStoreActions().wallet.replaceLogs("");
           getStoreActions().finalizeModel.setResponseFile(undefined);
           getStoreActions().sendCoinsModel.setInitialValues();
+          getStoreActions().createWallet.setInitialValues();
+          getStoreActions().restoreWallet.setInitialValues();
         });
     }
   ),
   isLoggedIn: computed((state) => {
-    return state.username?.length > 0 && state.token?.length > 0;
+    return state.username.length > 0 && state.token.length > 0;
   }),
 };
 

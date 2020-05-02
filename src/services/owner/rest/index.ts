@@ -1,5 +1,5 @@
-import { BaseApi } from './../../api';
-import { ITransaction } from '../../../interfaces/ITransaction';
+import { BaseApi } from "./../../api";
+import { ITransaction } from "../../../interfaces/ITransaction";
 
 export class OwnerAPI extends BaseApi {
   public get url(): string {
@@ -171,9 +171,17 @@ export class OwnerAPI extends BaseApi {
     return await this.makeRESTRequest(
       `${this.getRequestURL("accounts")}`,
       "get"
-    ).then((data) => {
-      return JSON.parse(data);
-    });
+    )
+      .then((data) => {
+        try {
+          return JSON.parse(data);
+        } catch (ex) {
+          return [];
+        }
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
   }
 
   public async getOutputs(

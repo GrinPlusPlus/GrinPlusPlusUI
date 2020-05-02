@@ -1,10 +1,10 @@
-import React from 'react';
-import SendUsingAddressContainer from './SendUsingAddress';
-import TransactionAddressComponent from '../../components/transaction/send/TransactionAddress';
-import { ControlGroup, FormGroup } from '@blueprintjs/core';
-import { useStoreActions, useStoreState } from '../../hooks';
+import React from "react";
+import { SendUsingAddressContainer } from "./SendUsingAddress";
+import { TransactionAddressComponent } from "../../components/transaction/send/TransactionAddress";
+import { ControlGroup, FormGroup } from "@blueprintjs/core";
+import { useStoreActions, useStoreState } from "../../hooks";
 
-export default function TransactionAddressContainer() {
+export const TransactionAddressContainer = () => {
   const { spendable } = useStoreState((state) => state.walletSummary);
   const { fee, address } = useStoreState((state) => state.sendCoinsModel);
   const { setAddress } = useStoreActions((actions) => actions.sendCoinsModel);
@@ -22,4 +22,4 @@ export default function TransactionAddressContainer() {
       </ControlGroup>
     </FormGroup>
   );
-}
+};

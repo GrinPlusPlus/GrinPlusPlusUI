@@ -9,11 +9,11 @@ export type InitComponentProps = {
   message: string;
 };
 
-export default function InitComponent({
+export const InitComponent = ({
   isInitialized,
   error,
   message,
-}: InitComponentProps) {
+}: InitComponentProps) => {
   return (
     <Center>
       <HorizontallyCenter>
@@ -42,4 +42,4 @@ export default function InitComponent({
       </div>
     </Center>
   );
-}
+};

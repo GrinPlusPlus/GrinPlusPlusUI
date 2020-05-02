@@ -1,27 +1,36 @@
-import React from 'react';
+import React from "react";
+import { IPeer } from "../../interfaces/IPeer";
 
-type ConnectedPeersProps = { peers: JSX.Element[] };
+export type ConnectedPeersProps = { peers: IPeer[] };
 
-export default function ConnectedPeersComponent({
-  peers
-}: ConnectedPeersProps) {
+export const ConnectedPeersComponent = ({ peers }: ConnectedPeersProps) => {
   return (
-    <table style={{ width: "400px" }}>
+    <table
+      className="transactions"
+      style={{ width: "500px" }}
+      data-testid="peer-table"
+    >
       <tbody>
         <tr>
-          <td></td>
-          <td>
-            <b>Address</b>
-          </td>
-          <td>
-            <b>Agent</b>
-          </td>
-          <td>
-            <b>Direction</b>
-          </td>
+          <th>Address</th>
+          <th>Agent</th>
+          <th>Direction</th>
         </tr>
-        {peers}
+        {peers.map((peer: IPeer) => {
+          return (
+            <tr
+              key={peer.address}
+              style={{
+                cursor: "default",
+              }}
+            >
+              <td>{peer.address}</td>
+              <td>{peer.agent}</td>
+              <td>{peer.direction}</td>
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );
-}
+};

@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import InputPasswordComponent from "../../../components/custom/InputPassword";
+import { InputPasswordComponent } from "../../../components/custom/InputPassword";
 import React from "react";
 import { AccountListContent } from "../../styled";
 import {
@@ -49,7 +49,7 @@ export const OpenWalletComponent = ({
             left: "50%",
             position: "fixed",
             transform: "translate(-50%, -50%)",
-            backgroundColor: "#000000",
+            backgroundColor: "#060707",
           }}
         >
           <div style={{ marginBottom: "8px", fontSize: "14px" }}>

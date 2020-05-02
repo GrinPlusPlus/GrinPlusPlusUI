@@ -1,9 +1,9 @@
-import React, { useCallback } from 'react';
-import ReceiveUsingFileComponent from '../../components/transaction/receive/ReceiveUsingFile';
-import { Intent, Position, Toaster } from '@blueprintjs/core';
-import { useStoreActions } from '../../hooks';
+import React, { useCallback } from "react";
+import { ReceiveUsingFileComponent } from "../../components/transaction/receive/ReceiveUsingFile";
+import { Intent, Position, Toaster } from "@blueprintjs/core";
+import { useStoreActions } from "../../hooks";
 
-export default function ReceiveUsingFileContainer() {
+export const ReceiveUsingFileContainer = () => {
   const { updateLogs } = useStoreActions((actions) => actions.wallet);
   const { receiveTx } = useStoreActions((actions) => actions.receiveCoinsModel);
 
@@ -32,4 +32,4 @@ export default function ReceiveUsingFileContainer() {
       onResponseFilesDroppedCb={onResponseFilesDropped}
     />
   );
-}
+};

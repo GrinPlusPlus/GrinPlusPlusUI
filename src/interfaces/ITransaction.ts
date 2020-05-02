@@ -7,7 +7,7 @@ export interface ITransaction {
   type: string;
   confirmedHeight: number;
   fee: number;
-  slateId?: string;
+  slateId: string;
   slateMessage?: string;
   ouputs?: []
 }

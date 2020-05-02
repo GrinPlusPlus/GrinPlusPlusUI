@@ -1,58 +1,67 @@
+import React, { Suspense, useEffect } from "react";
 import { AlertComponent } from "../components/extras/Alert";
-import DashboardContainer from "./dashboard/Dashboard";
-import React, { useEffect } from "react";
-import { SettingsContainer } from "./common/Settings";
-import { StatusBarContainer } from "./common/StatusBar";
+import { LoadingComponent } from "../components/extras/Loading";
 import { Redirect } from "react-router-dom";
-import { useHistory } from "react-router-dom";
 import { useStoreActions, useStoreState } from "../hooks";
-import { WalletUsername } from "../components/styled";
-import {
-  Alignment,
-  Button,
-  Drawer,
-  Navbar,
-  NavbarDivider,
-  NavbarGroup,
-  NavbarHeading,
-  Position,
-} from "@blueprintjs/core";
 
-export default function WalletContainer() {
-  let history = useHistory();
+const AccountNavBarContainer = React.lazy(() =>
+  import("./dashboard/AccountNavBar").then((module) => ({
+    default: module.AccountNavBarContainer,
+  }))
+);
 
-  const { username, token, address, isLoggedIn } = useStoreState(
+const StatusBarContainer = React.lazy(() =>
+  import("./common/StatusBar").then((module) => ({
+    default: module.StatusBarContainer,
+  }))
+);
+
+const WalletDrawer = React.lazy(() =>
+  import("./common/WalletDrawer").then((module) => ({
+    default: module.WalletDrawer,
+  }))
+);
+
+const DashboardContainer = React.lazy(() =>
+  import("./dashboard/Dashboard").then((module) => ({
+    default: module.DashboardContainer,
+  }))
+);
+
+const renderLoader = () => <LoadingComponent />;
+
+export const WalletContainer = () => {
+  const { token, address, isLoggedIn } = useStoreState(
     (state) => state.session
-  );
-  const { showSettings, alert } = useStoreState((state) => state.ui);
-  const { toggleSettings, setAlert } = useStoreActions((actions) => actions.ui);
-
-  const { logout } = useStoreActions((actions) => actions.session);
-  const { updateSummaryInterval } = useStoreState(
-    (state) => state.walletSummary
-  );
-
-  const { getWalletSummary } = useStoreActions(
-    (actions) => actions.walletSummary
   );
   const { retryInterval } = useStoreState(
     (actions) => actions.receiveCoinsModel
+  );
+  const { updateSummaryInterval } = useStoreState(
+    (state) => state.walletSummary
+  );
+  const { alert } = useStoreState((state) => state.ui);
+
+  const { setAlert } = useStoreActions((actions) => actions.ui);
+  const { updateWalletSummary } = useStoreActions(
+    (actions) => actions.walletSummary
   );
   const { getAddress } = useStoreActions(
     (actions) => actions.receiveCoinsModel
   );
 
   useEffect(() => {
-    async function init(t: string) {
-      await getWalletSummary(t);
-    }
-    init(token);
     const interval = setInterval(async () => {
-      await getWalletSummary(token);
+      try {
+        await updateWalletSummary(token);
+      } catch (error) {
+        require("electron-log").info(
+          `Error trying to get Wallet Summary: ${error.message}`
+        );
+      }
     }, updateSummaryInterval);
-
     return () => clearInterval(interval);
-  }, [getWalletSummary, token, updateSummaryInterval]);
+  });
 
   useEffect(() => {
     async function init(t: string) {
@@ -67,72 +76,18 @@ export default function WalletContainer() {
     }
   }, [address, getAddress, token, retryInterval]);
 
-  const { checkNodeHealth } = useStoreActions((actions) => actions.wallet);
-  useEffect(() => {
-    try {
-      checkNodeHealth();
-    } catch (error) {
-      history.push("/error");
-    }
-  }, [checkNodeHealth, history]);
-
   return (
-    <div data-testid="wallet">
+    <Suspense fallback={renderLoader()}>
       {!isLoggedIn ? <Redirect to="/login" /> : null}
-      <Navbar>
-        <NavbarGroup align={Alignment.LEFT}>
-          <img
-            src={require("path").join(__dirname, "/statics/images/grin@2x.png")}
-            alt=""
-            style={{
-              maxWidth: "35px",
-              height: "auto",
-            }}
-          />{" "}
-          <NavbarHeading>
-            <WalletUsername>{username}</WalletUsername>
-          </NavbarHeading>
-        </NavbarGroup>
-        <NavbarGroup align={Alignment.RIGHT} className="bp3-dark">
-          <Button
-            minimal={true}
-            large={true}
-            icon="cog"
-            onClick={() => {
-              toggleSettings();
-            }}
-          />
-          <NavbarDivider />
-          <Button
-            minimal={true}
-            large={true}
-            icon="log-out"
-            onClick={() => {
-              logout(token);
-            }}
-          />
-        </NavbarGroup>
-      </Navbar>
+      <AccountNavBarContainer />
       <div className="content">
         <DashboardContainer />
       </div>
       <div className="footer">
         <StatusBarContainer />
       </div>
-      <Drawer
-        className="bp3-dark"
-        position={Position.RIGHT}
-        icon="cog"
-        onClose={() => {
-          toggleSettings();
-        }}
-        title="Settings"
-        isOpen={showSettings}
-        size={Drawer.SIZE_STANDARD}
-      >
-        <SettingsContainer />
-      </Drawer>
+      <WalletDrawer />
       <AlertComponent message={alert} setMessage={setAlert} />
-    </div>
+    </Suspense>
   );
-}
+};

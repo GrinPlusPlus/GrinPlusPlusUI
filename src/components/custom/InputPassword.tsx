@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Button, InputGroup, Intent } from '@blueprintjs/core';
+import React, { useState } from "react";
+import { Button, InputGroup, Intent } from "@blueprintjs/core";
 
-type InputPasswordProps = {
+export type InputPasswordProps = {
   password: string;
   cb: (password: string) => void;
   autoFocus: boolean;
@@ -9,16 +9,17 @@ type InputPasswordProps = {
   waitingResponse?: boolean;
 };
 
-export default function InputPasswordComponent({
+export const InputPasswordComponent = ({
   password,
   cb,
   autoFocus,
   onEnterCb,
   waitingResponse,
-}: InputPasswordProps) {
+}: InputPasswordProps) => {
   const [showPassword, setShowPassword] = useState(false);
   return (
     <InputGroup
+      data-testid="password-field"
       className="bp3-dark"
       style={{ backgroundColor: "#21242D" }}
       type={showPassword ? "text" : "password"}
@@ -41,4 +42,4 @@ export default function InputPasswordComponent({
       onChange={(e: React.ChangeEvent<HTMLInputElement>) => cb(e.target.value)}
     />
   );
-}
+};

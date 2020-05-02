@@ -1,9 +1,9 @@
-import React, { useCallback } from 'react';
-import TransactionAmountComponent from '../../components/transaction/send/TransactionAmount';
-import { Intent, Position, Toaster } from '@blueprintjs/core';
-import { useStoreActions, useStoreState } from '../../hooks';
+import React, { useCallback } from "react";
+import { TransactionAmountComponent } from "../../components/transaction/send/TransactionAmount";
+import { Intent, Position, Toaster } from "@blueprintjs/core";
+import { useStoreActions, useStoreState } from "../../hooks";
 
-export default function TransactionAmountContainer() {
+export const TransactionAmountContainer = () => {
   const { spendable } = useStoreState((state) => state.walletSummary);
   const { amount, fee, message, strategy, inputs } = useStoreState(
     (state) => state.sendCoinsModel
@@ -44,4 +44,4 @@ export default function TransactionAmountContainer() {
       onAmountChangeCb={onAmountChange}
     />
   );
-}
+};

@@ -1,6 +1,5 @@
 import React, { Suspense } from "react";
 import { HorizontallyCenter } from "../components/styled";
-import { WalletDrawer } from "./common/WalletDrawer";
 import { LoadingComponent } from "../components/extras/Loading";
 
 const GrinPPBannerComponent = React.lazy(() =>
@@ -27,9 +26,15 @@ const StatusBarContainer = React.lazy(() =>
   }))
 );
 
+const WalletDrawer = React.lazy(() =>
+  import("./common/WalletDrawer").then((module) => ({
+    default: module.WalletDrawer,
+  }))
+);
+
 const renderLoader = () => <LoadingComponent />;
 
-export default function SignInContainer() {
+export const SignInContainer = () => {
   return (
     <Suspense fallback={renderLoader()}>
       <div>
@@ -50,4 +55,4 @@ export default function SignInContainer() {
       </div>
     </Suspense>
   );
-}
+};

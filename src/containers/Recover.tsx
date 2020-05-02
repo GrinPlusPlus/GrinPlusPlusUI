@@ -1,44 +1,49 @@
-import { LogoComponent } from "../components/shared/Logo";
-import React, { useEffect } from "react";
-import RestoreWalletContainer from "./wallet/Restore";
-import { StatusBarContainer } from "./common/StatusBar";
+import React, { Suspense } from "react";
 import { Form, HorizontallyCenter } from "../components/styled";
+import { LoadingComponent } from "../components/extras/Loading";
 import { useHistory } from "react-router-dom";
+import { Button } from "@blueprintjs/core";
 import { useStoreActions } from "../hooks";
-import {
-  Alignment,
-  Button,
-  Navbar,
-  NavbarDivider,
-  NavbarGroup,
-  NavbarHeading,
-} from "@blueprintjs/core";
 
-export default function RestoreContainer() {
+const LogoComponent = React.lazy(() =>
+  import("../components/shared/Logo").then((module) => ({
+    default: module.LogoComponent,
+  }))
+);
+
+const NavigationBarContainer = React.lazy(() =>
+  import("./common/NavigationBar").then((module) => ({
+    default: module.NavigationBarContainer,
+  }))
+);
+
+const RestoreWalletContainer = React.lazy(() =>
+  import("./wallet/Restore").then((module) => ({
+    default: module.RestoreWalletContainer,
+  }))
+);
+
+const StatusBarContainer = React.lazy(() =>
+  import("./common/StatusBar").then((module) => ({
+    default: module.StatusBarContainer,
+  }))
+);
+
+const renderLoader = () => <LoadingComponent />;
+
+export const RestoreContainer = () => {
+  const { setInitialValues } = useStoreActions(
+    (actions) => actions.createWallet
+  );
+
   let history = useHistory();
 
-  const { checkNodeHealth } = useStoreActions((actions) => actions.wallet);
-  useEffect(() => {
-    try {
-      checkNodeHealth();
-    } catch (error) {
-      history.push("/error");
-    }
-  }, [checkNodeHealth, history]);
-
   return (
-    <div>
-      <Navbar>
-        <NavbarGroup align={Alignment.LEFT}>
-          <Button
-            minimal={true}
-            icon="arrow-left"
-            onClick={() => history.push("/login")}
-          />
-          <NavbarDivider />
-          <NavbarHeading>Restore Wallet</NavbarHeading>
-        </NavbarGroup>
-      </Navbar>
+    <Suspense fallback={renderLoader()}>
+      <NavigationBarContainer
+        title="Restore Wallet"
+        onExit={() => setInitialValues()}
+      />
       <div className="content">
         <HorizontallyCenter>
           <LogoComponent />
@@ -46,10 +51,18 @@ export default function RestoreContainer() {
         <Form>
           <RestoreWalletContainer />
         </Form>
+        <HorizontallyCenter>
+          <Button
+            minimal={true}
+            style={{ width: "200px" }}
+            text="Cancel"
+            onClick={() => history.push("/login")}
+          />
+        </HorizontallyCenter>
       </div>
       <div className="footer">
         <StatusBarContainer />
       </div>
-    </div>
+    </Suspense>
   );
-}
+};

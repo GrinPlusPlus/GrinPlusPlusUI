@@ -24,7 +24,7 @@ $pt-dark-popover-box-shadow: $pt-intent-primary;
   right: 0;
   border-top-width: 1px;
   border-top-style: solid;
-  border-top-color: #1f2a32;
+  border-top-color: #000000;
   font-size: small;
 
   -webkit-touch-callout: none; /* iOS Safari */
@@ -33,35 +33,24 @@ $pt-dark-popover-box-shadow: $pt-intent-primary;
   -moz-user-select: none; /* Old versions of Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
+
+  background-color: #050505 !important;
 }
 
 .bp3-input {
   color: #000000;
 }
 .bp3-navbar {
-  background-color: #090b0b !important;
+  background-color: #050505 !important;
 }
 
 .bp3-tab,
 .bp3-tab:hover,
 .bp3-tab:active {
-  outline-color: #293742;
+  outline-color: #ffff14;
 }
 .bp3-drawer.bp3-dark {
-  background-color: #000000 !important;
-}
-
-.sending_not_finalized,
-.sending_finalized {
-  text-align: center;
-}
-
-.sent {
-  text-align: right;
-}
-
-.canceled {
-  background-color: #5c7080 !important;
+  background-color: #050505 !important;
 }
 
 p {
@@ -81,7 +70,7 @@ td {
 
 .transactions td,
 .transactions th {
-  border: 1px solid #1f2a32;
+  border: 1px solid #050505;
   padding: 3px;
 }
 
@@ -90,11 +79,11 @@ td {
 }
 
 .transactions tr:nth-child(even) {
-  background-color: #171920;
+  background-color: #222222;
 }
 
 .transactions tr:hover {
-  background-color: #1d2028;
+  background-color: #191919;
   cursor: pointer;
 }
 
@@ -119,4 +108,35 @@ td {
 }
 .hide {
   display: none;
+}
+
+/* DivTable.com */
+.divTable{
+	display: table;
+	width: 100%;
+}
+.divTableRow {
+	display: table-row;
+}
+.divTableHeading {
+	background-color: #EEE;
+	display: table-header-group;
+}
+.divTableCell, .divTableHead {
+	border: 1px solid #222222;
+	display: table-cell;
+	padding: 3px 10px;
+}
+.divTableHeading {
+	background-color: #EEE;
+	display: table-header-group;
+	font-weight: bold;
+}
+.divTableFoot {
+	background-color: #EEE;
+	display: table-footer-group;
+	font-weight: bold;
+}
+.divTableBody {
+	display: table-row-group;
 }

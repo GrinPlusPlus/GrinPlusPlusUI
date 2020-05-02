@@ -1,44 +1,72 @@
-import InitComponent from "../components/extras/Init";
-import React, { useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useEffect, Suspense } from "react";
+import { Redirect } from "react-router-dom";
 import { useStoreActions, useStoreState } from "../hooks";
+import { LoadingComponent } from "../components/extras/Loading";
 
-export default function InitializerContainer() {
-  let history = useHistory();
+const InitComponent = React.lazy(() =>
+  import("./../components/extras/Init").then((module) => ({
+    default: module.InitComponent,
+  }))
+);
+
+const renderLoader = () => <LoadingComponent />;
+
+export const InitializerContainer = () => {
   const { message, initializingError, isWalletInitialized } = useStoreState(
     (state) => state.wallet
   );
-  const { accounts } = useStoreState((state) => state.signinModel);
 
-  const { initializeWallet } = useStoreActions((state) => state.wallet);
-  const { getAccounts } = useStoreActions((actions) => actions.signinModel);
+  const {
+    initializeWallet,
+    setMessage,
+    setInitializingError,
+  } = useStoreActions((state) => state.wallet);
+
+  const { status, updateInterval } = useStoreState(
+    (state) => state.nodeSummary
+  );
+
+  const { checkStatus, updateStatus } = useStoreActions(
+    (actions) => actions.nodeSummary
+  );
 
   useEffect(() => {
-    if (!isWalletInitialized) {
-      require("electron-log").info("Initializing Wallet.");
-      initializeWallet();
-    }
+    (async function() {
+      if (!isWalletInitialized) {
+        require("electron-log").info("Initializing Wallet.");
+        await initializeWallet().catch((error: string) => {
+          setMessage(error);
+          setInitializingError(true);
+        });
+      }
+    })();
   });
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      require("electron-log").info("Trying to get the local accounts...");
-      if (accounts !== undefined) {
+      try {
+        const status = await checkStatus();
+        updateStatus(status);
+      } catch (error) {
         require("electron-log").info(
-          "Status 200 received, redirecting to Login..."
+          `Error trying to get Node Status: ${error.message}`
         );
-        history.push("/login");
+        updateStatus(undefined);
       }
-      await getAccounts();
-    }, 1000);
+    }, updateInterval);
     return () => clearInterval(interval);
-  }, [getAccounts, accounts, history]);
+  });
 
   return (
-    <InitComponent
-      isInitialized={accounts !== undefined}
-      error={initializingError}
-      message={message}
-    />
+    <Suspense fallback={renderLoader()}>
+      {status.toLowerCase() !== "not connected" ? (
+        <Redirect to="/login" />
+      ) : null}
+      <InitComponent
+        isInitialized={status.toLowerCase() !== "not connected"}
+        error={initializingError}
+        message={message}
+      />
+    </Suspense>
   );
-}
+};

@@ -1,8 +1,8 @@
-import React from 'react';
-import WalletBalanceComponent from '../../components/dashboard/WalletBalance';
-import { useStoreState } from '../../hooks';
+import React from "react";
+import { WalletBalanceComponent } from "../../components/dashboard/WalletBalance";
+import { useStoreState } from "../../hooks";
 
-export default function WalletBalanceContainer() {
+export const WalletBalanceContainer = () => {
   const { total, spendable, immature, unconfirmed, locked } = useStoreState(
     (state) => state.walletSummary
   );
@@ -16,4 +16,4 @@ export default function WalletBalanceContainer() {
       locked={locked}
     />
   );
-}
+};

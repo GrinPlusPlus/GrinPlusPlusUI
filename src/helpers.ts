@@ -68,7 +68,7 @@ export const getStateColor = function (state: string): string {
   } else if (state === "FULLY_SYNCED") {
     return Intent.SUCCESS;
   }
-  return Intent.DANGER;
+  return Intent.WARNING;
 };
 
 export const generateEmptySeed = function (): ISeed[] {
@@ -183,4 +183,22 @@ export const useInterval = function (callback: any, delay: number) {
       return () => clearInterval(id);
     }
   }, [delay]);
+};
+
+export const cutAdddres = (address: string): string => {
+  let clean =
+    address.substring(-1) === "/"
+      ? address.substring(0, address.length - 1)
+      : address;
+  if (clean.length === 56) {
+    const v3 = "[a-z2-7]{56}";
+    if (new RegExp(`${v3}`).test(clean)) return clean;
+  }
+  clean = clean
+    .replace("https://", "")
+    .replace("http://", "")
+    .replace("/", "")
+    .replace(".grinplusplus.com", "");
+
+  return clean;
 };

@@ -1,11 +1,6 @@
-import {
-  Action,
-  action,
-  Thunk,
-  thunk
-  } from 'easy-peasy';
-import { Injections } from '../../store';
-import { StoreModel } from '..';
+import { Action, action, Thunk, thunk } from "easy-peasy";
+import { Injections } from "../../store";
+import { StoreModel } from "..";
 
 export interface ReceiveCoinsModel {
   retryInterval: number;
@@ -13,6 +8,8 @@ export interface ReceiveCoinsModel {
   setResponsesDestination: Action<ReceiveCoinsModel, string>;
   receiveTx: Thunk<ReceiveCoinsModel, File[], Injections, StoreModel>;
   getAddress: Thunk<ReceiveCoinsModel, string, Injections, StoreModel>;
+  waitingResponse: boolean;
+  setWaitingResponse: Action<ReceiveCoinsModel, boolean>;
 }
 
 const receiveCoinsModel: ReceiveCoinsModel = {
@@ -83,17 +80,34 @@ const receiveCoinsModel: ReceiveCoinsModel = {
   ),
   getAddress: thunk(
     async (actions, token, { injections, getStoreState, getStoreActions }) => {
-      const { ownerService } = injections;
-      const apiSettings = getStoreState().settings.defaultSettings;
-      const address = await new ownerService.RPC(
-        apiSettings.floonet,
-        apiSettings.protocol,
-        apiSettings.ip,
-        apiSettings.mode
-      ).getWalletAddress(token);
-      getStoreActions().session.setAddress(address);
+      if (
+        getStoreState().walletSummary.waitingResponse ||
+        getStoreState().session.address.length === 56
+      )
+        return;
+      actions.setWaitingResponse(true);
+      try {
+        const { ownerService } = injections;
+        const apiSettings = getStoreState().settings.defaultSettings;
+        const address = await new ownerService.RPC(
+          apiSettings.floonet,
+          apiSettings.protocol,
+          apiSettings.ip,
+          apiSettings.mode
+        ).getWalletAddress(token);
+        getStoreActions().session.setAddress(address);
+      } catch (error) {
+        require("electron-log").info(
+          `Error trying to get Wallet Address: ${error}`
+        );
+      }
+      actions.setWaitingResponse(false);
     }
   ),
+  waitingResponse: false,
+  setWaitingResponse: action((state, waiting) => {
+    state.waitingResponse = waiting;
+  }),
 };
 
 export default receiveCoinsModel;

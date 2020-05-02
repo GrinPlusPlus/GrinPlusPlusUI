@@ -1,9 +1,9 @@
-import FinalizeComponent from '../../components/transaction/finalize/FinalizeGrins';
-import React, { useCallback } from 'react';
-import { Intent, Position, Toaster } from '@blueprintjs/core';
-import { useStoreActions, useStoreState } from '../../hooks';
+import { FinalizeComponent } from "../../components/transaction/finalize/FinalizeGrins";
+import React, { useCallback } from "react";
+import { Intent, Position, Toaster } from "@blueprintjs/core";
+import { useStoreActions, useStoreState } from "../../hooks";
 
-export default function FinalizeContainer() {
+export const FinalizeContainer = () => {
   const { responseFile } = useStoreState((state) => state.finalizeModel);
   const { useGrinJoin, grinJoinAddress } = useStoreState(
     (state) => state.settings
@@ -42,4 +42,4 @@ export default function FinalizeContainer() {
       onFinalizeButtonClickedCb={onFinalizeButtonClicked}
     />
   );
-}
+};

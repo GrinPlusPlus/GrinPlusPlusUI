@@ -1,12 +1,26 @@
-import CreateWalletComponent from '../../components/wallet/create/CreateWallet';
-import React, { useCallback } from 'react';
-import WalletSeedConfirmation from '../../components/wallet/create/ConfirmWalletSeed';
-import { hideSeedWords } from '../../helpers';
-import { Intent, Position, Toaster } from '@blueprintjs/core';
-import { useHistory } from 'react-router-dom';
-import { useStoreActions, useStoreState } from '../../hooks';
+import React, { useCallback, Suspense } from "react";
+import { hideSeedWords } from "../../helpers";
+import { Intent, Position, Toaster } from "@blueprintjs/core";
+import { useHistory } from "react-router-dom";
+import { useStoreActions, useStoreState } from "../../hooks";
 
-export default function CreateWalletContainer() {
+const CreateWalletComponent = React.lazy(() =>
+  import("./../../components/wallet/create/CreateWallet").then((module) => ({
+    default: module.CreateWalletComponent,
+  }))
+);
+
+const WalletSeedConfirmation = React.lazy(() =>
+  import("./../../components/wallet/create/ConfirmWalletSeed").then(
+    (module) => ({
+      default: module.WalletSeedConfirmation,
+    })
+  )
+);
+
+const renderLoader = () => null;
+
+export const CreateWalletContainer = () => {
   let history = useHistory();
   const {
     username,
@@ -29,15 +43,17 @@ export default function CreateWalletContainer() {
   const { status } = useStoreState((state) => state.nodeSummary);
 
   const onCreateWalletButtonClicked = useCallback(async () => {
-    await create({ username: username, password: password }).catch(
-      (error: { message: string }) => {
-        Toaster.create({ position: Position.TOP }).show({
-          message: error.message,
-          intent: Intent.DANGER,
-          icon: "warning-sign",
-        });
-      }
-    );
+    try {
+      await create({ username: username, password: password }).catch(
+        (error: { message: string }) => {
+          Toaster.create({ position: Position.TOP }).show({
+            message: error.message,
+            intent: Intent.DANGER,
+            icon: "warning-sign",
+          });
+        }
+      );
+    } catch (error) {}
   }, [username, password, create]);
 
   const onContinueButtonClicked = useCallback(async () => {
@@ -73,26 +89,28 @@ export default function CreateWalletContainer() {
   );
 
   return (
-    <CreateWalletComponent
-      username={username}
-      password={password}
-      status={status}
-      minPasswordLength={minPasswordLength}
-      confirmation={passwordConfirmation}
-      receivedSeed={generatedSeed}
-      setUsernameCb={setUsername}
-      setPasswordCb={setPassword}
-      setConfirmationCb={setPasswordConfirmation}
-      signUpButtonCb={onCreateWalletButtonClicked}
-      SeedValidationComponent={
-        <WalletSeedConfirmation
-          seedsMatched={seedsMatched}
-          receivedSeed={generatedSeed}
-          partiallyHiddenSeed={hiddenSeed}
-          onWordChangeCb={onWordChange}
-          onButtonClickedCb={onContinueButtonClicked}
-        />
-      }
-    />
+    <Suspense fallback={renderLoader()}>
+      <CreateWalletComponent
+        username={username}
+        password={password}
+        status={status}
+        minPasswordLength={minPasswordLength}
+        confirmation={passwordConfirmation}
+        receivedSeed={generatedSeed}
+        setUsernameCb={setUsername}
+        setPasswordCb={setPassword}
+        setConfirmationCb={setPasswordConfirmation}
+        signUpButtonCb={onCreateWalletButtonClicked}
+        SeedValidationComponent={
+          <WalletSeedConfirmation
+            seedsMatched={seedsMatched}
+            receivedSeed={generatedSeed}
+            partiallyHiddenSeed={hiddenSeed}
+            onWordChangeCb={onWordChange}
+            onButtonClickedCb={onContinueButtonClicked}
+          />
+        }
+      />
+    </Suspense>
   );
-}
+};

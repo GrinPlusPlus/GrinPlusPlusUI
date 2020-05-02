@@ -1,113 +1,67 @@
-import React, { useEffect } from "react";
-import SendContainer from "./transaction/Send";
-import { SettingsContainer } from "./common/Settings";
-import { StatusBarContainer } from "./common/StatusBar";
-import { Redirect, useHistory } from "react-router-dom";
+import React, { Suspense, useEffect } from "react";
+import { LoadingComponent } from "../components/extras/Loading";
+import { Redirect } from "react-router-dom";
 import { useStoreActions, useStoreState } from "../hooks";
-import {
-  Alignment,
-  Button,
-  Drawer,
-  Navbar,
-  NavbarDivider,
-  NavbarGroup,
-  NavbarHeading,
-  Position,
-} from "@blueprintjs/core";
 
-export default function SendGrinContainer() {
-  let history = useHistory();
+const NavBarContainer = React.lazy(() =>
+  import("./common/NavigationBar").then((module) => ({
+    default: module.NavigationBarContainer,
+  }))
+);
+
+const SendContainer = React.lazy(() =>
+  import("./transaction/Send").then((module) => ({
+    default: module.SendContainer,
+  }))
+);
+
+const StatusBarContainer = React.lazy(() =>
+  import("./common/StatusBar").then((module) => ({
+    default: module.StatusBarContainer,
+  }))
+);
+
+const renderLoader = () => <LoadingComponent />;
+
+export const SendGrinContainer = () => {
   const { token, isLoggedIn } = useStoreState((state) => state.session);
-  const { showSettings } = useStoreState((state) => state.ui);
-  const { toggleSettings } = useStoreActions((actions) => actions.ui);
-  const { logout } = useStoreActions((actions) => actions.session);
   const { updateSummaryInterval } = useStoreState(
     (state) => state.walletSummary
   );
 
-  const { getWalletSummary } = useStoreActions(
+  const { updateWalletSummary } = useStoreActions(
     (actions) => actions.walletSummary
   );
-
   const { setInitialValues } = useStoreActions(
     (actions) => actions.sendCoinsModel
   );
 
   useEffect(() => {
-    async function init(t: string) {
-      await getWalletSummary(t);
-    }
-    init(token);
     const interval = setInterval(async () => {
-      await getWalletSummary(token);
+      try {
+        await updateWalletSummary(token);
+      } catch (error) {
+        require("electron-log").info(
+          `Error trying to get Wallet Summary: ${error.message}`
+        );
+      }
     }, updateSummaryInterval);
-
     return () => clearInterval(interval);
-  }, [getWalletSummary, token, updateSummaryInterval]);
+  });
 
-  const { checkNodeHealth } = useStoreActions((actions) => actions.wallet);
-  useEffect(() => {
-    try {
-      checkNodeHealth();
-    } catch (error) {
-      history.push("/error");
-    }
-  }, [checkNodeHealth, history]);
   return (
-    <div data-testid="wallet">
+    <Suspense fallback={renderLoader()}>
       {!isLoggedIn ? <Redirect to="/login" /> : null}
-      <Navbar>
-        <NavbarGroup align={Alignment.LEFT}>
-          <Button
-            minimal={true}
-            icon="arrow-left"
-            onClick={() => {
-              setInitialValues();
-              history.push("/wallet");
-            }}
-          />
-          <NavbarDivider />
-          <NavbarHeading>Send Grins ツ</NavbarHeading>
-        </NavbarGroup>
-        <NavbarGroup align={Alignment.RIGHT} className="bp3-dark">
-          <Button
-            minimal={true}
-            large={true}
-            icon="cog"
-            onClick={() => {
-              toggleSettings();
-            }}
-          />
-          <NavbarDivider />
-          <Button
-            minimal={true}
-            large={true}
-            icon="log-out"
-            onClick={() => {
-              logout(token);
-            }}
-          />
-        </NavbarGroup>
-      </Navbar>
+      <NavBarContainer
+        title={"Send Grins ツ"}
+        onExit={() => setInitialValues()}
+      />
       <div className="content">
         <SendContainer />
       </div>
       <div className="footer">
         <StatusBarContainer />
       </div>
-      <Drawer
-        className="bp3-dark"
-        position={Position.RIGHT}
-        icon="cog"
-        onClose={() => {
-          toggleSettings();
-        }}
-        title="Settings"
-        isOpen={showSettings}
-        size={Drawer.SIZE_STANDARD}
-      >
-        <SettingsContainer />
-      </Drawer>
-    </div>
+    </Suspense>
   );
-}
+};

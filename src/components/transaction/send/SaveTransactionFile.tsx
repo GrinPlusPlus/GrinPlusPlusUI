@@ -1,5 +1,5 @@
-import React from 'react';
-import { Button, Intent } from '@blueprintjs/core';
+import React from "react";
+import { Button, Intent } from "@blueprintjs/core";
 
 type SendGrinsButtonsProps = {
   amount: number;
@@ -8,12 +8,12 @@ type SendGrinsButtonsProps = {
   onSaveButtonClickedCb: () => void;
 };
 
-export default function SaveTransactionFileComponent({
+export const SaveTransactionFileComponent = ({
   amount,
   spendable,
   inputsSelected,
   onSaveButtonClickedCb,
-}: SendGrinsButtonsProps) {
+}: SendGrinsButtonsProps) => {
   return (
     <Button
       intent={Intent.PRIMARY}
@@ -28,4 +28,4 @@ export default function SaveTransactionFileComponent({
       Save Tx
     </Button>
   );
-}
+};

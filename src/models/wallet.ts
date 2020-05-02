@@ -111,58 +111,58 @@ const wallet: WalletModel = {
     }
   ),
   initializeWallet: thunk(
-    (actions, payload, { injections, getStoreActions }) => {
+    (actions, payload, { injections, getStoreActions }): Promise<boolean> => {
       const { nodeService, utilsService } = injections;
-      try {
-        const defaultSettings = nodeService.getDefaultSettings(); // Read defaults.json
+      return new Promise((resolve, reject) => {
+        try {
+          const defaultSettings = nodeService.getDefaultSettings(); // Read defaults.json
 
-        const settingsActions = getStoreActions().settings;
-        settingsActions.setDefaultSettings(defaultSettings); // Update state
+          const settingsActions = getStoreActions().settings;
+          settingsActions.setDefaultSettings(defaultSettings); // Update state
 
-        // Check if we can find the node...
-        const isInstalled = nodeService.verifyNodePath(
-          defaultSettings.binaryPath
-        );
+          // Check if we can find the node...
+          const isInstalled = nodeService.verifyNodePath(
+            defaultSettings.binaryPath
+          );
 
-        actions.setIsNodeInstalled(isInstalled);
+          actions.setIsNodeInstalled(isInstalled);
 
-        if (!isInstalled) throw new Error("Node isn't installed.");
+          if (!isInstalled) reject("Node isn't installed.");
 
-        // if the node is running we should stop it
-        if (nodeService.isNodeRunning()) {
-          nodeService.stopNode();
+          // if the node is running we should stop it
+          if (nodeService.isNodeRunning()) {
+            nodeService.stopNode();
+          }
+          nodeService.runNode(
+            defaultSettings.binaryPath,
+            defaultSettings.floonet
+          );
+
+          // Let's double check if the Node is running...
+          const isRunning = nodeService.isNodeRunning();
+          if (!isRunning) reject("Node isn't running.");
+          actions.setIsNodeRunning(isRunning);
+
+          settingsActions.setNodeBinaryPath(
+            `${nodeService.getCommandPath(defaultSettings.binaryPath)}`
+          );
+          settingsActions.setNodeDataPath(
+            nodeService.getNodeDataPath(defaultSettings.floonet)
+          );
+          settingsActions.setGrinJoinAddress(defaultSettings.grinJoinAddress);
+
+          actions.setMessage("");
+
+          actions.setInitializingError(false);
+          actions.setWalletInitialized(true);
+          getStoreActions().receiveCoinsModel.setResponsesDestination(
+            utilsService.getHomePath()
+          );
+        } catch (ex) {
+          reject(ex.toString());
         }
-        nodeService.runNode(
-          defaultSettings.binaryPath,
-          defaultSettings.floonet
-        );
-
-        // Let's double check if the Node is running...
-        const isRunning = nodeService.isNodeRunning();
-        if (!isRunning) throw new Error("Node isn't running.");
-        actions.setIsNodeRunning(isRunning);
-
-        settingsActions.setNodeBinaryPath(
-          `${nodeService.getCommandPath(defaultSettings.binaryPath)}`
-        );
-        settingsActions.setNodeDataPath(
-          nodeService.getNodeDataPath(defaultSettings.floonet)
-        );
-        settingsActions.setGrinJoinAddress(defaultSettings.grinJoinAddress);
-
-        actions.setMessage("");
-
-        actions.setInitializingError(false);
-        actions.setWalletInitialized(true);
-        getStoreActions().receiveCoinsModel.setResponsesDestination(
-          utilsService.getHomePath()
-        );
-      } catch (ex) {
-        actions.setMessage(ex.toString());
-        actions.setInitializingError(true);
-        return false;
-      }
-      return true;
+        resolve(true);
+      });
     }
   ),
   checkNodeHealth: thunk(
@@ -178,13 +178,6 @@ const wallet: WalletModel = {
 
         const settingsActions = getStoreActions().settings;
         settingsActions.setDefaultSettings(defaultSettings); // Update state
-
-        // Check if we can find the node...
-        const isInstalled = nodeService.verifyNodePath(
-          defaultSettings.binaryPath
-        );
-        if (!isInstalled) reject("Node isn't installed.");
-        actions.setIsNodeInstalled(isInstalled);
 
         // Let's double check if the Node is running...
         const isRunning = nodeService.isNodeRunning();

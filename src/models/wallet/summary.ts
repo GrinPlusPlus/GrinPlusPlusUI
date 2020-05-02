@@ -1,15 +1,8 @@
-import {
-  Action,
-  action,
-  Computed,
-  computed,
-  Thunk,
-  thunk
-  } from 'easy-peasy';
-import { cleanTxType } from '../../helpers';
-import { Injections } from '../../store';
-import { ITransaction } from '../../interfaces/ITransaction';
-import { StoreModel } from '..';
+import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy";
+import { cleanTxType } from "../../helpers";
+import { Injections } from "../../store";
+import { ITransaction } from "../../interfaces/ITransaction";
+import { StoreModel } from "..";
 
 export interface WalletSummaryModel {
   spendable: number;
@@ -20,7 +13,6 @@ export interface WalletSummaryModel {
   updateSummaryInterval: number;
   selectedTx: number;
   transactions: ITransaction[] | undefined;
-  showCancelledTransactions: boolean;
   setSelectedTx: Action<WalletSummaryModel, number>;
   update: Action<
     WalletSummaryModel,
@@ -36,8 +28,12 @@ export interface WalletSummaryModel {
       format: (amount: number) => number;
     }
   >;
-  listCancelledTransactions: Action<WalletSummaryModel, boolean>;
-  getWalletSummary: Thunk<WalletSummaryModel, string, Injections, StoreModel>;
+  updateWalletSummary: Thunk<
+    WalletSummaryModel,
+    string,
+    Injections,
+    StoreModel
+  >;
   cancelTransaction: Thunk<
     WalletSummaryModel,
     {
@@ -62,6 +58,8 @@ export interface WalletSummaryModel {
   getUnconfirmedTransactions: Computed<WalletSummaryModel, ITransaction[]>;
   getCancelledTransactions: Computed<WalletSummaryModel, ITransaction[]>;
   getCoinbaseTransactions: Computed<WalletSummaryModel, ITransaction[]>;
+  waitingResponse: boolean;
+  setWaitingResponse: Action<WalletSummaryModel, boolean>;
 }
 
 const walletSummary: WalletSummaryModel = {
@@ -70,13 +68,9 @@ const walletSummary: WalletSummaryModel = {
   immature: 0,
   unconfirmed: 0,
   locked: 0,
-  updateSummaryInterval: 10000,
+  updateSummaryInterval: 3000,
   selectedTx: -1,
   transactions: undefined,
-  showCancelledTransactions: true,
-  listCancelledTransactions: action((state, payload) => {
-    state.showCancelledTransactions = payload;
-  }),
   setSelectedTx: action((state, id) => {
     state.selectedTx = id;
   }),
@@ -94,8 +88,10 @@ const walletSummary: WalletSummaryModel = {
       return tx;
     });
   }),
-  getWalletSummary: thunk(
+  updateWalletSummary: thunk(
     async (actions, token, { injections, getStoreActions, getStoreState }) => {
+      if (getStoreState().walletSummary.waitingResponse) return;
+      actions.setWaitingResponse(true);
       const { ownerService, utilsService } = injections;
       const apiSettings = getStoreState().settings.defaultSettings;
       await new ownerService.REST(
@@ -139,6 +135,7 @@ const walletSummary: WalletSummaryModel = {
             format: utilsService.formatGrinAmount,
           });
         });
+      actions.setWaitingResponse(false);
     }
   ),
   cancelTransaction: thunk(
@@ -196,6 +193,10 @@ const walletSummary: WalletSummaryModel = {
   getCoinbaseTransactions: computed((state) => {
     if (state.transactions === undefined) return [];
     return state.transactions.filter((t) => cleanTxType(t.type) === "coinbase");
+  }),
+  waitingResponse: false,
+  setWaitingResponse: action((state, waiting) => {
+    state.waitingResponse = waiting;
   }),
 };
 

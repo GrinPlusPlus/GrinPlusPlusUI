@@ -1,10 +1,10 @@
-import React, { useCallback } from 'react';
-import SaveTransactionFileComponent from '../../components/transaction/send/SaveTransactionFile';
-import { Intent, Position, Toaster } from '@blueprintjs/core';
-import { useHistory } from 'react-router-dom';
-import { useStoreActions, useStoreState } from '../../hooks';
+import React, { useCallback } from "react";
+import { SaveTransactionFileComponent } from "../../components/transaction/send/SaveTransactionFile";
+import { Intent, Position, Toaster } from "@blueprintjs/core";
+import { useHistory } from "react-router-dom";
+import { useStoreActions, useStoreState } from "../../hooks";
 
-export default function SaveTransactionFileContainer() {
+export const SaveTransactionFileContainer = () => {
   let history = useHistory();
 
   const { spendable } = useStoreState((state) => state.walletSummary);
@@ -16,22 +16,24 @@ export default function SaveTransactionFileContainer() {
 
   const onSaveButtonClicked = useCallback(async () => {
     if (amount === undefined || amount.slice(-1) === ".") return;
-    const sent = await sendViaFile({
-      amount: Number(amount),
-      strategy: strategy,
-      inputs: inputs,
-      message: message,
-      token: token,
-    }).catch((error: { message: string }) => {
-      Toaster.create({ position: Position.TOP }).show({
-        message: error.message,
-        intent: Intent.DANGER,
-        icon: "warning-sign",
+    try {
+      const sent = await sendViaFile({
+        amount: Number(amount),
+        strategy: strategy,
+        inputs: inputs,
+        message: message,
+        token: token,
+      }).catch((error: { message: string }) => {
+        Toaster.create({ position: Position.TOP }).show({
+          message: error.message,
+          intent: Intent.DANGER,
+          icon: "warning-sign",
+        });
       });
-    });
-    if (sent) {
-      history.push("/wallet");
-    }
+      if (sent) {
+        history.push("/wallet");
+      }
+    } catch (error) {}
   }, [sendViaFile, amount, message, inputs, token, strategy, history]);
 
   return (
@@ -42,4 +44,4 @@ export default function SaveTransactionFileContainer() {
       onSaveButtonClickedCb={onSaveButtonClicked}
     />
   );
-}
+};

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Alert,
   Button,
@@ -12,8 +12,8 @@ import {
   NumericInput,
   Slider,
   Switch,
-  Text
-  } from '@blueprintjs/core';
+  Text,
+} from "@blueprintjs/core";
 
 type SettingsProps = {
   status: string;
@@ -32,12 +32,11 @@ type SettingsProps = {
   setMininumPeersCb: (peers: number) => void;
   setMaximumPeersCb: (peers: number) => void;
   setConfirmationsCb: (confirmations: number) => void;
-  restartNodeCb: () => void;
   toggleConfirmationDialogCb: () => void;
   confirmReSyncBlockchainCb: () => void;
 };
 
-export default function SettingsComponent({
+export const SettingsComponent = ({
   status,
   floonet,
   useGrinJoin,
@@ -54,10 +53,9 @@ export default function SettingsComponent({
   setMininumPeersCb,
   setMaximumPeersCb,
   setConfirmationsCb,
-  restartNodeCb,
   toggleConfirmationDialogCb,
-  confirmReSyncBlockchainCb
-}: SettingsProps) {
+  confirmReSyncBlockchainCb,
+}: SettingsProps) => {
   return (
     <div>
       <div className={Classes.DIALOG_BODY}>
@@ -90,7 +88,7 @@ export default function SettingsComponent({
             data-testid="mininum-number-peers-input"
             id="mininum-number-peers"
             value={mininumPeers}
-            onValueChange={value => setMininumPeersCb(value)}
+            onValueChange={(value) => setMininumPeersCb(value)}
           />
         </FormGroup>
         <FormGroup
@@ -101,7 +99,7 @@ export default function SettingsComponent({
             data-testid="maximum-number-peers-input"
             id="maximum-number-peers"
             value={maximumPeers}
-            onValueChange={value => setMaximumPeersCb(value)}
+            onValueChange={(value) => setMaximumPeersCb(value)}
           />
         </FormGroup>
         <FormGroup label={"Confirmations"}>
@@ -113,7 +111,7 @@ export default function SettingsComponent({
             data-testid="confirmations-slider"
             value={confirmations}
             showTrackFill={false}
-            onChange={value => setConfirmationsCb(value)}
+            onChange={(value) => setConfirmationsCb(value)}
           />
         </FormGroup>
         <Divider />
@@ -138,15 +136,8 @@ export default function SettingsComponent({
         <Text>Node Actions</Text>
         <ControlGroup>
           <Button
-            text={isNodeRunning ? "Restart" : "Start"}
-            onClick={() => restartNodeCb()}
-            style={{ width: "50%" }}
-            intent={Intent.NONE}
-          />
-          <Button
             text="Resync"
             disabled={status.toLowerCase() !== "running"}
-            style={{ width: "50%" }}
             intent={Intent.WARNING}
             onClick={() => toggleConfirmationDialogCb()}
           />
@@ -175,4 +166,4 @@ export default function SettingsComponent({
       </Alert>
     </div>
   );
-}
+};

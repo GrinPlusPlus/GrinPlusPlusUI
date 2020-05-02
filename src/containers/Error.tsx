@@ -1,8 +1,8 @@
-import React from 'react';
-import { Center, HorizontallyCenter } from '../components/styled';
-import { Text } from '@blueprintjs/core';
+import React from "react";
+import { Center, HorizontallyCenter } from "../components/styled";
+import { Text } from "@blueprintjs/core";
 
-export default function ErrorContainer() {
+export const ErrorContainer = () => {
   return (
     <Center>
       <HorizontallyCenter>
@@ -15,4 +15,4 @@ export default function ErrorContainer() {
       </HorizontallyCenter>
     </Center>
   );
-}
+};

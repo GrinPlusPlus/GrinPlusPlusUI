@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import SettingsComponent from "../../components/extras/Settings";
+import { SettingsComponent } from "../../components/extras/Settings";
 import { useStoreActions, useStoreState } from "../../hooks";
 
 export const SettingsContainer = () => {
@@ -25,21 +25,22 @@ export const SettingsContainer = () => {
     setGrinJoinAddress,
     toggleConfirmationDialog,
   } = useStoreActions((actions) => actions.settings);
-  const { restartNode, reSyncBlockchain } = useStoreActions(
-    (state) => state.wallet
-  );
+  const { reSyncBlockchain } = useStoreActions((state) => state.wallet);
 
   const toggleDialog = useCallback(() => {
     toggleConfirmationDialog();
   }, [toggleConfirmationDialog]);
 
-  const restartGrinNode = useCallback(() => {
-    restartNode();
-  }, [restartNode]);
-
   const confirmReSyncBlockchain = useCallback(async () => {
     toggleConfirmationDialog();
-    await reSyncBlockchain();
+    require("electron-log").info("Trying to ReSync Blockchain...");
+    try {
+      await reSyncBlockchain();
+    } catch (error) {
+      require("electron-log").info(
+        `Error trying to ReSync Blockchain: ${error}`
+      );
+    }
   }, [toggleConfirmationDialog, reSyncBlockchain]);
 
   return (
@@ -60,7 +61,6 @@ export const SettingsContainer = () => {
       setMininumPeersCb={setMininumPeers}
       setMaximumPeersCb={setMaximumPeers}
       setConfirmationsCb={setConfirmations}
-      restartNodeCb={restartGrinNode}
       toggleConfirmationDialogCb={toggleDialog}
       confirmReSyncBlockchainCb={confirmReSyncBlockchain}
     />
