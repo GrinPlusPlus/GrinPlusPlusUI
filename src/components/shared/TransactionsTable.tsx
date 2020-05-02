@@ -3,7 +3,7 @@ import { cleanTxType, cutAdddres, getTxIcon, getTxIntent } from "../../helpers";
 import { Icon, Text } from "@blueprintjs/core";
 import { ITransaction } from "../../interfaces/ITransaction";
 import { TansactionDetailsComponent } from "../transaction/Details";
-import { formatDistance, subDays } from "date-fns";
+import { formatDistance } from "date-fns";
 
 type TransactionsTableProps = {
   transactions: ITransaction[];
