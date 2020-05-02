@@ -56,6 +56,7 @@ export const updateSettings = function(
   const data = fs.readFileSync(file, "utf8");
   let settings = JSON.parse(data);
   if (["MIN_PEERS", "MAX_PEERS"].includes(property)) {
+    if (!settings["P2P"]) settings["P2P"] = {};
     settings["P2P"][property] = value;
   } else if (property === "MIN_CONFIRMATIONS") {
     settings["WALLET"]["MIN_CONFIRMATIONS"] = value;
