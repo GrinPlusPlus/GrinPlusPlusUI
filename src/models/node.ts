@@ -58,7 +58,7 @@ const nodeSummary: NodeSummaryModel = {
   blocks: 0,
   network: { height: 0, outbound: 0, inbound: 0 },
   userAgent: "",
-  updateInterval: 5000,
+  updateInterval: 1000,
   connectedPeers: [],
   waitingResponse: false,
   updateStatus: action((state, node) => {

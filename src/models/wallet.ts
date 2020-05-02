@@ -1,6 +1,11 @@
-import { Action, action, Thunk, thunk } from "easy-peasy";
-import { Injections } from "../store";
-import { StoreModel } from ".";
+import {
+  Action,
+  action,
+  Thunk,
+  thunk
+  } from 'easy-peasy';
+import { Injections } from '../store';
+import { StoreModel } from '.';
 
 export interface WalletModel {
   isNodeInstalled: boolean;
@@ -169,7 +174,7 @@ const wallet: WalletModel = {
       });
     }
   ),
-  nodeHealthCheck: false,
+  nodeHealthCheck: true,
   setNodeHealthCheck: action((state, check) => {
     state.nodeHealthCheck = check;
   }),

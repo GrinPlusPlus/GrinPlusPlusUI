@@ -1,9 +1,9 @@
-import React from "react";
-import { Button, Intent } from "@blueprintjs/core";
+import React from 'react';
+import { Button, Intent } from '@blueprintjs/core';
 
 type SendGrinsButtonsProps = {
   amount: number;
-  fee;
+  fee: number;
   spendable: number;
   inputsSelected: boolean;
   onSaveButtonClickedCb: () => void;

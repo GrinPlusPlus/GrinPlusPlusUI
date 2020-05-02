@@ -1,9 +1,13 @@
-import { Action, action, Thunk, thunk } from "easy-peasy";
-import { Injections } from "../../store";
-import { StoreModel } from "..";
+import {
+  Action,
+  action,
+  Thunk,
+  thunk
+  } from 'easy-peasy';
+import { Injections } from '../../store';
+import { StoreModel } from '..';
 
 export interface ReceiveCoinsModel {
-  retryInterval: number;
   responsesDestination: string | undefined;
   setResponsesDestination: Action<ReceiveCoinsModel, string>;
   receiveTx: Thunk<ReceiveCoinsModel, File[], Injections, StoreModel>;
@@ -14,7 +18,6 @@ export interface ReceiveCoinsModel {
 
 const receiveCoinsModel: ReceiveCoinsModel = {
   responsesDestination: undefined,
-  retryInterval: 60000,
   setResponsesDestination: action((state, path) => {
     state.responsesDestination = path.trim();
   }),
