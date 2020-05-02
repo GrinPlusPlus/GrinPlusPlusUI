@@ -1,17 +1,16 @@
-import { ErrorContainer } from "./containers/Error";
-import { InitializerContainer } from "./containers/Initializer";
-import React from "react";
-import { RestoreContainer } from "./containers/Recover";
-import { SendGrinContainer } from "./containers/SendGrins";
-import { SignInContainer } from "./containers/SignIn";
-import { SignUpContainer } from "./containers/SingUp";
-import store from "./store";
-import { WalletContainer } from "./containers/Wallet";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { StoreProvider } from "easy-peasy";
-import { StatusContainer } from "./containers/Status";
+import React from 'react';
+import store from './store';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { InitializerContainer } from './containers/Initializer';
+import { RestoreContainer } from './containers/Recover';
+import { SendGrinContainer } from './containers/SendGrins';
+import { SignInContainer } from './containers/SignIn';
+import { SignUpContainer } from './containers/SingUp';
+import { StatusContainer } from './containers/Status';
+import { StoreProvider } from 'easy-peasy';
+import { WalletContainer } from './containers/Wallet';
+import './App.scss';
 
-import "./App.scss";
 
 const App: React.FC = () => {
   return (
@@ -35,9 +34,6 @@ const App: React.FC = () => {
           </Route>
           <Route path="/status">
             <StatusContainer />
-          </Route>
-          <Route path="/error">
-            <ErrorContainer />
           </Route>
           <Route path="/">
             <InitializerContainer />

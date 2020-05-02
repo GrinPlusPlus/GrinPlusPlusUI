@@ -1,8 +1,8 @@
-import React, { Suspense, useEffect } from "react";
-import { AlertComponent } from "../components/extras/Alert";
-import { LoadingComponent } from "../components/extras/Loading";
-import { Redirect } from "react-router-dom";
-import { useStoreActions, useStoreState } from "../hooks";
+import React, { Suspense, useEffect } from 'react';
+import { AlertComponent } from '../components/extras/Alert';
+import { LoadingComponent } from '../components/extras/Loading';
+import { Redirect } from 'react-router-dom';
+import { useStoreActions, useStoreState } from '../hooks';
 
 const AccountNavBarContainer = React.lazy(() =>
   import("./dashboard/AccountNavBar").then((module) => ({
@@ -34,9 +34,6 @@ export const WalletContainer = () => {
   const { token, address, isLoggedIn } = useStoreState(
     (state) => state.session
   );
-  const { retryInterval } = useStoreState(
-    (actions) => actions.receiveCoinsModel
-  );
   const { updateSummaryInterval } = useStoreState(
     (state) => state.walletSummary
   );
@@ -50,31 +47,30 @@ export const WalletContainer = () => {
     (actions) => actions.receiveCoinsModel
   );
 
+  async function requestAddress(t: string) {
+    await getAddress(t);
+  }
+
+  async function getSummary(t: string) {
+    try {
+      await updateWalletSummary(t);
+    } catch (error) {
+      require("electron-log").info(
+        `Error trying to get Wallet Summary: ${error.message}`
+      );
+    }
+  }
+  
   useEffect(() => {
-    const interval = setInterval(async () => {
-      try {
-        await updateWalletSummary(token);
-      } catch (error) {
-        require("electron-log").info(
-          `Error trying to get Wallet Summary: ${error.message}`
-        );
-      }
-    }, updateSummaryInterval);
-    return () => clearInterval(interval);
+    if (address.length !== 56) requestAddress(token);
   });
 
   useEffect(() => {
-    async function init(t: string) {
-      await getAddress(t);
-    }
-    if (address.length !== 56) {
-      init(token);
-      const interval = setInterval(async () => {
-        await getAddress(token);
-      }, retryInterval);
-      return () => clearInterval(interval);
-    }
-  }, [address, getAddress, token, retryInterval]);
+    let timer = setTimeout(() => getSummary(token), updateSummaryInterval);
+    return () => {
+      clearTimeout(timer);
+    };
+  });
 
   return (
     <Suspense fallback={renderLoader()}>
