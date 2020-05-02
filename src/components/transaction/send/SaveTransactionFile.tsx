@@ -3,6 +3,7 @@ import { Button, Intent } from "@blueprintjs/core";
 
 type SendGrinsButtonsProps = {
   amount: number;
+  fee;
   spendable: number;
   inputsSelected: boolean;
   onSaveButtonClickedCb: () => void;
@@ -10,6 +11,7 @@ type SendGrinsButtonsProps = {
 
 export const SaveTransactionFileComponent = ({
   amount,
+  fee,
   spendable,
   inputsSelected,
   onSaveButtonClickedCb,
@@ -22,7 +24,7 @@ export const SaveTransactionFileComponent = ({
         width: "120px",
       }}
       icon="document"
-      disabled={amount <= 0 || spendable === 0 || !inputsSelected}
+      disabled={amount <= 0 || spendable < amount + fee || !inputsSelected}
       onClick={onSaveButtonClickedCb}
     >
       Save Tx

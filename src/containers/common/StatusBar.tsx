@@ -1,5 +1,7 @@
 import React, { Suspense, useEffect } from "react";
-import { useStoreState, useStoreActions } from "../../hooks";
+import { useStoreActions, useStoreState } from "../../hooks";
+import { useHistory } from "react-router-dom";
+import { Alert, Intent } from "@blueprintjs/core";
 
 const StatusBarComponent = React.lazy(() =>
   import("../../components/shared/StatusBar").then((module) => ({
@@ -18,6 +20,7 @@ export const StatusBarContainer = () => {
     network,
     updateInterval,
   } = useStoreState((state) => state.nodeSummary);
+  const { isNodeRunning } = useStoreState((state) => state.wallet);
   const { checkStatus, updateStatus } = useStoreActions(
     (actions) => actions.nodeSummary
   );
@@ -25,10 +28,9 @@ export const StatusBarContainer = () => {
 
   const getStatus = async () => {
     try {
-      const status = await checkStatus();
-      updateStatus(status);
+      updateStatus(await checkStatus());
     } catch (error) {
-      require("electron-log").info(
+      require("electron-log").error(
         `Error trying to get Node Status: ${error.message}`
       );
       updateStatus(undefined);
@@ -37,23 +39,38 @@ export const StatusBarContainer = () => {
         await checkNodeHealth();
         require("electron-log").info("HealthCheck passed, all good!");
       } catch (error) {
-        require("electron-log").info(`HealthCheck failed: ${error.message}`);
+        require("electron-log").error(`HealthCheck failed: ${error.message}`);
       }
     }
   };
+
+  async function requestStatus() {
+    await getStatus();
+  }
+
   useEffect(() => {
-    async function init() {
-      await getStatus();
-    }
-    init();
-    const interval = setInterval(async () => {
-      await getStatus();
-    }, updateInterval);
-    return () => clearInterval(interval);
+    let timer = setTimeout(() => requestStatus(), updateInterval);
+    return () => {
+      clearTimeout(timer);
+    };
   });
+
+  let history = useHistory();
 
   return (
     <Suspense fallback={renderLoader()}>
+      <Alert
+        className="bp3-dark"
+        confirmButtonText="Restart Wallet"
+        isOpen={!isNodeRunning}
+        intent={Intent.WARNING}
+        onClose={() => history.push("/")}
+      >
+        <p>
+          The Node process is not running. This is unusual, but don't worry, you
+          just need to restart the wallet.
+        </p>
+      </Alert>
       <StatusBarComponent
         intent={intent}
         status={status}

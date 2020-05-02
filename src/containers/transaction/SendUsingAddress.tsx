@@ -25,6 +25,7 @@ export const SendUsingAddressContainer = () => {
     address,
     waitingResponse,
     isAddressValid,
+    fee,
   } = useStoreState((state) => state.sendCoinsModel);
   const { token } = useStoreState((state) => state.session);
   const { sendUsingListener, setWaitingResponse } = useStoreActions(
@@ -92,6 +93,7 @@ export const SendUsingAddressContainer = () => {
         inputsSelected={inputs.length !== 0}
         isAddressValid={isAddressValid}
         onSendButtonClickedCb={onSendButtonClicked}
+        fee={fee}
       />
       <Overlay
         canEscapeKeyClose={false}

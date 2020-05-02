@@ -165,8 +165,8 @@ export class BaseApi {
   ): Promise<string> {
     let request = window.require("request");
     let options = {
-      timeout: 5000,
-      pool: { maxSockets: 100 },
+      timeout: 10000,
+      pool: { maxSockets: 1 },
       url: url,
       method: method,
       headers: headers,
@@ -191,7 +191,7 @@ export class BaseApi {
       timeout: 60000,
       url: url,
       agent: false,
-      pool: { maxSockets: 100 },
+      pool: { maxSockets: 1 },
       headers: {
         Accept: "application/json, text/plain, */*",
       },

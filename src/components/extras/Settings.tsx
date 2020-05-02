@@ -34,6 +34,7 @@ type SettingsProps = {
   setConfirmationsCb: (confirmations: number) => void;
   toggleConfirmationDialogCb: () => void;
   confirmReSyncBlockchainCb: () => void;
+  restartNodeCb: () => void;
 };
 
 export const SettingsComponent = ({
@@ -55,6 +56,7 @@ export const SettingsComponent = ({
   setConfirmationsCb,
   toggleConfirmationDialogCb,
   confirmReSyncBlockchainCb,
+  restartNodeCb,
 }: SettingsProps) => {
   return (
     <div>
@@ -136,8 +138,15 @@ export const SettingsComponent = ({
         <Text>Node Actions</Text>
         <ControlGroup>
           <Button
+            text={"Restart"}
+            onClick={() => restartNodeCb()}
+            style={{ width: "50%" }}
+            intent={Intent.DANGER}
+          />
+          <Button
             text="Resync"
             disabled={status.toLowerCase() !== "running"}
+            style={{ width: "50%" }}
             intent={Intent.WARNING}
             onClick={() => toggleConfirmationDialogCb()}
           />
@@ -160,7 +169,7 @@ export const SettingsComponent = ({
         }}
       >
         <p>
-          Are you sure you want to <b>resync</b> the Node? This will donwload
+          Are you sure you want to <b>resync</b> the Node? This will download
           around 1GB again and will take time.
         </p>
       </Alert>

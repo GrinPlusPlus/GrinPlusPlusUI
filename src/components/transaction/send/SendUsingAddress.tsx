@@ -3,6 +3,7 @@ import { Button, Intent } from "@blueprintjs/core";
 
 type SendGrinsButtonsProps = {
   amount: number;
+  fee: number;
   spendable: number;
   inputsSelected: boolean;
   isAddressValid: boolean;
@@ -11,6 +12,7 @@ type SendGrinsButtonsProps = {
 
 export const SendUsingAddressComponent = ({
   amount,
+  fee,
   spendable,
   inputsSelected,
   isAddressValid,
@@ -22,7 +24,10 @@ export const SendUsingAddressComponent = ({
       style={{ color: "black", width: "120px" }}
       icon="globe"
       disabled={
-        amount <= 0 || spendable <= 0 || !isAddressValid || !inputsSelected
+        amount <= 0 ||
+        spendable < amount + fee ||
+        !isAddressValid ||
+        !inputsSelected
       }
       onClick={onSendButtonClickedCb}
     >

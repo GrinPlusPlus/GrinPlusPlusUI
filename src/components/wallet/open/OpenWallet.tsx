@@ -16,7 +16,7 @@ type OpenWalletProps = {
   password: string;
   accounts: JSX.Element[];
   passwordCb: (password: string) => void;
-  olverlayCb: () => void;
+  overlayCb: () => void;
   loginButtonCb: () => void;
   waitingResponse: boolean;
 };
@@ -26,7 +26,7 @@ export const OpenWalletComponent = ({
   password,
   accounts,
   passwordCb,
-  olverlayCb,
+  overlayCb,
   loginButtonCb,
   waitingResponse,
 }: OpenWalletProps) => {
@@ -40,7 +40,7 @@ export const OpenWalletComponent = ({
         isOpen={username?.length > 0}
         enforceFocus={true}
         autoFocus={true}
-        onClose={olverlayCb}
+        onClose={overlayCb}
       >
         <div
           className={classes}

@@ -36,17 +36,21 @@ export const SendGrinContainer = () => {
     (actions) => actions.sendCoinsModel
   );
 
+  async function getSummary(t: string) {
+    try {
+      await updateWalletSummary(t);
+    } catch (error) {
+      require("electron-log").error(
+        `Error trying to get Wallet Summary: ${error.message}`
+      );
+    }
+  }
+
   useEffect(() => {
-    const interval = setInterval(async () => {
-      try {
-        await updateWalletSummary(token);
-      } catch (error) {
-        require("electron-log").info(
-          `Error trying to get Wallet Summary: ${error.message}`
-        );
-      }
-    }, updateSummaryInterval);
-    return () => clearInterval(interval);
+    let timer = setTimeout(() => getSummary(token), updateSummaryInterval);
+    return () => {
+      clearTimeout(timer);
+    };
   });
 
   return (

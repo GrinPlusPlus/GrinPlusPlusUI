@@ -63,7 +63,7 @@ export const CreateWalletComponent = ({
       </FormGroup>
       <FormGroup
         label={"Password"}
-        helperText={`Password should be at least ${minPasswordLength} characters length.`}
+        helperText={`Password should be at least ${minPasswordLength} characters long.`}
         labelFor="create-wallet-password"
         labelInfo={true}
       >

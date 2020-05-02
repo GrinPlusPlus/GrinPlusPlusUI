@@ -25,7 +25,9 @@ export const SettingsContainer = () => {
     setGrinJoinAddress,
     toggleConfirmationDialog,
   } = useStoreActions((actions) => actions.settings);
-  const { reSyncBlockchain } = useStoreActions((state) => state.wallet);
+  const { reSyncBlockchain, restartNode } = useStoreActions(
+    (state) => state.wallet
+  );
 
   const toggleDialog = useCallback(() => {
     toggleConfirmationDialog();
@@ -37,11 +39,15 @@ export const SettingsContainer = () => {
     try {
       await reSyncBlockchain();
     } catch (error) {
-      require("electron-log").info(
+      require("electron-log").error(
         `Error trying to ReSync Blockchain: ${error}`
       );
     }
   }, [toggleConfirmationDialog, reSyncBlockchain]);
+
+  const restartGrinNode = useCallback(() => {
+    restartNode();
+  }, [restartNode]);
 
   return (
     <SettingsComponent
@@ -63,6 +69,7 @@ export const SettingsContainer = () => {
       setConfirmationsCb={setConfirmations}
       toggleConfirmationDialogCb={toggleDialog}
       confirmReSyncBlockchainCb={confirmReSyncBlockchain}
+      restartNodeCb={restartGrinNode}
     />
   );
 };

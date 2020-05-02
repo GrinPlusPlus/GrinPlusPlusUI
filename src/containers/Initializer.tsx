@@ -33,10 +33,13 @@ export const InitializerContainer = () => {
   useEffect(() => {
     (async function() {
       if (!isWalletInitialized) {
-        require("electron-log").info("Initializing Wallet.");
+        require("electron-log").info("Initializing Backend.");
         await initializeWallet().catch((error: string) => {
           setMessage(error);
           setInitializingError(true);
+          require("electron-log").info(
+            `Error trying to Initialize the Backend: ${error}`
+          );
         });
       }
     })();
@@ -48,7 +51,7 @@ export const InitializerContainer = () => {
         const status = await checkStatus();
         updateStatus(status);
       } catch (error) {
-        require("electron-log").info(
+        require("electron-log").error(
           `Error trying to get Node Status: ${error.message}`
         );
         updateStatus(undefined);
