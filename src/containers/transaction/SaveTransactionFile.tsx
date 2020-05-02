@@ -1,14 +1,14 @@
-import React, { useCallback } from "react";
-import { SaveTransactionFileComponent } from "../../components/transaction/send/SaveTransactionFile";
-import { Intent, Position, Toaster } from "@blueprintjs/core";
-import { useHistory } from "react-router-dom";
-import { useStoreActions, useStoreState } from "../../hooks";
+import React, { useCallback } from 'react';
+import { Intent, Position, Toaster } from '@blueprintjs/core';
+import { SaveTransactionFileComponent } from '../../components/transaction/send/SaveTransactionFile';
+import { useHistory } from 'react-router-dom';
+import { useStoreActions, useStoreState } from '../../hooks';
 
 export const SaveTransactionFileContainer = () => {
   let history = useHistory();
 
   const { spendable } = useStoreState((state) => state.walletSummary);
-  const { amount, message, strategy, inputs } = useStoreState(
+  const { amount, message, strategy, inputs, fee } = useStoreState(
     (state) => state.sendCoinsModel
   );
   const { token } = useStoreState((state) => state.session);
@@ -39,6 +39,7 @@ export const SaveTransactionFileContainer = () => {
   return (
     <SaveTransactionFileComponent
       spendable={spendable}
+      fee={fee}
       amount={amount ? Number(amount) : 0}
       inputsSelected={inputs.length !== 0}
       onSaveButtonClickedCb={onSaveButtonClicked}
