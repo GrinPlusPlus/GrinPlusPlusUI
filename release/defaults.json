@@ -1,0 +1,19 @@
+{
+    "ip": "127.0.0.1",
+    "protocol": "http",
+    "mode": "PROD",
+    "binaryPath": "./resources/app.asar.unpacked/bin",
+    "floonet": false,
+    "minimumPeers": 15,
+    "maximumPeers": 50,
+    "minimumConfirmations": 10,
+    "cors": "http://127.0.0.1:8080/",
+    "ports": {
+      "node": 3413,
+      "foreignRPC": 3415,
+      "owner": 3420,
+      "ownerRPC": 3421
+    },
+    "grinJoinAddress": "grinjoin5pzzisnne3naxx4w2knwxsyamqmzfnzywnzdk7ra766u7vid"
+  }
+  

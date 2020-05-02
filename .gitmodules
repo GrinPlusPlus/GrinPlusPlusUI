@@ -1,0 +1,3 @@
+[submodule "GrinPlusPlus"]
+	path = GrinPlusPlus
+	url = https://github.com/GrinPlusPlus/GrinPlusPlus.git

@@ -1,0 +1,142 @@
+$pt-link-color: #ffff14;
+$pt-intent-primary: #ffff14;
+$pt-outline-color: #293742;
+$pt-outline-color: #293742;
+$pt-text-color: #ffffff;
+$pt-dark-app-background-color: #21242d;
+$pt-dark-popover-box-shadow: $pt-intent-primary;
+
+@import "~@blueprintjs/core/src/blueprint.scss";
+@import "@blueprintjs/core/src/blueprint.scss";
+
+.content {
+  overflow: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 95%;
+}
+
+.footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: #000000;
+  font-size: small;
+
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
+
+  background-color: #050505 !important;
+}
+
+.bp3-input {
+  color: #000000;
+}
+.bp3-navbar {
+  background-color: #050505 !important;
+}
+
+.bp3-tab,
+.bp3-tab:hover,
+.bp3-tab:active {
+  outline-color: #ffff14;
+}
+.bp3-drawer.bp3-dark {
+  background-color: #050505 !important;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+td {
+  vertical-align: middle;
+}
+
+.transactions {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.transactions td,
+.transactions th {
+  border: 1px solid #050505;
+  padding: 3px;
+}
+
+.transactions td {
+  font-size: 14px;
+}
+
+.transactions tr:nth-child(even) {
+  background-color: #222222;
+}
+
+.transactions tr:hover {
+  background-color: #191919;
+  cursor: pointer;
+}
+
+.transactions th {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  text-align: left;
+  background-color: #e6e600;
+  color: black;
+}
+
+.transactions b {
+  font-size: 14px;
+}
+
+.transactions p {
+  font-size: 12px;
+}
+
+.show {
+  display: table-row;
+}
+.hide {
+  display: none;
+}
+
+/* DivTable.com */
+.divTable{
+	display: table;
+	width: 100%;
+}
+.divTableRow {
+	display: table-row;
+}
+.divTableHeading {
+	background-color: #EEE;
+	display: table-header-group;
+}
+.divTableCell, .divTableHead {
+	border: 1px solid #222222;
+	display: table-cell;
+	padding: 3px 10px;
+}
+.divTableHeading {
+	background-color: #EEE;
+	display: table-header-group;
+	font-weight: bold;
+}
+.divTableFoot {
+	background-color: #EEE;
+	display: table-footer-group;
+	font-weight: bold;
+}
+.divTableBody {
+	display: table-row-group;
+}
