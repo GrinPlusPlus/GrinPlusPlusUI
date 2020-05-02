@@ -1,5 +1,5 @@
-import React, { Suspense, useEffect } from 'react';
-import { useStoreActions, useStoreState } from '../../hooks';
+import React, { Suspense, useEffect } from "react";
+import { useStoreActions, useStoreState } from "../../hooks";
 
 const StatusBarComponent = React.lazy(() =>
   import("../../components/shared/StatusBar").then((module) => ({
@@ -10,9 +10,14 @@ const StatusBarComponent = React.lazy(() =>
 const renderLoader = () => null;
 
 export const StatusBarContainer = () => {
-  const { intent, status, headers, blocks, network, updateInterval } = useStoreState(
-    (state) => state.nodeSummary
-  );
+  const {
+    intent,
+    status,
+    headers,
+    blocks,
+    network,
+    updateInterval,
+  } = useStoreState((state) => state.nodeSummary);
   const { checkStatus, updateStatus } = useStoreActions(
     (actions) => actions.nodeSummary
   );
@@ -22,7 +27,7 @@ export const StatusBarContainer = () => {
     try {
       updateStatus(await checkStatus());
     } catch (error) {
-      require("electron-log").info(
+      require("electron-log").error(
         `Error trying to get Node Status: ${error.message}`
       );
       updateStatus(undefined);
@@ -31,7 +36,7 @@ export const StatusBarContainer = () => {
         await checkNodeHealth();
         require("electron-log").info("HealthCheck passed, all good!");
       } catch (error) {
-        require("electron-log").info(`HealthCheck failed: ${error.message}`);
+        require("electron-log").error(`HealthCheck failed: ${error.message}`);
       }
     }
   };
@@ -39,7 +44,7 @@ export const StatusBarContainer = () => {
   async function requestStatus() {
     await getStatus();
   }
-  
+
   useEffect(() => {
     let timer = setTimeout(() => requestStatus(), updateInterval);
     return () => {

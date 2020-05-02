@@ -37,7 +37,7 @@ export const SettingsContainer = () => {
     try {
       await reSyncBlockchain();
     } catch (error) {
-      require("electron-log").info(
+      require("electron-log").error(
         `Error trying to ReSync Blockchain: ${error}`
       );
     }

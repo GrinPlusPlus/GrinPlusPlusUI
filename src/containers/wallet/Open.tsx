@@ -1,14 +1,7 @@
-import React, { Suspense, useCallback, useEffect } from 'react';
-import {
-  Card,
-  Icon,
-  Intent,
-  Position,
-  Text,
-  Toaster
-  } from '@blueprintjs/core';
-import { Redirect } from 'react-router-dom';
-import { useStoreActions, useStoreState } from '../../hooks';
+import React, { Suspense, useCallback, useEffect } from "react";
+import { Card, Icon, Intent, Position, Text, Toaster } from "@blueprintjs/core";
+import { Redirect } from "react-router-dom";
+import { useStoreActions, useStoreState } from "../../hooks";
 
 const NoAccountsComponent = React.lazy(() =>
   import("../../components/extras/NoAccounts").then((module) => ({
@@ -46,7 +39,7 @@ export const OpenWalletContainer = () => {
         const accounts = await getAccounts();
         setAccounts(accounts);
       } catch (error) {
-        require("electron-log").info(
+        require("electron-log").error(
           `Error trying to get Accounts: ${error.message}`
         );
       }

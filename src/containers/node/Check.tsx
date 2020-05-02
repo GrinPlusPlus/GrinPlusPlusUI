@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
-import { ConnectedPeersComponent } from '../../components/node/ConnectedPeers';
-import { NodeStatusComponent } from '../../components/node/NodeStatus';
-import { Spinner } from '@blueprintjs/core';
-import { useStoreActions, useStoreState } from '../../hooks';
+import React, { useEffect } from "react";
+import { ConnectedPeersComponent } from "../../components/node/ConnectedPeers";
+import { NodeStatusComponent } from "../../components/node/NodeStatus";
+import { Spinner } from "@blueprintjs/core";
+import { useStoreActions, useStoreState } from "../../hooks";
 
 export const NodeCheckContainer = () => {
   const { headers, blocks, network, connectedPeers } = useStoreState(
@@ -17,11 +17,11 @@ export const NodeCheckContainer = () => {
     try {
       setConnectedPeers(await getConnectedPeers());
     } catch (error) {
-      require("electron-log").info(
+      require("electron-log").error(
         `Error trying to get Connected Peers: ${error.message}`
       );
     }
-  };
+  }
 
   useEffect(() => {
     let timer = setTimeout(() => getPeers(), 3000);

@@ -1,7 +1,7 @@
-import React, { Suspense, useEffect } from 'react';
-import { LoadingComponent } from '../components/extras/Loading';
-import { Redirect } from 'react-router-dom';
-import { useStoreActions, useStoreState } from '../hooks';
+import React, { Suspense, useEffect } from "react";
+import { LoadingComponent } from "../components/extras/Loading";
+import { Redirect } from "react-router-dom";
+import { useStoreActions, useStoreState } from "../hooks";
 
 const NavBarContainer = React.lazy(() =>
   import("./common/NavigationBar").then((module) => ({
@@ -40,7 +40,7 @@ export const SendGrinContainer = () => {
     try {
       await updateWalletSummary(t);
     } catch (error) {
-      require("electron-log").info(
+      require("electron-log").error(
         `Error trying to get Wallet Summary: ${error.message}`
       );
     }

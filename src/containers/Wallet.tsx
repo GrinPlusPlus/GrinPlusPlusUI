@@ -1,8 +1,8 @@
-import React, { Suspense, useEffect } from 'react';
-import { AlertComponent } from '../components/extras/Alert';
-import { LoadingComponent } from '../components/extras/Loading';
-import { Redirect } from 'react-router-dom';
-import { useStoreActions, useStoreState } from '../hooks';
+import React, { Suspense, useEffect } from "react";
+import { AlertComponent } from "../components/extras/Alert";
+import { LoadingComponent } from "../components/extras/Loading";
+import { Redirect } from "react-router-dom";
+import { useStoreActions, useStoreState } from "../hooks";
 
 const AccountNavBarContainer = React.lazy(() =>
   import("./dashboard/AccountNavBar").then((module) => ({
@@ -55,12 +55,12 @@ export const WalletContainer = () => {
     try {
       await updateWalletSummary(t);
     } catch (error) {
-      require("electron-log").info(
+      require("electron-log").error(
         `Error trying to get Wallet Summary: ${error.message}`
       );
     }
   }
-  
+
   useEffect(() => {
     if (address.length !== 56) requestAddress(token);
   });
