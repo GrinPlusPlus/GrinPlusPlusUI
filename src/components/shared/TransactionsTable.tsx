@@ -1,7 +1,13 @@
-import React from "react";
-import { Button, Icon, Intent, Text } from "@blueprintjs/core";
-import { cleanTxType, getTxIcon, getTxIntent } from "../../helpers";
-import { ITransaction } from "../../interfaces/ITransaction";
+import React from 'react';
+import {
+  cleanTxType,
+  cutAdddres,
+  getTxIcon,
+  getTxIntent
+  } from '../../helpers';
+import { Icon, Text } from '@blueprintjs/core';
+import { ITransaction } from '../../interfaces/ITransaction';
+import { TansactionDetailsComponent } from '../transaction/Details';
 
 type TransactionsTableProps = {
   transactions: ITransaction[];
@@ -20,6 +26,7 @@ export const TransactionsTableComponent = ({
 }: TransactionsTableProps) => {
   const listTransactions = (rows: ITransaction[]) => {
     let table: JSX.Element[] = [];
+    if (rows.length === 0) return table;
     rows.forEach((transaction) => {
       let date = new Date(+transaction.creationDate * 1000)
         .toISOString()
@@ -35,16 +42,15 @@ export const TransactionsTableComponent = ({
           <td style={{ width: "5%", paddingLeft: "10px" }}>
             <Icon icon={getTxIcon(mType)} intent={getTxIntent(mType)} />
           </td>
-          <td style={{ width: "25%", paddingLeft: "10px" }}>
-            {(transaction.amountCredited - transaction.amountDebited).toFixed(
-              6
-            )}
-          </td>
           <td style={{ width: "20%", paddingLeft: "10px" }}>
-            {Math.abs(transaction.fee).toFixed(6)}
+            {Math.abs(
+              transaction.amountCredited - transaction.amountDebited
+            ).toFixed(6)}
           </td>
-          <td style={{ width: "50%", paddingLeft: "10px" }}>
-            {date.substring(0, 10)} {date.substring(date.length - 8)}
+          <td style={{ width: "25%", paddingLeft: "10px" }}>
+            {transaction.address === undefined
+              ? ""
+              : cutAdddres(transaction.address)}
           </td>
         </tr>
       );
@@ -65,57 +71,26 @@ export const TransactionsTableComponent = ({
               cursor: "default",
             }}
           >
-            <div
-              style={{
-                padding: "5px",
-              }}
-            >
-              <p>
-                ID: <b>{transaction.Id}</b>
-              </p>
-              <p>
-                Address: <b>{transaction.address}</b>
-              </p>
-              <p>
-                Slate: <b>{transaction.slateId}</b>
-              </p>
-              <p>
-                Type: <b>{transaction.type}</b>
-              </p>
-              <p>
-                Message:{" "}
-                <b>
-                  {transaction.slateMessage ? transaction.slateMessage : "n/a"}
-                </b>
-              </p>
-              <p>
-                Fee:
-                <b> {transaction.fee}</b>
-              </p>
-              <div style={{ textAlign: "center" }}>
-                {["sending_not_finalized", "receiving_unconfirmed"].includes(
-                  mType
-                ) ? (
-                  <Button
-                    text="Cancel Transaction"
-                    minimal={true}
-                    intent={Intent.WARNING}
-                    onClick={() =>
-                      onCancelTransactionButtonClickedCb(transaction.Id)
-                    }
-                  />
-                ) : mType === "sending_finalized" ? (
-                  <Button
-                    text="Repost Transaction"
-                    minimal={true}
-                    intent={Intent.WARNING}
-                    onClick={() =>
-                      onRepostTransactionButtonClickedCb(transaction.Id)
-                    }
-                  />
-                ) : null}
-              </div>
-            </div>
+            <TansactionDetailsComponent
+              id={transaction.Id}
+              address={transaction.address ? transaction.address : "-"}
+              slate={transaction.slateId}
+              type={transaction.type}
+              mType={mType}
+              message={
+                transaction.slateMessage ? transaction.slateMessage : "n/a"
+              }
+              fee={transaction.fee.toFixed(6)}
+              date={`${date.substring(0, 10)} ${date.substring(
+                date.length - 8
+              )}`}
+              onCancelTransactionButtonClickedCb={
+                onCancelTransactionButtonClickedCb
+              }
+              onRepostTransactionButtonClickedCb={
+                onRepostTransactionButtonClickedCb
+              }
+            />
           </td>
         </tr>
       );
@@ -132,15 +107,14 @@ export const TransactionsTableComponent = ({
       }}
     >
       {transactions.length === 0 ? (
-        <Text>There is no transactions for this Wallet.</Text>
+        <Text>There is no transactions to display.</Text>
       ) : (
         <table className="transactions">
           <tbody>
             <tr style={{ cursor: "default" }}>
               <th style={{ paddingLeft: "10px" }}></th>
               <th style={{ paddingLeft: "10px" }}>Amount ツ</th>
-              <th style={{ paddingLeft: "10px" }}>Fee ツ</th>
-              <th style={{ paddingLeft: "10px" }}>Date</th>
+              <th style={{ paddingLeft: "10px" }}>Address</th>
             </tr>
             {listTransactions(transactions)}
           </tbody>
