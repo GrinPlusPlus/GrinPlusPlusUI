@@ -20,6 +20,8 @@ export interface WalletModel {
   initializeWallet: Thunk<WalletModel, undefined, Injections, StoreModel>;
   replaceLogs: Action<WalletModel, string>;
   updateLogs: Action<WalletModel, string>;
+  nodeHealthCheck: boolean;
+  setNodeHealthCheck: Action<WalletModel, boolean>;
 }
 
 const wallet: WalletModel = {
@@ -158,6 +160,8 @@ const wallet: WalletModel = {
           getStoreActions().receiveCoinsModel.setResponsesDestination(
             utilsService.getHomePath()
           );
+
+          actions.setNodeHealthCheck(true);
         } catch (ex) {
           reject(ex.toString());
         }
@@ -165,6 +169,10 @@ const wallet: WalletModel = {
       });
     }
   ),
+  nodeHealthCheck: false,
+  setNodeHealthCheck: action((state, check) => {
+    state.nodeHealthCheck = check;
+  }),
   checkNodeHealth: thunk(
     (
       actions,
@@ -181,8 +189,12 @@ const wallet: WalletModel = {
 
         // Let's double check if the Node is running...
         const isRunning = nodeService.isNodeRunning();
-        if (!isRunning) reject("Node isn't running.");
         actions.setIsNodeRunning(isRunning);
+
+        if (!isRunning) {
+          actions.setNodeHealthCheck(false);
+          reject("Node isn't running.");
+        }
 
         settingsActions.setNodeBinaryPath(
           `${nodeService.getCommandPath(defaultSettings.binaryPath)}`

@@ -25,7 +25,9 @@ export const SettingsContainer = () => {
     setGrinJoinAddress,
     toggleConfirmationDialog,
   } = useStoreActions((actions) => actions.settings);
-  const { reSyncBlockchain } = useStoreActions((state) => state.wallet);
+  const { reSyncBlockchain, restartNode } = useStoreActions(
+    (state) => state.wallet
+  );
 
   const toggleDialog = useCallback(() => {
     toggleConfirmationDialog();
@@ -42,6 +44,10 @@ export const SettingsContainer = () => {
       );
     }
   }, [toggleConfirmationDialog, reSyncBlockchain]);
+
+  const restartGrinNode = useCallback(() => {
+    restartNode();
+  }, [restartNode]);
 
   return (
     <SettingsComponent
@@ -63,6 +69,7 @@ export const SettingsContainer = () => {
       setConfirmationsCb={setConfirmations}
       toggleConfirmationDialogCb={toggleDialog}
       confirmReSyncBlockchainCb={confirmReSyncBlockchain}
+      restartNodeCb={restartGrinNode}
     />
   );
 };

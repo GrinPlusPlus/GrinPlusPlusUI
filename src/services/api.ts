@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 export class BaseApi {
   private _mode: "DEV" | "TEST" | "PROD";
@@ -165,8 +165,8 @@ export class BaseApi {
   ): Promise<string> {
     let request = window.require("request");
     let options = {
-      timeout: 5000,
-      pool: { maxSockets: 10 },
+      timeout: 10000,
+      pool: { maxSockets: 1 },
       url: url,
       method: method,
       headers: headers,
@@ -191,7 +191,7 @@ export class BaseApi {
       timeout: 60000,
       url: url,
       agent: false,
-      pool: { maxSockets: 10 },
+      pool: { maxSockets: 1 },
       headers: {
         Accept: "application/json, text/plain, */*",
       },
