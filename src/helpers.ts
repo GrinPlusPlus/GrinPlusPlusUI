@@ -1,6 +1,6 @@
-import { Intent } from '@blueprintjs/core';
-import { ISeed } from './interfaces/ISeed';
-import { useEffect, useRef } from 'react';
+import { Intent } from "@blueprintjs/core";
+import { ISeed } from "./interfaces/ISeed";
+import { useEffect, useRef } from "react";
 
 export const getPercentage = function(
   numerator?: number,
@@ -195,7 +195,9 @@ export const useInterval = function(callback: any, delay: number) {
 
 export const cutAdddres = (address: string): string => {
   let clean =
-    address.substring(-1) === "/" ? address.substring(0, address.length - 1) : address;
+    address.substring(-1) === "/"
+      ? address.substring(0, address.length - 1)
+      : address;
   if (clean.length === 56) {
     const v3 = "[a-z2-7]{56}";
     if (new RegExp(`${v3}`).test(clean)) return clean;
@@ -205,6 +207,6 @@ export const cutAdddres = (address: string): string => {
     .replace("http://", "")
     .replace("/", "")
     .replace(".grinplusplus.com", "");
-  
+
   return clean;
 };

@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NodeStatusComponent } from "../../components/node/NodeStatus";
 import { ConnectedPeersComponent } from "../../components/node/ConnectedPeers";
 import { useStoreActions, useStoreState } from "../../hooks";
-import { useInterval } from "../../helpers";
-import { IPeer } from "../../interfaces/IPeer";
+import { Spinner } from "@blueprintjs/core";
 
 export const NodeCheckContainer = () => {
   const { headers, blocks, network, connectedPeers } = useStoreState(
@@ -14,11 +13,19 @@ export const NodeCheckContainer = () => {
     (actions) => actions.nodeSummary
   );
 
-  useInterval(async () => {
-    await getConnectedPeers().then((peers: IPeer[]) =>
-      setConnectedPeers(peers)
-    );
-  }, 1000);
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        const peers = await getConnectedPeers();
+        setConnectedPeers(peers);
+      } catch (error) {
+        require("electron-log").info(
+          `Error trying to get Connected Peers: ${error.message}`
+        );
+      }
+    }, 3000);
+    return () => clearInterval(interval);
+  });
 
   return (
     <div>
@@ -29,8 +36,12 @@ export const NodeCheckContainer = () => {
         network={network.height}
       />
       <br /> <br />
-      <div style={{ maxHeight: "450px", overflowY: "auto" }}>
-        <ConnectedPeersComponent peers={connectedPeers} />
+      <div style={{ height: "450px", maxHeight: "450px", overflowY: "auto" }}>
+        {connectedPeers.length === 0 ? (
+          <Spinner />
+        ) : (
+          <ConnectedPeersComponent peers={connectedPeers} />
+        )}
       </div>
     </div>
   );

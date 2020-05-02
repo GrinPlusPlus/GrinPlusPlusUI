@@ -1,9 +1,7 @@
-import React, { Suspense } from 'react';
-import { LoadingComponent } from '../components/extras/Loading';
-import { Redirect } from 'react-router-dom';
-import { useInterval } from '../helpers';
-import { useStoreActions, useStoreState } from '../hooks';
-
+import React, { Suspense, useEffect } from "react";
+import { LoadingComponent } from "../components/extras/Loading";
+import { Redirect } from "react-router-dom";
+import { useStoreActions, useStoreState } from "../hooks";
 
 const NavBarContainer = React.lazy(() =>
   import("./common/NavigationBar").then((module) => ({
@@ -31,17 +29,25 @@ export const SendGrinContainer = () => {
     (state) => state.walletSummary
   );
 
-  const { updateWalletSummary: getWalletSummary } = useStoreActions(
+  const { updateWalletSummary } = useStoreActions(
     (actions) => actions.walletSummary
   );
-
   const { setInitialValues } = useStoreActions(
     (actions) => actions.sendCoinsModel
   );
 
-  useInterval(async () => {
-    await getWalletSummary(token);
-  }, updateSummaryInterval);
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        await updateWalletSummary(token);
+      } catch (error) {
+        require("electron-log").info(
+          `Error trying to get Wallet Summary: ${error.message}`
+        );
+      }
+    }, updateSummaryInterval);
+    return () => clearInterval(interval);
+  });
 
   return (
     <Suspense fallback={renderLoader()}>

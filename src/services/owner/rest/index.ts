@@ -171,13 +171,17 @@ export class OwnerAPI extends BaseApi {
     return await this.makeRESTRequest(
       `${this.getRequestURL("accounts")}`,
       "get"
-    ).then((data) => {
-      try {
-        return JSON.parse(data);
-      } catch (ex) {
-        return [];
-      }
-    });
+    )
+      .then((data) => {
+        try {
+          return JSON.parse(data);
+        } catch (ex) {
+          return [];
+        }
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
   }
 
   public async getOutputs(

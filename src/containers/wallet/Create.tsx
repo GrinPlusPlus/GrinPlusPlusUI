@@ -43,15 +43,17 @@ export const CreateWalletContainer = () => {
   const { status } = useStoreState((state) => state.nodeSummary);
 
   const onCreateWalletButtonClicked = useCallback(async () => {
-    await create({ username: username, password: password }).catch(
-      (error: { message: string }) => {
-        Toaster.create({ position: Position.TOP }).show({
-          message: error.message,
-          intent: Intent.DANGER,
-          icon: "warning-sign",
-        });
-      }
-    );
+    try {
+      await create({ username: username, password: password }).catch(
+        (error: { message: string }) => {
+          Toaster.create({ position: Position.TOP }).show({
+            message: error.message,
+            intent: Intent.DANGER,
+            icon: "warning-sign",
+          });
+        }
+      );
+    } catch (error) {}
   }, [username, password, create]);
 
   const onContinueButtonClicked = useCallback(async () => {

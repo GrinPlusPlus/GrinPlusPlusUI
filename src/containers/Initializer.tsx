@@ -1,12 +1,17 @@
-import { InitComponent } from "../components/extras/Init";
-import React, { useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useEffect, Suspense } from "react";
+import { Redirect } from "react-router-dom";
 import { useStoreActions, useStoreState } from "../hooks";
-import { useInterval } from "../helpers";
-import { INodeStatus } from "../interfaces/INodeStatus";
+import { LoadingComponent } from "../components/extras/Loading";
+
+const InitComponent = React.lazy(() =>
+  import("./../components/extras/Init").then((module) => ({
+    default: module.InitComponent,
+  }))
+);
+
+const renderLoader = () => <LoadingComponent />;
 
 export const InitializerContainer = () => {
-  let history = useHistory();
   const { message, initializingError, isWalletInitialized } = useStoreState(
     (state) => state.wallet
   );
@@ -17,7 +22,9 @@ export const InitializerContainer = () => {
     setInitializingError,
   } = useStoreActions((state) => state.wallet);
 
-  const { status } = useStoreState((state) => state.nodeSummary);
+  const { status, updateInterval } = useStoreState(
+    (state) => state.nodeSummary
+  );
 
   const { checkStatus, updateStatus } = useStoreActions(
     (actions) => actions.nodeSummary
@@ -35,24 +42,31 @@ export const InitializerContainer = () => {
     })();
   });
 
-  useInterval(async () => {
-    if (status.toLowerCase() !== "not connected") {
-      require("electron-log").info(
-        "STATUS received, the API's up! Redirecting to Login..."
-      );
-      history.push("/login");
-      return;
-    }
-    if (initializingError) return;
-    require("electron-log").info("Trying to get the Node status...");
-    await checkStatus().then((status: INodeStatus) => updateStatus(status));
-  }, 500);
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        const status = await checkStatus();
+        updateStatus(status);
+      } catch (error) {
+        require("electron-log").info(
+          `Error trying to get Node Status: ${error.message}`
+        );
+        updateStatus(undefined);
+      }
+    }, updateInterval);
+    return () => clearInterval(interval);
+  });
 
   return (
-    <InitComponent
-      isInitialized={status.toLowerCase() !== "not connected"}
-      error={initializingError}
-      message={message}
-    />
+    <Suspense fallback={renderLoader()}>
+      {status.toLowerCase() !== "not connected" ? (
+        <Redirect to="/login" />
+      ) : null}
+      <InitComponent
+        isInitialized={status.toLowerCase() !== "not connected"}
+        error={initializingError}
+        message={message}
+      />
+    </Suspense>
   );
 };

@@ -1,15 +1,8 @@
-import {
-  Action,
-  action,
-  Computed,
-  computed,
-  Thunk,
-  thunk
-  } from 'easy-peasy';
-import { cleanTxType } from '../../helpers';
-import { Injections } from '../../store';
-import { ITransaction } from '../../interfaces/ITransaction';
-import { StoreModel } from '..';
+import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy";
+import { cleanTxType } from "../../helpers";
+import { Injections } from "../../store";
+import { ITransaction } from "../../interfaces/ITransaction";
+import { StoreModel } from "..";
 
 export interface WalletSummaryModel {
   spendable: number;
@@ -75,7 +68,7 @@ const walletSummary: WalletSummaryModel = {
   immature: 0,
   unconfirmed: 0,
   locked: 0,
-  updateSummaryInterval: 1000,
+  updateSummaryInterval: 3000,
   selectedTx: -1,
   transactions: undefined,
   setSelectedTx: action((state, id) => {

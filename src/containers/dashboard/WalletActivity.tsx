@@ -26,10 +26,16 @@ export const WalletActivitiyContainer = () => {
   const onCancelTransactionButtonClicked = useCallback(
     async (txId: number) => {
       setSelectedTx(-1); // not the best practice, but it's faster
-      await cancelTransaction({
-        token: token,
-        txId: txId,
-      });
+      try {
+        require("electron-log").info(`Trying to Cancel Tx with Id: ${txId}`);
+        await cancelTransaction({
+          token: token,
+          txId: txId,
+        });
+        require("electron-log").info("Canceled!");
+      } catch (error) {
+        require("electron-log").info(`Error trying to Cancel Tx: ${error}`);
+      }
     },
     [token, cancelTransaction, setSelectedTx]
   );
@@ -37,17 +43,23 @@ export const WalletActivitiyContainer = () => {
   const onRepostTransactionButtonClicked = useCallback(
     async (txId: number) => {
       setSelectedTx(-1); // not the best practice, but it's faster
-      await repostTransaction({
-        token: token,
-        txId: txId,
-      }).then((response: string) => {
-        if (response.length > 0) return;
-        Toaster.create({ position: Position.TOP }).show({
-          message: response,
-          intent: Intent.WARNING,
-          icon: "warning-sign",
+      try {
+        require("electron-log").info(`Trying to Repost Tx with Id: ${txId}`);
+        await repostTransaction({
+          token: token,
+          txId: txId,
+        }).then((response: string) => {
+          if (response.length > 0) return;
+          Toaster.create({ position: Position.TOP }).show({
+            message: response,
+            intent: Intent.WARNING,
+            icon: "warning-sign",
+          });
         });
-      });
+        require("electron-log").info("Reposted!");
+      } catch (error) {
+        require("electron-log").info(`Error trying to Repost Tx: ${error}`);
+      }
     },
     [token, repostTransaction, setSelectedTx]
   );

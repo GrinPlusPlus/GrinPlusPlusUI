@@ -1,11 +1,6 @@
-import {
-  Action,
-  action,
-  Thunk,
-  thunk
-  } from 'easy-peasy';
-import { Injections } from '../../store';
-import { StoreModel } from '..';
+import { Action, action, Thunk, thunk } from "easy-peasy";
+import { Injections } from "../../store";
+import { StoreModel } from "..";
 
 export interface ReceiveCoinsModel {
   retryInterval: number;
@@ -91,15 +86,21 @@ const receiveCoinsModel: ReceiveCoinsModel = {
       )
         return;
       actions.setWaitingResponse(true);
-      const { ownerService } = injections;
-      const apiSettings = getStoreState().settings.defaultSettings;
-      const address = await new ownerService.RPC(
-        apiSettings.floonet,
-        apiSettings.protocol,
-        apiSettings.ip,
-        apiSettings.mode
-      ).getWalletAddress(token);
-      getStoreActions().session.setAddress(address);
+      try {
+        const { ownerService } = injections;
+        const apiSettings = getStoreState().settings.defaultSettings;
+        const address = await new ownerService.RPC(
+          apiSettings.floonet,
+          apiSettings.protocol,
+          apiSettings.ip,
+          apiSettings.mode
+        ).getWalletAddress(token);
+        getStoreActions().session.setAddress(address);
+      } catch (error) {
+        require("electron-log").info(
+          `Error trying to get Wallet Address: ${error}`
+        );
+      }
       actions.setWaitingResponse(false);
     }
   ),

@@ -32,7 +32,6 @@ type SettingsProps = {
   setMininumPeersCb: (peers: number) => void;
   setMaximumPeersCb: (peers: number) => void;
   setConfirmationsCb: (confirmations: number) => void;
-  restartNodeCb: () => void;
   toggleConfirmationDialogCb: () => void;
   confirmReSyncBlockchainCb: () => void;
 };
@@ -54,7 +53,6 @@ export const SettingsComponent = ({
   setMininumPeersCb,
   setMaximumPeersCb,
   setConfirmationsCb,
-  restartNodeCb,
   toggleConfirmationDialogCb,
   confirmReSyncBlockchainCb,
 }: SettingsProps) => {
@@ -138,15 +136,8 @@ export const SettingsComponent = ({
         <Text>Node Actions</Text>
         <ControlGroup>
           <Button
-            text={isNodeRunning ? "Restart" : "Start"}
-            onClick={() => restartNodeCb()}
-            style={{ width: "50%" }}
-            intent={Intent.NONE}
-          />
-          <Button
             text="Resync"
             disabled={status.toLowerCase() !== "running"}
-            style={{ width: "50%" }}
             intent={Intent.WARNING}
             onClick={() => toggleConfirmationDialogCb()}
           />

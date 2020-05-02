@@ -52,7 +52,15 @@ export const AccountNavBarContainer = () => {
           large={true}
           icon="log-out"
           onClick={async () => {
-            await logout(token);
+            try {
+              require("electron-log").info(`Trying to logout`);
+              await logout(token);
+              require("electron-log").info("Logged out!");
+            } catch (error) {
+              require("electron-log").info(
+                `Trying to ReSync Blockchain: ${error}`
+              );
+            }
           }}
         />
       </NavbarGroup>

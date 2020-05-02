@@ -1,7 +1,7 @@
 import React, { useCallback, Suspense, useEffect } from "react";
 import { Card, Icon, Intent, Position, Text, Toaster } from "@blueprintjs/core";
-import { useHistory } from "react-router-dom";
 import { useStoreActions, useStoreState } from "../../hooks";
+import { Redirect } from "react-router-dom";
 
 const NoAccountsComponent = React.lazy(() =>
   import("../../components/extras/NoAccounts").then((module) => ({
@@ -18,8 +18,6 @@ const OpenWalletComponent = React.lazy(() =>
 const renderLoader = () => null;
 
 export const OpenWalletContainer = () => {
-  let history = useHistory();
-
   const { username, password, accounts, waitingResponse } = useStoreState(
     (state) => state.signinModel
   );
@@ -36,33 +34,40 @@ export const OpenWalletContainer = () => {
 
   useEffect(() => {
     (async function() {
-      await getAccounts().then((accounts: string[]) => setAccounts(accounts));
+      if (accounts !== undefined) return;
+      try {
+        require("electron-log").info(`Trying to get Accounts...`);
+        const accounts = await getAccounts();
+        setAccounts(accounts);
+        require("electron-log").info(`Accounts Found: ${accounts.length}`);
+      } catch (error) {
+        require("electron-log").info(
+          `Error trying to get Accounts: ${error.message}`
+        );
+      }
     })();
   });
 
   const onOpenWalletButtonClicked = useCallback(async () => {
     setWaitingResponse(true);
-    await login({
-      username: username,
-      password: password,
-    })
-      .then((success: boolean) => {
+    try {
+      const loggedIn = await login({
+        username: username,
+        password: password,
+      });
+      if (loggedIn) {
         require("electron-log").info(
           "User logged in... redirecting to Wallet..."
         );
-        setWaitingResponse(false);
-        history.push("/wallet");
-      })
-      .catch((error: { message: any }) => {
-        require("electron-log").info(error.message);
-        Toaster.create({ position: Position.TOP }).show({
-          message: error.message,
-          intent: Intent.DANGER,
-          icon: "warning-sign",
-        });
-        setWaitingResponse(false);
+      }
+    } catch (error) {
+      Toaster.create({ position: Position.TOP }).show({
+        message: error.message,
+        intent: Intent.DANGER,
+        icon: "warning-sign",
       });
-  }, [username, password, login, history, setWaitingResponse]);
+    }
+  }, [username, password, login, setWaitingResponse]);
 
   const getAccountsList = useCallback(
     (accounts: string[]) => {
@@ -94,9 +99,11 @@ export const OpenWalletContainer = () => {
     },
     [setUsername]
   );
+  const { isLoggedIn } = useStoreState((state) => state.session);
 
   return (
     <Suspense fallback={renderLoader()}>
+      {isLoggedIn ? <Redirect to="/wallet" /> : null}
       {accounts === undefined ? (
         renderLoader()
       ) : accounts.length === 0 ? (

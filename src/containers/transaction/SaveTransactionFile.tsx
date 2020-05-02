@@ -16,22 +16,24 @@ export const SaveTransactionFileContainer = () => {
 
   const onSaveButtonClicked = useCallback(async () => {
     if (amount === undefined || amount.slice(-1) === ".") return;
-    const sent = await sendViaFile({
-      amount: Number(amount),
-      strategy: strategy,
-      inputs: inputs,
-      message: message,
-      token: token,
-    }).catch((error: { message: string }) => {
-      Toaster.create({ position: Position.TOP }).show({
-        message: error.message,
-        intent: Intent.DANGER,
-        icon: "warning-sign",
+    try {
+      const sent = await sendViaFile({
+        amount: Number(amount),
+        strategy: strategy,
+        inputs: inputs,
+        message: message,
+        token: token,
+      }).catch((error: { message: string }) => {
+        Toaster.create({ position: Position.TOP }).show({
+          message: error.message,
+          intent: Intent.DANGER,
+          icon: "warning-sign",
+        });
       });
-    });
-    if (sent) {
-      history.push("/wallet");
-    }
+      if (sent) {
+        history.push("/wallet");
+      }
+    } catch (error) {}
   }, [sendViaFile, amount, message, inputs, token, strategy, history]);
 
   return (

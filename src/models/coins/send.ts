@@ -1,6 +1,6 @@
-import { Injections } from '../../store';
-import { StoreModel } from '..';
-import { validateAddress } from '../../services/utils';
+import { Injections } from "../../store";
+import { StoreModel } from "..";
+import { validateAddress } from "../../services/utils";
 import {
   Action,
   action,
@@ -334,7 +334,6 @@ const sendCoinsModel: SendCoinsModel = {
       let destinationAddress = payload.address;
       const type = utilsService.validateAddress(destinationAddress);
       if (!type) {
-        actions.setWaitingResponse(false);
         updateLogs(
           `ERROR: Destination address is invalid (${destinationAddress})`
         );
@@ -370,18 +369,15 @@ const sendCoinsModel: SendCoinsModel = {
           destinationAddress
         );
         if (typeof response === "string") {
-          actions.setWaitingResponse(false);
           updateLogs(`ERROR: ${response}`);
           return `ERROR: ${response}`;
         }
-        actions.setWaitingResponse(false);
         updateLogs(`${payload.amount} ツ SENT😁👍`);
         return true;
       } else if (type === "http") {
         const address = destinationAddress.replace(/\/?$/, "/");
 
         if (!(await foreingService.RPC.check(address))) {
-          actions.setWaitingResponse(false);
           updateLogs(`ERROR: ${address} is not online`);
           return `ERROR: ${address} is not online`;
         }
@@ -400,7 +396,6 @@ const sendCoinsModel: SendCoinsModel = {
           payload.grinJoinAddress
         );
         if (typeof slate === "string") {
-          actions.setWaitingResponse(false);
           updateLogs(`ERROR: ${slate}`);
           return `ERROR: ${slate}`;
         }
@@ -413,15 +408,12 @@ const sendCoinsModel: SendCoinsModel = {
           payload.grinJoinAddress
         );
         if (typeof finalized === "string") {
-          actions.setWaitingResponse(false);
           updateLogs(`ERROR: ${finalized}`);
           return `ERROR: ${finalized}`;
         }
-        actions.setWaitingResponse(false);
         updateLogs(`${payload.amount} ツ SENT😁👍`);
         return true;
       }
-      actions.setWaitingResponse(false);
       updateLogs(`ERROR: Unkown error`);
       return `ERROR: Unkown error`;
     }

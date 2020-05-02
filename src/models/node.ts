@@ -1,14 +1,9 @@
-import {
-  Action,
-  action,
-  Thunk,
-  thunk
-  } from 'easy-peasy';
-import { getStateColor, getStateText } from '../helpers';
-import { Injections } from '../store';
-import { INodeStatus } from '../interfaces/INodeStatus';
-import { IPeer } from '../interfaces/IPeer';
-import { StoreModel } from '.';
+import { Action, action, Thunk, thunk } from "easy-peasy";
+import { getStateColor, getStateText } from "../helpers";
+import { Injections } from "../store";
+import { INodeStatus } from "../interfaces/INodeStatus";
+import { IPeer } from "../interfaces/IPeer";
+import { StoreModel } from ".";
 
 export interface NodeSummaryModel {
   status: string;
@@ -57,7 +52,7 @@ const nodeSummary: NodeSummaryModel = {
   blocks: 0,
   network: { height: 0, outbound: 0, inbound: 0 },
   userAgent: "",
-  updateInterval: 1000,
+  updateInterval: 5000,
   connectedPeers: [],
   waitingResponse: false,
   updateStatus: action((state, node) => {

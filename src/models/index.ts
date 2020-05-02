@@ -10,7 +10,6 @@ import signinModel, { SigninModel } from "./wallet/open";
 import ui, { UIModel } from "./ui";
 import wallet, { WalletModel } from "./wallet";
 import walletSummary, { WalletSummaryModel } from "./wallet/summary";
-import { persist } from "easy-peasy";
 
 export interface StoreModel {
   settings: SettingsModel;
@@ -33,13 +32,13 @@ const model = {
   signinModel: signinModel,
   createWallet: createWalletModel,
   restoreWallet: restoreWallet,
-  session: persist(session),
-  nodeSummary: persist(nodeSummary),
-  walletSummary: persist(walletSummary),
+  session: session,
+  nodeSummary: nodeSummary,
+  walletSummary: walletSummary,
   sendCoinsModel: sendCoinsModel,
   receiveCoinsModel: receiveCoinsModel,
   finalizeModel: finalizeModel,
-  wallet: persist(wallet),
+  wallet: wallet,
 };
 
 export default model;

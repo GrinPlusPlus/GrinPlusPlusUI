@@ -1,9 +1,8 @@
-import React, { Suspense, useEffect } from 'react';
-import { AlertComponent } from '../components/extras/Alert';
-import { LoadingComponent } from '../components/extras/Loading';
-import { Redirect } from 'react-router-dom';
-import { useInterval } from '../helpers';
-import { useStoreActions, useStoreState } from '../hooks';
+import React, { Suspense, useEffect } from "react";
+import { AlertComponent } from "../components/extras/Alert";
+import { LoadingComponent } from "../components/extras/Loading";
+import { Redirect } from "react-router-dom";
+import { useStoreActions, useStoreState } from "../hooks";
 
 const AccountNavBarContainer = React.lazy(() =>
   import("./dashboard/AccountNavBar").then((module) => ({
@@ -50,11 +49,20 @@ export const WalletContainer = () => {
   const { getAddress } = useStoreActions(
     (actions) => actions.receiveCoinsModel
   );
-  
-  useInterval(async () => {
-    await updateWalletSummary(token);
-   }, updateSummaryInterval);
-  
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        await updateWalletSummary(token);
+      } catch (error) {
+        require("electron-log").info(
+          `Error trying to get Wallet Summary: ${error.message}`
+        );
+      }
+    }, updateSummaryInterval);
+    return () => clearInterval(interval);
+  });
+
   useEffect(() => {
     async function init(t: string) {
       await getAddress(t);
@@ -67,7 +75,7 @@ export const WalletContainer = () => {
       return () => clearInterval(interval);
     }
   }, [address, getAddress, token, retryInterval]);
- 
+
   return (
     <Suspense fallback={renderLoader()}>
       {!isLoggedIn ? <Redirect to="/login" /> : null}
