@@ -112,7 +112,7 @@ export const OpenWalletContainer = () => {
           password={password}
           accounts={getAccountsList(accounts)}
           passwordCb={(value: string) => setPassword(value)}
-          olverlayCb={() => {
+          overlayCb={() => {
             setUsername("");
             setPassword("");
           }}

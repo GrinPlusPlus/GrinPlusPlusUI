@@ -1,13 +1,9 @@
-import React from 'react';
-import {
-  cleanTxType,
-  cutAdddres,
-  getTxIcon,
-  getTxIntent
-  } from '../../helpers';
-import { Icon, Text } from '@blueprintjs/core';
-import { ITransaction } from '../../interfaces/ITransaction';
-import { TansactionDetailsComponent } from '../transaction/Details';
+import React from "react";
+import { cleanTxType, cutAdddres, getTxIcon, getTxIntent } from "../../helpers";
+import { Icon, Text } from "@blueprintjs/core";
+import { ITransaction } from "../../interfaces/ITransaction";
+import { TansactionDetailsComponent } from "../transaction/Details";
+import { formatDistance, subDays } from "date-fns";
 
 type TransactionsTableProps = {
   transactions: ITransaction[];
@@ -28,10 +24,10 @@ export const TransactionsTableComponent = ({
     let table: JSX.Element[] = [];
     if (rows.length === 0) return table;
     rows.forEach((transaction) => {
-      let date = new Date(+transaction.creationDate * 1000)
-        .toISOString()
-        .slice(0, 19)
-        .replace("T", " ");
+      let date = formatDistance(
+        new Date(+transaction.creationDate * 1000),
+        new Date()
+      );
       let mType = cleanTxType(transaction.type);
 
       table.push(
@@ -43,9 +39,7 @@ export const TransactionsTableComponent = ({
             <Icon icon={getTxIcon(mType)} intent={getTxIntent(mType)} />
           </td>
           <td style={{ width: "20%", paddingLeft: "10px" }}>
-            {Math.abs(
-              transaction.amountCredited - transaction.amountDebited
-            ).toFixed(6)}
+            {Math.abs(transaction.amountCredited - transaction.amountDebited)}
           </td>
           <td style={{ width: "25%", paddingLeft: "10px" }}>
             {transaction.address === undefined
@@ -80,7 +74,7 @@ export const TransactionsTableComponent = ({
               message={
                 transaction.slateMessage ? transaction.slateMessage : "n/a"
               }
-              fee={transaction.fee.toFixed(6)}
+              fee={transaction.fee.toFixed(8)}
               date={`${date.substring(0, 10)} ${date.substring(
                 date.length - 8
               )}`}

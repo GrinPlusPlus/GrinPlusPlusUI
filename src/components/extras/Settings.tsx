@@ -169,7 +169,7 @@ export const SettingsComponent = ({
         }}
       >
         <p>
-          Are you sure you want to <b>resync</b> the Node? This will donwload
+          Are you sure you want to <b>resync</b> the Node? This will download
           around 1GB again and will take time.
         </p>
       </Alert>
