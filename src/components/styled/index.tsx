@@ -63,7 +63,7 @@ export const StatusBarContent = styled.section`
 `;
 
 export const SpendableBalance = styled.section`
-  font-size: 40px;
+  font-size: 30px;
 `;
 
 export const BalanceSuffix = styled.section`

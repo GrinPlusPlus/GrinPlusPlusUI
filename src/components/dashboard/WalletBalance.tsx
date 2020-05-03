@@ -1,7 +1,7 @@
-import NumberFormat from "react-number-format";
-import React from "react";
-import { BalanceSuffix, Flex, SpendableBalance } from "../styled";
-import { Text, Tooltip } from "@blueprintjs/core";
+import NumberFormat from 'react-number-format';
+import React from 'react';
+import { BalanceSuffix, Flex, SpendableBalance } from '../styled';
+import { Text, Tooltip } from '@blueprintjs/core';
 
 export type WalletBalanceProps = {
   total: number;
@@ -42,7 +42,7 @@ export const WalletBalanceComponent = ({
                   value={total}
                   displayType={"text"}
                   thousandSeparator={true}
-                  decimalScale={6}
+                  decimalScale={9}
                   fixedDecimalScale={true}
                 />
               </strong>
@@ -55,7 +55,7 @@ export const WalletBalanceComponent = ({
                   value={immature}
                   displayType={"text"}
                   thousandSeparator={true}
-                  decimalScale={6}
+                  decimalScale={9}
                   fixedDecimalScale={true}
                 />
               </strong>
@@ -68,7 +68,7 @@ export const WalletBalanceComponent = ({
                   value={unconfirmed}
                   displayType={"text"}
                   thousandSeparator={true}
-                  decimalScale={6}
+                  decimalScale={9}
                   fixedDecimalScale={true}
                 />
               </strong>
@@ -81,7 +81,7 @@ export const WalletBalanceComponent = ({
                   value={locked}
                   displayType={"text"}
                   thousandSeparator={true}
-                  decimalScale={6}
+                  decimalScale={9}
                   fixedDecimalScale={true}
                 />
               </strong>

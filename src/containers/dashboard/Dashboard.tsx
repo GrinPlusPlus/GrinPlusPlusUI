@@ -28,8 +28,8 @@ export const DashboardContainer = () => {
               large={true}
               style={{
                 color: "black",
-                width: "150px",
-                height: "50px",
+                width: "130px",
+                height: "40px",
                 marginTop: "15px",
               }}
               intent={Intent.PRIMARY}
@@ -38,16 +38,16 @@ export const DashboardContainer = () => {
             />
           </div>
         </Flex>
-        <div style={{ marginTop: "20px" }}>
+        <div style={{ marginTop: "30px" }}>
           <ReceiveUsingListenerContainer />
           <div style={{ marginTop: "30px" }}>
             <ReceiveUsingFileContainer />
           </div>
         </div>
-        <div style={{ marginTop: "30px" }}>
+        <div style={{ marginTop: "40px" }}>
           <FinalizeContainer />
         </div>
-        <div style={{ marginTop: "30px" }}>
+        <div style={{ marginTop: "40px" }}>
           <LogsContainer />
         </div>
       </div>
