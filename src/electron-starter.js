@@ -100,6 +100,7 @@ function createWindow() {
     height: 790,
     resizable: false,
     frame: false,
+    titleBarStyle: 'hidden',
     backgroundColor: "#0D0D0D",
     title: "Grin++ v" + app.getVersion(),
     webPreferences: {
@@ -118,10 +119,10 @@ function createWindow() {
     });
   mainWindow.loadURL(startUrl);
 
-  // if (isDevMode) {
+  if (isDevMode) {
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
-  // }
+  }
 
   if (!isDevMode) {
     checkForUpdates();

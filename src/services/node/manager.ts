@@ -90,7 +90,7 @@ export const runNode = function(
   isFloonet: boolean = false
 ): void {
   const params = isFloonet ? ["", "--floonet"] : ["--headless"];
-  const binaryPath = require("path").join(process.cwd(), nodePath);
+  const binaryPath = require("path").join(require("electron").remote.app.getAppPath(), nodePath);
   const command = getCommandPath(binaryPath);
   require("child_process").spawn(command, params, {
     windowsHide: true,

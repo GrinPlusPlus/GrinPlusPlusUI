@@ -21,14 +21,14 @@ export const getBlockPercentage = function(
   headerHeight?: number
 ) {
   if (!blockHeight || !headerHeight) return 0;
-  if (headerHeight < 2880 || blockHeight < 2880) {
+  if (headerHeight < 10080 || blockHeight < 10080) {
     return getPercentage(blockHeight, headerHeight);
   }
-  if (headerHeight - blockHeight > 2880) {
+  if (headerHeight - blockHeight > 10080) {
     return 0;
   }
 
-  let remaining = getPercentage(headerHeight - blockHeight, 2880);
+  let remaining = getPercentage(headerHeight - blockHeight, 10080);
   if (remaining <= 0) {
     remaining = 1;
   }
