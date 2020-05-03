@@ -9,7 +9,7 @@ export const SpendableComponent = ({ spendable }: SpendableProps) => {
   return (
     <Content>
       Spendable :
-      <b style={{ marginLeft: "10px" }}>{`${spendable.toFixed(8)} ツ`}</b>
+      <b style={{ marginLeft: "10px" }}>{`${spendable.toFixed(9)} ツ`}</b>
     </Content>
   );
 };

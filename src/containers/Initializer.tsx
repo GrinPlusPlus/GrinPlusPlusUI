@@ -28,7 +28,10 @@ export const InitializerContainer = () => {
     (async function() {
       if (!isWalletInitialized) {
         require("electron-log").info("Initializing Backend.");
-        await initializeWallet().catch((error: string) => {
+        await initializeWallet()
+        .then(() => {
+          require("electron-log").info("Backend initialized.");
+        }).catch((error: string) => {
           setMessage(error);
           setInitializingError(true);
           require("electron-log").info(

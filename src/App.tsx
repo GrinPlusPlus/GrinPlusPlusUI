@@ -1,6 +1,6 @@
 import React from "react";
 import store from "./store";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { MemoryRouter as Router, Route, Switch } from "react-router-dom";
 import { InitializerContainer } from "./containers/Initializer";
 import { RestoreContainer } from "./containers/Recover";
 import { SendGrinContainer } from "./containers/SendGrins";

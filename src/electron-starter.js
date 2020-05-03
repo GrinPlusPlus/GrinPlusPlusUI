@@ -118,10 +118,10 @@ function createWindow() {
     });
   mainWindow.loadURL(startUrl);
 
-  if (isDevMode) {
+  // if (isDevMode) {
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
-  }
+  // }
 
   if (!isDevMode) {
     checkForUpdates();

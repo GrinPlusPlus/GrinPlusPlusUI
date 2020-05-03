@@ -5,7 +5,7 @@ export const GrinPPBannerComponent = () => {
   return (
     <HorizontallyCenter>
       <img
-        src="./statics/images/banner.png"
+        src={require("path").join(__dirname, "./statics/images/banner.png")}
         alt=""
         width="350px"
         style={{

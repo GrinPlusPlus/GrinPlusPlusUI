@@ -5,7 +5,7 @@ export const LogoComponent = () => {
   return (
     <HorizontallyCenter>
       <img
-        src="./statics/images/grin@2x.png"
+        src={require("path").join(__dirname, "./statics/images/grin@2x.png")}
         alt=""
         width="60px"
         style={{

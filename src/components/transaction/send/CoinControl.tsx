@@ -69,7 +69,7 @@ export const CoinControlComponent = ({
           </td>
           <td>{input.block_height}</td>
           <td>{input.commitment}</td>
-          <td>{(input.amount / Math.pow(10, 9)).toFixed(8)}</td>
+          <td>{(input.amount / Math.pow(10, 9)).toFixed(9)}</td>
         </tr>
       );
     });
