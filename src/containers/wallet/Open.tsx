@@ -34,6 +34,10 @@ export const OpenWalletContainer = () => {
     (actions) => actions.signinModel
   );
 
+  const { updateWalletSummary } = useStoreActions(
+    (actions) => actions.walletSummary
+  );
+
   useEffect(() => {
     (async function() {
       if (accounts !== undefined) return;
@@ -51,14 +55,22 @@ export const OpenWalletContainer = () => {
   const onOpenWalletButtonClicked = useCallback(async () => {
     setWaitingResponse(true);
     try {
-      const loggedIn = await login({
+      const token = await login({
         username: username,
         password: password,
       });
-      if (loggedIn) {
+      if (token !== undefined && token.length > 0) {
         require("electron-log").info(
           "User logged in... redirecting to Wallet..."
         );
+        
+        try {
+          await updateWalletSummary(token);
+        } catch (error) {
+          require("electron-log").error(
+            `Error trying to get Wallet Summary: ${error.message}`
+          );
+        }
       }
     } catch (error) {
       Toaster.create({ position: Position.BOTTOM }).show({

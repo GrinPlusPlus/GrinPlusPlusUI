@@ -48,7 +48,7 @@ export const TransactionAmountComponent = ({
           id="fee"
           disabled={true}
           readOnly={true}
-          value={fee === 0 || !amount ? "" : `${fee.toFixed(8)}`}
+          value={fee === 0 || !amount ? "" : `${fee.toFixed(9)}`}
           onChange={() => {}}
           style={{ width: "120px", backgroundColor: "#21242D" }}
         />

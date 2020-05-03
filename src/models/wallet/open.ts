@@ -84,7 +84,7 @@ const openWallet: SigninModel = {
           });
           actions.setUsername("");
           actions.setPassword("");
-          return true;
+          return response;
         });
     }
   ),

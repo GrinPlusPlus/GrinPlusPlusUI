@@ -27,7 +27,7 @@ export const WalletBalanceComponent = ({
             value={spendable}
             displayType={"text"}
             thousandSeparator={true}
-            decimalScale={6}
+            decimalScale={9}
             fixedDecimalScale={true}
           />
         </SpendableBalance>

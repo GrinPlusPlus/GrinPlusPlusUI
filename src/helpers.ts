@@ -1,6 +1,7 @@
 import { Intent } from "@blueprintjs/core";
 import { ISeed } from "./interfaces/ISeed";
 import { useEffect, useRef } from "react";
+import { formatDistanceToNow } from 'date-fns';
 
 export const getPercentage = function(
   numerator?: number,
@@ -121,14 +122,18 @@ export const hideSeedWords = function(payload: {
 };
 
 export const getDateAsString = function(date: Date): string {
-  return (
-    date.getFullYear() +
-    ("0" + (date.getMonth() + 1)).slice(-2) +
-    ("0" + date.getDate()).slice(-2) +
-    "_" +
-    ("0" + date.getHours()).slice(-2) +
-    ("0" + date.getMinutes()).slice(-2) +
-    ("0" + date.getSeconds()).slice(-2)
+  // let oneDayAgo = new Date().getTime() - (1 * 24 * 60 * 60 * 1000);
+  // if (date.getTime() > oneDayAgo) {
+  //   return formatDistanceToNow(
+  //     date,
+  //     { includeSeconds: true, addSuffix: true }
+  //   );
+  // }
+  // return date.toLocaleDateString();
+  
+  return formatDistanceToNow(
+    date,
+    { includeSeconds: true, addSuffix: true }
   );
 };
 
@@ -183,30 +188,40 @@ export const useInterval = function(callback: any, delay: number) {
 
   // Set up the interval.
   useEffect(() => {
+    console.log("Using callback: " + delay);
+
     function tick() {
       savedCallback.current();
     }
     if (delay !== null) {
+      tick(); // Call once first, so no delay
       let id = setInterval(tick, delay);
       return () => clearInterval(id);
     }
   }, [delay]);
 };
 
-export const cutAdddres = (address: string): string => {
+export const cutAddress = (address: string): string => {
   let clean =
     address.substring(-1) === "/"
       ? address.substring(0, address.length - 1)
       : address;
-  if (clean.length === 56) {
-    const v3 = "[a-z2-7]{56}";
-    if (new RegExp(`${v3}`).test(clean)) return clean;
-  }
   clean = clean
     .replace("https://", "")
     .replace("http://", "")
     .replace("/", "")
     .replace(".grinplusplus.com", "");
+
+  if (clean.length === 56) {
+    const v3 = "[a-z2-7]{56}";
+    if (new RegExp(`${v3}`).test(clean)) {
+      return clean.substr(0, 20) + '...' + clean.substr(36);
+    }
+  }
+
+  if (clean.length > 42) {
+    clean = clean.substr(0, 38) + '...';
+  }
 
   return clean;
 };
