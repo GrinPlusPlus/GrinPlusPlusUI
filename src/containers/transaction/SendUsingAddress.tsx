@@ -60,7 +60,7 @@ export const SendUsingAddressContainer = () => {
         ? "Transaction sent successfully"
         : "Transaction started successfully";
 
-      Toaster.create({ position: Position.TOP }).show({
+      Toaster.create({ position: Position.BOTTOM }).show({
         message: sent === true ? alert : sent,
         intent: sent === true ? Intent.SUCCESS : Intent.DANGER,
         icon: sent === true ? "tick-circle" : "warning-sign",

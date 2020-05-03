@@ -34,42 +34,18 @@ export const WalletContainer = () => {
   const { token, address, isLoggedIn } = useStoreState(
     (state) => state.session
   );
-  const { updateSummaryInterval } = useStoreState(
-    (state) => state.walletSummary
-  );
   const { alert } = useStoreState((state) => state.ui);
-
   const { setAlert } = useStoreActions((actions) => actions.ui);
-  const { updateWalletSummary } = useStoreActions(
-    (actions) => actions.walletSummary
-  );
   const { getAddress } = useStoreActions(
     (actions) => actions.receiveCoinsModel
   );
 
-  async function requestAddress(t: string) {
+  const requestAddress = async (t: string) => {
     await getAddress(t);
-  }
-
-  async function getSummary(t: string) {
-    try {
-      await updateWalletSummary(t);
-    } catch (error) {
-      require("electron-log").error(
-        `Error trying to get Wallet Summary: ${error.message}`
-      );
-    }
-  }
+  };
 
   useEffect(() => {
     if (address.length !== 56) requestAddress(token);
-  });
-
-  useEffect(() => {
-    let timer = setTimeout(() => getSummary(token), updateSummaryInterval);
-    return () => {
-      clearTimeout(timer);
-    };
   });
 
   return (

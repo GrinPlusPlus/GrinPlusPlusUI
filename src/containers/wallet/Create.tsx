@@ -46,7 +46,7 @@ export const CreateWalletContainer = () => {
     try {
       await create({ username: username, password: password }).catch(
         (error: { message: string }) => {
-          Toaster.create({ position: Position.TOP }).show({
+          Toaster.create({ position: Position.BOTTOM }).show({
             message: error.message,
             intent: Intent.DANGER,
             icon: "warning-sign",

@@ -1,11 +1,6 @@
-import {
-  Action,
-  action,
-  Thunk,
-  thunk
-  } from 'easy-peasy';
-import { Injections } from '../../store';
-import { StoreModel } from '..';
+import { Action, action, Thunk, thunk } from "easy-peasy";
+import { Injections } from "../../store";
+import { StoreModel } from "..";
 
 export interface SigninModel {
   username: string;
@@ -68,12 +63,6 @@ const openWallet: SigninModel = {
       payload,
       { injections, getStoreActions, getStoreState }
     ) => {
-      if (
-        getStoreState().nodeSummary.status.toLocaleLowerCase() ===
-        "not connected"
-      ) {
-        throw new Error("Wallet isn't Connected to the Node");
-      }
       const { ownerService } = injections;
       const apiSettings = getStoreState().settings.defaultSettings;
       return await new ownerService.RPC(

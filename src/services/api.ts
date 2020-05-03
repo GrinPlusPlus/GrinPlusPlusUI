@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 export class BaseApi {
   private _mode: "DEV" | "TEST" | "PROD";
@@ -163,21 +163,34 @@ export class BaseApi {
     headers?: {},
     body?: {}
   ): Promise<string> {
-    let request = window.require("request");
+    const _url = new URL(url);
     let options = {
+      hostname: _url.hostname,
+      port: _url.port,
+      path: _url.pathname,
       timeout: 10000,
       pool: { maxSockets: 5 },
       url: url,
       method: method,
       headers: headers,
+      agent: false,
+      encoding: "utf-8",
       body: JSON.stringify(body),
     };
+    const call =
+      method.toLowerCase() === "get"
+        ? window.require("http").get
+        : window.require("request").post;
     return new Promise((resolve, reject) => {
-      request(options, (error: any, response: any, body: string) => {
-        if (error) reject(error);
-        else if (body === undefined) reject(error);
-        else resolve(body);
-      });
+      call(url, options, (response: any) => {
+        try {
+          let body = "";
+          response.on("data", (chunk: string) => (body += chunk));
+          response.on("end", () => resolve(body));
+        } catch {
+          resolve("");
+        }
+      }).on("error", (e: string) => reject(e));
     });
   }
 

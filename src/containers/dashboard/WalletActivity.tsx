@@ -50,7 +50,7 @@ export const WalletActivitiyContainer = () => {
           txId: txId,
         }).then((response: string) => {
           if (response.length > 0) return;
-          Toaster.create({ position: Position.TOP }).show({
+          Toaster.create({ position: Position.BOTTOM }).show({
             message: response,
             intent: Intent.WARNING,
             icon: "warning-sign",

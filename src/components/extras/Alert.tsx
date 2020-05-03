@@ -10,7 +10,7 @@ export const AlertComponent = ({ message, setMessage }: AlertProps) => {
   return (
     <div>
       {message ? (
-        <Toaster>
+        <Toaster position="bottom">
           <Toast
             icon="tick-circle"
             message={message}

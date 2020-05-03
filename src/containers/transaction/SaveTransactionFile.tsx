@@ -1,8 +1,8 @@
-import React, { useCallback } from 'react';
-import { Intent, Position, Toaster } from '@blueprintjs/core';
-import { SaveTransactionFileComponent } from '../../components/transaction/send/SaveTransactionFile';
-import { useHistory } from 'react-router-dom';
-import { useStoreActions, useStoreState } from '../../hooks';
+import React, { useCallback } from "react";
+import { Intent, Position, Toaster } from "@blueprintjs/core";
+import { SaveTransactionFileComponent } from "../../components/transaction/send/SaveTransactionFile";
+import { useHistory } from "react-router-dom";
+import { useStoreActions, useStoreState } from "../../hooks";
 
 export const SaveTransactionFileContainer = () => {
   let history = useHistory();
@@ -24,7 +24,7 @@ export const SaveTransactionFileContainer = () => {
         message: message,
         token: token,
       }).catch((error: { message: string }) => {
-        Toaster.create({ position: Position.TOP }).show({
+        Toaster.create({ position: Position.BOTTOM }).show({
           message: error.message,
           intent: Intent.DANGER,
           icon: "warning-sign",

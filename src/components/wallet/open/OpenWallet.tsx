@@ -19,6 +19,7 @@ type OpenWalletProps = {
   overlayCb: () => void;
   loginButtonCb: () => void;
   waitingResponse: boolean;
+  connected: boolean;
 };
 
 export const OpenWalletComponent = ({
@@ -29,6 +30,7 @@ export const OpenWalletComponent = ({
   overlayCb,
   loginButtonCb,
   waitingResponse,
+  connected,
 }: OpenWalletProps) => {
   const classes = classNames("bp3-dark", Classes.CARD, Classes.ELEVATION_4);
 
@@ -79,7 +81,7 @@ export const OpenWalletComponent = ({
                 )
               }
               onClick={loginButtonCb}
-              disabled={password?.length === 0 || waitingResponse}
+              disabled={password?.length === 0 || waitingResponse || !connected}
             />
           </div>
         </div>

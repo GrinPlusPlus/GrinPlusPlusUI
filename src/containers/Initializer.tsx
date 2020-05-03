@@ -22,13 +22,7 @@ export const InitializerContainer = () => {
     setInitializingError,
   } = useStoreActions((state) => state.wallet);
 
-  const { status, updateInterval } = useStoreState(
-    (state) => state.nodeSummary
-  );
-
-  const { checkStatus, updateStatus } = useStoreActions(
-    (actions) => actions.nodeSummary
-  );
+  const { status } = useStoreState((state) => state.nodeSummary);
 
   useEffect(() => {
     (async function() {
@@ -43,21 +37,6 @@ export const InitializerContainer = () => {
         });
       }
     })();
-  });
-
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      try {
-        const status = await checkStatus();
-        updateStatus(status);
-      } catch (error) {
-        require("electron-log").error(
-          `Error trying to get Node Status: ${error.message}`
-        );
-        updateStatus(undefined);
-      }
-    }, updateInterval);
-    return () => clearInterval(interval);
   });
 
   return (

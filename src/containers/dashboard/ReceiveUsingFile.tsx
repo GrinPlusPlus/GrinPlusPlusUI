@@ -12,7 +12,7 @@ export const ReceiveUsingFileContainer = () => {
       receiveTx(files).then((results: [string[], [string, {}][]]) => {
         const errors = results[0];
         if (errors.length === 0) {
-          Toaster.create({ position: Position.TOP }).show({
+          Toaster.create({ position: Position.BOTTOM }).show({
             message: "Finished without warnings and/or errors",
             intent: Intent.SUCCESS,
             icon: "tick-circle",

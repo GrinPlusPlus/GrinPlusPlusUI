@@ -18,6 +18,8 @@ const OpenWalletComponent = React.lazy(() =>
 const renderLoader = () => null;
 
 export const OpenWalletContainer = () => {
+  const { status } = useStoreState((state) => state.nodeSummary);
+
   const { username, password, accounts, waitingResponse } = useStoreState(
     (state) => state.signinModel
   );
@@ -59,12 +61,13 @@ export const OpenWalletContainer = () => {
         );
       }
     } catch (error) {
-      Toaster.create({ position: Position.TOP }).show({
+      Toaster.create({ position: Position.BOTTOM }).show({
         message: error.message,
         intent: Intent.DANGER,
         icon: "warning-sign",
       });
     }
+    setWaitingResponse(false);
   }, [username, password, login, setWaitingResponse]);
 
   const getAccountsList = useCallback(
@@ -118,6 +121,7 @@ export const OpenWalletContainer = () => {
           }}
           waitingResponse={waitingResponse}
           loginButtonCb={onOpenWalletButtonClicked}
+          connected={status.toLocaleLowerCase() !== "not connected"}
         />
       )}
     </Suspense>

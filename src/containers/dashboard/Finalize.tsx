@@ -27,7 +27,7 @@ export const FinalizeContainer = () => {
       method: useGrinJoin ? "JOIN" : "STEM",
       grinJoinAddress: grinJoinAddress,
     }).then((message: string) => {
-      Toaster.create({ position: Position.TOP }).show({
+      Toaster.create({ position: Position.BOTTOM }).show({
         message: message,
         intent: message.includes("FINALZED") ? Intent.SUCCESS : Intent.DANGER,
         icon: message.includes("FINALZED") ? "tick-circle" : "warning-sign",
