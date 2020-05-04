@@ -25,6 +25,8 @@ Grin++ offers several advantages. Here are just a few:
 ```bash
 #!/usr/bin/env bash
 
+brew install tor
+brew install rocksdb
 git submodule update --init
 cd GrinPlusPlus
 rm -Rf buiLd
