@@ -129,6 +129,7 @@ const wallet: WalletModel = {
 
           // Check if we can find the node...
           const isInstalled = nodeService.verifyNodePath(
+            defaultSettings.mode,
             defaultSettings.binaryPath
           );
 
