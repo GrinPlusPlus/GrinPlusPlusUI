@@ -1,7 +1,7 @@
-import { Intent } from "@blueprintjs/core";
-import { ISeed } from "./interfaces/ISeed";
-import { useEffect, useRef } from "react";
 import { formatDistanceToNow } from 'date-fns';
+import { Intent } from '@blueprintjs/core';
+import { ISeed } from './interfaces/ISeed';
+import { useEffect, useRef } from 'react';
 
 export const getPercentage = function(
   numerator?: number,
@@ -188,7 +188,7 @@ export const useInterval = function(callback: any, delay: number) {
 
   // Set up the interval.
   useEffect(() => {
-    console.log("Using callback: " + delay);
+    // console.log("Using callback: " + delay);
 
     function tick() {
       savedCallback.current();

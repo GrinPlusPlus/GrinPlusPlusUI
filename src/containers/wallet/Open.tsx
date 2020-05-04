@@ -1,7 +1,14 @@
-import React, { Suspense, useCallback, useEffect } from "react";
-import { Card, Icon, Intent, Position, Text, Toaster } from "@blueprintjs/core";
-import { Redirect } from "react-router-dom";
-import { useStoreActions, useStoreState } from "../../hooks";
+import React, { Suspense, useCallback, useEffect } from 'react';
+import {
+  Card,
+  Icon,
+  Intent,
+  Position,
+  Text,
+  Toaster
+  } from '@blueprintjs/core';
+import { Redirect } from 'react-router-dom';
+import { useStoreActions, useStoreState } from '../../hooks';
 
 const NoAccountsComponent = React.lazy(() =>
   import("../../components/extras/NoAccounts").then((module) => ({
@@ -66,7 +73,7 @@ export const OpenWalletContainer = () => {
         require("electron-log").info(
           "User logged in... redirecting to Wallet..."
         );
-        
+
         try {
           await updateWalletSummary(token);
         } catch (error) {
@@ -91,7 +98,14 @@ export const OpenWalletContainer = () => {
       });
     }
     setWaitingResponse(false);
-  }, [username, password, login, setWaitingResponse]);
+  }, [
+    username,
+    password,
+    login,
+    setWaitingResponse,
+    getAddress,
+    updateWalletSummary,
+  ]);
 
   const getAccountsList = useCallback(
     (accounts: string[]) => {

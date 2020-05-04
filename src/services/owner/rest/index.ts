@@ -1,5 +1,5 @@
-import { BaseApi } from "./../../api";
-import { ITransaction } from "../../../interfaces/ITransaction";
+import { BaseApi } from './../../api';
+import { ITransaction } from '../../../interfaces/ITransaction';
 
 export class OwnerAPI extends BaseApi {
   public get url(): string {
@@ -119,6 +119,16 @@ export class OwnerAPI extends BaseApi {
       transaction_id: number;
     }[];
   }> {
+    console.log({
+        amount: amount * Math.pow(10, 9),
+        fee_base: 1000000,
+        selection_strategy: {
+          strategy: strategy,
+          inputs: strategy === "SMALLEST" ? [] : inputs,
+        },
+        message: message,
+      }
+    );
     return await this.makeRESTRequest(
       this.getRequestURL("tx_estimate_fee"),
       "post",

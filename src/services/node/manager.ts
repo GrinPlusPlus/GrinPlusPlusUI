@@ -93,7 +93,7 @@ export const runNode = function(
   const params = isFloonet ? ["", "--floonet"] : ["--headless"];
 
   let binaryPath = "";
-  if (mode == "PROD") {
+  if (mode === "PROD") {
     binaryPath = require("path").join(process.resourcesPath, "./app.asar.unpacked/" + nodePath);
   } else {
     binaryPath = require("path").join(require("electron").remote.app.getAppPath(), nodePath);

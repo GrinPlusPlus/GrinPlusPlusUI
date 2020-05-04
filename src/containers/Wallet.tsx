@@ -1,8 +1,8 @@
-import React, { Suspense, useEffect } from "react";
-import { AlertComponent } from "../components/extras/Alert";
-import { LoadingComponent } from "../components/extras/Loading";
-import { Redirect } from "react-router-dom";
-import { useStoreActions, useStoreState } from "../hooks";
+import React, { Suspense } from 'react';
+import { AlertComponent } from '../components/extras/Alert';
+import { LoadingComponent } from '../components/extras/Loading';
+import { Redirect } from 'react-router-dom';
+import { useStoreActions, useStoreState } from '../hooks';
 
 const AccountNavBarContainer = React.lazy(() =>
   import("./dashboard/AccountNavBar").then((module) => ({
@@ -31,7 +31,7 @@ const DashboardContainer = React.lazy(() =>
 const renderLoader = () => <LoadingComponent />;
 
 export const WalletContainer = () => {
-  const { token, address, isLoggedIn } = useStoreState(
+  const { isLoggedIn } = useStoreState(
     (state) => state.session
   );
   const { alert } = useStoreState((state) => state.ui);
