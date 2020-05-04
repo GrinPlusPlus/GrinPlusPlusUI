@@ -63,6 +63,20 @@ const App: React.FC = () => {
     }
   }, store.getState().walletSummary.updateSummaryInterval);
 
+  useInterval(async () => {
+    const token = store.getState().session.token;
+    if (token.length === 0) return;
+    const address = store.getState().session.address;
+    if (address.length === 56) return;
+    try {
+      await store.getActions().receiveCoinsModel.getAddress(token);
+    } catch (error) {
+      require("electron-log").error(
+        `Error trying to get Wallet address: ${error.message}`
+      );
+    }
+  }, 30000);
+
   return (
     <StoreProvider store={store}>
       <Router>

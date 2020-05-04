@@ -36,17 +36,6 @@ export const WalletContainer = () => {
   );
   const { alert } = useStoreState((state) => state.ui);
   const { setAlert } = useStoreActions((actions) => actions.ui);
-  const { getAddress } = useStoreActions(
-    (actions) => actions.receiveCoinsModel
-  );
-
-  const requestAddress = async (t: string) => {
-    await getAddress(t);
-  };
-
-  useEffect(() => {
-    if (address.length !== 56) requestAddress(token);
-  });
 
   return (
     <Suspense fallback={renderLoader()}>

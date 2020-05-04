@@ -37,6 +37,9 @@ export const OpenWalletContainer = () => {
   const { updateWalletSummary } = useStoreActions(
     (actions) => actions.walletSummary
   );
+  const { getAddress } = useStoreActions(
+    (actions) => actions.receiveCoinsModel
+  );
 
   useEffect(() => {
     (async function() {
@@ -69,6 +72,14 @@ export const OpenWalletContainer = () => {
         } catch (error) {
           require("electron-log").error(
             `Error trying to get Wallet Summary: ${error.message}`
+          );
+        }
+
+        try {
+          getAddress(token);
+        } catch (error) {
+          require("electron-log").error(
+            `Error trying to get Wallet address: ${error.message}`
           );
         }
       }
