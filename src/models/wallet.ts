@@ -83,7 +83,7 @@ const wallet: WalletModel = {
         }
       }
 
-      nodeService.runNode(settings.binaryPath, settings.floonet);
+      nodeService.runNode(settings.mode, settings.binaryPath, settings.floonet);
       actions.setIsNodeRunning(nodeService.isNodeRunning());
 
       const token = getStoreState().session.token;
@@ -141,6 +141,7 @@ const wallet: WalletModel = {
             nodeService.stopNode();
           }
           nodeService.runNode(
+            defaultSettings.mode,
             defaultSettings.binaryPath,
             defaultSettings.floonet
           );

@@ -26,6 +26,11 @@ type Config = {
 };
 
 export function register(config?: Config) {
+  if (window.location.protocol === 'file:') {
+    // `file:` should be ignored for some none-browser environment, such as `Electron`.
+    return;
+  }
+  
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
     // The URL constructor is available in all browsers that support SW.
     const publicUrl = new URL(

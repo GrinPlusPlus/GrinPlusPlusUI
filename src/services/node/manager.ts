@@ -86,11 +86,17 @@ export const getCommandPath = function(nodePath: string): string {
 };
 
 export const runNode = function(
+  mode: "DEV" | "TEST" | "PROD",
   nodePath: string,
   isFloonet: boolean = false
 ): void {
   const params = isFloonet ? ["", "--floonet"] : ["--headless"];
-  const binaryPath = require("path").join(require("electron").remote.app.getAppPath(), nodePath);
+
+  let relativePath = nodePath;
+  if (mode == "PROD") {
+    relativePath = "./app.asar.unpacked/" + nodePath;
+  }
+  const binaryPath = require("path").join(process.resourcesPath, relativePath);
   const command = getCommandPath(binaryPath);
   require("child_process").spawn(command, params, {
     windowsHide: true,
