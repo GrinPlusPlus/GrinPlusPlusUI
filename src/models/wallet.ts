@@ -198,6 +198,7 @@ const wallet: WalletModel = {
         actions.setIsNodeRunning(isRunning);
 
         if (!isRunning) {
+          actions.setWalletInitialized(false);
           actions.setNodeHealthCheck(false);
           reject("Node isn't running.");
         }
