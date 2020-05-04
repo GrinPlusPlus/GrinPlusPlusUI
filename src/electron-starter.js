@@ -98,7 +98,9 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 790,
-    resizable: false,
+    minWidth: 1200,
+    minHeight: 790,
+    resizable: true,
     frame: false,
     titleBarStyle: 'hidden',
     backgroundColor: "#0D0D0D",
