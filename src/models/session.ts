@@ -1,6 +1,13 @@
-import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy";
-import { Injections } from "../store";
-import { StoreModel } from ".";
+import {
+  Action,
+  action,
+  Computed,
+  computed,
+  Thunk,
+  thunk
+  } from 'easy-peasy';
+import { Injections } from '../store';
+import { StoreModel } from '.';
 
 export interface SessionModel {
   username: string;
@@ -49,6 +56,7 @@ const session: SessionModel = {
           getStoreActions().sendCoinsModel.setInitialValues();
           getStoreActions().createWallet.setInitialValues();
           getStoreActions().restoreWallet.setInitialValues();
+          getStoreActions().ui.setAlert(undefined);
         });
     }
   ),
