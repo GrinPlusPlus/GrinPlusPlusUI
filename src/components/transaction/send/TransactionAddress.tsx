@@ -1,7 +1,7 @@
-import React from "react";
-import { Button, InputGroup } from "@blueprintjs/core";
+import React from 'react';
+import { Button, InputGroup } from '@blueprintjs/core';
 
-type TransactionAmountProps = {
+type TransactionAddressProps = {
   fee: number;
   spendable: number;
   address: string;
@@ -13,7 +13,7 @@ export const TransactionAddressComponent = ({
   spendable,
   address,
   setAddressCb,
-}: TransactionAmountProps) => {
+}: TransactionAddressProps) => {
   const pasteButton = (
     <Button
       minimal={true}
