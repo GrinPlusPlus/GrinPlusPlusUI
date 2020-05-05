@@ -81,6 +81,17 @@ export const getCommand = function(): string {
   return cmd;
 };
 
+export const getAbsoluteNodePath = function(
+  mode: "DEV" | "TEST" | "PROD",
+  nodePath: string
+): string {
+  if (mode == "PROD") {
+    return require("path").join(process.resourcesPath, "./app.asar.unpacked/" + nodePath);
+  } else {
+    return require("path").join(require("electron").remote.app.getAppPath(), nodePath);
+  }
+}
+
 export const getCommandPath = function(nodePath: string): string {
   return require("path").join(nodePath, getCommand());
 };
@@ -92,19 +103,14 @@ export const runNode = function(
 ): void {
   const params = isFloonet ? ["", "--floonet"] : ["--headless"];
 
-  let binaryPath = "";
-  if (mode === "PROD") {
-    binaryPath = require("path").join(process.resourcesPath, "./app.asar.unpacked/" + nodePath);
-  } else {
-    binaryPath = require("path").join(require("electron").remote.app.getAppPath(), nodePath);
-  }
-  const command = getCommandPath(binaryPath);
+  const absolutePath = getAbsoluteNodePath(mode, nodePath);
+  const command = getCommandPath(absolutePath);
   require("child_process").spawn(command, params, {
     windowsHide: true,
     encoding: "utf-8",
     detached: true,
     shell: false,
-    cwd: binaryPath,
+    cwd: absolutePath,
   });
 };
 
@@ -137,8 +143,11 @@ export const getDefaultSettings = function(
   return JSON.parse(require("fs").readFileSync(filePath, "utf8"));
 };
 
-export const verifyNodePath = function(defaultPath: string): boolean {
-  defaultPath = require("path").join(defaultPath, getCommand());
+export const verifyNodePath = function(
+  mode: "DEV" | "TEST" | "PROD",
+  defaultPath: string
+): boolean {
+  defaultPath = getCommandPath(getAbsoluteNodePath(mode, defaultPath));
   require("electron-log").info(`Node Location: ${defaultPath}`);
   return require("fs").existsSync(defaultPath);
 };
