@@ -224,6 +224,7 @@ export const cutAddress = (address: string): string => {
 };
 
 export const countDecimals = (value: number): number => {
+  if (Object.is(NaN, value)) return 0;
   if (Math.floor(value) === value) return 0;
   return value.toString().split(".")[1].length || 0;
 };

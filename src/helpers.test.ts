@@ -12,6 +12,8 @@ describe("Helpers", () => {
     expect(countDecimals(1)).toBe(0);
     expect(countDecimals(1.)).toBe(0);
     expect(countDecimals(1.101)).toBe(3);
+    expect(countDecimals(Number("1,0234"))).toBe(0);
+    expect(countDecimals(Number("1,0234.120"))).toBe(0);
   });
   test("generateEmptySeed", () => {
     const emptySeed = generateEmptySeed();
