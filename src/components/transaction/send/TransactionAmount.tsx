@@ -1,6 +1,6 @@
-import React from "react";
-import { Flex } from "../../styled";
-import { FormGroup, InputGroup } from "@blueprintjs/core";
+import React from 'react';
+import { Flex } from '../../styled';
+import { FormGroup, InputGroup } from '@blueprintjs/core';
 
 type TransactionAmountProps = {
   amount: string;
@@ -17,7 +17,7 @@ export const TransactionAmountComponent = ({
 }: TransactionAmountProps) => {
   return (
     <Flex>
-      <FormGroup label="Amount" labelFor="amount" inline={true}>
+      <FormGroup label="Amount:" labelFor="amount" inline={true}>
         <InputGroup
           className="bp3-dark"
           data-testid="send-using-file-amount-field"
