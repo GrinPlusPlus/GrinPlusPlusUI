@@ -45,8 +45,11 @@ export const validateOnion = (url: string): boolean => {
 };
 
 export const validateAddress = (address: string): "http" | "tor" | false => {
-  if (validateOnion(address)) return "tor";
-  else if (validateUrl(address)) return "http";
+  if (validateOnion(address)) {
+    if (address.length === 56) return "tor";
+    if (address.indexOf(".onion") === -1) return "http";
+    return "tor";
+  } else if (validateUrl(address)) return "http";
   return false;
 };
 
@@ -102,5 +105,5 @@ export const cleanOnionURL = (url: string): string => {
     if (new RegExp(`${v3}`).test(url)) return url;
   }
   const parsed = new URL(url);
-  return parsed.hostname.replace(".onion","");
-}
+  return parsed.hostname.replace(".onion", "");
+};

@@ -42,13 +42,38 @@ describe("Utils", () => {
     ).toBe(true);
   });
   test("validateAddress()", () => {
+    expect(validateAddress("thisisnotavalidurl")).toBe(false);
     expect(validateAddress("http://duckduckgo.com")).toBe("http");
     expect(
       validateAddress(
         "http://jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid.onion"
       )
     ).toBe("tor");
-    expect(validateAddress("thisisnotavalidurl")).toBe(false);
+    expect(
+      validateAddress(
+        "http://jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid.onion/"
+      )
+    ).toBe("tor");
+    expect(
+      validateAddress(
+        "jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid"
+      )
+    ).toBe("tor");
+    expect(
+      validateAddress(
+        "http://jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid.gripluslus.com"
+      )
+    ).toBe("http");
+    expect(
+      validateAddress(
+        "http://jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid.griplusplus.com"
+      )
+    ).toBe("http");
+    expect(
+      validateAddress(
+        "http://jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid.griplusplus.com/"
+      )
+    ).toBe("http");
   });
   test("cleanOnionURL()", () => {
     expect(
