@@ -85,12 +85,18 @@ export const getAbsoluteNodePath = function(
   mode: "DEV" | "TEST" | "PROD",
   nodePath: string
 ): string {
-  if (mode == "PROD") {
-    return require("path").join(process.resourcesPath, "./app.asar.unpacked/" + nodePath);
+  if (mode === "PROD") {
+    return require("path").join(
+      process.resourcesPath,
+      "./app.asar.unpacked/" + nodePath
+    );
   } else {
-    return require("path").join(require("electron").remote.app.getAppPath(), nodePath);
+    return require("path").join(
+      require("electron").remote.app.getAppPath(),
+      nodePath
+    );
   }
-}
+};
 
 export const getCommandPath = function(nodePath: string): string {
   return require("path").join(nodePath, getCommand());
