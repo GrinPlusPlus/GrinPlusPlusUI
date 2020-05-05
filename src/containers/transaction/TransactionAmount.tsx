@@ -1,7 +1,8 @@
-import React, { useCallback } from "react";
-import { TransactionAmountComponent } from "../../components/transaction/send/TransactionAmount";
-import { Intent, Position, Toaster } from "@blueprintjs/core";
-import { useStoreActions, useStoreState } from "../../hooks";
+import React, { useCallback } from 'react';
+import { countDecimalPlaces } from '@blueprintjs/core/lib/esm/common/utils';
+import { Intent, Position, Toaster } from '@blueprintjs/core';
+import { TransactionAmountComponent } from '../../components/transaction/send/TransactionAmount';
+import { useStoreActions, useStoreState } from '../../hooks';
 
 export const TransactionAmountContainer = () => {
   const { spendable } = useStoreState((state) => state.walletSummary);
@@ -17,6 +18,7 @@ export const TransactionAmountContainer = () => {
     async (amount: string) => {
       if (amount === undefined || amount.slice(-1) === ".") return;
       const _amount = Number(amount);
+      if (countDecimalPlaces(_amount) > 9) return;
       if (_amount < 0) return;
       setAmount(amount);
       await estimateFee({

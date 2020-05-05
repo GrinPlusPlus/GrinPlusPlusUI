@@ -1,7 +1,18 @@
-import { generateEmptySeed, getSeedWords, hideSeedWords } from './helpers';
 import { ISeed } from './interfaces/ISeed';
+import {
+  countDecimals,
+  generateEmptySeed,
+  getSeedWords,
+  hideSeedWords,
+} from "./helpers";
 
 describe("Helpers", () => {
+  test("countDecimals", () => {
+    expect(countDecimals(1.12345678901)).toBe(11);
+    expect(countDecimals(1)).toBe(0);
+    expect(countDecimals(1.)).toBe(0);
+    expect(countDecimals(1.101)).toBe(3);
+  });
   test("generateEmptySeed", () => {
     const emptySeed = generateEmptySeed();
     emptySeed.forEach((word) => {
