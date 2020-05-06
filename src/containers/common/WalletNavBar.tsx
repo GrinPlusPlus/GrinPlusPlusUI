@@ -37,14 +37,14 @@ export const WalletNavBarContainer = () => {
         <Button
           minimal={true}
           icon="build"
-          text={t("create.1")}
+          text={t("create")}
           onClick={() => history.push("/create")}
         />
         <NavbarDivider />
         <Button
           minimal={true}
           icon="layers"
-          text={t("restore.1")}
+          text={t("restore")}
           onClick={() => history.push("/restore")}
         />
       </NavbarGroup>

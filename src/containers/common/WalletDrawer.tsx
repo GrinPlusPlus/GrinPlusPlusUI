@@ -19,7 +19,7 @@ export const WalletDrawer = () => {
       onClose={() => {
         toggleSettings();
       }}
-      title={t("settings.1")}
+      title={t("settings")}
       isOpen={showSettings}
       size={Drawer.SIZE_SMALL}
       style={{ paddingTop: "32px" }}

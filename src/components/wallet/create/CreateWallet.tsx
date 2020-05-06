@@ -8,6 +8,7 @@ import {
   InputGroup,
   Intent,
 } from "@blueprintjs/core";
+import { useTranslation } from "react-i18next";
 
 type CreateWalletProps = {
   username: string;
@@ -40,16 +41,18 @@ export const CreateWalletComponent = ({
   signUpButtonCb,
   SeedValidationComponent,
 }: CreateWalletProps) => {
+  const { t } = useTranslation();
+
   return (
     <div data-testid="create-wallet">
       <FormGroup
-        label={"Username"}
-        helperText="This username will be used to login into the wallet."
+        label={t("username")}
+        helperText={t("username_helper")}
         labelFor="create-wallet-name"
         labelInfo={true}
       >
         <InputGroup
-          placeholder="Username"
+          placeholder={t("username")}
           type="text"
           className="bp3-dark"
           style={{ backgroundColor: "#21242D" }}
@@ -62,8 +65,8 @@ export const CreateWalletComponent = ({
         />
       </FormGroup>
       <FormGroup
-        label={"Password"}
-        helperText={`Password should be at least ${minPasswordLength} characters long.`}
+        label={t("password")}
+        helperText={`${t("password_helper.1")} ${minPasswordLength} ${t("password_helper.2")}`}
         labelFor="create-wallet-password"
         labelInfo={true}
       >
@@ -72,10 +75,10 @@ export const CreateWalletComponent = ({
           cb={setPasswordCb}
           autoFocus={false}
         />
-      </FormGroup>
+      </FormGroup>confirm_password_helper
       <FormGroup
-        label={"Confirm password"}
-        helperText="Make sure the passwords match."
+        label={t("confirm_password")}
+        helperText={t("confirm_password_helper")}
         labelFor="create-wallet-password-confirm"
         labelInfo={true}
       >
@@ -89,7 +92,7 @@ export const CreateWalletComponent = ({
         <Button
           data-testid="create-wallet-button"
           intent={Intent.PRIMARY}
-          text="Create Wallet"
+          text={t("create_wallet")}
           style={{ color: "black", width: "200px" }}
           onClick={signUpButtonCb}
           disabled={
@@ -103,7 +106,7 @@ export const CreateWalletComponent = ({
       </SubmitButton>
       <Dialog
         isOpen={receivedSeed.length > 0}
-        title="Wallet Seed"
+        title={t("wallet_seed")}
         isCloseButtonShown={false}
         className="bp3-dark"
       >

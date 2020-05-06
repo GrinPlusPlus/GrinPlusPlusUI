@@ -71,12 +71,12 @@ export const SettingsComponent = ({
             setGrinJoinUseCb(e.target.checked);
           }}
         >
-          <b>{t("grinjoin.1")}</b>
+          <b>{t("grinjoin")}</b>
         </Switch>
         <InputGroup
           data-testid="grinjoin-address-input"
           disabled={!useGrinJoin}
-          placeholder={t("grinjoin_address.1")}
+          placeholder={t("grinjoin_address")}
           value={grinJoinAddress}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setGrinJoinAddressCb(e.target.value)
@@ -86,7 +86,7 @@ export const SettingsComponent = ({
         <Divider />
         <br />
         <FormGroup
-          label={t("minimum_number_of_peers.1")}
+          label={t("minimum_number_of_peers")}
           labelFor="mininum-number-peers"
         >
           <NumericInput
@@ -97,7 +97,7 @@ export const SettingsComponent = ({
           />
         </FormGroup>
         <FormGroup
-          label={t("maximum_number_of_peers.1")}
+          label={t("maximum_number_of_peers")}
           labelFor="maximum-number-peers"
         >
           <NumericInput
@@ -107,7 +107,7 @@ export const SettingsComponent = ({
             onValueChange={(value) => setMaximumPeersCb(value)}
           />
         </FormGroup>
-        <FormGroup label={t("confirmations.1")}>
+        <FormGroup label={t("confirmations")}>
           <Slider
             min={0}
             max={30}
@@ -121,7 +121,7 @@ export const SettingsComponent = ({
         </FormGroup>
         <Divider />
         <FormGroup
-          label={t("node_data_location.1")}
+          label={t("node_data_location")}
           labelFor="note-data-path"
           disabled={true}
         >
@@ -131,23 +131,23 @@ export const SettingsComponent = ({
             placeholder={nodeDataPath}
           />
         </FormGroup>
-        <FormGroup label={t("node.1")} labelFor="wallet-path" disabled={true}>
+        <FormGroup label={t("node")} labelFor="wallet-path" disabled={true}>
           <InputGroup
             id="wallet-path"
             placeholder={nodeBinaryPath}
             readOnly={true}
           />
         </FormGroup>
-        <Text>{t("node_actions.1")}</Text>
+        <Text>{t("node_actions")}</Text>
         <ControlGroup>
           <Button
-            text={t("restart.1")}
+            text={t("restart")}
             onClick={() => restartNodeCb()}
             style={{ width: "50%" }}
             intent={Intent.DANGER}
           />
           <Button
-            text={t("resync.1")}
+            text={t("resync")}
             disabled={status.toLowerCase() !== "running"}
             style={{ width: "50%" }}
             intent={Intent.WARNING}
@@ -156,12 +156,12 @@ export const SettingsComponent = ({
         </ControlGroup>
       </div>
       <Callout>
-        {t("restart_warning.1")}.
+        {t("restart_warning")}.
       </Callout>
       <Alert
         className="bp3-dark"
-        cancelButtonText={t("cancel.1")}
-        confirmButtonText={t("resync_node.1")}
+        cancelButtonText={t("cancel")}
+        confirmButtonText={t("resync_node")}
         icon="refresh"
         intent={Intent.WARNING}
         isOpen={isConfirmationDialogOpen}
@@ -170,7 +170,7 @@ export const SettingsComponent = ({
           confirmReSyncBlockchainCb();
         }}
       >
-        <p>{t("resync_confirmation.1")}.</p>
+        <p>{t("resync_confirmation")}.</p>
       </Alert>
     </div>
   );
