@@ -14,6 +14,7 @@ import { useInterval } from "./helpers";
 
 const App: React.FC = () => {
   useInterval(async () => {
+    if (store.getState().wallet.initializingError) return;
     try {
       store
         .getActions()
@@ -30,7 +31,7 @@ const App: React.FC = () => {
         await store.getActions().wallet.checkNodeHealth();
         require("electron-log").info("HealthCheck passed, all good!");
       } catch (error) {
-        require("electron-log").error(`HealthCheck failed: ${error.message}`);
+        require("electron-log").error(`HealthCheck failed: ${error}`);
       }
     }
   }, store.getState().nodeSummary.updateInterval);

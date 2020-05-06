@@ -1,11 +1,6 @@
-import {
-  Action,
-  action,
-  Thunk,
-  thunk
-  } from 'easy-peasy';
-import { Injections } from '../store';
-import { StoreModel } from '.';
+import { Action, action, Thunk, thunk } from "easy-peasy";
+import { Injections } from "../store";
+import { StoreModel } from ".";
 
 export interface WalletModel {
   isNodeInstalled: boolean;
@@ -33,7 +28,7 @@ const wallet: WalletModel = {
   isNodeInstalled: false,
   isNodeRunning: false,
   isWalletInitialized: false,
-  message: "Initializing node...",
+  message: "initializing_node",
   logs: "",
   initializingError: false,
   setIsNodeInstalled: action((state, payload) => {
@@ -135,7 +130,7 @@ const wallet: WalletModel = {
 
           actions.setIsNodeInstalled(isInstalled);
 
-          if (!isInstalled) reject("Node isn't installed.");
+          if (!isInstalled) reject("node_is_not_installed");
 
           // if the node is running we should stop it
           if (nodeService.isNodeRunning()) {
@@ -149,7 +144,7 @@ const wallet: WalletModel = {
 
           // Let's double check if the Node is running...
           const isRunning = nodeService.isNodeRunning();
-          if (!isRunning) reject("Node isn't running.");
+          if (!isRunning) reject("node_is_not_running");
           actions.setIsNodeRunning(isRunning);
 
           settingsActions.setNodeBinaryPath(
@@ -194,6 +189,16 @@ const wallet: WalletModel = {
         const settingsActions = getStoreActions().settings;
         settingsActions.setDefaultSettings(defaultSettings); // Update state
 
+        // Check if we can find the node...
+        const isInstalled = nodeService.verifyNodePath(
+          defaultSettings.mode,
+          defaultSettings.binaryPath
+        );
+
+        actions.setIsNodeInstalled(isInstalled);
+
+        if (!isInstalled) reject("node_is_not_installed");
+
         // Let's double check if the Node is running...
         const isRunning = nodeService.isNodeRunning();
         actions.setIsNodeRunning(isRunning);
@@ -201,7 +206,7 @@ const wallet: WalletModel = {
         if (!isRunning) {
           actions.setWalletInitialized(false);
           actions.setNodeHealthCheck(false);
-          reject("Node isn't running.");
+          reject("node_is_not_running");
         }
 
         settingsActions.setNodeBinaryPath(
