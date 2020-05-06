@@ -64,7 +64,7 @@
   "strategy": "Strategy",
   "default": "Default",
   "custom": "Custom",
-  "save_tx": "SAve Tx",
+  "save_tx": "Save Tx",
   "send": "Send",
   "spendable": "Spendable",
   "total": "Total",
