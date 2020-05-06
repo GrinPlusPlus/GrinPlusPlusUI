@@ -8,8 +8,11 @@ import {
 } from "@blueprintjs/core";
 import { useHistory } from "react-router-dom";
 import { useStoreActions } from "../../hooks";
+import { useTranslation } from "react-i18next";
 
 export const WalletNavBarContainer = () => {
+  const { t } = useTranslation();
+
   let history = useHistory();
   const { toggleSettings } = useStoreActions((actions) => actions.ui);
 
@@ -34,14 +37,14 @@ export const WalletNavBarContainer = () => {
         <Button
           minimal={true}
           icon="build"
-          text="Create"
+          text={t("create.1")}
           onClick={() => history.push("/create")}
         />
         <NavbarDivider />
         <Button
           minimal={true}
           icon="layers"
-          text="Restore"
+          text={t("restore.1")}
           onClick={() => history.push("/restore")}
         />
       </NavbarGroup>

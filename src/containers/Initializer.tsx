@@ -28,7 +28,7 @@ export const InitializerContainer = () => {
   const { status } = useStoreState((state) => state.nodeSummary);
 
   useEffect(() => {
-    (async function() {
+    (async function () {
       if (!isWalletInitialized) {
         require("electron-log").info("Initializing Backend.");
         await initializeWallet()
@@ -54,7 +54,7 @@ export const InitializerContainer = () => {
       <InitComponent
         isInitialized={status.toLowerCase() !== "not connected"}
         error={initializingError}
-        message={t(`${message}.1`)}
+        message={message ? t(`${message}.1`) : ""}
       />
     </Suspense>
   );

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, InputGroup, Intent } from "@blueprintjs/core";
+import { useTranslation } from "react-i18next";
 
 export type InputPasswordProps = {
   password: string;
@@ -16,6 +17,7 @@ export const InputPasswordComponent = ({
   onEnterCb,
   waitingResponse,
 }: InputPasswordProps) => {
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   return (
     <InputGroup
@@ -24,7 +26,7 @@ export const InputPasswordComponent = ({
       style={{ backgroundColor: "#21242D" }}
       type={showPassword ? "text" : "password"}
       value={password}
-      placeholder="Password"
+      placeholder={t(`${"password"}.1`)}
       autoFocus={autoFocus}
       disabled={waitingResponse}
       rightElement={

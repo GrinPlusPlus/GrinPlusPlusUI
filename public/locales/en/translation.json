@@ -13,6 +13,9 @@
   "restart_warning": {
     "1": "After changing these values you will need to Restart the Node in order to load the new settings"
   },
+  "settings": { "1": "Settings" },
+  "grinjoin": { "1": "GrinJoin" },
+  "grinjoin_address": { "1": "GrinJoin Address" },
   "username": { "1": "Username" },
   "password": { "1": "Password" },
   "confirm_password": { "1": "Confirm password" },
@@ -76,7 +79,7 @@
   "immature": { "1": "Immature" },
   "unconfirmed": { "1": "Unconfirmed" },
   "locked": { "1": "Locked" },
-  "initializing_node": { "1": "Initializing nodes" },
+  "initializing_node": { "1": "Initializing node..." },
   "finished_without_errors": { "1": "Finished without warnings and/or errors" },
   "cancel_transaction": { "1": "Cancel Transaction" },
   "repost_transaction": { "1": "Repost Transaction" },

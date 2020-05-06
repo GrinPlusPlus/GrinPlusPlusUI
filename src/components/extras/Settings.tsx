@@ -14,6 +14,7 @@ import {
   Switch,
   Text,
 } from "@blueprintjs/core";
+import { useTranslation } from "react-i18next";
 
 type SettingsProps = {
   status: string;
@@ -58,6 +59,8 @@ export const SettingsComponent = ({
   confirmReSyncBlockchainCb,
   restartNodeCb,
 }: SettingsProps) => {
+  const { t } = useTranslation();
+
   return (
     <div>
       <div className={Classes.DIALOG_BODY}>
@@ -68,12 +71,12 @@ export const SettingsComponent = ({
             setGrinJoinUseCb(e.target.checked);
           }}
         >
-          Use <strong>GrinJoin</strong>
+          <b>{t("grinjoin.1")}</b>
         </Switch>
         <InputGroup
           data-testid="grinjoin-address-input"
           disabled={!useGrinJoin}
-          placeholder="GrinJoin Address"
+          placeholder={t("grinjoin_address.1")}
           value={grinJoinAddress}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setGrinJoinAddressCb(e.target.value)
@@ -83,7 +86,7 @@ export const SettingsComponent = ({
         <Divider />
         <br />
         <FormGroup
-          label={"Minimum number of peers"}
+          label={t("minimum_number_of_peers.1")}
           labelFor="mininum-number-peers"
         >
           <NumericInput
@@ -94,7 +97,7 @@ export const SettingsComponent = ({
           />
         </FormGroup>
         <FormGroup
-          label={"Maximum number of peers"}
+          label={t("maximum_number_of_peers.1")}
           labelFor="maximum-number-peers"
         >
           <NumericInput
@@ -104,7 +107,7 @@ export const SettingsComponent = ({
             onValueChange={(value) => setMaximumPeersCb(value)}
           />
         </FormGroup>
-        <FormGroup label={"Confirmations"}>
+        <FormGroup label={t("confirmations.1")}>
           <Slider
             min={0}
             max={30}
@@ -118,7 +121,7 @@ export const SettingsComponent = ({
         </FormGroup>
         <Divider />
         <FormGroup
-          label={"Node data location"}
+          label={t("node_data_location.1")}
           labelFor="note-data-path"
           disabled={true}
         >
@@ -128,23 +131,23 @@ export const SettingsComponent = ({
             placeholder={nodeDataPath}
           />
         </FormGroup>
-        <FormGroup label={"Node"} labelFor="wallet-path" disabled={true}>
+        <FormGroup label={t("node.1")} labelFor="wallet-path" disabled={true}>
           <InputGroup
             id="wallet-path"
             placeholder={nodeBinaryPath}
             readOnly={true}
           />
         </FormGroup>
-        <Text>Node Actions</Text>
+        <Text>{t("node_actions.1")}</Text>
         <ControlGroup>
           <Button
-            text={"Restart"}
+            text={t("restart.1")}
             onClick={() => restartNodeCb()}
             style={{ width: "50%" }}
             intent={Intent.DANGER}
           />
           <Button
-            text="Resync"
+            text={t("resync.1")}
             disabled={status.toLowerCase() !== "running"}
             style={{ width: "50%" }}
             intent={Intent.WARNING}
@@ -153,13 +156,12 @@ export const SettingsComponent = ({
         </ControlGroup>
       </div>
       <Callout>
-        After changing these values you will need to <b>Restart the Node</b> in
-        order to load the new settings.
+        {t("restart_warning.1")}.
       </Callout>
       <Alert
         className="bp3-dark"
-        cancelButtonText="Cancel"
-        confirmButtonText="Resync Node"
+        cancelButtonText={t("cancel.1")}
+        confirmButtonText={t("resync_node.1")}
         icon="refresh"
         intent={Intent.WARNING}
         isOpen={isConfirmationDialogOpen}
@@ -168,10 +170,7 @@ export const SettingsComponent = ({
           confirmReSyncBlockchainCb();
         }}
       >
-        <p>
-          Are you sure you want to <b>resync</b> the Node? This will download
-          around 1GB again and will take time.
-        </p>
+        <p>{t("resync_confirmation.1")}.</p>
       </Alert>
     </div>
   );
