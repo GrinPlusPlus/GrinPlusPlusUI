@@ -1,14 +1,15 @@
-import React from 'react';
+import React from "react";
 import {
   cleanTxType,
   cutAddress,
   getDateAsString,
   getTxIcon,
-  getTxIntent
-  } from '../../helpers';
-import { Icon, Text } from '@blueprintjs/core';
-import { ITransaction } from '../../interfaces/ITransaction';
-import { TansactionDetailsComponent } from '../transaction/Details';
+  getTxIntent,
+} from "../../helpers";
+import { Icon, Text } from "@blueprintjs/core";
+import { ITransaction } from "../../interfaces/ITransaction";
+import { TansactionDetailsComponent } from "../transaction/Details";
+import { useTranslation } from "react-i18next";
 
 type TransactionsTableProps = {
   transactions: ITransaction[];
@@ -25,13 +26,16 @@ export const TransactionsTableComponent = ({
   onCancelTransactionButtonClickedCb,
   onRepostTransactionButtonClickedCb,
 }: TransactionsTableProps) => {
+  const { t } = useTranslation();
+
   const listTransactions = (rows: ITransaction[]) => {
     let table: JSX.Element[] = [];
     if (rows.length === 0) return table;
     rows.forEach((transaction) => {
-      let date = transaction.creationDate === undefined
-        ? ""
-        : getDateAsString(new Date(+transaction.creationDate * 1000));
+      let date =
+        transaction.creationDate === undefined
+          ? ""
+          : getDateAsString(new Date(+transaction.creationDate * 1000));
 
       let mType = cleanTxType(transaction.type);
 
@@ -44,7 +48,9 @@ export const TransactionsTableComponent = ({
             <Icon icon={getTxIcon(mType)} intent={getTxIntent(mType)} />
           </td>
           <td style={{ width: "10%", paddingLeft: "10px" }}>
-            {Math.abs(transaction.amountCredited - transaction.amountDebited).toFixed(9)}
+            {Math.abs(
+              transaction.amountCredited - transaction.amountDebited
+            ).toFixed(9)}
           </td>
           <td style={{ width: "40%", paddingLeft: "10px" }}>
             {transaction.address === undefined
@@ -52,9 +58,7 @@ export const TransactionsTableComponent = ({
               : cutAddress(transaction.address)}
           </td>
           <td style={{ width: "25%", paddingLeft: "10px" }}>
-            {date === undefined
-              ? ""
-              : date}
+            {date === undefined ? "" : date}
           </td>
         </tr>
       );
@@ -85,9 +89,10 @@ export const TransactionsTableComponent = ({
                 transaction.slateMessage ? transaction.slateMessage : "n/a"
               }
               fee={transaction.fee ? transaction.fee.toFixed(9) : "n/a"}
-              date={transaction.creationDate === undefined
-                ? "n/a"
-                : new Date(+transaction.creationDate * 1000).toLocaleString()
+              date={
+                transaction.creationDate === undefined
+                  ? "n/a"
+                  : new Date(+transaction.creationDate * 1000).toLocaleString()
               }
               onCancelTransactionButtonClickedCb={
                 onCancelTransactionButtonClickedCb
@@ -112,7 +117,7 @@ export const TransactionsTableComponent = ({
       }}
     >
       {transactions.length === 0 ? (
-        <Text>There are no transactions to display.</Text>
+        <Text>{t("no_transactions")}.</Text>
       ) : (
         <table className="transactions">
           <tbody>

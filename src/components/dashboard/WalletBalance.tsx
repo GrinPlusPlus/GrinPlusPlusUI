@@ -1,7 +1,8 @@
-import NumberFormat from 'react-number-format';
-import React from 'react';
-import { BalanceSuffix, Flex, SpendableBalance } from '../styled';
-import { Text, Tooltip } from '@blueprintjs/core';
+import NumberFormat from "react-number-format";
+import React from "react";
+import { BalanceSuffix, Flex, SpendableBalance } from "../styled";
+import { Text, Tooltip } from "@blueprintjs/core";
+import { useTranslation } from "react-i18next";
 
 export type WalletBalanceProps = {
   total: number;
@@ -17,9 +18,11 @@ export const WalletBalanceComponent = ({
   unconfirmed,
   locked,
 }: WalletBalanceProps) => {
+  const { t } = useTranslation();
+
   return (
     <div>
-      <Text>Spendable:</Text>
+      <Text>{t("spendable")}:</Text>
       <Flex>
         <SpendableBalance>
           <NumberFormat
@@ -35,7 +38,7 @@ export const WalletBalanceComponent = ({
           <BalanceSuffix>ツ</BalanceSuffix>
           <div data-testid="balance-tooltip">
             <p>
-              Total:{" "}
+              {t("total")}:{" "}
               <strong>
                 <NumberFormat
                   data-testid="total"
@@ -48,7 +51,7 @@ export const WalletBalanceComponent = ({
               </strong>
             </p>
             <p>
-              Immature:{" "}
+              {t("immature")}:{" "}
               <strong>
                 <NumberFormat
                   data-testid="immature"
@@ -61,7 +64,7 @@ export const WalletBalanceComponent = ({
               </strong>
             </p>
             <p>
-              Unconfirmed:{" "}
+              {t("unconfirmed")}:{" "}
               <strong>
                 <NumberFormat
                   data-testid="unconfirmed"
@@ -74,7 +77,7 @@ export const WalletBalanceComponent = ({
               </strong>
             </p>
             <p>
-              Locked:{" "}
+              {t("locked")}:{" "}
               <strong>
                 <NumberFormat
                   data-testid="locked"

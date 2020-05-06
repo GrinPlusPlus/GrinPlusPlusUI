@@ -3,13 +3,15 @@ import { ReceiveUsingListenerComponent } from "../../components/transaction/rece
 import { HorizontallyCenter, Title } from "../../components/styled";
 import { Spinner, Text } from "@blueprintjs/core";
 import { useStoreState } from "../../hooks";
+import { useTranslation } from "react-i18next";
 
 export const ReceiveUsingListenerContainer = () => {
+  const { t } = useTranslation();
   const { address } = useStoreState((state) => state.session);
 
   return (
     <div>
-      <Title>Receive</Title>
+      <Title>{t("receive")}</Title>
       <div>
         {address ? (
           <ReceiveUsingListenerComponent
@@ -27,7 +29,7 @@ export const ReceiveUsingListenerContainer = () => {
           <div>
             <HorizontallyCenter>
               <Spinner size={30} />
-              <Text>trying to get your address, please wait...</Text>
+              <Text>{t("trying_get_address")}</Text>
             </HorizontallyCenter>
             <br />
           </div>
