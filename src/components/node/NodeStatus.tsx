@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export type NodeStatusProps = {
   headers: number;
@@ -11,18 +12,20 @@ export const NodeStatusComponent = ({
   blocks,
   network,
 }: NodeStatusProps) => {
+  const { t } = useTranslation();
+
   return (
     <table className="transactions" style={{ width: "500px" }}>
       <tbody>
         <tr>
           <th>
-            <b>Headers</b>
+            <b>{t("headers")}</b>
           </th>
           <th>
-            <b>Blocks</b>
+            <b>{t("blocks")}</b>
           </th>
           <th>
-            <b>Network</b>
+            <b>{t("network")}</b>
           </th>
         </tr>
         <tr>

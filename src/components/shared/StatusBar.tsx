@@ -1,6 +1,7 @@
 import React from "react";
 import { Icon } from "@blueprintjs/core";
 import { StatusBarContent } from "../../components/styled";
+import { useTranslation } from "react-i18next";
 
 type StatusBarProps = {
   intent: "none" | "primary" | "success" | "warning" | "danger" | undefined;
@@ -15,11 +16,13 @@ export const StatusBarComponent = ({
   status,
   network,
 }: StatusBarProps) => {
+  const { t } = useTranslation();
+
   return (
     <StatusBarContent>
       <div style={{ paddingLeft: "10px", width: "40%" }}>
         <div>
-          <Icon icon="symbol-circle" intent={intent} /> <b>STATUS:</b> {status}
+          <Icon icon="symbol-circle" intent={intent} /> <b>{t("status")}</b>: {status}
         </div>
       </div>
       <div style={{ textAlign: "right", width: "60%", paddingRight: "35px" }}>

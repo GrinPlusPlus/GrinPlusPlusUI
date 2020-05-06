@@ -91,5 +91,10 @@
   "response file written": "Response file written",
   "unknown_error": "Unknown error",
   "error_reading_file": "Error reading file",
-  "restart_wallet": "Restart Wallet"
+  "restart_wallet": "Restart Wallet",
+  "headers": "Headers",
+  "blocks": "Blocks",
+  "agent": "Agent",
+  "direction": "Direction",
+  "status": "STATUS"
 }
