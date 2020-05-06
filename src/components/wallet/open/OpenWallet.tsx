@@ -58,7 +58,7 @@ export const OpenWalletComponent = ({
         >
           <div style={{ marginBottom: "8px", fontSize: "14px" }}>
             <Text>
-              {t(`${"password_for"}.1`)}: <b>{username}</b>
+              {t("password_for")}: <b>{username}</b>
             </Text>
           </div>
           <div style={{ width: "400px" }}>

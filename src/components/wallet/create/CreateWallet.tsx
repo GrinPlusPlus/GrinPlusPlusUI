@@ -75,7 +75,7 @@ export const CreateWalletComponent = ({
           cb={setPasswordCb}
           autoFocus={false}
         />
-      </FormGroup>confirm_password_helper
+      </FormGroup>
       <FormGroup
         label={t("confirm_password")}
         helperText={t("confirm_password_helper")}

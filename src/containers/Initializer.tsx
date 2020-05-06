@@ -54,7 +54,7 @@ export const InitializerContainer = () => {
       <InitComponent
         isInitialized={status.toLowerCase() !== "not connected"}
         error={initializingError}
-        message={message ? t(`${message}.1`) : ""}
+        message={message ? t(`${message}`) : ""}
       />
     </Suspense>
   );
