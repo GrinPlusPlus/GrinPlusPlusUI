@@ -2,8 +2,10 @@ import React from "react";
 import { Button, Intent } from "@blueprintjs/core";
 import { HorizontallyCenter } from "../styled";
 import { useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export const NoAccountsComponent = () => {
+  const { t } = useTranslation();
   let history = useHistory();
 
   return (
@@ -13,7 +15,7 @@ export const NoAccountsComponent = () => {
         intent={Intent.PRIMARY}
         style={{ color: "black", width: "200px" }}
         large={true}
-        text="Create a new Wallet"
+        text={t("create_wallet")}
         onClick={() => history.push("/create")}
       />
       <br />
@@ -22,9 +24,9 @@ export const NoAccountsComponent = () => {
         <Button
           minimal={true}
           large={true}
-          text="Restore Wallet"
+          text={t("restore_wallet")}
           onClick={() => history.push("/restore")}
-        />{" "}
+        />
       </HorizontallyCenter>
     </div>
   );
