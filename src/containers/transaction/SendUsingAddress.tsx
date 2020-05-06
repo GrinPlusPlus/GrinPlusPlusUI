@@ -84,6 +84,7 @@ export const SendUsingAddressContainer = () => {
     strategy,
     history,
     setWaitingResponse,
+    t,
   ]);
 
   const classes = classNames("bp3-dark", Classes.CARD, Classes.ELEVATION_4);
