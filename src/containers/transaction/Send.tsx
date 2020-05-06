@@ -55,7 +55,7 @@ export const SendContainer = () => {
   useEffect(() => {
     setInitialValues();
     async function init(t: string) {
-      await getOutputs(t).catch(() => {});
+      await getOutputs(t).catch(() => { });
     }
     init(token);
   }, [getOutputs, token, setInitialValues]);

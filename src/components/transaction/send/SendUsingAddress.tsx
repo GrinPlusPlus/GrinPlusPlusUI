@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Intent } from "@blueprintjs/core";
+import { useTranslation } from "react-i18next";
 
 type SendGrinsButtonsProps = {
   amount: number;
@@ -18,6 +19,7 @@ export const SendUsingAddressComponent = ({
   isAddressValid,
   onSendButtonClickedCb,
 }: SendGrinsButtonsProps) => {
+  const { t } = useTranslation();
   return (
     <Button
       intent={Intent.PRIMARY}
@@ -31,7 +33,7 @@ export const SendUsingAddressComponent = ({
       }
       onClick={onSendButtonClickedCb}
     >
-      Send
+      {t("send")}
     </Button>
   );
 };

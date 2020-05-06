@@ -12,8 +12,11 @@ import {
   Spinner,
   Text,
 } from "@blueprintjs/core";
+import { useTranslation } from "react-i18next";
 
 export const SendUsingAddressContainer = () => {
+  const { t } = useTranslation();
+
   let history = useHistory();
 
   const { spendable } = useStoreState((state) => state.walletSummary);
@@ -57,8 +60,8 @@ export const SendUsingAddressContainer = () => {
 
       const v3 = "[a-z2-7]{56}";
       const alert = new RegExp(`${v3}`).test(address)
-        ? "Transaction sent successfully"
-        : "Transaction started successfully";
+        ? t("transaction_sent")
+        : t("transaction_started");
 
       Toaster.create({ position: Position.BOTTOM }).show({
         message: sent === true ? alert : sent,
@@ -112,7 +115,7 @@ export const SendUsingAddressContainer = () => {
           }}
         >
           <Spinner size={Spinner.SIZE_SMALL} />
-          <Text>Sending, please wait..</Text>
+          <Text>{t("sending_wait")}</Text>
         </div>
       </Overlay>
     </div>

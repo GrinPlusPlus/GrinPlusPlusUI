@@ -1,8 +1,8 @@
-import React, { useCallback } from 'react';
-import { countDecimalPlaces } from '@blueprintjs/core/lib/esm/common/utils';
-import { Intent, Position, Toaster } from '@blueprintjs/core';
-import { TransactionAmountComponent } from '../../components/transaction/send/TransactionAmount';
-import { useStoreActions, useStoreState } from '../../hooks';
+import React, { useCallback } from "react";
+import { countDecimalPlaces } from "@blueprintjs/core/lib/esm/common/utils";
+import { Intent, Position, Toaster } from "@blueprintjs/core";
+import { TransactionAmountComponent } from "../../components/transaction/send/TransactionAmount";
+import { useStoreActions, useStoreState } from "../../hooks";
 
 export const TransactionAmountContainer = () => {
   const { spendable } = useStoreState((state) => state.walletSummary);

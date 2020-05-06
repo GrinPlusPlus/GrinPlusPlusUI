@@ -1,5 +1,6 @@
-import React from 'react';
-import { Button, Intent } from '@blueprintjs/core';
+import React from "react";
+import { Button, Intent } from "@blueprintjs/core";
+import { useTranslation } from "react-i18next";
 
 type SendGrinsButtonsProps = {
   amount: number;
@@ -16,6 +17,8 @@ export const SaveTransactionFileComponent = ({
   inputsSelected,
   onSaveButtonClickedCb,
 }: SendGrinsButtonsProps) => {
+  const { t } = useTranslation();
+
   return (
     <Button
       intent={Intent.PRIMARY}
@@ -27,7 +30,7 @@ export const SaveTransactionFileComponent = ({
       disabled={amount <= 0 || spendable < amount + fee || !inputsSelected}
       onClick={onSaveButtonClickedCb}
     >
-      Save Tx
+      {t("save_tx")}
     </Button>
   );
 };

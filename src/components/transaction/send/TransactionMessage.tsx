@@ -1,5 +1,6 @@
 import React from "react";
 import { FormGroup, InputGroup } from "@blueprintjs/core";
+import { useTranslation } from "react-i18next";
 
 type TransactionMessageProps = {
   message: string;
@@ -10,11 +11,13 @@ export const TransactionMessageComponent = ({
   message,
   setMessageCb,
 }: TransactionMessageProps) => {
+  const { t } = useTranslation();
+
   return (
-    <FormGroup helperText="This message is optional.">
+    <FormGroup helperText={t("message_helper")}>
       <InputGroup
         value={message}
-        placeholder="Message"
+        placeholder={t("message")}
         className="bp3-dark"
         style={{ backgroundColor: "#21242D" }}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>

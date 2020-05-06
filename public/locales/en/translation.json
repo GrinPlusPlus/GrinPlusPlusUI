@@ -85,7 +85,7 @@
   "transaction_started": "Transaction started successfully",
   "trying_ddress": "trying to get your address, please wait",
   "no_transactions": "There are no transactions to display",
-  "sending_wait": "Sending, please wait",
+  "sending_wait": "Sending, please wait...",
   "error_parsing_file": "Error parsing file",
   "finalized": "finalized",
   "response file written": "Response file written",
@@ -96,5 +96,7 @@
   "blocks": "Blocks",
   "agent": "Agent",
   "direction": "Direction",
-  "status": "STATUS"
+  "status": "STATUS",
+  "commitment": "Commitment",
+  "height": "Height"
 }

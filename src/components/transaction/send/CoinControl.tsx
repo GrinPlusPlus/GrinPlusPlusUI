@@ -1,5 +1,6 @@
 import React from "react";
 import { Checkbox, Radio, RadioGroup } from "@blueprintjs/core";
+import { useTranslation } from "react-i18next";
 
 type CoinControlProps = {
   strategy: string;
@@ -23,6 +24,8 @@ export const CoinControlComponent = ({
   setStrategyCb,
   updateInputsCb,
 }: CoinControlProps) => {
+  const { t } = useTranslation();
+
   const listInputs = (
     inputsList: {
       amount: number;
@@ -38,6 +41,7 @@ export const CoinControlComponent = ({
         <tr
           id={input.commitment}
           key={input.commitment}
+          style={{ fontFamily: "Courier New" }}
           onClick={(
             event: React.MouseEvent<HTMLTableRowElement, MouseEvent>
           ) => {
@@ -81,7 +85,7 @@ export const CoinControlComponent = ({
       <RadioGroup
         className="bp3-dark"
         inline={true}
-        label="Strategy"
+        label={t("strategy")}
         name="strategy"
         selectedValue={strategy}
         onChange={(event: React.FormEvent<HTMLInputElement>) => {
@@ -89,8 +93,8 @@ export const CoinControlComponent = ({
           setStrategyCb(target.value);
         }}
       >
-        <Radio label="Default" value="SMALLEST" />
-        <Radio label="Custom" value="CUSTOM" />
+        <Radio label={t("default")} value="SMALLEST" />
+        <Radio label={t("custom")} value="CUSTOM" />
       </RadioGroup>
       <br />
       <div
@@ -101,16 +105,13 @@ export const CoinControlComponent = ({
           overflowY: "auto",
         }}
       >
-        <table
-          className="transactions"
-          style={{ fontFamily: "Courier New", fontWeight: "bold" }}
-        >
+        <table className="transactions">
           <tbody>
             <tr>
               <th></th>
-              <th>Height</th>
-              <th>Commitment</th>
-              <th>Amount</th>
+              <th>{t("height")}</th>
+              <th>{t("commitment")}</th>
+              <th>{t("amount")}</th>
             </tr>
             {listInputs(inputsTable)}
           </tbody>

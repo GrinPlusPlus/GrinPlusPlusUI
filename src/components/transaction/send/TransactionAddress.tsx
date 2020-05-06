@@ -1,5 +1,6 @@
-import React from 'react';
-import { Button, InputGroup } from '@blueprintjs/core';
+import React from "react";
+import { Button, InputGroup } from "@blueprintjs/core";
+import { useTranslation } from "react-i18next";
 
 type TransactionAddressProps = {
   fee: number;
@@ -14,6 +15,8 @@ export const TransactionAddressComponent = ({
   address,
   setAddressCb,
 }: TransactionAddressProps) => {
+  const { t } = useTranslation();
+
   const pasteButton = (
     <Button
       minimal={true}
@@ -29,7 +32,7 @@ export const TransactionAddressComponent = ({
       className="bp3-dark"
       style={{ backgroundColor: "#21242D" }}
       value={address}
-      placeholder="Address"
+      placeholder={t("address")}
       fill={true}
       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
         setAddressCb(e.target.value.trim())
