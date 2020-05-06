@@ -79,7 +79,7 @@ export const OpenWalletComponent = ({
                 waitingResponse ? (
                   <Spinner size={Spinner.SIZE_SMALL} />
                 ) : (
-                    t(`${"open_wallet"}.1`)
+                    t("open_wallet")
                   )
               }
               onClick={loginButtonCb}
