@@ -1,11 +1,12 @@
 import React from "react";
 import { HorizontallyCenter } from "../styled";
+import { getResourcePath } from "../../helpers";
 
 export const LogoComponent = () => {
   return (
     <HorizontallyCenter>
       <img
-        src={require("path").join(__dirname, "./statics/images/grin@2x.png")}
+        src={getResourcePath("./statics/images/grinpp.png")}
         alt=""
         width="60px"
         style={{

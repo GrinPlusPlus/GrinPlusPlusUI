@@ -1,11 +1,12 @@
 import React from "react";
 import { HorizontallyCenter } from "../styled";
+import { getResourcePath } from "../../helpers";
 
 export const GrinPPBannerComponent = () => {
   return (
     <HorizontallyCenter>
       <img
-        src={require("path").join(__dirname, "./statics/images/banner.png")}
+        src={getResourcePath("./statics/images/banner.png")}
         alt=""
         width="350px"
         style={{

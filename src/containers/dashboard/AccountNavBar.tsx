@@ -10,6 +10,7 @@ import {
 } from "@blueprintjs/core";
 import { WalletUsername } from "./../../components/styled";
 import { useHistory } from "react-router-dom";
+import { getResourcePath } from "../../helpers"
 
 export const AccountNavBarContainer = () => {
   let history = useHistory();
@@ -29,7 +30,7 @@ export const AccountNavBarContainer = () => {
           }}
         />
         <img
-          src={require("path").join(__dirname, "/statics/images/grinpp.png")}
+          src={getResourcePath("./statics/images/grinpp.png")}
           alt=""
           style={{
             maxWidth: "35px",
