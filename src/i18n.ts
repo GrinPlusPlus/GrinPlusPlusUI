@@ -4,7 +4,7 @@ import { initReactI18next } from "react-i18next";
 import Backend from "./electron-i18n-backend";
 
 const fallbackLng = ["en"];
-const availableLanguages = ["ch", "de", "en", "es", "pr", "tr"];
+const availableLanguages = ["ch", "de", "en", "es", "pr", "tr", "ru"];
 
 const options = {
   // order and from where user language should be detected

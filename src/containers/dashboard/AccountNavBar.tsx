@@ -10,6 +10,7 @@ import {
 } from "@blueprintjs/core";
 import { WalletUsername } from "./../../components/styled";
 import { useHistory } from "react-router-dom";
+import { LanguageMenuContainer } from "../common/LanguageMenu";
 
 export const AccountNavBarContainer = () => {
   let history = useHistory();
@@ -46,6 +47,8 @@ export const AccountNavBarContainer = () => {
           icon="ip-address"
           onClick={() => history.push("/Status")}
         />
+        <NavbarDivider />
+        <LanguageMenuContainer />
         <NavbarDivider />
         <Button
           minimal={true}

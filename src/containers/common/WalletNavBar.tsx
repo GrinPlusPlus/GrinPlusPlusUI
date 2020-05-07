@@ -9,11 +9,13 @@ import {
 import { useHistory } from "react-router-dom";
 import { useStoreActions } from "../../hooks";
 import { useTranslation } from "react-i18next";
+import { LanguageMenuContainer } from "./LanguageMenu";
 
 export const WalletNavBarContainer = () => {
   const { t } = useTranslation();
 
   let history = useHistory();
+
   const { toggleSettings } = useStoreActions((actions) => actions.ui);
 
   return (
@@ -47,6 +49,8 @@ export const WalletNavBarContainer = () => {
           text={t("restore")}
           onClick={() => history.push("/restore")}
         />
+        <NavbarDivider />
+        <LanguageMenuContainer />
       </NavbarGroup>
     </Navbar>
   );

@@ -10,6 +10,8 @@ import signinModel, { SigninModel } from "./wallet/open";
 import ui, { UIModel } from "./ui";
 import wallet, { WalletModel } from "./wallet";
 import walletSummary, { WalletSummaryModel } from "./wallet/summary";
+import idiom, { IdiomModel } from "./idiom";
+import { persist } from "easy-peasy";
 
 export interface StoreModel {
   settings: SettingsModel;
@@ -24,6 +26,7 @@ export interface StoreModel {
   receiveCoinsModel: ReceiveCoinsModel;
   finalizeModel: FinalizeModel;
   wallet: WalletModel;
+  idiom: IdiomModel;
 }
 
 const model = {
@@ -39,6 +42,7 @@ const model = {
   receiveCoinsModel: receiveCoinsModel,
   finalizeModel: finalizeModel,
   wallet: wallet,
+  idiom: persist(idiom, { storage: "localStorage" }),
 };
 
 export default model;
