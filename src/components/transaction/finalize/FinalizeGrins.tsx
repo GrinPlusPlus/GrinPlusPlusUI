@@ -7,6 +7,7 @@ import {
   FormGroup,
   Intent,
 } from "@blueprintjs/core";
+import { useTranslation } from "react-i18next";
 
 type FinalizeProps = {
   responseFile: File | undefined;
@@ -19,11 +20,13 @@ export const FinalizeComponent = ({
   setFileToFinalizeCb,
   onFinalizeButtonClickedCb,
 }: FinalizeProps) => {
+  const { t } = useTranslation();
+
   return (
     <div>
-      <Title>Finalize</Title>
+      <Title>{t("finalize")}</Title>
       <FormGroup
-        helperText="After receiving the Grins, the recipient will send a transaction response file back to you."
+        helperText={t("finalize_helper")}
         style={{ marginTop: "10px" }}
       >
         <ControlGroup>
@@ -40,9 +43,7 @@ export const FinalizeComponent = ({
             inputProps={{ accept: ".response" }}
             className="bp3-dark"
             fill={true}
-            text={
-              responseFile ? responseFile.name : "Choose the .response file..."
-            }
+            text={responseFile ? responseFile.name : t("choose_response_file")}
             onInputChange={(event: React.SyntheticEvent) => {
               const target = event.target as HTMLInputElement;
               if (target?.files) {

@@ -1,5 +1,6 @@
 import React from "react";
 import { Intent, Toast, Toaster } from "@blueprintjs/core";
+import { useTranslation } from "react-i18next";
 
 export type AlertProps = {
   message: string | undefined;
@@ -7,13 +8,15 @@ export type AlertProps = {
 };
 
 export const AlertComponent = ({ message, setMessage }: AlertProps) => {
+  const { t } = useTranslation();
+
   return (
     <div>
       {message ? (
         <Toaster position="bottom">
           <Toast
             icon="tick-circle"
-            message={message}
+            message={t(message)}
             intent={Intent.SUCCESS}
             onDismiss={() => {
               setMessage(undefined);

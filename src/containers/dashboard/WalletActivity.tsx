@@ -2,8 +2,11 @@ import React, { useCallback } from "react";
 import { WalletActivityComponent } from "../../components/dashboard/WalletActivity";
 import { Alert, Intent, Position, Toaster } from "@blueprintjs/core";
 import { useStoreActions, useStoreState } from "../../hooks";
+import { useTranslation } from "react-i18next";
 
 export const WalletActivitiyContainer = () => {
+  const { t } = useTranslation();
+
   const {
     getAllTransactions,
     getTransactionsReceived,
@@ -88,9 +91,7 @@ export const WalletActivitiyContainer = () => {
         onCancel={() => setSelectedTx(-1)}
         onConfirm={() => onCancelTransactionButtonClicked(selectedTx)}
       >
-        <p>
-          Are you sure you want to <b>cancel</b> this Transaction?
-        </p>
+        <p>{t("cancelation_confirmation")}</p>
       </Alert>
     </div>
   );

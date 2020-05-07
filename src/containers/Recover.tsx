@@ -4,6 +4,7 @@ import { LoadingComponent } from "../components/extras/Loading";
 import { useHistory } from "react-router-dom";
 import { Button } from "@blueprintjs/core";
 import { useStoreActions } from "../hooks";
+import { useTranslation } from "react-i18next";
 
 const LogoComponent = React.lazy(() =>
   import("../components/shared/Logo").then((module) => ({
@@ -32,6 +33,8 @@ const StatusBarContainer = React.lazy(() =>
 const renderLoader = () => <LoadingComponent />;
 
 export const RestoreContainer = () => {
+  const { t } = useTranslation();
+
   const { setInitialValues } = useStoreActions(
     (actions) => actions.createWallet
   );
@@ -55,7 +58,7 @@ export const RestoreContainer = () => {
           <Button
             minimal={true}
             style={{ width: "200px" }}
-            text="Cancel"
+            text={t("cancel")}
             onClick={() => history.push("/login")}
           />
         </HorizontallyCenter>

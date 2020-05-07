@@ -1,15 +1,18 @@
-import React from 'react';
-import { Button, Intent } from '@blueprintjs/core';
-import { Content, Flex } from '../../components/styled';
-import { FinalizeContainer } from './Finalize';
-import { LogsContainer } from './Logs';
-import { ReceiveUsingFileContainer } from './ReceiveUsingFile';
-import { ReceiveUsingListenerContainer } from './ReceiveUsingListener';
-import { useHistory } from 'react-router-dom';
-import { WalletActivitiyContainer } from './WalletActivity';
-import { WalletBalanceContainer } from './WalletBalance';
+import React from "react";
+import { Button, Intent } from "@blueprintjs/core";
+import { Content, Flex } from "../../components/styled";
+import { FinalizeContainer } from "./Finalize";
+import { LogsContainer } from "./Logs";
+import { ReceiveUsingFileContainer } from "./ReceiveUsingFile";
+import { ReceiveUsingListenerContainer } from "./ReceiveUsingListener";
+import { useHistory } from "react-router-dom";
+import { WalletActivitiyContainer } from "./WalletActivity";
+import { WalletBalanceContainer } from "./WalletBalance";
+import { useTranslation } from "react-i18next";
 
 export const DashboardContainer = () => {
+  const { t } = useTranslation();
+
   let history = useHistory();
 
   return (
@@ -33,7 +36,7 @@ export const DashboardContainer = () => {
                 marginTop: "15px",
               }}
               intent={Intent.PRIMARY}
-              text="Send Grins ツ"
+              text={`${t("send_grins")} ツ`}
               onClick={() => history.push("/send")}
             />
           </div>

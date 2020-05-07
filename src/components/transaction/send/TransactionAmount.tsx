@@ -1,6 +1,7 @@
-import React from 'react';
-import { Flex } from '../../styled';
-import { FormGroup, InputGroup } from '@blueprintjs/core';
+import React from "react";
+import { Flex } from "../../styled";
+import { FormGroup, InputGroup } from "@blueprintjs/core";
+import { useTranslation } from "react-i18next";
 
 type TransactionAmountProps = {
   amount: string;
@@ -15,15 +16,17 @@ export const TransactionAmountComponent = ({
   spendable,
   onAmountChangeCb,
 }: TransactionAmountProps) => {
+  const { t } = useTranslation();
+
   return (
     <Flex>
-      <FormGroup label="Amount:" labelFor="amount" inline={true}>
+      <FormGroup label={`${t("amount")} :`} labelFor="amount" inline={true}>
         <InputGroup
           className="bp3-dark"
           data-testid="send-using-file-amount-field"
           id="amount"
           type="number"
-          placeholder="Amount  ツ"
+          placeholder={`${t("amount")} ツ`}
           value={amount}
           disabled={spendable === 0}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,7 +39,7 @@ export const TransactionAmountComponent = ({
         />
       </FormGroup>
       <FormGroup
-        label="Fee:"
+        label={t("fee")}
         labelFor="fee"
         inline={true}
         style={{

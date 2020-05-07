@@ -1,11 +1,6 @@
-import {
-  Action,
-  action,
-  Thunk,
-  thunk
-  } from 'easy-peasy';
-import { Injections } from '../../store';
-import { StoreModel } from '..';
+import { Action, action, Thunk, thunk } from "easy-peasy";
+import { Injections } from "../../store";
+import { StoreModel } from "..";
 
 export interface FinalizeModel {
   responseFile: File | undefined;
@@ -36,14 +31,11 @@ const finalizeModel: FinalizeModel = {
       actions.setResponseFile(undefined);
       const { ownerService, utilsService } = injections;
 
-      getStoreActions().wallet.updateLogs("Trying to finalize Tx...");
-
       // Now we read the file...
       const content = await utilsService.getTextFileContent(payload.file);
 
       if (!content) {
-        getStoreActions().wallet.updateLogs(`Error reading file 😐`);
-        return `Error reading file 😐`;
+        return "error_reading_file";
       }
 
       // Parse the file...
@@ -51,10 +43,7 @@ const finalizeModel: FinalizeModel = {
       try {
         slate = JSON.parse(content);
       } catch (error) {
-        getStoreActions().wallet.updateLogs(
-          `Error parsing file: ${error.message} 😒`
-        );
-        return `Error parsing file: ${error.message} 😒`;
+        return "error_parsing_file";
       }
 
       // Send the file to the node
@@ -74,13 +63,11 @@ const finalizeModel: FinalizeModel = {
 
       // Check the results
       if (typeof response === "string") {
-        getStoreActions().wallet.updateLogs(`${response} 😪`);
-        return `${response} 😪`;
+        return response;
       }
 
       // Alles gut!
-      getStoreActions().wallet.updateLogs(`FINALZED😁👍`);
-      return `FINALZED😁👍`;
+      return "finalized";
     }
   ),
 };

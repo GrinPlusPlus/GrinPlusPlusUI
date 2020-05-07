@@ -1,15 +1,8 @@
-import {
-  Action,
-  action,
-  Computed,
-  computed,
-  Thunk,
-  thunk
-  } from 'easy-peasy';
-import { cleanTxType } from '../../helpers';
-import { Injections } from '../../store';
-import { ITransaction } from '../../interfaces/ITransaction';
-import { StoreModel } from '..';
+import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy";
+import { cleanTxType } from "../../helpers";
+import { Injections } from "../../store";
+import { ITransaction } from "../../interfaces/ITransaction";
+import { StoreModel } from "..";
 
 export interface WalletSummaryModel {
   spendable: number;
@@ -126,14 +119,12 @@ const walletSummary: WalletSummaryModel = {
               (t) => cleanTxType(t.type) === "received"
             ).length;
             if (currentSent !== undefined && newSent > currentSent) {
-              getStoreActions().ui.setAlert(
-                "Last Transaction was Sent successfully! 💸"
-              );
+              getStoreActions().ui.setAlert("last_transaction_sent");
             } else if (
               currentReceived !== undefined &&
               newReceived > currentReceived
             ) {
-              getStoreActions().ui.setAlert("New Transaction Received!💰");
+              getStoreActions().ui.setAlert("new_transaction_received");
             }
           }
 

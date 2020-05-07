@@ -1,6 +1,7 @@
 import React from "react";
 import { WalletSeedInputComponent } from "../../../components/shared/WalletSeedInput";
 import { Button, Callout, Classes, Intent } from "@blueprintjs/core";
+import { useTranslation } from "react-i18next";
 
 type CreateWalletProps = {
   seedsMatched: boolean;
@@ -25,12 +26,10 @@ export const WalletSeedConfirmation = ({
   onWordChangeCb,
   onButtonClickedCb,
 }: CreateWalletProps) => {
+  const { t } = useTranslation();
   return (
     <div className={Classes.DIALOG_BODY}>
-      <Callout intent="none">
-        The below words are needed if you ever need to restore your wallet.
-        Please, write them down and keep them in a safe place.
-      </Callout>{" "}
+      <Callout intent="none">{t("seed_message ")}</Callout>
       <br />
       <div style={{ display: "flex", flexDirection: "row" }}>
         <WalletSeedInputComponent
@@ -52,7 +51,7 @@ export const WalletSeedConfirmation = ({
           disabled={!seedsMatched}
           style={{ color: "black" }}
         >
-          Continue
+          {t("continue")}
         </Button>
       </div>
     </div>

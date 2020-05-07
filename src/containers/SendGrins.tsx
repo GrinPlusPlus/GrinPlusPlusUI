@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 import { LoadingComponent } from "../components/extras/Loading";
 import { Redirect } from "react-router-dom";
 import { useStoreActions, useStoreState } from "../hooks";
+import { useTranslation } from "react-i18next";
 
 const NavBarContainer = React.lazy(() =>
   import("./common/NavigationBar").then((module) => ({
@@ -24,6 +25,7 @@ const StatusBarContainer = React.lazy(() =>
 const renderLoader = () => <LoadingComponent />;
 
 export const SendGrinContainer = () => {
+  const { t } = useTranslation();
   const { isLoggedIn } = useStoreState((state) => state.session);
   const { setInitialValues } = useStoreActions(
     (actions) => actions.sendCoinsModel
@@ -33,7 +35,7 @@ export const SendGrinContainer = () => {
     <Suspense fallback={renderLoader()}>
       {!isLoggedIn ? <Redirect to="/login" /> : null}
       <NavBarContainer
-        title={"Send Grins ツ"}
+        title={`${t("send_grins")} ツ`}
         onExit={() => setInitialValues()}
       />
       <div className="content">

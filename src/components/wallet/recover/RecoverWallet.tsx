@@ -11,6 +11,7 @@ import {
   Radio,
   RadioGroup,
 } from "@blueprintjs/core";
+import { useTranslation } from "react-i18next";
 
 type RecoverWalletProps = {
   username: string;
@@ -39,23 +40,25 @@ export const RecoverWalletComponent = ({
   onWordChangeCb,
   onButtonClickedCb,
 }: RecoverWalletProps) => {
+  const { t } = useTranslation();
+
   return (
     <div data-testid="restore-wallet">
-      <FormGroup label={"Username"}>
+      <FormGroup label={t("username")}>
         <InputGroup
           className="bp3-dark"
           style={{ backgroundColor: "#21242D" }}
           id="restore-wallet-username"
           required={true}
           type="text"
-          placeholder="Username"
+          placeholder={t("username")}
           value={username}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setUsernameCb(e.target.value)
           }
         />
       </FormGroup>
-      <FormGroup label={"Password"}>
+      <FormGroup label={t("password")}>
         <InputPasswordComponent
           password={password}
           autoFocus={false}
@@ -66,7 +69,7 @@ export const RecoverWalletComponent = ({
         <RadioGroup
           inline={true}
           className="bp3-dark"
-          label="Seed"
+          label={t("seed")}
           name="seedLength"
           selectedValue={seedLength}
           onChange={(event: React.FormEvent<HTMLInputElement>) => {
@@ -92,7 +95,7 @@ export const RecoverWalletComponent = ({
       <SubmitButton>
         <Button
           data-testid="restore-wallet-button"
-          text="Restore Wallet"
+          text={t("restore_wallet")}
           intent={Intent.PRIMARY}
           style={{ color: "black", width: "200px" }}
           onClick={onButtonClickedCb}

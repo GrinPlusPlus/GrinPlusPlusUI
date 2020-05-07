@@ -1,6 +1,7 @@
 import React, { useEffect, Suspense } from "react";
 import { Redirect } from "react-router-dom";
 import { useStoreActions, useStoreState } from "../hooks";
+import { useTranslation } from "react-i18next";
 import { LoadingComponent } from "../components/extras/Loading";
 
 const InitComponent = React.lazy(() =>
@@ -12,6 +13,8 @@ const InitComponent = React.lazy(() =>
 const renderLoader = () => <LoadingComponent />;
 
 export const InitializerContainer = () => {
+  const { t } = useTranslation();
+
   const { message, initializingError, isWalletInitialized } = useStoreState(
     (state) => state.wallet
   );
@@ -25,19 +28,20 @@ export const InitializerContainer = () => {
   const { status } = useStoreState((state) => state.nodeSummary);
 
   useEffect(() => {
-    (async function() {
+    (async function () {
       if (!isWalletInitialized) {
         require("electron-log").info("Initializing Backend.");
         await initializeWallet()
-        .then(() => {
-          require("electron-log").info("Backend initialized.");
-        }).catch((error: string) => {
-          setMessage(error);
-          setInitializingError(true);
-          require("electron-log").info(
-            `Error trying to Initialize the Backend: ${error}`
-          );
-        });
+          .then(() => {
+            require("electron-log").info("Backend initialized.");
+          })
+          .catch((error: string) => {
+            setMessage(error);
+            setInitializingError(true);
+            require("electron-log").info(
+              `Error trying to Initialize the Backend: ${error}`
+            );
+          });
       }
     })();
   });
@@ -50,7 +54,7 @@ export const InitializerContainer = () => {
       <InitComponent
         isInitialized={status.toLowerCase() !== "not connected"}
         error={initializingError}
-        message={message}
+        message={message ? t(`${message}`) : ""}
       />
     </Suspense>
   );

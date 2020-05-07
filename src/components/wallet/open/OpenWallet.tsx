@@ -10,6 +10,7 @@ import {
   Text,
   Spinner,
 } from "@blueprintjs/core";
+import { useTranslation } from "react-i18next";
 
 type OpenWalletProps = {
   username: string;
@@ -32,6 +33,7 @@ export const OpenWalletComponent = ({
   waitingResponse,
   connected,
 }: OpenWalletProps) => {
+  const { t } = useTranslation();
   const classes = classNames("bp3-dark", Classes.CARD, Classes.ELEVATION_4);
 
   return (
@@ -56,7 +58,7 @@ export const OpenWalletComponent = ({
         >
           <div style={{ marginBottom: "8px", fontSize: "14px" }}>
             <Text>
-              Password for: <b>{username}</b>
+              {t("password_for")}: <b>{username}</b>
             </Text>
           </div>
           <div style={{ width: "400px" }}>
@@ -77,8 +79,8 @@ export const OpenWalletComponent = ({
                 waitingResponse ? (
                   <Spinner size={Spinner.SIZE_SMALL} />
                 ) : (
-                  " Open Wallet "
-                )
+                    t("open_wallet")
+                  )
               }
               onClick={loginButtonCb}
               disabled={password?.length === 0 || waitingResponse || !connected}

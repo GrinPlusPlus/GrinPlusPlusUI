@@ -2,8 +2,11 @@ import { SettingsContainer } from "./Settings";
 import { Drawer } from "@blueprintjs/core";
 import { useStoreState, useStoreActions } from "../../hooks";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export const WalletDrawer = () => {
+  const { t } = useTranslation();
+
   const { showSettings } = useStoreState((state) => state.ui);
   const { toggleSettings } = useStoreActions((actions) => actions.ui);
 
@@ -16,7 +19,7 @@ export const WalletDrawer = () => {
       onClose={() => {
         toggleSettings();
       }}
-      title="Settings"
+      title={t("settings")}
       isOpen={showSettings}
       size={Drawer.SIZE_SMALL}
       style={{ paddingTop: "32px" }}

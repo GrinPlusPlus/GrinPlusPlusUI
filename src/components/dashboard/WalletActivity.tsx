@@ -3,6 +3,7 @@ import { TransactionsTableComponent } from "../shared/TransactionsTable";
 import { ITransaction } from "../../interfaces/ITransaction";
 import { Tab, Tabs } from "@blueprintjs/core";
 import { Title } from "../styled";
+import { useTranslation } from "react-i18next";
 
 type WalletActivityProps = {
   all: ITransaction[];
@@ -29,9 +30,11 @@ export const WalletActivityComponent = ({
   onCancelTransactionButtonClickedCb,
   onRepostTransactionButtonClickedCb,
 }: WalletActivityProps) => {
+  const { t } = useTranslation();
+
   return (
     <div>
-      <Title>Transactions</Title>
+      <Title>{t("transactions")}</Title>
       <br />
       <Tabs
         animate={false}
@@ -42,7 +45,7 @@ export const WalletActivityComponent = ({
         <Tab
           id="all"
           key="all"
-          title="All"
+          title={t("all")}
           style={{ fontSize: "16px" }}
           panel={
             <TransactionsTableComponent
@@ -62,7 +65,7 @@ export const WalletActivityComponent = ({
         <Tab
           id="received"
           key="received"
-          title="Received"
+          title={t("received")}
           style={{ fontSize: "16px" }}
           panel={
             <TransactionsTableComponent
@@ -81,7 +84,7 @@ export const WalletActivityComponent = ({
         <Tab
           id="sent"
           key="sent"
-          title="Sent"
+          title={t("sent")}
           style={{ fontSize: "16px" }}
           panel={
             <TransactionsTableComponent
@@ -100,7 +103,7 @@ export const WalletActivityComponent = ({
         <Tab
           id="in_progress"
           key="in_progress"
-          title="In Progress"
+          title={t("in_progress")}
           style={{ fontSize: "16px" }}
           panel={
             <TransactionsTableComponent
@@ -119,7 +122,7 @@ export const WalletActivityComponent = ({
         <Tab
           id="cancelled"
           key="cancelled"
-          title="Cancelled"
+          title={t("cancelled")}
           style={{ fontSize: "16px" }}
           panel={
             <TransactionsTableComponent
@@ -138,7 +141,7 @@ export const WalletActivityComponent = ({
         <Tab
           id="coinbase"
           key="coinbase"
-          title="Coinbase"
+          title={t("coinbase")}
           style={{ fontSize: "16px" }}
           panel={
             <TransactionsTableComponent

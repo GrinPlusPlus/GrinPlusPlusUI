@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 import { Alert, Intent } from "@blueprintjs/core";
 import { useHistory } from "react-router-dom";
 import { useStoreState } from "../../hooks";
+import { useTranslation } from "react-i18next";
 
 const StatusBarComponent = React.lazy(() =>
   import("../../components/shared/StatusBar").then((module) => ({
@@ -19,19 +20,18 @@ export const StatusBarContainer = () => {
 
   let history = useHistory();
 
+  const { t } = useTranslation();
+
   return (
     <Suspense fallback={renderLoader()}>
       <Alert
         className="bp3-dark"
-        confirmButtonText="Restart Wallet"
+        confirmButtonText={t("restart_wallet")}
         isOpen={!nodeHealthCheck}
         intent={Intent.WARNING}
         onClose={() => history.push("/")}
       >
-        <p>
-          The Node process is not running. This is unusual, but don't worry, you
-          just need to restart the wallet.
-        </p>
+        <p>{t("node_process_not_running")}</p>
       </Alert>
       <StatusBarComponent
         intent={intent}

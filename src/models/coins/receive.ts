@@ -1,11 +1,6 @@
-import {
-  Action,
-  action,
-  Thunk,
-  thunk
-  } from 'easy-peasy';
-import { Injections } from '../../store';
-import { StoreModel } from '..';
+import { Action, action, Thunk, thunk } from "easy-peasy";
+import { Injections } from "../../store";
+import { StoreModel } from "..";
 
 export interface ReceiveCoinsModel {
   responsesDestination: string | undefined;
@@ -40,7 +35,7 @@ const receiveCoinsModel: ReceiveCoinsModel = {
         // Read the file as Text
         const content = await utilsService.getTextFileContent(file);
         if (!content) {
-          errors.push(`😐 Error reading file (${fileName})`);
+          errors.push("error_reading_file");
           continue;
         } // Exit if the file is empty
 
@@ -49,7 +44,7 @@ const receiveCoinsModel: ReceiveCoinsModel = {
         try {
           slate = JSON.parse(content);
         } catch (error) {
-          errors.push(`😒 Error parsing file (${fileName}): ${error.message}`);
+          errors.push("error_parsing_file");
           continue; //
         }
 
@@ -64,18 +59,15 @@ const receiveCoinsModel: ReceiveCoinsModel = {
           apiSettings.mode
         ).receiveTx(getStoreState().session.token, slate, filePath);
 
-        // We just can continue if there is no error...
+        // Let's make sure there is no error...
         if (typeof response === "string") {
           errors.push(`😪 ${response} (${fileName})`);
           continue;
         } else if (!response) {
-          errors.push(`Unknown error 😪 (${fileName})`);
+          errors.push("unknown_error");
           continue;
         }
         // Alles gut!
-        getStoreActions().wallet.updateLogs(
-          `Response file written: ${filePath}`
-        );
         slates.push([fileName, response]);
       }
       return [errors, slates];
