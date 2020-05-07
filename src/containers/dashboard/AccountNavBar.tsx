@@ -29,7 +29,7 @@ export const AccountNavBarContainer = () => {
           }}
         />
         <img
-          src={require("path").join(__dirname, "./statics/images/grin@2x.png")}
+          src={require("path").join(__dirname, "/statics/images/grinpp.png")}
           alt=""
           style={{
             maxWidth: "35px",
