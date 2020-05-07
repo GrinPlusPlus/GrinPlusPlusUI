@@ -123,9 +123,9 @@ export const TransactionsTableComponent = ({
           <tbody>
             <tr style={{ cursor: "default" }}>
               <th style={{ paddingLeft: "10px" }}></th>
-              <th style={{ paddingLeft: "10px" }}>Amount ツ</th>
-              <th style={{ paddingLeft: "10px" }}>Address</th>
-              <th style={{ paddingLeft: "10px" }}>Date</th>
+              <th style={{ paddingLeft: "10px" }}>{t("amount")} ツ</th>
+              <th style={{ paddingLeft: "10px" }}>{t("address")}</th>
+              <th style={{ paddingLeft: "10px" }}>{t("date")}</th>
             </tr>
             {listTransactions(transactions)}
           </tbody>

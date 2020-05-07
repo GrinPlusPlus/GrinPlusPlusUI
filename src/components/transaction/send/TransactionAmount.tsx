@@ -20,7 +20,7 @@ export const TransactionAmountComponent = ({
 
   return (
     <Flex>
-      <FormGroup label="Amount:" labelFor="amount" inline={true}>
+      <FormGroup label={`${t("amount")} :`} labelFor="amount" inline={true}>
         <InputGroup
           className="bp3-dark"
           data-testid="send-using-file-amount-field"
