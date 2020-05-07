@@ -229,7 +229,6 @@ export const getResourcePath = (relativePath: string): string => {
   if (app.isPackaged) {
     return require("path").join(__dirname, relativePath);
   } else {
-    require('electron-log').info('Returning: ' + relativePath);
     return relativePath;
   }
 }
