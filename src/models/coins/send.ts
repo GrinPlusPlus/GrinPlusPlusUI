@@ -311,9 +311,6 @@ const sendCoinsModel: SendCoinsModel = {
           // Let's clean a bit
           actions.setInitialValues();
 
-          getStoreActions().wallet.updateLogs(
-            `Transaction file written: ${file.filePath}`
-          );
           return true;
         })
         .catch((error) => {
@@ -326,28 +323,18 @@ const sendCoinsModel: SendCoinsModel = {
       actions,
       payload,
       { injections, getStoreState, getStoreActions }
-    ): Promise<boolean | string> => {
+    ): Promise<string> => {
       const { ownerService, utilsService, foreingService } = injections;
       const defaultSettings = getStoreState().settings.defaultSettings;
-      const updateLogs = getStoreActions().wallet.updateLogs;
 
       let destinationAddress = payload.address;
       const type = utilsService.validateAddress(destinationAddress);
       if (!type) {
-        updateLogs(
-          `ERROR: Destination address is invalid (${destinationAddress})`
-        );
-        return `Destination address is invalid`;
+        return "invalid_destination_address";
       }
       if (type === "tor") {
         destinationAddress = utilsService.cleanOnionURL(destinationAddress);
       }
-
-      require("electron-log").info(
-        `Trying to send grins using: ${type} to adress: ${destinationAddress}`
-      );
-
-      updateLogs(`Sending ${payload.amount} ツ to ${destinationAddress} ...`);
 
       // Let's clean a bit
       actions.setInitialValues();
@@ -369,17 +356,14 @@ const sendCoinsModel: SendCoinsModel = {
           destinationAddress
         );
         if (typeof response === "string") {
-          updateLogs(`ERROR: ${response}`);
-          return `ERROR: ${response}`;
+          return response;
         }
-        updateLogs(`${payload.amount} ツ SENT😁👍`);
-        return true;
+        return "sent";
       } else if (type === "http") {
         const address = destinationAddress.replace(/\/?$/, "/");
 
         if (!(await foreingService.RPC.check(address))) {
-          updateLogs(`ERROR: ${address} is not online`);
-          return `ERROR: ${address} is not online`;
+          return "not_online";
         }
         const slate = await new ownerService.RPC(
           defaultSettings.floonet,
@@ -396,10 +380,8 @@ const sendCoinsModel: SendCoinsModel = {
           payload.grinJoinAddress
         );
         if (typeof slate === "string") {
-          updateLogs(`ERROR: ${slate}`);
-          return `ERROR: ${slate}`;
+          return slate;
         }
-        updateLogs(`Sending Slate...`);
         const receivedSlate = await foreingService.RPC.receive(address, slate);
         const finalized = await new ownerService.RPC().finalizeTx(
           payload.token,
@@ -408,14 +390,11 @@ const sendCoinsModel: SendCoinsModel = {
           payload.grinJoinAddress
         );
         if (typeof finalized === "string") {
-          updateLogs(`ERROR: ${finalized}`);
-          return `ERROR: ${finalized}`;
+          return finalized;
         }
-        updateLogs(`${payload.amount} ツ SENT😁👍`);
-        return true;
+        return "sent";
       }
-      updateLogs(`ERROR: Unkown error`);
-      return `ERROR: Unkown error`;
+      return "unkown_error";
     }
   ),
   onStrategyChanged: thunkOn(

@@ -34,6 +34,7 @@ export const SendUsingAddressContainer = () => {
   const { sendUsingListener, setWaitingResponse } = useStoreActions(
     (actions) => actions.sendCoinsModel
   );
+  const { updateLogs } = useStoreActions((actions) => actions.wallet);
 
   const { useGrinJoin, grinJoinAddress } = useStoreState(
     (state) => state.settings
@@ -43,8 +44,9 @@ export const SendUsingAddressContainer = () => {
     if (amount === undefined || amount.slice(-1) === ".") return;
 
     setWaitingResponse(true);
+    updateLogs(`${t("sending")} ${amount} ツ...`);
 
-    let sent: boolean | string = false;
+    let sent: string = "";
 
     try {
       sent = await sendUsingListener({
@@ -64,14 +66,14 @@ export const SendUsingAddressContainer = () => {
         : t("transaction_started");
 
       Toaster.create({ position: Position.BOTTOM }).show({
-        message: sent === true ? alert : sent,
-        intent: sent === true ? Intent.SUCCESS : Intent.DANGER,
-        icon: sent === true ? "tick-circle" : "warning-sign",
+        message: sent === "sent" ? alert : t(sent),
+        intent: sent === "sent" ? Intent.SUCCESS : Intent.DANGER,
+        icon: sent === "sent" ? "tick-circle" : "warning-sign",
       });
     } catch (error) {}
 
     setWaitingResponse(false);
-    if (sent === true) history.push("/wallet");
+    if (sent === "sent") history.push("/wallet");
   }, [
     sendUsingListener,
     amount,
@@ -85,6 +87,7 @@ export const SendUsingAddressContainer = () => {
     history,
     setWaitingResponse,
     t,
+    updateLogs,
   ]);
 
   const classes = classNames("bp3-dark", Classes.CARD, Classes.ELEVATION_4);
