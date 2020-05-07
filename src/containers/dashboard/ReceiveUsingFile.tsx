@@ -27,7 +27,7 @@ export const ReceiveUsingFileContainer = () => {
         }
       });
     },
-    [receiveTx, updateLogs]
+    [receiveTx, updateLogs, t]
   );
 
   return (

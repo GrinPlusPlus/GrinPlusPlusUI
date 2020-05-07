@@ -41,7 +41,7 @@ export const FinalizeContainer = () => {
       });
       updateLogs(t(message));
     });
-  }, [finalizeTx, responseFile, useGrinJoin, grinJoinAddress, updateLogs]);
+  }, [finalizeTx, responseFile, useGrinJoin, grinJoinAddress, updateLogs, t]);
 
   return (
     <FinalizeComponent
