@@ -12,6 +12,7 @@ import wallet, { WalletModel } from "./wallet";
 import walletSummary, { WalletSummaryModel } from "./wallet/summary";
 import idiom, { IdiomModel } from "./idiom";
 import { persist } from "easy-peasy";
+import createElectronStorage from "redux-persist-electron-storage";
 
 export interface StoreModel {
   settings: SettingsModel;
@@ -42,7 +43,7 @@ const model = {
   receiveCoinsModel: receiveCoinsModel,
   finalizeModel: finalizeModel,
   wallet: wallet,
-  idiom: persist(idiom, { storage: "localStorage" }),
+  idiom: persist(idiom, { storage: createElectronStorage() }),
 };
 
 export default model;

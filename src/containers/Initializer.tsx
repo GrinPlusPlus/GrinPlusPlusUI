@@ -13,11 +13,13 @@ const InitComponent = React.lazy(() =>
 const renderLoader = () => <LoadingComponent />;
 
 export const InitializerContainer = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const { message, initializingError, isWalletInitialized } = useStoreState(
     (state) => state.wallet
   );
+
+  const { language } = useStoreState((actions) => actions.idiom);
 
   const {
     initializeWallet,
@@ -28,8 +30,11 @@ export const InitializerContainer = () => {
   const { status } = useStoreState((state) => state.nodeSummary);
 
   useEffect(() => {
-    (async function () {
+    (async function() {
       if (!isWalletInitialized) {
+        require("electron-log").info(`Setting "${language}" as language...`);
+        i18n.changeLanguage(language);
+
         require("electron-log").info("Initializing Backend.");
         await initializeWallet()
           .then(() => {
