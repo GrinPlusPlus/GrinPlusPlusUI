@@ -48,6 +48,5 @@ i18n
 export default i18n;
 
 require("electron-log").info(
-  require("electron").remote.app.getAppPath() +
-    require("path").join(__dirname, "/locales/{{lng}}/{{ns}}.json")
+  require("path").join(__dirname, "/locales/{{lng}}/{{ns}}.json")
 );
