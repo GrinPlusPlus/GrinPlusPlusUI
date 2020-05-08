@@ -22,8 +22,8 @@
         backgroundColor: customTitlebar.Color.fromHex("#010101"),
         maximizable: true,
         menu: null,
-        titleHorizontalAlignment: 'left',
-        icon: 'logo512.png'
+        titleHorizontalAlignment: require('os').platform() === 'darwin' ? 'center' : 'left',
+        icon: 'icon.png'
       });
     </script>
   </body>
