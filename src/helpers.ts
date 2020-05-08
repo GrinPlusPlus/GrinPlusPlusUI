@@ -222,3 +222,13 @@ export const cutAddress = (address: string): string => {
 
   return clean;
 };
+
+export const getResourcePath = (relativePath: string): string => {
+  const electron = require("electron");
+  const app = electron.app || electron.remote.app;
+  if (app.isPackaged) {
+    return require("path").join(__dirname, relativePath);
+  } else {
+    return relativePath;
+  }
+}
