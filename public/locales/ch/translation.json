@@ -1,6 +1,6 @@
 {
-  "address": "Address",
-  "address_helper": "TOR Onion or HTTP/HTTPS URL",
+  "address": "地址",
+  "address_helper": "TOR Onion or HTTP/HTTPS 网址",
   "agent": "Agent",
   "all": "All",
   "amount": "Amount",
