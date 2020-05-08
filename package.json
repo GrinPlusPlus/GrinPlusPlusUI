@@ -109,13 +109,13 @@
       "oneClick": true,
       "createDesktopShortcut": true,
       "deleteAppDataOnUninstall": false,
-      "installerIcon": "./assets/icons/GrinLogo.ico",
-      "uninstallerIcon": "./assets/icons/GrinLogo.ico",
+      "installerIcon": "./assets/icons/256x256.ico",
+      "uninstallerIcon": "./assets/icons/256x256.ico",
       "uninstallDisplayName": "Grin++"
     },
     "win": {
       "target": "nsis",
-      "icon": "./assets/icons/GrinLogo.ico",
+      "icon": "./assets/icons/256x256.ico",
       "publisherName": "Grin++",
       "verifyUpdateCodeSignature": false
     },

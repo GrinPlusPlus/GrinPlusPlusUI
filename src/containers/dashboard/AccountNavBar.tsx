@@ -11,6 +11,7 @@ import {
 import { WalletUsername } from "./../../components/styled";
 import { useHistory } from "react-router-dom";
 import { LanguageMenuContainer } from "../common/LanguageMenu";
+import { getResourcePath } from "../../helpers";
 
 export const AccountNavBarContainer = () => {
   let history = useHistory();
@@ -30,7 +31,7 @@ export const AccountNavBarContainer = () => {
           }}
         />
         <img
-          src={require("path").join(__dirname, "./statics/images/grin@2x.png")}
+          src={getResourcePath("./statics/images/grinpp.png")}
           alt=""
           style={{
             maxWidth: "35px",
