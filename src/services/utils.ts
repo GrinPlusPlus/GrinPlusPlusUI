@@ -45,10 +45,12 @@ export const validateOnion = (url: string): boolean => {
 };
 
 export const validateAddress = (address: string): "http" | "tor" | false => {
+  address = address.replace(/\/$/, "");
   if (validateOnion(address)) {
     if (address.length === 56) return "tor";
-    if (address.indexOf(".onion") === -1) return "http";
-    return "tor";
+    if (address.indexOf(".onion") === address.length - ".onion".length)
+      return "tor";
+    return "http";
   } else if (validateUrl(address)) return "http";
   return false;
 };
