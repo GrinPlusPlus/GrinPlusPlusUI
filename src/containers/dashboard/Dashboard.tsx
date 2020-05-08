@@ -50,7 +50,7 @@ export const DashboardContainer = () => {
         <div style={{ marginTop: "40px" }}>
           <FinalizeContainer />
         </div>
-        <div style={{ marginTop: "40px" }}>
+        <div style={{ marginTop: "30px" }}>
           <LogsContainer />
         </div>
       </div>
