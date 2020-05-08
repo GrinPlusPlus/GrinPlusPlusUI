@@ -43,7 +43,10 @@ const model = {
   receiveCoinsModel: receiveCoinsModel,
   finalizeModel: finalizeModel,
   wallet: wallet,
-  idiom: persist(idiom, { storage: createElectronStorage() }),
+  idiom: persist(idiom, {
+    storage: createElectronStorage(),
+    mergeStrategy: "overwrite",
+  }),
 };
 
 export default model;

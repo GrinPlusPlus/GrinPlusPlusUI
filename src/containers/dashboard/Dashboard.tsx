@@ -31,7 +31,7 @@ export const DashboardContainer = () => {
               large={true}
               style={{
                 color: "black",
-                width: "130px",
+                width: "140px",
                 height: "40px",
                 marginTop: "15px",
               }}
@@ -47,7 +47,7 @@ export const DashboardContainer = () => {
             <ReceiveUsingFileContainer />
           </div>
         </div>
-        <div style={{ marginTop: "40px" }}>
+        <div style={{ marginTop: "30px" }}>
           <FinalizeContainer />
         </div>
         <div style={{ marginTop: "30px" }}>
