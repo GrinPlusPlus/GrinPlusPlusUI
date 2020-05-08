@@ -7,7 +7,7 @@ import "./index.css";
 import "./i18n";
 
 ReactDOM.render(
-    <Suspense fallback={<div>ツ</div>}>
+    <Suspense fallback={<div />}>
         <App />
     </Suspense>,
     document.getElementById("root")
