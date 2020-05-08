@@ -1,7 +1,7 @@
 {
   "name": "GrinPlusPlus",
   "productName": "Grin++",
-  "version": "1.0.0-alpha.4",
+  "version": "1.0.0",
   "description": "Grin++ Wallet",
   "author": "David Burkett & David Tavarez",
   "license": "MIT",
@@ -170,7 +170,7 @@
     "lint": "eslint ./src",
     "lint:fix": "eslint --fix ./src/**/*.{ts,tsx}",
     "postinstall": "electron-builder install-app-deps",
-    "clean_build:win64": "rmdir /s /q node_modules && npm install && npm run build && xcopy src\\electron-starter.js build\\electron-starter.js* && xcopy src\\notarize.js build\\notarize.js*",
+    "clean_build:win": "rmdir /s /q node_modules && npm install && npm run build && xcopy src\\electron-starter.js build\\electron-starter.js* && xcopy src\\notarize.js build\\notarize.js*",
     "clean_build:nix": "rm -rf node_modules/ && npm install && npm run build && cp ./src/electron-starter.js ./build/ && cp ./src/notarize.js ./build/ && cp entitlements.mac.plist ./build/",
     "dist": "./node_modules/.bin/electron-builder build -c.extraMetadata.main=build/electron-starter.js",
     "release": "./node_modules/.bin/electron-builder build -p 'always' -c.extraMetadata.main=build/electron-starter.js",
