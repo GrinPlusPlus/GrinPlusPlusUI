@@ -38,7 +38,7 @@
   "headers": "区块头",
   "height": "区块高度",
   "id": "ID",
-  "immature": "确认未完成",
+  "immature": "确认中",
   "in_progress": "处理中",
   "initializing_node": "节点正在初始化...",
   "last_transaction_sent": "上笔交易已成功发送！💸",
