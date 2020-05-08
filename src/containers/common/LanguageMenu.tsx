@@ -53,7 +53,7 @@ export const LanguageMenuContainer = () => {
           />
           <MenuItem
             icon={language === "tr" ? "tick" : undefined}
-            text="Türk"
+            text="Türkçe"
             onClick={() => changeLanguage("tr")}
           />
         </Menu>
