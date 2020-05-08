@@ -37,11 +37,6 @@ export const LanguageMenuContainer = () => {
             onClick={() => changeLanguage("ru")}
           />
           <MenuItem
-            icon={language === "ch" ? "tick" : undefined}
-            text="中文"
-            onClick={() => changeLanguage("ch")}
-          />
-          <MenuItem
             icon={language === "pr" ? "tick" : undefined}
             text="Português"
             onClick={() => changeLanguage("pr")}
