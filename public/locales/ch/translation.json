@@ -70,7 +70,7 @@
   "response file written": "响应文件已写入",
   "restart": "重启",
   "restart_wallet": "重启钱包",
-  "restart_warning": "修改参数后，新设置会在节点重启后生效",
+  "restart_warning": "修改参数后，重启节点，新设置即会生效",
   "restore": "恢复",
   "restore_wallet": "恢复钱包",
   "resync": "重新同步",
