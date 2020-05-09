@@ -103,5 +103,5 @@
   "username_helper": "此用户名将用以登录此钱包",
   "wallet_seed": "钱包助记词",
   "invalid_destination_address": "目标地址无效",
-  "not_online": "钱包无法连接 ⛔️"
+  "not_online": "无法连接钱包 ⛔️"
 }
