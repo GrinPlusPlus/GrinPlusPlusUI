@@ -53,7 +53,7 @@
   "node": "节点",
   "node_actions": "节点操作",
   "node_data_location": "节点数据位置",
-  "node_is_not_installed": "节点已安装",
+  "node_is_not_installed": "节点未安装",
   "node_is_not_running": "节点未运行",
   "node_process_not_running": "Node 进程未运行。此为意外，请勿担心，重启钱包即可",
   "open_wallet": "打开钱包",
