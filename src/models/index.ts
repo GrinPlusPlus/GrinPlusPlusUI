@@ -11,7 +11,6 @@ import ui, { UIModel } from "./ui";
 import wallet, { WalletModel } from "./wallet";
 import walletSummary, { WalletSummaryModel } from "./wallet/summary";
 import idiom, { IdiomModel } from "./idiom";
-import { persist } from "easy-peasy";
 
 export interface StoreModel {
   settings: SettingsModel;
