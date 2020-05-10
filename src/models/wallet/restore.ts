@@ -79,9 +79,6 @@ const restoreWallet: RestoreWalletModel = {
           getSeedWords(payload.seed)
         )
         .then((response) => {
-          if (typeof response === "string") {
-            throw new Error(response);
-          }
           actions.setUsername("");
           actions.setPassword("");
           actions.setSeed([]);

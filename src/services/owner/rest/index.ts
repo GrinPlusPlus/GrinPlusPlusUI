@@ -1,5 +1,5 @@
-import { BaseApi } from './../../api';
-import { ITransaction } from '../../../interfaces/ITransaction';
+import { BaseApi } from "./../../api";
+import { ITransaction } from "../../../interfaces/ITransaction";
 
 export class OwnerAPI extends BaseApi {
   public get url(): string {
@@ -97,8 +97,12 @@ export class OwnerAPI extends BaseApi {
       { username: username, password: password },
       { wallet_seed: seed }
     ).then((response) => {
-      const data = JSON.parse(response);
-      return { username: username, token: data.session_token };
+      try {
+        const data = JSON.parse(response);
+        return { username: username, token: data.session_token };
+      } catch (e) {
+        throw new Error(response);
+      }
     });
   }
 
@@ -119,16 +123,6 @@ export class OwnerAPI extends BaseApi {
       transaction_id: number;
     }[];
   }> {
-    console.log({
-        amount: amount * Math.pow(10, 9),
-        fee_base: 1000000,
-        selection_strategy: {
-          strategy: strategy,
-          inputs: strategy === "SMALLEST" ? [] : inputs,
-        },
-        message: message,
-      }
-    );
     return await this.makeRESTRequest(
       this.getRequestURL("tx_estimate_fee"),
       "post",

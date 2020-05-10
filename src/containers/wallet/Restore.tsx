@@ -26,15 +26,16 @@ export const RestoreWalletContainer = () => {
   const { status } = useStoreState((state) => state.nodeSummary);
 
   const onButtonClicked = useCallback(async () => {
-    await restore({ username: username, password: password, seed: seed })
-      .then(() => history.push("/wallet"))
-      .catch((error: { message: string }) =>
-        Toaster.create({ position: Position.BOTTOM }).show({
-          message: error.message,
-          intent: Intent.DANGER,
-          icon: "warning-sign",
-        })
-      );
+    try {
+      await restore({ username: username, password: password, seed: seed });
+      history.push("/wallet");
+    } catch (error) {
+      Toaster.create({ position: Position.BOTTOM }).show({
+        message: error.message,
+        intent: Intent.DANGER,
+        icon: "warning-sign",
+      });
+    }
   }, [username, password, seed, restore, history]);
 
   const onWordChange = useCallback(
