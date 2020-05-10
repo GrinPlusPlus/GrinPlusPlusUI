@@ -146,7 +146,38 @@ export const getDefaultSettings = function(
     require("electron").remote.app.getAppPath(),
     file
   );
-  return JSON.parse(require("fs").readFileSync(filePath, "utf8"));
+  const defaults = JSON.parse(require("fs").readFileSync(filePath, "utf8"));
+
+  const fs = require("fs");
+  const data = fs.readFileSync(getConfigFilePath(), "utf8");
+  let node = JSON.parse(data);
+
+  return {
+    ip: defaults.ip,
+    protocol: defaults.protocol,
+    mode: defaults.mode,
+    binaryPath: defaults.binaryPath,
+    floonet: defaults.floonet,
+    minimumPeers:
+      node["P2P"] && node["P2P"]["MIN_PEERS"]
+        ? node["P2P"]["MIN_PEERS"]
+        : defaults.minimumPeers,
+    maximumPeers:
+      node["P2P"] && node["P2P"]["MAX_PEERS"]
+        ? node["P2P"]["MAX_PEERS"]
+        : defaults.maximumPeers,
+    minimumConfirmations:
+      node["WALLET"] && node["WALLET"]["MIN_CONFIRMATIONS"]
+        ? node["WALLET"]["MIN_CONFIRMATIONS"]
+        : defaults.minimumConfirmations,
+    ports: {
+      node: defaults.ports.node,
+      foreignRPC: defaults.ports.foreignRPC,
+      owner: defaults.ports.owner,
+      ownerRPC: defaults.ports.ownerRPC,
+    },
+    grinJoinAddress: defaults.grinJoinAddress,
+  };
 };
 
 export const verifyNodePath = function(

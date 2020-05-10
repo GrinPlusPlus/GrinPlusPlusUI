@@ -1,6 +1,11 @@
-import { Action, action, Thunk, thunk } from "easy-peasy";
-import { Injections } from "../store";
-import { StoreModel } from ".";
+import {
+  Action,
+  action,
+  Thunk,
+  thunk
+  } from 'easy-peasy';
+import { Injections } from '../store';
+import { StoreModel } from '.';
 
 export interface WalletModel {
   isNodeInstalled: boolean;
@@ -154,6 +159,12 @@ const wallet: WalletModel = {
             nodeService.getNodeDataPath(defaultSettings.floonet)
           );
           settingsActions.setGrinJoinAddress(defaultSettings.grinJoinAddress);
+          // Updating store with server_config.json
+          settingsActions.setMaximumPeers(defaultSettings.maximumPeers);
+          settingsActions.setMininumPeers(defaultSettings.minimumPeers);
+          settingsActions.setConfirmations(
+            defaultSettings.minimumConfirmations
+          );
 
           actions.setMessage("");
 
@@ -216,7 +227,13 @@ const wallet: WalletModel = {
           nodeService.getNodeDataPath(defaultSettings.floonet)
         );
         settingsActions.setGrinJoinAddress(defaultSettings.grinJoinAddress);
+        // Updating store with server_config.json
+        settingsActions.setMaximumPeers(defaultSettings.maximumPeers);
+        settingsActions.setMininumPeers(defaultSettings.minimumPeers);
+        settingsActions.setConfirmations(defaultSettings.minimumConfirmations);
+
         actions.setMessage("");
+
         if (!getStoreState().receiveCoinsModel.responsesDestination) {
           getStoreActions().receiveCoinsModel.setResponsesDestination(
             utilsService.getHomePath()
