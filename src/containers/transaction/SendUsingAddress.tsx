@@ -43,36 +43,39 @@ export const SendUsingAddressContainer = () => {
   const onSendButtonClicked = useCallback(async () => {
     if (amount === undefined || amount.slice(-1) === ".") return;
 
+    require("electron-log").info(`Trying to Send ${amount} to ${address}...`);
+
     setWaitingResponse(true);
     updateLogs(`${t("sending")} ${amount} ツ...`);
 
     let sent: string = "";
 
-    try {
-      sent = await sendUsingListener({
-        amount: Number(amount),
-        message: message,
-        address: address,
-        method: useGrinJoin ? "JOIN" : "STEM",
-        grinJoinAddress: grinJoinAddress,
-        inputs: inputs,
-        token: token,
-        strategy: strategy,
-      });
+    sent = await sendUsingListener({
+      amount: Number(amount),
+      message: message,
+      address: address,
+      method: useGrinJoin ? "JOIN" : "STEM",
+      grinJoinAddress: grinJoinAddress,
+      inputs: inputs,
+      token: token,
+      strategy: strategy,
+    });
 
-      const v3 = "[a-z2-7]{56}";
-      const alert = new RegExp(`${v3}`).test(address)
-        ? t("transaction_sent")
-        : t("transaction_started");
+    const v3 = "[a-z2-7]{56}";
+    const alert = new RegExp(`${v3}`).test(address)
+      ? t("transaction_sent")
+      : t("transaction_started");
 
-      Toaster.create({ position: Position.BOTTOM }).show({
-        message: sent === "sent" ? alert : t(sent),
-        intent: sent === "sent" ? Intent.SUCCESS : Intent.DANGER,
-        icon: sent === "sent" ? "tick-circle" : "warning-sign",
-      });
-    } catch (error) {}
+    Toaster.create({ position: Position.BOTTOM }).show({
+      message: sent === "sent" ? alert : t(sent),
+      intent: sent === "sent" ? Intent.SUCCESS : Intent.DANGER,
+      icon: sent === "sent" ? "tick-circle" : "warning-sign",
+    });
 
     setWaitingResponse(false);
+
+    require("electron-log").info(sent);
+
     if (sent === "sent") history.push("/wallet");
   }, [
     sendUsingListener,
