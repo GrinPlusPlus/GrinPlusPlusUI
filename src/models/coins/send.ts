@@ -1,6 +1,6 @@
-import { Injections } from "../../store";
-import { StoreModel } from "..";
-import { validateAddress } from "../../services/utils";
+import { Injections } from '../../store';
+import { StoreModel } from '..';
+import { validateAddress } from '../../services/utils';
 import {
   Action,
   action,
@@ -241,7 +241,7 @@ const sendCoinsModel: SendCoinsModel = {
           actions.setInputsTable(response);
           let commitments: string[] = [];
           response.forEach((input) => {
-            commitments.push(input.commitment);
+            if (input.status.toLowerCase() === "spendable") commitments.push(input.commitment);
           });
           actions.fillInputs(commitments);
           actions.fillOutputs(commitments);
