@@ -67,7 +67,7 @@
   "receive": "Recibir",
   "received": "Recibido",
   "repost_transaction": "Repostear Transacción",
-  "response file written": "Archivo de Respuesta escrito",
+  "response_file_written": "Archivo de Respuesta escrito",
   "restart": "Reiniciar",
   "restart_wallet": "Reiniciar Wallet",
   "restart_warning": "Luego de cambiar estos valores necesitará Reiniciar el Nodo para poder cargar los nuevos ajustes",

@@ -5,7 +5,17 @@ import Backend from "./electron-i18n-backend";
 import { getResourcePath } from "./helpers";
 
 const fallbackLng = ["en"];
-const availableLanguages = ["ch", "de", "en", "es", "pr", "tr", "ru"];
+const availableLanguages = [
+  "ch",
+  "de",
+  "en",
+  "es",
+  "fr",
+  "pl",
+  "pr",
+  "ru",
+  "tr",
+];
 
 const options = {
   // order and from where user language should be detected
@@ -48,6 +58,4 @@ i18n
 
 export default i18n;
 
-require("electron-log").info(
-  getResourcePath("./locales/{{lng}}/{{ns}}.json")
-);
+require("electron-log").info(getResourcePath("./locales/{{lng}}/{{ns}}.json"));

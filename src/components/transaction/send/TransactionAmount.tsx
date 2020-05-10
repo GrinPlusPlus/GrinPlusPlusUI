@@ -39,7 +39,7 @@ export const TransactionAmountComponent = ({
         />
       </FormGroup>
       <FormGroup
-        label={t("fee")}
+        label={`${t("fee")} :`}
         labelFor="fee"
         inline={true}
         style={{

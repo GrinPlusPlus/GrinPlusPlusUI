@@ -1,5 +1,6 @@
-import React from 'react';
-import { Button, Intent } from '@blueprintjs/core';
+import React from "react";
+import { Button, Intent } from "@blueprintjs/core";
+import { useTranslation } from "react-i18next";
 
 export type TansactionDetailsProps = {
   id: number;
@@ -26,6 +27,8 @@ export const TansactionDetailsComponent = ({
   onCancelTransactionButtonClickedCb,
   onRepostTransactionButtonClickedCb,
 }: TansactionDetailsProps) => {
+  const { t } = useTranslation();
+
   return (
     <div
       style={{
@@ -35,43 +38,43 @@ export const TansactionDetailsComponent = ({
       <div className="divTable">
         <div className="divTableBody">
           <div className="divTableRow">
-            <div className="divTableCell">ID</div>
+            <div className="divTableCell">{t("id")}</div>
             <div className="divTableCell">
               <b data-testid="id">{id}</b>
             </div>
           </div>
           <div className="divTableRow">
-            <div className="divTableCell">Address</div>
+            <div className="divTableCell">{t("address")}</div>
             <div className="divTableCell">
               <b data-testid="address">{address}</b>
             </div>
           </div>
           <div className="divTableRow">
-            <div className="divTableCell">Slate</div>
+            <div className="divTableCell">{t("slate")}</div>
             <div className="divTableCell">
               <b data-testid="slate">{slate}</b>
             </div>
           </div>
           <div className="divTableRow">
-            <div className="divTableCell">Type</div>
+            <div className="divTableCell">{t("type")}</div>
             <div className="divTableCell">
               <b data-testid="type">{type}</b>
             </div>
           </div>
           <div className="divTableRow">
-            <div className="divTableCell">Message</div>
+            <div className="divTableCell">{t("message")}</div>
             <div className="divTableCell">
               <b data-testid="message">{message}</b>
             </div>
           </div>
           <div className="divTableRow">
-            <div className="divTableCell">Fee</div>
+            <div className="divTableCell">{t("fee")}</div>
             <div className="divTableCell">
               <b data-testid="fee">{fee}</b>
             </div>
           </div>
           <div className="divTableRow">
-            <div className="divTableCell">Date</div>
+            <div className="divTableCell">{t("date")}</div>
             <div className="divTableCell">
               <b data-testid="date">{date}</b>
             </div>
