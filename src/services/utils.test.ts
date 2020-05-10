@@ -42,6 +42,16 @@ describe("Utils", () => {
     ).toBe(true);
   });
   test("validateAddress()", () => {
+    expect(
+      validateAddress(
+        "http://jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid.onion.com"
+      )
+    ).toBe("http");
+    expect(
+      validateAddress(
+        "http://jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid.onion.com/"
+      )
+    ).toBe("http");
     expect(validateAddress("thisisnotavalidurl")).toBe(false);
     expect(validateAddress("http://duckduckgo.com")).toBe("http");
     expect(

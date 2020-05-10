@@ -327,73 +327,84 @@ const sendCoinsModel: SendCoinsModel = {
       const { ownerService, utilsService, foreingService } = injections;
       const defaultSettings = getStoreState().settings.defaultSettings;
 
-      let destinationAddress = payload.address;
-      const type = utilsService.validateAddress(destinationAddress);
-      if (!type) {
+      let destinationAddress = payload.address.replace(/\/?$/, "/"); //removing trailing /
+      const type = utilsService.validateAddress(destinationAddress); // check if the address is valid
+      if (type === false) {
         return "invalid_destination_address";
-      }
-      if (type === "tor") {
-        destinationAddress = utilsService.cleanOnionURL(destinationAddress);
-      }
-
-      // Let's clean a bit
-      actions.setInitialValues();
-
-      if (type === "tor") {
-        const response = await new ownerService.RPC(
-          defaultSettings.floonet,
-          defaultSettings.protocol,
-          defaultSettings.ip,
-          defaultSettings.mode
-        ).sendCoins(
-          payload.token,
-          payload.amount,
-          payload.message,
-          payload.strategy,
-          payload.inputs,
-          payload.method,
-          payload.grinJoinAddress,
-          destinationAddress
-        );
-        if (typeof response === "string") {
-          return response;
-        }
-        return "sent";
+      } else if (type === "tor") {
+        destinationAddress = utilsService.cleanOnionURL(destinationAddress); // clean the Tor address
       } else if (type === "http") {
-        const address = destinationAddress.replace(/\/?$/, "/");
-
-        if (!(await foreingService.RPC.check(address))) {
+        // Let's try to reach the wallet first
+        try {
+          if (!(await foreingService.RPC.check(destinationAddress))) {
+            return "not_online";
+          }
+        } catch (error) {
           return "not_online";
         }
-        const slate = await new ownerService.RPC(
-          defaultSettings.floonet,
-          defaultSettings.protocol,
-          defaultSettings.ip,
-          defaultSettings.mode
-        ).sendCoins(
-          payload.token,
-          payload.amount,
-          payload.message,
-          payload.strategy,
-          payload.inputs,
-          payload.method,
-          payload.grinJoinAddress
-        );
-        if (typeof slate === "string") {
-          return slate;
-        }
-        const receivedSlate = await foreingService.RPC.receive(address, slate);
-        const finalized = await new ownerService.RPC().finalizeTx(
-          payload.token,
-          receivedSlate,
-          payload.method,
-          payload.grinJoinAddress
-        );
-        if (typeof finalized === "string") {
-          return finalized;
-        }
-        return "sent";
       }
+
+      // We're good to go; Let's clean a bit
+      actions.setInitialValues();
+
+      try {
+        if (type === "tor") {
+          const response = await new ownerService.RPC(
+            defaultSettings.floonet,
+            defaultSettings.protocol,
+            defaultSettings.ip,
+            defaultSettings.mode
+          ).sendCoins(
+            payload.token,
+            payload.amount,
+            payload.message,
+            payload.strategy,
+            payload.inputs,
+            payload.method,
+            payload.grinJoinAddress,
+            destinationAddress
+          );
+          if (typeof response === "string") {
+            return response;
+          }
+          return "sent";
+        } else if (type === "http") {
+          const slate = await new ownerService.RPC(
+            defaultSettings.floonet,
+            defaultSettings.protocol,
+            defaultSettings.ip,
+            defaultSettings.mode
+          ).sendCoins(
+            payload.token,
+            payload.amount,
+            payload.message,
+            payload.strategy,
+            payload.inputs,
+            payload.method,
+            payload.grinJoinAddress
+          );
+          if (typeof slate === "string") {
+            return slate;
+          }
+          const receivedSlate = await foreingService.RPC.receive(
+            destinationAddress,
+            slate
+          );
+          const finalized = await new ownerService.RPC().finalizeTx(
+            payload.token,
+            receivedSlate,
+            payload.method,
+            payload.grinJoinAddress
+          );
+          if (typeof finalized === "string") {
+            return finalized;
+          }
+          return "sent";
+        }
+      } catch (error) {
+        return error;
+      }
+
       return "unkown_error";
     }
   ),
