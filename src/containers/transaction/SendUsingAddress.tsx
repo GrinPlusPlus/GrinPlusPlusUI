@@ -43,36 +43,40 @@ export const SendUsingAddressContainer = () => {
   const onSendButtonClicked = useCallback(async () => {
     if (amount === undefined || amount.slice(-1) === ".") return;
 
-    setWaitingResponse(true);
+    require("electron-log").info(`Trying to Send ${amount} to ${address}...`);
     updateLogs(`${t("sending")} ${amount} ツ...`);
 
-    let sent: string = "";
+    setWaitingResponse(true);
 
-    try {
-      sent = await sendUsingListener({
-        amount: Number(amount),
-        message: message,
-        address: address,
-        method: useGrinJoin ? "JOIN" : "STEM",
-        grinJoinAddress: grinJoinAddress,
-        inputs: inputs,
-        token: token,
-        strategy: strategy,
-      });
+    const sent = await sendUsingListener({
+      amount: Number(amount),
+      message: message,
+      address: address,
+      method: useGrinJoin ? "JOIN" : "STEM",
+      grinJoinAddress: grinJoinAddress,
+      inputs: inputs,
+      token: token,
+      strategy: strategy,
+    });
 
-      const v3 = "[a-z2-7]{56}";
-      const alert = new RegExp(`${v3}`).test(address)
-        ? t("transaction_sent")
-        : t("transaction_started");
+    const v3 = "[a-z2-7]{56}";
+    const alert = new RegExp(`${v3}`).test(address)
+      ? t("transaction_sent")
+      : t("transaction_started");
 
-      Toaster.create({ position: Position.BOTTOM }).show({
-        message: sent === "sent" ? alert : t(sent),
-        intent: sent === "sent" ? Intent.SUCCESS : Intent.DANGER,
-        icon: sent === "sent" ? "tick-circle" : "warning-sign",
-      });
-    } catch (error) {}
+    const toast = sent === "sent" ? alert : t(sent);
+
+    Toaster.create({ position: Position.BOTTOM }).show({
+      message: toast,
+      intent: sent === "sent" ? Intent.SUCCESS : Intent.DANGER,
+      icon: sent === "sent" ? "tick-circle" : "warning-sign",
+    });
 
     setWaitingResponse(false);
+
+    updateLogs(toast);
+    require("electron-log").info(toast);
+
     if (sent === "sent") history.push("/wallet");
   }, [
     sendUsingListener,
