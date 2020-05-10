@@ -327,7 +327,7 @@ const sendCoinsModel: SendCoinsModel = {
       const { ownerService, utilsService, foreingService } = injections;
       const defaultSettings = getStoreState().settings.defaultSettings;
 
-      let destinationAddress = payload.address.replace(/\/?$/, "/"); //removing trailing /
+      let destinationAddress = payload.address.replace(/\/?$/, ""); //removing trailing /
       const type = utilsService.validateAddress(destinationAddress); // check if the address is valid
       if (type === false) {
         return "invalid_destination_address";

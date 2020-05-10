@@ -2,16 +2,16 @@ import { v4 as uuidv4 } from 'uuid';
 
 export class RPC {
   public static async check(address: string): Promise<boolean> {
+    console.log(`${address}/v2/foreign`);
     const request = window.require('request');
     let options = {
       timeout: 10000,
-      url: `${address}v2/foreign`,
+      url: `${address}/v2/foreign`,
       method: 'post',
       body: JSON.stringify({
         jsonrpc: '2.0',
         id: uuidv4(),
-        method: 'receive_tx',
-        params: [null, null, null],
+        method: 'check_version',
       }),
     };
     return new Promise((resolve, reject) => {
@@ -29,7 +29,7 @@ export class RPC {
     const request = window.require('request');
     let options = {
       timeout: 60000,
-      url: `${address}v2/foreign`,
+      url: `${address}/v2/foreign`,
       method: 'post',
       body: JSON.stringify({
         jsonrpc: '2.0',
