@@ -48,9 +48,7 @@ export const SendUsingAddressContainer = () => {
     setWaitingResponse(true);
     updateLogs(`${t("sending")} ${amount} ツ...`);
 
-    let sent: string = "";
-
-    sent = await sendUsingListener({
+    let sent = await sendUsingListener({
       amount: Number(amount),
       message: message,
       address: address,
