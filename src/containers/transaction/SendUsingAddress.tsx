@@ -44,11 +44,11 @@ export const SendUsingAddressContainer = () => {
     if (amount === undefined || amount.slice(-1) === ".") return;
 
     require("electron-log").info(`Trying to Send ${amount} to ${address}...`);
-
-    setWaitingResponse(true);
     updateLogs(`${t("sending")} ${amount} ツ...`);
 
-    let sent = await sendUsingListener({
+    setWaitingResponse(true);
+
+    const sent = await sendUsingListener({
       amount: Number(amount),
       message: message,
       address: address,
@@ -64,15 +64,18 @@ export const SendUsingAddressContainer = () => {
       ? t("transaction_sent")
       : t("transaction_started");
 
+    const toast = sent === "sent" ? alert : t(sent);
+
     Toaster.create({ position: Position.BOTTOM }).show({
-      message: sent === "sent" ? alert : t(sent),
+      message: toast,
       intent: sent === "sent" ? Intent.SUCCESS : Intent.DANGER,
       icon: sent === "sent" ? "tick-circle" : "warning-sign",
     });
 
     setWaitingResponse(false);
 
-    require("electron-log").info(sent);
+    updateLogs(toast);
+    require("electron-log").info(toast);
 
     if (sent === "sent") history.push("/wallet");
   }, [
