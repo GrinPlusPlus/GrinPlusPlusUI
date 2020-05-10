@@ -67,7 +67,7 @@
   "receive": "Receber",
   "received": "Recebido",
   "repost_transaction": "Reposição de Operação",
-  "response file written": "Arquivo de resposta escrito",
+  "response_file_written": "Arquivo de resposta escrito",
   "restart": "Reiniciar",
   "restart_wallet": "Reiniciar Wallet",
   "restart_warning": "Após alterar estes valores você precisará Reiniciar o Nó para carregar as novas configurações",

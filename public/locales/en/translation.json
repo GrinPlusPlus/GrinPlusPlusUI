@@ -67,7 +67,7 @@
   "receive": "Receive",
   "received": "Received",
   "repost_transaction": "Repost Transaction",
-  "response file written": "Response file written",
+  "response_file_written": "Response file written",
   "restart": "Restart",
   "restart_wallet": "Restart Wallet",
   "restart_warning": "After changing these values you will need to Restart the Node in order to load the new settings",

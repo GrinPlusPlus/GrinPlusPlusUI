@@ -67,7 +67,7 @@
   "receive": "Empfangen",
   "received": "Empfangene",
   "repost_transaction": "Transaktion erneut senden",
-  "response file written": "Antwortdatei wurde geschrieben",
+  "response_file_written": "Antwortdatei wurde geschrieben",
   "restart": "... starten",
   "restart_wallet": "Kontosoftware neu starten",
   "restart_warning": "Nachsem Sie diese Werte gespeichert haben, müssen Sie den Grin++ Knoten neu starten, damit diese angewendet werden können.",

@@ -67,7 +67,7 @@
   "receive": "Al",
   "received": "Alındı",
   "repost_transaction": "İşlemi yeniden gönderin",
-  "response file written": "Yanıt dosyası yazıldı",
+  "response_file_written": "Yanıt dosyası yazıldı",
   "restart": "Yeniden Başla",
   "restart_wallet": "Cüzdanı yeniden başlat",
   "restart_warning": "Bu değerleri değiştirdikten sonra, yeni ayarları yüklemek için düğümleri sırasıyla tekrar başlat",
