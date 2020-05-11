@@ -1,6 +1,7 @@
 import React, { Suspense } from "react";
 import { HorizontallyCenter } from "../components/styled";
 import { LoadingComponent } from "../components/extras/Loading";
+import { useTranslation } from "react-i18next";
 
 const LogoComponent = React.lazy(() =>
   import("../components/shared/Logo").then((module) => ({
@@ -29,9 +30,11 @@ const StatusBarContainer = React.lazy(() =>
 const renderLoader = () => <LoadingComponent />;
 
 export const StatusContainer = () => {
+  const { t } = useTranslation();
+
   return (
     <Suspense fallback={renderLoader()}>
-      <NavigationBarContainer title="Connected Peers" />
+      <NavigationBarContainer title={t("connected_peers")} />
       <div className="content">
         <HorizontallyCenter>
           <LogoComponent />
