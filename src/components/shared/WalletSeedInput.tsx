@@ -26,8 +26,10 @@ export const WalletSeedInputComponent = ({
               style={{ margin: "0px 2px 2px 2px" }}
             >
               <InputGroup
-                className="bp3-dark"
-                style={{ backgroundColor: "#21242D" }}
+                style={{
+                  backgroundColor: word.valid ? "#21242D" : "#ff1919",
+                  color: "white",
+                }}
                 id={`${word.position}`}
                 key={`word-${word.position}`}
                 value={word.text}

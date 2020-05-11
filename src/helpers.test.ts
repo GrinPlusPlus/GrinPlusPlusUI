@@ -1,10 +1,5 @@
-import { ISeed } from './interfaces/ISeed';
-import {
-  countDecimals,
-  generateEmptySeed,
-  getSeedWords,
-  hideSeedWords,
-} from "./helpers";
+import { ISeed } from "./interfaces/ISeed";
+import { generateEmptySeed, getSeedWords, hideSeedWords } from "./helpers";
 
 describe("Helpers", () => {
   test("generateEmptySeed", () => {

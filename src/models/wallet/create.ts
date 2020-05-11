@@ -65,15 +65,12 @@ const createWalletModel: CreateWalletModel = {
   }),
   setGeneratedSeed: action((state, seed) => {
     let position: number = 1;
-    let newSeed: {
-      position: number;
-      text: string;
-      disabled: boolean;
-    }[] = seed.map(function(word: string) {
+    let newSeed: ISeed[] = seed.map(function(word: string) {
       return {
         position: position++,
         text: word,
         disabled: true,
+        valid: true,
       };
     });
     state.generatedSeed = newSeed;
@@ -121,6 +118,7 @@ const createWalletModel: CreateWalletModel = {
       const index = payload.position - 1;
       let word = { ...getStoreState().createWallet.hiddenSeed[index] };
       word.text = payload.word;
+      // word.valid = isValidSeedWord(payload.word);
       if (
         getStoreState().createWallet.generatedSeed[index].text === word.text
       ) {

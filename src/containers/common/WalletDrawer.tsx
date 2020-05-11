@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 export const WalletDrawer = () => {
   const { t } = useTranslation();
 
+  const { isLoggedIn } = useStoreState((state) => state.session);
   const { showSettings } = useStoreState((state) => state.ui);
   const { toggleSettings } = useStoreActions((actions) => actions.ui);
 
@@ -14,7 +15,7 @@ export const WalletDrawer = () => {
     <Drawer
       className="bp3-dark"
       transitionDuration={0}
-      position="left"
+      position={isLoggedIn ? "right" : "left"}
       icon="cog"
       onClose={() => {
         toggleSettings();

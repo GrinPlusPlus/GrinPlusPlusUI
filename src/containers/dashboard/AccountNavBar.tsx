@@ -23,13 +23,6 @@ export const AccountNavBarContainer = () => {
   return (
     <Navbar>
       <NavbarGroup align={Alignment.LEFT}>
-        <Button
-          minimal={true}
-          icon="cog"
-          onClick={() => {
-            toggleSettings();
-          }}
-        />
         <img
           src={getResourcePath("./statics/images/grinpp.png")}
           alt=""
@@ -50,6 +43,14 @@ export const AccountNavBarContainer = () => {
         />
         <NavbarDivider />
         <LanguageMenuContainer />
+        <NavbarDivider />
+        <Button
+          minimal={true}
+          icon="cog"
+          onClick={() => {
+            toggleSettings();
+          }}
+        />
         <NavbarDivider />
         <Button
           minimal={true}

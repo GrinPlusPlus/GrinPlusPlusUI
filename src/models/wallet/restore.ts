@@ -1,5 +1,9 @@
 import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy";
-import { generateEmptySeed, getSeedWords } from "../../helpers";
+import {
+  generateEmptySeed,
+  getSeedWords,
+  isValidSeedWord,
+} from "../../helpers";
 import { Injections } from "../../store";
 import { ISeed } from "../../interfaces/ISeed";
 import { StoreModel } from "..";
@@ -52,6 +56,7 @@ const restoreWallet: RestoreWalletModel = {
   }),
   setSeedWord: action((state, payload) => {
     state.seed[payload.position].text = payload.word;
+    state.seed[payload.position].valid = isValidSeedWord(payload.word);
   }),
   setSeedLength: action((state, length) => {
     state.seedLength = length.toString();

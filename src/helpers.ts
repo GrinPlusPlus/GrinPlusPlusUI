@@ -1,9 +1,10 @@
-import { formatDistanceToNow } from 'date-fns';
-import { Intent } from '@blueprintjs/core';
-import { ISeed } from './interfaces/ISeed';
-import { useEffect, useRef } from 'react';
+import { formatDistanceToNow } from "date-fns";
+import { Intent } from "@blueprintjs/core";
+import { ISeed } from "./interfaces/ISeed";
+import { useEffect, useRef } from "react";
+import { wordlist } from "./seed";
 
-export const getPercentage = function (
+export const getPercentage = function(
   numerator?: number,
   denominator?: number
 ) {
@@ -16,7 +17,7 @@ export const getPercentage = function (
   }
 };
 
-export const getBlockPercentage = function (
+export const getBlockPercentage = function(
   blockHeight?: number,
   headerHeight?: number
 ) {
@@ -36,7 +37,7 @@ export const getBlockPercentage = function (
   return 100 - remaining;
 };
 
-export const getStateText = function (
+export const getStateText = function(
   state: string,
   headerHeight?: number,
   networkHeight?: number,
@@ -70,7 +71,7 @@ export const getStateText = function (
   }
 };
 
-export const getStateColor = function (state: string): string {
+export const getStateColor = function(state: string): string {
   if (!state) return Intent.DANGER;
   if (state.startsWith("SYNCING") || state.endsWith("TXHASHSET")) {
     return Intent.WARNING;
@@ -80,7 +81,7 @@ export const getStateColor = function (state: string): string {
   return Intent.WARNING;
 };
 
-export const generateEmptySeed = function (): ISeed[] {
+export const generateEmptySeed = function(): ISeed[] {
   const seed = new Array<ISeed>();
   let i = 1;
   do {
@@ -88,12 +89,13 @@ export const generateEmptySeed = function (): ISeed[] {
       position: i++,
       text: "",
       disabled: false,
+      valid: true,
     });
   } while (i <= 24);
   return seed;
 };
 
-export const getSeedWords = function (seed: ISeed[]): string {
+export const getSeedWords = function(seed: ISeed[]): string {
   let words: string = "";
   seed.forEach((element) => {
     if (element.text.length > 0) {
@@ -103,7 +105,7 @@ export const getSeedWords = function (seed: ISeed[]): string {
   return words.trim();
 };
 
-export const hideSeedWords = function (payload: {
+export const hideSeedWords = function(payload: {
   seed: ISeed[];
   words: number;
 }): ISeed[] {
@@ -121,7 +123,7 @@ export const hideSeedWords = function (payload: {
   return newSeed;
 };
 
-export const getDateAsString = function (date: Date): string {
+export const getDateAsString = function(date: Date): string {
   // let oneDayAgo = new Date().getTime() - (1 * 24 * 60 * 60 * 1000);
   // if (date.getTime() > oneDayAgo) {
   //   return formatDistanceToNow(
@@ -134,7 +136,7 @@ export const getDateAsString = function (date: Date): string {
   return formatDistanceToNow(date, { includeSeconds: true, addSuffix: true });
 };
 
-export const getTxIcon = function (type: string): any {
+export const getTxIcon = function(type: string): any {
   if (type.indexOf("sent") > -1) {
     return "arrow-top-right";
   } else if (type.indexOf("received") > -1 || type.indexOf("coinbase") > -1) {
@@ -149,7 +151,7 @@ export const getTxIcon = function (type: string): any {
   return "dot";
 };
 
-export const getTxIntent = function (type: string): any {
+export const getTxIntent = function(type: string): any {
   if (type.indexOf("sent") > -1) {
     return Intent.PRIMARY;
   } else if (type.indexOf("received") > -1 || type.indexOf("coinbase") > -1) {
@@ -164,7 +166,7 @@ export const getTxIntent = function (type: string): any {
   return Intent.NONE;
 };
 
-export const cleanTxType = function (type: string): string {
+export const cleanTxType = function(type: string): string {
   return type
     .toLowerCase()
     .split(" ")
@@ -175,7 +177,7 @@ export const cleanTxType = function (type: string): string {
     .join("");
 };
 
-export const useInterval = function (callback: any, delay: number) {
+export const useInterval = function(callback: any, delay: number) {
   const savedCallback = useRef(callback);
 
   // Remember the latest function.
@@ -231,4 +233,8 @@ export const getResourcePath = (relativePath: string): string => {
   } else {
     return relativePath;
   }
-}
+};
+
+export const isValidSeedWord = (word: string): boolean => {
+  return wordlist.includes(word);
+};

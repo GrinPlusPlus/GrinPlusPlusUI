@@ -37,9 +37,6 @@ export const StatusContainer = () => {
       <NavigationBarContainer title={t("connected_peers")} />
       <div className="content">
         <HorizontallyCenter>
-          <LogoComponent />
-        </HorizontallyCenter>
-        <HorizontallyCenter>
           <NodeCheckContainer />
         </HorizontallyCenter>
       </div>
