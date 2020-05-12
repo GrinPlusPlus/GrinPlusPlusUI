@@ -11,7 +11,18 @@ export const LanguageMenuContainer = () => {
 
   const changeLanguage = useCallback(
     (
-      lng: "ch" | "de" | "en" | "es" | "fr" | "pl" | "pr" | "ru" | "tr" | "ua"
+      lng:
+        | "ch"
+        | "de"
+        | "en"
+        | "es"
+        | "fa"
+        | "fr"
+        | "pl"
+        | "pr"
+        | "ru"
+        | "tr"
+        | "ua"
     ) => {
       i18n.changeLanguage(lng);
       setLanguage(lng);
@@ -42,6 +53,11 @@ export const LanguageMenuContainer = () => {
             icon={language === "es" ? "tick" : undefined}
             text="Español"
             onClick={() => changeLanguage("es")}
+          />
+          <MenuItem
+            icon={language === "fa" ? "tick" : undefined}
+            text="فارسی"
+            onClick={() => changeLanguage("fa")}
           />
           <MenuItem
             icon={language === "fr" ? "tick" : undefined}
