@@ -27,8 +27,8 @@ export const Flex = styled.section`
 export const LogsBox = styled.section`
   font-size: 13px;
   width: 100%;
-  min-height: 160px;
-  max-height: 160px;
+  min-height: 175px;
+  max-height: 175px;
   background-color: #171920;
   overflow-y: auto;
   margin-top: 10px;

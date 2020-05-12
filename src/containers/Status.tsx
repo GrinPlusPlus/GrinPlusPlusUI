@@ -1,13 +1,7 @@
-import React, { Suspense } from "react";
-import { HorizontallyCenter } from "../components/styled";
-import { LoadingComponent } from "../components/extras/Loading";
-import { useTranslation } from "react-i18next";
-
-const LogoComponent = React.lazy(() =>
-  import("../components/shared/Logo").then((module) => ({
-    default: module.LogoComponent,
-  }))
-);
+import React, { Suspense } from 'react';
+import { HorizontallyCenter } from '../components/styled';
+import { LoadingComponent } from '../components/extras/Loading';
+import { useTranslation } from 'react-i18next';
 
 const NavigationBarContainer = React.lazy(() =>
   import("./common/NavigationBar").then((module) => ({

@@ -1,4 +1,8 @@
-import React from "react";
+import React from 'react';
+import { Icon, Text } from '@blueprintjs/core';
+import { ITransaction } from '../../interfaces/ITransaction';
+import { TansactionDetailsComponent } from '../transaction/Details';
+import { useTranslation } from 'react-i18next';
 import {
   cleanTxType,
   cutAddress,
@@ -6,10 +10,6 @@ import {
   getTxIcon,
   getTxIntent,
 } from "../../helpers";
-import { Icon, Text } from "@blueprintjs/core";
-import { ITransaction } from "../../interfaces/ITransaction";
-import { TansactionDetailsComponent } from "../transaction/Details";
-import { useTranslation } from "react-i18next";
 
 type TransactionsTableProps = {
   transactions: ITransaction[];
@@ -109,13 +109,7 @@ export const TransactionsTableComponent = ({
   };
 
   return (
-    <div
-      style={{
-        width: "100%",
-        maxHeight: "555px",
-        overflowY: "auto",
-      }}
-    >
+    <div style={{ height: "calc(100vh - 235px)", overflowY: "auto"}} >
       {transactions.length === 0 ? (
         <Text>{t("no_transactions")}.</Text>
       ) : (

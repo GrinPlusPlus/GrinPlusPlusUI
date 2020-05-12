@@ -1,9 +1,9 @@
-import React from "react";
-import { TransactionsTableComponent } from "../shared/TransactionsTable";
-import { ITransaction } from "../../interfaces/ITransaction";
-import { Tab, Tabs } from "@blueprintjs/core";
-import { Title } from "../styled";
-import { useTranslation } from "react-i18next";
+import React from 'react';
+import { ITransaction } from '../../interfaces/ITransaction';
+import { Tab, Tabs } from '@blueprintjs/core';
+import { Title } from '../styled';
+import { TransactionsTableComponent } from '../shared/TransactionsTable';
+import { useTranslation } from 'react-i18next';
 
 type WalletActivityProps = {
   all: ITransaction[];

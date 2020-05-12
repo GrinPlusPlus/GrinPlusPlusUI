@@ -14,7 +14,7 @@ $pt-dark-popover-box-shadow: $pt-intent-primary;
   display: block;
   margin-left: auto;
   margin-right: auto;
-  height: 86.5vh !important;
+  max-height: calc(100vh - 105px) !important;
   width: 95%;
 }
 
