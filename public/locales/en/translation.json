@@ -5,6 +5,7 @@
   "all": "All",
   "amount": "Amount",
   "blocks": "Blocks",
+  "browse": "Browse",
   "cancel": "Cancel",
   "cancel_transaction": "Cancel Transaction",
   "cancelation_confirmation": "Are you sure you want to cancel this Transaction?",

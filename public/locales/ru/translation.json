@@ -5,6 +5,7 @@
   "all": "Все",
   "amount": "Количество",
   "blocks": "Blocks",
+  "browse": "выбрать",
   "cancel": "Отмена",
   "cancel_transaction": "Отмена транзакции",
   "cancelation_confirmation": "Вы уверены, что хотите отменить эту транзакцию?",

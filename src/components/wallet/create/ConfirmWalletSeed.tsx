@@ -29,7 +29,7 @@ export const WalletSeedConfirmation = ({
   const { t } = useTranslation();
   return (
     <div className={Classes.DIALOG_BODY}>
-      <Callout intent="none">{t("seed_message ")}</Callout>
+      <Callout intent="none">{t("seed_message")}</Callout>
       <br />
       <div style={{ display: "flex", flexDirection: "row" }}>
         <WalletSeedInputComponent

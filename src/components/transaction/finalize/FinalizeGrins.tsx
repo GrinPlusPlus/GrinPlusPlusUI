@@ -37,9 +37,10 @@ export const FinalizeComponent = ({
             disabled={!responseFile}
             onClick={onFinalizeButtonClickedCb}
           >
-            Process
+            {t("process")}
           </Button>
           <FileInput
+            buttonText={t("browse")}
             inputProps={{ accept: ".response" }}
             className="bp3-dark"
             fill={true}

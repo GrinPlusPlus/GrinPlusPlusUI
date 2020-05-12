@@ -5,6 +5,7 @@
   "all": "^Todos",
   "amount": "Quantia",
   "blocks": "Blocos",
+  "browse": "Escolha",
   "cancel": "Cancelar",
   "cancel_transaction": "Cancelar Transação",
   "cancelation_confirmation": "Você tem certeza que quer cancelar esta Transação?",
