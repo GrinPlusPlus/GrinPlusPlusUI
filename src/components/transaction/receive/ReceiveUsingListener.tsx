@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Intent } from "@blueprintjs/core";
+import { HorizontallyCenter } from "../../styled";
 
 type ReceiveUsingListenerProps = {
   address: string;
@@ -12,8 +13,8 @@ export const ReceiveUsingListenerComponent = ({
   shortenHttpAddress,
 }: ReceiveUsingListenerProps) => {
   return (
-    <div>
-      <div style={{ marginTop: "15px" }}>
+    <div style={{ marginTop: "15px" }}>
+      <HorizontallyCenter>
         <Button
           className="bp3-dark"
           intent={Intent.SUCCESS}
@@ -22,8 +23,8 @@ export const ReceiveUsingListenerComponent = ({
           text={address}
           onClick={() => navigator.clipboard.writeText(address)}
         />
-      </div>
-      <div>
+      </HorizontallyCenter>
+      <HorizontallyCenter>
         <Button
           className="bp3-dark"
           intent={Intent.NONE}
@@ -32,7 +33,7 @@ export const ReceiveUsingListenerComponent = ({
           text={shortenHttpAddress}
           onClick={() => navigator.clipboard.writeText(httpAddress)}
         />
-      </div>
+      </HorizontallyCenter>
     </div>
   );
 };
