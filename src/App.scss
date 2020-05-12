@@ -14,8 +14,9 @@ $pt-dark-popover-box-shadow: $pt-intent-primary;
   display: block;
   margin-left: auto;
   margin-right: auto;
-  max-height: calc(100vh - 105px) !important;
+  max-height: calc(100vh - 115px) !important;
   width: 95%;
+  background-color: #000000;
 }
 
 .footer {
