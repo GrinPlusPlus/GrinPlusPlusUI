@@ -2,10 +2,10 @@ import { Action, action } from "easy-peasy";
 import ElectronStore from "electron-store";
 
 export interface IdiomModel {
-  language: "ch" | "de" | "en" | "es" | "fr" | "pl" | "pr" | "ru" | "tr";
+  language: "ch" | "de" | "en" | "es" | "fr" | "pl" | "pr" | "ru" | "tr" | "ua";
   setLanguage: Action<
     IdiomModel,
-    "ch" | "de" | "en" | "es" | "fr" | "pl" | "pr" | "ru" | "tr"
+    "ch" | "de" | "en" | "es" | "fr" | "pl" | "pr" | "ru" | "tr" | "ua"
   >;
 }
 

@@ -10,7 +10,9 @@ export const LanguageMenuContainer = () => {
   const { setLanguage } = useStoreActions((actions) => actions.idiom);
 
   const changeLanguage = useCallback(
-    (lng: "ch" | "de" | "en" | "es" | "fr" | "pl" | "pr" | "ru" | "tr") => {
+    (
+      lng: "ch" | "de" | "en" | "es" | "fr" | "pl" | "pr" | "ru" | "tr" | "ua"
+    ) => {
       i18n.changeLanguage(lng);
       setLanguage(lng);
     },
@@ -65,6 +67,11 @@ export const LanguageMenuContainer = () => {
             icon={language === "tr" ? "tick" : undefined}
             text="Türkçe"
             onClick={() => changeLanguage("tr")}
+          />
+          <MenuItem
+            icon={language === "ua" ? "tick" : undefined}
+            text="Україна"
+            onClick={() => changeLanguage("ua")}
           />
         </Menu>
       }

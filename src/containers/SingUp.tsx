@@ -44,7 +44,7 @@ export const SignUpContainer = () => {
   return (
     <Suspense fallback={renderLoader()}>
       <NavigationBarContainer
-        title="Create Wallet"
+        title={t("create_wallet")}
         onExit={() => setInitialValues()}
       />
       <div className="content">

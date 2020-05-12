@@ -1,14 +1,14 @@
-import React from 'react';
-import { Button, Intent } from '@blueprintjs/core';
-import { Content, Flex } from '../../components/styled';
-import { FinalizeContainer } from './Finalize';
-import { LogsContainer } from './Logs';
-import { ReceiveUsingFileContainer } from './ReceiveUsingFile';
-import { ReceiveUsingListenerContainer } from './ReceiveUsingListener';
-import { useHistory } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { WalletActivitiyContainer } from './WalletActivity';
-import { WalletBalanceContainer } from './WalletBalance';
+import React from "react";
+import { Button, Intent } from "@blueprintjs/core";
+import { Content, Flex } from "../../components/styled";
+import { FinalizeContainer } from "./Finalize";
+import { LogsContainer } from "./Logs";
+import { ReceiveUsingFileContainer } from "./ReceiveUsingFile";
+import { ReceiveUsingListenerContainer } from "./ReceiveUsingListener";
+import { useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { WalletActivitiyContainer } from "./WalletActivity";
+import { WalletBalanceContainer } from "./WalletBalance";
 
 export const DashboardContainer = () => {
   const { t } = useTranslation();
@@ -31,7 +31,6 @@ export const DashboardContainer = () => {
               large={true}
               style={{
                 color: "black",
-                width: "140px",
                 height: "40px",
                 marginTop: "15px",
               }}
