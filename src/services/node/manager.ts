@@ -148,9 +148,12 @@ export const getDefaultSettings = function(
   );
   const defaults = JSON.parse(require("fs").readFileSync(filePath, "utf8"));
 
-  const fs = require("fs");
-  const data = fs.readFileSync(getConfigFilePath(), "utf8");
-  let node = JSON.parse(data);
+  let node: any = {};
+  if (require("fs").existsSync(getConfigFilePath())) {
+    const fs = require("fs");
+    const data = fs.readFileSync(getConfigFilePath(), "utf8");
+    node = JSON.parse(data);
+  }
 
   return {
     ip: defaults.ip,
