@@ -66,6 +66,7 @@ export const SettingsContainer = () => {
   }, [restartNode]);
 
   const backupSeed = useCallback(async () => {
+    if (username === undefined || password === undefined) return;
     setWaitingResponse(true);
     try {
       const seed: string[] = await getWalletSeed({
@@ -121,9 +122,9 @@ export const SettingsContainer = () => {
       />
       {isLoggedIn ? (
         <PasswordPromptComponent
-          isOpen={username?.length > 0}
-          username={username}
-          password={password}
+          isOpen={username && username.length > 0 ? true : false}
+          username={username ? username : ""}
+          password={password ? password : ""}
           passwordCb={(value: string) => setPassword(value)}
           onCloseCb={() => {}}
           waitingResponse={waitingResponse}
@@ -137,7 +138,16 @@ export const SettingsContainer = () => {
           className="bp3-dark"
           canEscapeKeyCancel={true}
           canOutsideClickCancel={true}
-          onConfirm={() => setSeed(undefined)}
+          onConfirm={() => {
+            setSeed(undefined);
+            setUsername(undefined);
+            setPassword(undefined);
+          }}
+          onCancel={() => {
+            setSeed(undefined);
+            setUsername(undefined);
+            setPassword(undefined);
+          }}
           isOpen={seed !== undefined}
           style={{ backgroundColor: "#050505" }}
         >

@@ -1,17 +1,17 @@
 import { Action, action } from "easy-peasy";
 
 export interface PasswordPromptModel {
-  username: string;
-  password: string;
+  username: string | undefined;
+  password: string | undefined;
   waitingResponse: boolean;
-  setUsername: Action<PasswordPromptModel, string>;
-  setPassword: Action<PasswordPromptModel, string>;
+  setUsername: Action<PasswordPromptModel, string | undefined>;
+  setPassword: Action<PasswordPromptModel, string | undefined>;
   setWaitingResponse: Action<PasswordPromptModel, boolean>;
 }
 
 const prompt: PasswordPromptModel = {
-  username: "",
-  password: "",
+  username: undefined,
+  password: undefined,
   waitingResponse: false,
   setUsername: action((state, username) => {
     state.username = username;
