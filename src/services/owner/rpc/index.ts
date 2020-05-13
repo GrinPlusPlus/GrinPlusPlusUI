@@ -1,4 +1,4 @@
-import { BaseApi } from '../../api';
+import { BaseApi } from "../../api";
 
 export class OwnerRPCApi extends BaseApi {
   public get url(): string {
@@ -154,5 +154,23 @@ export class OwnerRPCApi extends BaseApi {
     }).then((response) =>
       response.error ? response.error.message : response.result.session_token
     );
+  }
+
+  public async getSeed(
+    username: string,
+    password: string
+  ): Promise<string | string[]> {
+    return await this.makeRPCRequest(
+      this.getRequestURL("get_seed"),
+      "get_wallet_seed",
+      {
+        username: username,
+        password: password,
+      }
+    ).then((response) => {
+      require("electron-log").info(response);
+      if (response.error) throw new Error(response.error.message);
+      return response.result.wallet_seed.split(" ");
+    });
   }
 }

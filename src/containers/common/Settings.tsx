@@ -1,8 +1,15 @@
 import React, { useCallback } from "react";
 import { SettingsComponent } from "../../components/extras/Settings";
 import { useStoreActions, useStoreState } from "../../hooks";
+import { PasswordPromptComponent } from "../../components/wallet/open/PasswordPrompt";
+import { useTranslation } from "react-i18next";
+import { Toaster, Position, Intent, Alert } from "@blueprintjs/core";
+import { WalletSeedInputComponent } from "../../components/shared/WalletSeedInput";
+import { ISeed } from "../../interfaces/ISeed";
 
 export const SettingsContainer = () => {
+  const { t } = useTranslation();
+
   const {
     mininumPeers,
     maximumPeers,
@@ -15,8 +22,17 @@ export const SettingsContainer = () => {
   } = useStoreState((state) => state.settings);
   const { status } = useStoreState((state) => state.nodeSummary);
   const { floonet } = useStoreState((state) => state.settings.defaultSettings);
-  const { isNodeRunning } = useStoreState((state) => state.wallet);
+  const { isLoggedIn, username: sessionUsername, seed } = useStoreState(
+    (state) => state.session
+  );
+  const { username, password, waitingResponse } = useStoreState(
+    (state) => state.passwordPrompt
+  );
 
+  const { setUsername, setPassword, setWaitingResponse } = useStoreActions(
+    (state) => state.passwordPrompt
+  );
+  const { getWalletSeed, setSeed } = useStoreActions((state) => state.session);
   const {
     setMininumPeers,
     setMaximumPeers,
@@ -49,27 +65,89 @@ export const SettingsContainer = () => {
     restartNode();
   }, [restartNode]);
 
+  const backupSeed = useCallback(async () => {
+    setWaitingResponse(true);
+    try {
+      const seed: string[] = await getWalletSeed({
+        username: username,
+        password: password,
+      });
+      if (seed !== undefined && seed.length > 0) {
+        let _seed: ISeed[] = [];
+        for (let index = 0; index < seed.length; index++) {
+          const word = seed[index];
+          _seed.push({
+            position: index + 1,
+            text: word,
+            disabled: true,
+            valid: true,
+          });
+        }
+        setSeed(_seed);
+      }
+    } catch (error) {
+      Toaster.create({ position: Position.BOTTOM }).show({
+        message: error.message,
+        intent: Intent.DANGER,
+        icon: "warning-sign",
+      });
+    }
+    setWaitingResponse(false);
+  }, [getWalletSeed, username, password, setSeed]);
+
   return (
-    <SettingsComponent
-      status={status}
-      floonet={floonet}
-      useGrinJoin={useGrinJoin}
-      grinJoinAddress={grinJoinAddress}
-      mininumPeers={mininumPeers}
-      maximumPeers={maximumPeers}
-      confirmations={confirmations}
-      nodeDataPath={nodeDataPath}
-      nodeBinaryPath={nodeBinaryPath}
-      isNodeRunning={isNodeRunning}
-      isConfirmationDialogOpen={isConfirmationDialogOpen}
-      setGrinJoinUseCb={setGrinJoinUse}
-      setGrinJoinAddressCb={setGrinJoinAddress}
-      setMininumPeersCb={setMininumPeers}
-      setMaximumPeersCb={setMaximumPeers}
-      setConfirmationsCb={setConfirmations}
-      toggleConfirmationDialogCb={toggleDialog}
-      confirmReSyncBlockchainCb={confirmReSyncBlockchain}
-      restartNodeCb={restartGrinNode}
-    />
+    <div>
+      <SettingsComponent
+        status={status}
+        floonet={floonet}
+        useGrinJoin={useGrinJoin}
+        grinJoinAddress={grinJoinAddress}
+        mininumPeers={mininumPeers}
+        maximumPeers={maximumPeers}
+        confirmations={confirmations}
+        nodeDataPath={nodeDataPath}
+        nodeBinaryPath={nodeBinaryPath}
+        isConfirmationDialogOpen={isConfirmationDialogOpen}
+        setGrinJoinUseCb={setGrinJoinUse}
+        setGrinJoinAddressCb={setGrinJoinAddress}
+        setMininumPeersCb={setMininumPeers}
+        setMaximumPeersCb={setMaximumPeers}
+        setConfirmationsCb={setConfirmations}
+        toggleConfirmationDialogCb={toggleDialog}
+        confirmReSyncBlockchainCb={confirmReSyncBlockchain}
+        restartNodeCb={restartGrinNode}
+        isLoggedIn={isLoggedIn}
+        backupButtonCb={() => setUsername(sessionUsername)}
+      />
+      {isLoggedIn ? (
+        <PasswordPromptComponent
+          isOpen={username?.length > 0}
+          username={username}
+          password={password}
+          passwordCb={(value: string) => setPassword(value)}
+          onCloseCb={() => {}}
+          waitingResponse={waitingResponse}
+          passwordButtonCb={backupSeed}
+          connected={status.toLocaleLowerCase() !== "not connected"}
+          buttonText={t("confirm_password")}
+        />
+      ) : null}
+      {seed !== undefined ? (
+        <Alert
+          className="bp3-dark"
+          canEscapeKeyCancel={true}
+          canOutsideClickCancel={true}
+          onConfirm={() => setSeed(undefined)}
+          isOpen={seed !== undefined}
+          style={{ backgroundColor: "#050505" }}
+        >
+          <WalletSeedInputComponent
+            seed={seed}
+            onWordChangeCb={() => {}}
+            length={seed.length}
+          />
+        </Alert>
+      ) : null}
+    </div>
   );
 };

@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 export class BaseApi {
   private _mode: "DEV" | "TEST" | "PROD";
@@ -110,6 +110,7 @@ export class BaseApi {
       | "tx_cancel"
       | "tx_repost"
       | "retrieve_outputs"
+      | "get_seed"
   ): string {
     switch (call) {
       case "node_status":
@@ -130,10 +131,12 @@ export class BaseApi {
         return `${this._getOwnerRPCURL()}`;
       case "tor_address":
         return `${this._getOwnerRPCURL()}`;
-      case "tx_details":
-        return `${this._getForeignRPCURL()}`;
       case "login":
         return `${this._getOwnerRPCURL()}`;
+      case "get_seed":
+        return `${this._getOwnerRPCURL()}`;
+      case "tx_details":
+        return `${this._getForeignRPCURL()}`;
       case "logout":
         return `${this._getOwnerURL()}/logout`;
       case "create_wallet":

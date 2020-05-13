@@ -1,13 +1,7 @@
-import {
-  Action,
-  action,
-  Computed,
-  computed,
-  Thunk,
-  thunk
-  } from 'easy-peasy';
-import { Injections } from '../store';
-import { StoreModel } from '.';
+import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy";
+import { Injections } from "../store";
+import { StoreModel } from ".";
+import { ISeed } from "../interfaces/ISeed";
 
 export interface SessionModel {
   username: string;
@@ -24,6 +18,17 @@ export interface SessionModel {
   >;
   logout: Thunk<SessionModel, string, Injections, StoreModel>;
   isLoggedIn: Computed<SessionModel, boolean>;
+  getWalletSeed: Thunk<
+    SessionModel,
+    {
+      username: string;
+      password: string;
+    },
+    Injections,
+    StoreModel
+  >;
+  seed: ISeed[] | undefined;
+  setSeed: Action<SessionModel, ISeed[] | undefined>;
 }
 
 const session: SessionModel = {
@@ -62,6 +67,26 @@ const session: SessionModel = {
   ),
   isLoggedIn: computed((state) => {
     return state.username.length > 0 && state.token.length > 0;
+  }),
+  getWalletSeed: thunk(
+    async (actions, payload, { injections, getStoreState }): string[] => {
+      const { ownerService } = injections;
+      const apiSettings = getStoreState().settings.defaultSettings;
+      return await new ownerService.RPC(
+        apiSettings.floonet,
+        apiSettings.protocol,
+        apiSettings.ip,
+        apiSettings.mode
+      )
+        .getSeed(payload.username, payload.password)
+        .then((response) => {
+          return response;
+        });
+    }
+  ),
+  seed: undefined,
+  setSeed: action((state, seed) => {
+    state.seed = seed;
   }),
 };
 

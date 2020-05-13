@@ -2,6 +2,7 @@ import React, { Suspense, useCallback, useEffect } from "react";
 import { Card, Icon, Intent, Position, Text, Toaster } from "@blueprintjs/core";
 import { Redirect } from "react-router-dom";
 import { useStoreActions, useStoreState } from "../../hooks";
+import { LoadingComponent } from "../../components/extras/Loading";
 
 const NoAccountsComponent = React.lazy(() =>
   import("../../components/extras/NoAccounts").then((module) => ({
@@ -135,7 +136,7 @@ export const OpenWalletContainer = () => {
     <Suspense fallback={renderLoader()}>
       {isLoggedIn ? <Redirect to="/wallet" /> : null}
       {accounts === undefined ? (
-        renderLoader()
+        <LoadingComponent />
       ) : accounts.length === 0 ? (
         <NoAccountsComponent />
       ) : (
@@ -144,12 +145,12 @@ export const OpenWalletContainer = () => {
           password={password}
           accounts={getAccountsList(accounts)}
           passwordCb={(value: string) => setPassword(value)}
-          overlayCb={() => {
+          onCloseCb={() => {
             setUsername("");
             setPassword("");
           }}
           waitingResponse={waitingResponse}
-          loginButtonCb={onOpenWalletButtonClicked}
+          passwordButtonCb={onOpenWalletButtonClicked}
           connected={status.toLocaleLowerCase() !== "not connected"}
         />
       )}

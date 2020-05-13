@@ -15,6 +15,7 @@ import {
   Text,
 } from "@blueprintjs/core";
 import { useTranslation } from "react-i18next";
+import { PasswordPromptComponent } from "../wallet/open/PasswordPrompt";
 
 type SettingsProps = {
   status: string;
@@ -26,8 +27,8 @@ type SettingsProps = {
   confirmations: number;
   nodeDataPath: string;
   nodeBinaryPath: string;
-  isNodeRunning: boolean;
   isConfirmationDialogOpen: boolean;
+  isLoggedIn: boolean;
   setGrinJoinUseCb: (active: boolean) => void;
   setGrinJoinAddressCb: (address: string) => void;
   setMininumPeersCb: (peers: number) => void;
@@ -36,6 +37,7 @@ type SettingsProps = {
   toggleConfirmationDialogCb: () => void;
   confirmReSyncBlockchainCb: () => void;
   restartNodeCb: () => void;
+  backupButtonCb: () => void;
 };
 
 export const SettingsComponent = ({
@@ -48,8 +50,8 @@ export const SettingsComponent = ({
   confirmations,
   nodeDataPath,
   nodeBinaryPath,
-  isNodeRunning,
   isConfirmationDialogOpen,
+  isLoggedIn,
   setGrinJoinUseCb,
   setGrinJoinAddressCb,
   setMininumPeersCb,
@@ -58,6 +60,7 @@ export const SettingsComponent = ({
   toggleConfirmationDialogCb,
   confirmReSyncBlockchainCb,
   restartNodeCb,
+  backupButtonCb,
 }: SettingsProps) => {
   const { t } = useTranslation();
 
@@ -143,21 +146,27 @@ export const SettingsComponent = ({
           <Button
             text={t("restart")}
             onClick={() => restartNodeCb()}
-            style={{ width: "50%" }}
+            style={{ width: isLoggedIn ? "40%" : "50%" }}
             intent={Intent.DANGER}
           />
           <Button
             text={t("resync")}
             disabled={status.toLowerCase() !== "running"}
-            style={{ width: "50%" }}
+            style={{ width: isLoggedIn ? "40%" : "50%" }}
             intent={Intent.WARNING}
             onClick={() => toggleConfirmationDialogCb()}
           />
+          {isLoggedIn ? (
+            <Button
+              icon="key"
+              style={{ width: "20%" }}
+              intent={Intent.NONE}
+              onClick={() => backupButtonCb()}
+            />
+          ) : null}
         </ControlGroup>
       </div>
-      <Callout>
-        {t("restart_warning")}.
-      </Callout>
+      <Callout>{t("restart_warning")}.</Callout>
       <Alert
         className="bp3-dark"
         cancelButtonText={t("cancel")}

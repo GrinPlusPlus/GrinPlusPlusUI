@@ -66,7 +66,9 @@ export const CreateWalletComponent = ({
       </FormGroup>
       <FormGroup
         label={t("password")}
-        helperText={`${t("password_helper.1")} ${minPasswordLength} ${t("password_helper.2")}`}
+        helperText={`${t("password_helper.1")} ${minPasswordLength} ${t(
+          "password_helper.2"
+        )}`}
         labelFor="create-wallet-password"
         labelInfo={true}
       >
@@ -109,6 +111,7 @@ export const CreateWalletComponent = ({
         title={t("wallet_seed")}
         isCloseButtonShown={false}
         className="bp3-dark"
+        style={{ backgroundColor: "#050505" }}
       >
         {SeedValidationComponent}
       </Dialog>

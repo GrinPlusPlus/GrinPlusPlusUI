@@ -34,11 +34,19 @@ export const WalletSeedInputComponent = ({
                 key={`word-${word.position}`}
                 value={word.text}
                 disabled={word.disabled}
+                className="bp3-dark"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   onWordChangeCb(e.target.value, +e.target.id)
                 }
                 rightElement={
-                  <Tag style={{ fontFamily: "Verdana", fontSize: "11px" }}>
+                  <Tag
+                    className="bp3-dark"
+                    style={{
+                      fontFamily: "Verdana",
+                      fontSize: "11px",
+                      color: "gray",
+                    }}
+                  >
                     {`${word.position}`.padStart(2, "0")}
                   </Tag>
                 }
@@ -51,5 +59,5 @@ export const WalletSeedInputComponent = ({
     return table;
   }, [seed, onWordChangeCb, length]);
 
-  return <div>{walletSeedTable()}</div>;
+  return <div className="bp3-dark">{walletSeedTable()}</div>;
 };

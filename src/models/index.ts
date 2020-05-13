@@ -11,6 +11,7 @@ import ui, { UIModel } from "./ui";
 import wallet, { WalletModel } from "./wallet";
 import walletSummary, { WalletSummaryModel } from "./wallet/summary";
 import idiom, { IdiomModel } from "./idiom";
+import prompt, { PasswordPromptModel } from "./prompt";
 
 export interface StoreModel {
   settings: SettingsModel;
@@ -26,6 +27,7 @@ export interface StoreModel {
   finalizeModel: FinalizeModel;
   wallet: WalletModel;
   idiom: IdiomModel;
+  passwordPrompt: PasswordPromptModel;
 }
 
 const model = {
@@ -42,6 +44,7 @@ const model = {
   finalizeModel: finalizeModel,
   wallet: wallet,
   idiom: idiom,
+  passwordPrompt: prompt,
 };
 
 export default model;
