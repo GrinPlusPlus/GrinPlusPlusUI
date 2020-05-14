@@ -111,6 +111,7 @@ export class BaseApi {
       | "tx_repost"
       | "retrieve_outputs"
       | "get_seed"
+      | "list_txs"
   ): string {
     switch (call) {
       case "node_status":
@@ -135,10 +136,12 @@ export class BaseApi {
         return `${this._getOwnerRPCURL()}`;
       case "get_seed":
         return `${this._getOwnerRPCURL()}`;
+      case "list_txs":
+        return `${this._getOwnerRPCURL()}`;
+      case "logout":
+        return `${this._getOwnerRPCURL()}`;
       case "tx_details":
         return `${this._getForeignRPCURL()}`;
-      case "logout":
-        return `${this._getOwnerURL()}/logout`;
       case "create_wallet":
         return `${this._getOwnerURL()}/create_wallet`;
       case "restore_wallet":

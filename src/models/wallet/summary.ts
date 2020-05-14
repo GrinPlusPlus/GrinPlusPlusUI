@@ -17,15 +17,8 @@ export interface WalletSummaryModel {
   update: Action<
     WalletSummaryModel,
     {
-      summary: {
-        spendable: number;
-        total: number;
-        immature: number;
-        unconfirmed: number;
-        locked: number;
-        transactions: ITransaction[];
-      };
-      format: (amount: number) => number;
+      transactions: ITransaction[];
+      formatCb: (amount: number) => number;
     }
   >;
   updateWalletSummary: Thunk<
@@ -75,16 +68,10 @@ const walletSummary: WalletSummaryModel = {
     state.selectedTx = id;
   }),
   update: action((state, payload) => {
-    state.spendable = payload.format(payload.summary.spendable);
-    state.total = payload.format(payload.summary.total);
-    state.immature = payload.format(payload.summary.immature);
-    state.unconfirmed = payload.format(payload.summary.unconfirmed);
-    state.locked = payload.format(payload.summary.locked);
-
-    state.transactions = payload.summary.transactions.map((tx) => {
-      tx.amountCredited = payload.format(tx.amountCredited);
-      tx.amountDebited = payload.format(tx.amountDebited);
-      if (tx.fee) tx.fee = payload.format(tx.fee);
+    state.transactions = payload.transactions.map((tx) => {
+      tx.amountCredited = payload.formatCb(tx.amountCredited);
+      tx.amountDebited = payload.formatCb(tx.amountDebited);
+      if (tx.fee) tx.fee = payload.formatCb(tx.fee);
       return tx;
     });
   }),
@@ -101,36 +88,32 @@ const walletSummary: WalletSummaryModel = {
         apiSettings.mode
       )
         .getWalletSummary(token)
-        .then((summary) => {
-          if (!summary) return;
+        .then((transactions) => {
+          const newSent = transactions.filter(
+            (t) => cleanTxType(t.type) === "sent"
+          ).length;
+          const newReceived = transactions.filter(
+            (t) => cleanTxType(t.type) === "received"
+          ).length;
 
-          if (getStoreState().walletSummary.transactions !== undefined) {
-            const newSent = summary.transactions.filter(
-              (t) => cleanTxType(t.type) === "sent"
-            ).length;
-            const currentSent = getStoreState().walletSummary.transactions?.filter(
-              (t) => cleanTxType(t.type) === "sent"
-            ).length;
+          const currentSent = getStoreState().walletSummary.transactions?.filter(
+            (t) => cleanTxType(t.type) === "sent"
+          ).length;
+          const currentReceived = getStoreState().walletSummary.transactions?.filter(
+            (t) => cleanTxType(t.type) === "received"
+          ).length;
 
-            const newReceived = summary.transactions.filter(
-              (t) => cleanTxType(t.type) === "received"
-            ).length;
-            const currentReceived = getStoreState().walletSummary.transactions?.filter(
-              (t) => cleanTxType(t.type) === "received"
-            ).length;
-            if (currentSent !== undefined && newSent > currentSent) {
-              getStoreActions().ui.setAlert("last_transaction_sent");
-            } else if (
-              currentReceived !== undefined &&
-              newReceived > currentReceived
-            ) {
-              getStoreActions().ui.setAlert("new_transaction_received");
-            }
+          if (currentSent !== undefined && newSent > currentSent) {
+            getStoreActions().ui.setAlert("last_transaction_sent");
+          } else if (
+            currentReceived !== undefined &&
+            newReceived > currentReceived
+          ) {
+            getStoreActions().ui.setAlert("new_transaction_received");
           }
-
           actions.update({
-            summary: summary,
-            format: utilsService.formatGrinAmount,
+            transactions: transactions,
+            formatCb: utilsService.formatGrinAmount,
           });
         });
       actions.setWaitingResponse(false);

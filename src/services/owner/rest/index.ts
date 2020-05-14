@@ -6,66 +6,42 @@ export class OwnerAPI extends BaseApi {
     return this.getURL("owner");
   }
 
-  public async getWalletSummary(
-    token: string
-  ): Promise<
-    | {
-        spendable: number;
-        total: number;
-        immature: number;
-        unconfirmed: number;
-        locked: number;
-        transactions: ITransaction[];
+  public async getWalletSummary(token: string): Promise<ITransaction[]> {
+    return await this.makeRPCRequest(
+      this.getRequestURL("list_txs"),
+      "list_txs",
+      {
+        session_token: token,
       }
-    | undefined
-  > {
-    return await this.makeRESTRequest(
-      this.getRequestURL("wallet_summary"),
-      "get",
-      { session_token: token }
     ).then((response) => {
       let transactions: ITransaction[] = [];
-      try {
-        const data = JSON.parse(response);
-        if (data.transactions) {
-          transactions = data.transactions
-            ?.reverse()
-            .map((transaction: any) => {
-              return {
-                Id: transaction.id,
-                address: transaction.address,
-                creationDate: transaction.creation_date_time,
-                amountCredited: transaction.amount_credited,
-                amountDebited: transaction.amount_debited,
-                type: transaction.type,
-                confirmedHeight: transaction.confirmed_height,
-                fee: transaction.fee,
-                slateId: transaction.slate_id,
-                slateMessage: transaction.slate_message,
-                ouputs: transaction.outputs,
-              };
-            });
-        }
-        return {
-          spendable: data.amount_currently_spendable,
-          total: data.total,
-          immature: data.amount_immature,
-          unconfirmed: data.amount_awaiting_confirmation,
-          locked: data.amount_locked,
-          transactions: transactions,
-        };
-      } catch (error) {
-        return undefined;
-      }
+
+      transactions = JSON.parse(response.result.txs)
+        .reverse()
+        .map((transaction: any) => {
+          return {
+            Id: transaction.id,
+            address: transaction.address,
+            creationDate: transaction.creation_date_time,
+            amountCredited: transaction.amount_credited,
+            amountDebited: transaction.amount_debited,
+            type: transaction.type,
+            confirmedHeight: transaction.confirmed_height,
+            fee: transaction.fee,
+            slateId: transaction.slate_id,
+            slateMessage: transaction.slate_message,
+            ouputs: transaction.outputs,
+          };
+        });
+
+      return transactions;
     });
   }
 
   public async logout(token: string): Promise<boolean> {
-    return await this.makeRESTRequest(this.getRequestURL("logout"), "post", {
+    return await this.makeRPCRequest(this.getRequestURL("logout"), "logout", {
       session_token: token,
-    })
-      .then((data) => true)
-      .catch((error) => false);
+    }).then((response) => (response.error ? false : true));
   }
 
   public async createWallet(
