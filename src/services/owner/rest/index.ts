@@ -1,5 +1,5 @@
-import { BaseApi } from "./../../api";
-import { ITransaction } from "../../../interfaces/ITransaction";
+import { BaseApi } from './../../api';
+import { ITransaction } from '../../../interfaces/ITransaction';
 
 export class OwnerAPI extends BaseApi {
   public get url(): string {
@@ -15,25 +15,37 @@ export class OwnerAPI extends BaseApi {
       }
     ).then((response) => {
       let transactions: ITransaction[] = [];
-
-      transactions = JSON.parse(response.result.txs)
-        .reverse()
-        .map((transaction: any) => {
-          return {
-            Id: transaction.id,
-            address: transaction.address,
-            creationDate: transaction.creation_date_time,
-            amountCredited: transaction.amount_credited,
-            amountDebited: transaction.amount_debited,
-            type: transaction.type,
-            confirmedHeight: transaction.confirmed_height,
-            fee: transaction.fee,
-            slateId: transaction.slate_id,
-            slateMessage: transaction.slate_message,
-            ouputs: transaction.outputs,
-          };
-        });
-
+      require("electron-log").error(response.result.txs);
+      transactions = response.result.txs.reverse().map((transaction: any) => {
+        return {
+          Id: transaction.id,
+          address: transaction.address,
+          creationDate: transaction.creation_date_time,
+          amountCredited: transaction.amount_credited,
+          amountDebited: transaction.amount_debited,
+          type: transaction.type,
+          confirmedHeight: transaction.confirmed_height,
+          fee: transaction.fee,
+          slateId: transaction.slate_id,
+          slateMessage: transaction.slate_message,
+          kernels: transaction.kernels?.map(
+            (kernel: { commitment: string }) => kernel.commitment
+          ),
+          ouputs: transaction.outputs?.map(
+            (output: {
+              amount: number;
+              block_height: number;
+              commitment: string;
+              keychain_path: string;
+              label: string;
+              status: string;
+              transaction_id: number;
+            }) => {
+              return { amount: output.amount, commitment: output.commitment };
+            }
+          ),
+        };
+      });
       return transactions;
     });
   }

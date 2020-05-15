@@ -1,11 +1,16 @@
-import React, { useCallback } from "react";
-import { SettingsComponent } from "../../components/extras/Settings";
-import { useStoreActions, useStoreState } from "../../hooks";
-import { PasswordPromptComponent } from "../../components/wallet/open/PasswordPrompt";
-import { useTranslation } from "react-i18next";
-import { Toaster, Position, Intent, Alert } from "@blueprintjs/core";
-import { WalletSeedInputComponent } from "../../components/shared/WalletSeedInput";
-import { ISeed } from "../../interfaces/ISeed";
+import React, { useCallback } from 'react';
+import {
+  Alert,
+  Intent,
+  Position,
+  Toaster
+  } from '@blueprintjs/core';
+import { ISeed } from '../../interfaces/ISeed';
+import { PasswordPromptComponent } from '../../components/wallet/open/PasswordPrompt';
+import { SettingsComponent } from '../../components/extras/Settings';
+import { useStoreActions, useStoreState } from '../../hooks';
+import { useTranslation } from 'react-i18next';
+import { WalletSeedInputComponent } from '../../components/shared/WalletSeedInput';
 
 export const SettingsContainer = () => {
   const { t } = useTranslation();
@@ -94,7 +99,7 @@ export const SettingsContainer = () => {
       });
     }
     setWaitingResponse(false);
-  }, [getWalletSeed, username, password, setSeed]);
+  }, [getWalletSeed, username, password, setSeed, setWaitingResponse]);
 
   return (
     <div>

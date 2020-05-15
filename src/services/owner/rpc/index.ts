@@ -1,4 +1,4 @@
-import { BaseApi } from "../../api";
+import { BaseApi } from '../../api';
 
 export class OwnerRPCApi extends BaseApi {
   public get url(): string {
@@ -159,7 +159,7 @@ export class OwnerRPCApi extends BaseApi {
   public async getSeed(
     username: string,
     password: string
-  ): Promise<string | string[]> {
+  ): Promise<string[]> {
     return await this.makeRPCRequest(
       this.getRequestURL("get_seed"),
       "get_wallet_seed",

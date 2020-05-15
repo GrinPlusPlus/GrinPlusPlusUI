@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Alert,
   Button,
@@ -14,8 +15,6 @@ import {
   Switch,
   Text,
 } from "@blueprintjs/core";
-import { useTranslation } from "react-i18next";
-import { PasswordPromptComponent } from "../wallet/open/PasswordPrompt";
 
 type SettingsProps = {
   status: string;

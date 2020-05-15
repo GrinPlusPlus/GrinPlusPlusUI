@@ -1,8 +1,16 @@
-import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy";
-import { cleanTxType } from "../../helpers";
-import { Injections } from "../../store";
-import { ITransaction } from "../../interfaces/ITransaction";
-import { StoreModel } from "..";
+import {
+  Action,
+  action,
+  Computed,
+  computed,
+  Thunk,
+  thunk
+  } from 'easy-peasy';
+import { cleanTxType } from '../../helpers';
+import { Injections } from '../../store';
+import { ITransaction } from '../../interfaces/ITransaction';
+import { StoreModel } from '..';
+
 
 export interface WalletSummaryModel {
   spendable: number;
@@ -115,6 +123,11 @@ const walletSummary: WalletSummaryModel = {
             transactions: transactions,
             formatCb: utilsService.formatGrinAmount,
           });
+        })
+        .catch((error) => {
+          require("electron-log").info(
+            `trying to get Wallet Summary: ${error}`
+          );
         });
       actions.setWaitingResponse(false);
     }
