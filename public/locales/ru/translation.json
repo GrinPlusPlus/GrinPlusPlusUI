@@ -105,5 +105,7 @@
   "username_helper": "Данное имя пользователя будет использовано для входа в кошелек",
   "wallet_seed": "Seed фраза кошелька",
   "invalid_destination_address": "Адрес назначения неверный",
-  "not_online": "Кошелек не доступен ⛔️"
+  "not_online": "Кошелек не доступен ⛔️",
+  "outputs": "Outputs",
+  "kernels": "Kernels"
 }

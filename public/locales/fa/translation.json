@@ -105,5 +105,7 @@
   "username_helper": "این نام کاربری برای ورود به کیف پول استفاده می شود",
   "wallet_seed": "کیف پول Seed",
   "invalid_destination_address": "آدرس مقصد نامعتبر است",
-  "not_online": "کیف پول قابل دسترسی نیست ⛔️"
+  "not_online": "کیف پول قابل دسترسی نیست ⛔️",
+  "outputs": "Outputs",
+  "kernels": "Kernels"
 }

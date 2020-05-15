@@ -105,5 +105,7 @@
   "username_helper": "Bu kullanıcı adı cüzdan içinde oturum açmak için kullanılacak",
   "wallet_seed": "Wallet Seed",
   "invalid_destination_address": "Destination address is invalid",
-  "not_online": "Wallet not reachable ⛔️"
+  "not_online": "Wallet not reachable ⛔️",
+  "outputs": "Outputs",
+  "kernels": "Kernels"
 }

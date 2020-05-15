@@ -105,5 +105,7 @@
   "username_helper": "Дане ім'я користувача буде використано для входу в гаманець",
   "wallet_seed": "Гаманець Сід",
   "invalid_destination_address": "Адреса призначення недійсна",
-  "not_online": "Гаманець недоступний ⛔️"
+  "not_online": "Гаманець недоступний ⛔️",
+  "outputs": "Outputs",
+  "kernels": "Kernels"
 }

@@ -105,5 +105,7 @@
   "username_helper": "Ta nazwa użytkownika będzie używana do logowania do portfela",
   "wallet_seed": "Wallet Seed",
   "invalid_destination_address": "Adres docelowy jest nieprawidłowy",
-  "not_online": "Portfel nieosiągalny ⛔️"
+  "not_online": "Portfel nieosiągalny ⛔️",
+  "outputs": "Outputs",
+  "kernels": "Kernels"
 }

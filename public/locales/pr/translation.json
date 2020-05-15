@@ -105,5 +105,7 @@
   "username_helper": "Este nome de usuário será usado para fazer o login na carteira",
   "wallet_seed": "Wallet Seed",
   "invalid_destination_address": "Endereço de destino é inválido",
-  "not_online": "Wallet não alcançáve ⛔️"
+  "not_online": "Wallet não alcançáve ⛔️",
+  "outputs": "Outputs",
+  "kernels": "Kernels"
 }

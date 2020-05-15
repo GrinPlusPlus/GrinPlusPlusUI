@@ -105,5 +105,7 @@
   "username_helper": "Dieser Nutzername wird zum Zugang des Kontos verwendet",
   "wallet_seed": "Wiederherstellungswörter",
   "invalid_destination_address": "Zieladresse ist ungültig",
-  "not_online": "Brieftasche nicht erreichbar ⛔️"
+  "not_online": "Brieftasche nicht erreichbar ⛔️",
+  "outputs": "Outputs",
+  "kernels": "Kernels"
 }

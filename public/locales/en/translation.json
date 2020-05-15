@@ -105,5 +105,7 @@
   "username_helper": "This username will be used to login into the wallet",
   "wallet_seed": "Wallet Seed",
   "invalid_destination_address": "Destination address is invalid",
-  "not_online": "Wallet not reachable ⛔️"
+  "not_online": "Wallet not reachable ⛔️",
+  "outputs": "Outputs",
+  "kernels": "Kernels"
 }
