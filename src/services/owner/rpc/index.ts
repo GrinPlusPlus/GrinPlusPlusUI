@@ -218,6 +218,18 @@ export class OwnerRPCApi extends BaseApi {
       "get_balance",
       {
         session_token: token,
+        start_range_ms: 1567361400000,
+        end_range_ms: 1575227400000,
+        statuses: [
+          "COINBASE",
+          "SENT",
+          "RECEIVED",
+          "SENT_CANCELED",
+          "RECEIVED_CANCELED",
+          "SENDING_NOT_FINALIZED",
+          "RECEIVING_IN_PROGRESS",
+          "SENDING_FINALIZED",
+        ],
       }
     ).then((response) => {
       if (response.error) throw new Error(response.error.message);
