@@ -18,7 +18,7 @@ export const WalletDrawer = () => {
       position={isLoggedIn ? "right" : "left"}
       icon="cog"
       onClose={() => {
-        toggleSettings();
+        toggleSettings(false);
       }}
       title={t("settings")}
       isOpen={showSettings}

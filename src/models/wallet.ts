@@ -75,18 +75,7 @@ const wallet: WalletModel = {
           nodeService.stopNode();
         }
       }
-      getStoreActions().ui.toggleSettings();
-      getStoreActions().ui.setAlert(undefined);
-      getStoreActions().wallet.replaceLogs("");
-      getStoreActions().finalizeModel.setResponseFile(undefined);
-      getStoreActions().sendCoinsModel.setInitialValues();
-      getStoreActions().createWallet.setInitialValues();
-      getStoreActions().restoreWallet.setInitialValues();
-      getStoreActions().session.updateSession({
-        username: "",
-        token: "",
-        address: "",
-      });
+      getStoreActions().session.clean();
     }
   ),
   reSyncBlockchain: thunk(

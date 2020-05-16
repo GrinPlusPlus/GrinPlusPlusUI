@@ -25,7 +25,7 @@ export const WalletNavBarContainer = () => {
           minimal={true}
           icon="cog"
           onClick={() => {
-            toggleSettings();
+            toggleSettings(true);
           }}
         />
         <NavbarDivider />

@@ -29,6 +29,7 @@ export interface SessionModel {
   >;
   seed: ISeed[] | undefined;
   setSeed: Action<SessionModel, ISeed[] | undefined>;
+  clean: Thunk<SessionModel, undefined, Injections, StoreModel>;
 }
 
 const session: SessionModel = {
@@ -55,13 +56,7 @@ const session: SessionModel = {
       )
         .logout(token)
         .then((response) => {
-          actions.updateSession({ username: "", token: "", address: "" });
-          getStoreActions().wallet.replaceLogs("");
-          getStoreActions().finalizeModel.setResponseFile(undefined);
-          getStoreActions().sendCoinsModel.setInitialValues();
-          getStoreActions().createWallet.setInitialValues();
-          getStoreActions().restoreWallet.setInitialValues();
-          getStoreActions().ui.setAlert(undefined);
+          actions.clean();
         });
     }
   ),
@@ -91,6 +86,18 @@ const session: SessionModel = {
   seed: undefined,
   setSeed: action((state, seed) => {
     state.seed = seed;
+  }),
+  clean: thunk((actions, payload, { injections, getStoreActions }): void => {
+    getStoreActions().ui.toggleSettings(false);
+    getStoreActions().walletSummary.updateBalance(undefined);
+    getStoreActions().walletSummary.updateSummary(undefined);
+    getStoreActions().wallet.replaceLogs("");
+    getStoreActions().finalizeModel.setResponseFile(undefined);
+    getStoreActions().sendCoinsModel.setInitialValues();
+    getStoreActions().createWallet.setInitialValues();
+    getStoreActions().restoreWallet.setInitialValues();
+    getStoreActions().ui.setAlert(undefined);
+    actions.updateSession({ username: "", token: "", address: "" });
   }),
 };
 

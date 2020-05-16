@@ -48,7 +48,7 @@ export const AccountNavBarContainer = () => {
           minimal={true}
           icon="cog"
           onClick={() => {
-            toggleSettings();
+            toggleSettings(true);
           }}
         />
         <NavbarDivider />

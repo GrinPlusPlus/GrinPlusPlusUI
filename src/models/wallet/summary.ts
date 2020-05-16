@@ -16,21 +16,23 @@ export interface WalletSummaryModel {
   setSelectedTx: Action<WalletSummaryModel, number>;
   updateSummary: Action<
     WalletSummaryModel,
-    {
-      transactions: ITransaction[];
-      formatCb: (amount: number) => number;
-    }
+    | {
+        transactions: ITransaction[];
+        formatCb: (amount: number) => number;
+      }
+    | undefined
   >;
   updateBalance: Action<
     WalletSummaryModel,
-    {
-      spendable: number;
-      total: number;
-      immature: number;
-      unconfirmed: number;
-      locked: number;
-      formatCb: (amount: number) => number;
-    }
+    | {
+        spendable: number;
+        total: number;
+        immature: number;
+        unconfirmed: number;
+        locked: number;
+        formatCb: (amount: number) => number;
+      }
+    | undefined
   >;
   updateWalletSummary: Thunk<
     WalletSummaryModel,
@@ -85,6 +87,10 @@ const walletSummary: WalletSummaryModel = {
     state.selectedTx = id;
   }),
   updateSummary: action((state, payload) => {
+    if (payload === undefined) {
+      state.transactions = [];
+      return;
+    }
     state.transactions = payload.transactions.map((tx) => {
       tx.outputs = tx.outputs?.map((output) => {
         return {
@@ -98,12 +104,21 @@ const walletSummary: WalletSummaryModel = {
       return tx;
     });
   }),
-  updateBalance: action((state, payload) => {
-    state.spendable = payload.formatCb(payload.spendable);
-    state.total = payload.formatCb(payload.total);
-    state.immature = payload.formatCb(payload.immature);
-    state.unconfirmed = payload.formatCb(payload.unconfirmed);
-    state.locked = payload.formatCb(payload.locked);
+  updateBalance: action((state, balance) => {
+    if (balance === undefined) {
+      state.transactions = [];
+      state.spendable = 0;
+      state.total = 0;
+      state.immature = 0;
+      state.unconfirmed = 0;
+      state.locked = 0;
+      return;
+    }
+    state.spendable = balance.formatCb(balance.spendable);
+    state.total = balance.formatCb(balance.total);
+    state.immature = balance.formatCb(balance.immature);
+    state.unconfirmed = balance.formatCb(balance.unconfirmed);
+    state.locked = balance.formatCb(balance.locked);
   }),
   updateWalletSummary: thunk(
     async (actions, token, { injections, getStoreActions, getStoreState }) => {
