@@ -55,7 +55,6 @@ i18n
     backend: {
       // for all available options read the backend's repository readme file
       loadPath: getResourcePath("./locales/{{lng}}/{{ns}}.json"),
-      //loadPath: "C:/Projects/GrinPlusPlusUI/public/locales/{{lng}}/{{ns}}.json",
     },
   });
 
