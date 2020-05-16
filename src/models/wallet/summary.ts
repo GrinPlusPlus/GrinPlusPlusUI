@@ -182,7 +182,7 @@ const walletSummary: WalletSummaryModel = {
     async (actions, payload, { injections, getStoreState }) => {
       const { ownerService } = injections;
       const apiSettings = getStoreState().settings.defaultSettings;
-      return await new ownerService.REST(
+      return await new ownerService.RPC(
         apiSettings.floonet,
         apiSettings.protocol,
         apiSettings.ip,
@@ -194,7 +194,7 @@ const walletSummary: WalletSummaryModel = {
     async (actions, payload, { injections, getStoreState }) => {
       const { ownerService } = injections;
       const apiSettings = getStoreState().settings.defaultSettings;
-      return await new ownerService.REST(
+      return await new ownerService.RPC(
         apiSettings.floonet,
         apiSettings.protocol,
         apiSettings.ip,

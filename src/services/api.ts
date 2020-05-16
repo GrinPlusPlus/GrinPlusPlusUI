@@ -95,11 +95,10 @@ export class BaseApi {
       | "resync_blockchain"
       | "connected_peers"
       | "accounts"
-      | "tx_receive"
-      | "tx_send"
-      | "tx_finalize"
-      | "tor_address"
-      | "tx_details"
+      | "receive"
+      | "send"
+      | "finalize"
+      | "get_address"
       | "get_balance"
       | "login"
       | "logout"
@@ -107,12 +106,13 @@ export class BaseApi {
       | "restore_wallet"
       | "wallet_summary"
       | "scan_outputs"
-      | "tx_estimate_fee"
-      | "tx_cancel"
-      | "tx_repost"
+      | "estimate_fee"
+      | "cancel_tx"
+      | "repost_tx"
       | "retrieve_outputs"
       | "get_seed"
       | "list_txs"
+      | "delete_wallet"
   ): string {
     switch (call) {
       case "node_status":
@@ -125,40 +125,38 @@ export class BaseApi {
         return `${this._getOwnerURL()}/accounts`;
       case "shutdown":
         return `${this._getNodeURL()}/shutdown`;
-      case "tx_send":
-        return `${this._getOwnerRPCURL()}`;
-      case "tx_finalize":
-        return `${this._getOwnerRPCURL()}`;
-      case "tx_receive":
-        return `${this._getOwnerRPCURL()}`;
-      case "tor_address":
-        return `${this._getOwnerRPCURL()}`;
+      case "send":
+        return this._getOwnerRPCURL();
+      case "finalize":
+        return this._getOwnerRPCURL();
+      case "receive":
+        return this._getOwnerRPCURL();
+      case "get_address":
+        return this._getOwnerRPCURL();
       case "login":
-        return `${this._getOwnerRPCURL()}`;
+        return this._getOwnerRPCURL();
       case "get_seed":
-        return `${this._getOwnerRPCURL()}`;
+        return this._getOwnerRPCURL();
       case "list_txs":
-        return `${this._getOwnerRPCURL()}`;
+        return this._getOwnerRPCURL();
       case "logout":
-        return `${this._getOwnerRPCURL()}`;
+        return this._getOwnerRPCURL();
       case "get_balance":
-        return `${this._getOwnerRPCURL()}`;
-      case "tx_details":
-        return `${this._getForeignRPCURL()}`;
+        return this._getOwnerRPCURL();
       case "create_wallet":
-        return `${this._getOwnerURL()}/create_wallet`;
+        return this._getOwnerRPCURL();
       case "restore_wallet":
-        return `${this._getOwnerURL()}/restore_wallet`;
+        return this._getOwnerRPCURL();
+      case "delete_wallet":
+        return this._getOwnerRPCURL();
+      case "estimate_fee":
+        return this._getOwnerRPCURL();
+      case "cancel_tx":
+        return this._getOwnerRPCURL();
+      case "repost_tx":
+        return this._getOwnerRPCURL();
       case "scan_outputs":
         return `${this._getOwnerURL()}/update_wallet`;
-      case "wallet_summary":
-        return `${this._getOwnerURL()}/retrieve_summary_info`;
-      case "tx_estimate_fee":
-        return `${this._getOwnerURL()}/estimate_fee`;
-      case "tx_cancel":
-        return `${this._getOwnerURL()}/cancel_tx`;
-      case "tx_repost":
-        return `${this._getOwnerURL()}/repost_tx`;
       case "retrieve_outputs":
         return `${this._getOwnerURL()}/retrieve_outputs`;
       default:

@@ -1,11 +1,6 @@
-import {
-  Action,
-  action,
-  Thunk,
-  thunk
-  } from 'easy-peasy';
-import { Injections } from '../store';
-import { StoreModel } from '.';
+import { Action, action, Thunk, thunk } from "easy-peasy";
+import { Injections } from "../store";
+import { StoreModel } from ".";
 
 export interface WalletModel {
   isNodeInstalled: boolean;
@@ -88,7 +83,7 @@ const wallet: WalletModel = {
 
       const token = getStoreState().session.token;
       if (token) {
-        await new ownerService.REST(
+        await new ownerService.RPC(
           settings.floonet,
           settings.protocol,
           settings.ip,

@@ -83,7 +83,7 @@ const createWalletModel: CreateWalletModel = {
     ) => {
       const { ownerService } = injections;
       const apiSettings = getStoreState().settings.defaultSettings;
-      await new ownerService.REST(
+      await new ownerService.RPC(
         apiSettings.floonet,
         apiSettings.protocol,
         apiSettings.ip,
@@ -91,9 +91,6 @@ const createWalletModel: CreateWalletModel = {
       )
         .createWallet(payload.username, payload.password)
         .then((wallet) => {
-          if (typeof wallet === "string") {
-            throw new Error(wallet);
-          }
           actions.setGeneratedSeed(wallet.seed);
           actions.setPassword("");
           actions.setPasswordConfirmation("");
