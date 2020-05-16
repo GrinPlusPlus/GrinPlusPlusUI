@@ -31,7 +31,7 @@ export class OwnerAPI extends BaseApi {
           kernels: transaction.kernels?.map(
             (kernel: { commitment: string }) => kernel.commitment
           ),
-          ouputs: transaction.outputs?.map(
+          output: transaction.outputs?.map(
             (output: {
               amount: number;
               block_height: number;

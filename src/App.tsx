@@ -67,6 +67,19 @@ const App: React.FC = () => {
   useInterval(async () => {
     const token = store.getState().session.token;
     if (token.length === 0) return;
+    try {
+      await store.getActions().walletSummary.updateWalletBalance(token);
+    } catch (error) {
+      require("electron-log").error(
+        `Error trying to get Wallet Balance: ${error.message}`
+      );
+    }
+  }, store.getState().walletSummary.updateSummaryInterval);
+
+
+  useInterval(async () => {
+    const token = store.getState().session.token;
+    if (token.length === 0) return;
     const address = store.getState().session.address;
     if (address.length === 56) return;
     try {

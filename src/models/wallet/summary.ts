@@ -11,7 +11,6 @@ import { Injections } from '../../store';
 import { ITransaction } from '../../interfaces/ITransaction';
 import { StoreModel } from '..';
 
-
 export interface WalletSummaryModel {
   spendable: number;
   total: number;
@@ -22,14 +21,31 @@ export interface WalletSummaryModel {
   selectedTx: number;
   transactions: ITransaction[] | undefined;
   setSelectedTx: Action<WalletSummaryModel, number>;
-  update: Action<
+  updateSummary: Action<
     WalletSummaryModel,
     {
       transactions: ITransaction[];
       formatCb: (amount: number) => number;
     }
   >;
+  updateBalance: Action<
+    WalletSummaryModel,
+    {
+      spendable: number;
+      total: number;
+      immature: number;
+      unconfirmed: number;
+      locked: number;
+      formatCb: (amount: number) => number;
+    }
+  >;
   updateWalletSummary: Thunk<
+    WalletSummaryModel,
+    string,
+    Injections,
+    StoreModel
+  >;
+  updateWalletBalance: Thunk<
     WalletSummaryModel,
     string,
     Injections,
@@ -75,13 +91,26 @@ const walletSummary: WalletSummaryModel = {
   setSelectedTx: action((state, id) => {
     state.selectedTx = id;
   }),
-  update: action((state, payload) => {
+  updateSummary: action((state, payload) => {
     state.transactions = payload.transactions.map((tx) => {
+      tx.outputs = tx.outputs?.map((output) => {
+        return {
+          amount: payload.formatCb(output.amount),
+          commitment: output.commitment,
+        };
+      });
       tx.amountCredited = payload.formatCb(tx.amountCredited);
       tx.amountDebited = payload.formatCb(tx.amountDebited);
       if (tx.fee) tx.fee = payload.formatCb(tx.fee);
       return tx;
     });
+  }),
+  updateBalance: action((state, payload) => {
+    state.spendable = payload.formatCb(payload.spendable);
+    state.total = payload.formatCb(payload.total);
+    state.immature = payload.formatCb(payload.immature);
+    state.unconfirmed = payload.formatCb(payload.unconfirmed);
+    state.locked = payload.formatCb( payload.locked);
   }),
   updateWalletSummary: thunk(
     async (actions, token, { injections, getStoreActions, getStoreState }) => {
@@ -119,7 +148,7 @@ const walletSummary: WalletSummaryModel = {
           ) {
             getStoreActions().ui.setAlert("new_transaction_received");
           }
-          actions.update({
+          actions.updateSummary({
             transactions: transactions,
             formatCb: utilsService.formatGrinAmount,
           });
@@ -130,6 +159,35 @@ const walletSummary: WalletSummaryModel = {
           );
         });
       actions.setWaitingResponse(false);
+    }
+  ),
+  updateWalletBalance: thunk(
+    async (actions, token, { injections, getStoreActions, getStoreState }) => {
+      if (getStoreState().walletSummary.waitingResponse) return;
+      const { ownerService, utilsService } = injections;
+      const apiSettings = getStoreState().settings.defaultSettings;
+      await new ownerService.RPC(
+        apiSettings.floonet,
+        apiSettings.protocol,
+        apiSettings.ip,
+        apiSettings.mode
+      )
+        .getWalletBalance(token)
+        .then((balance) => {
+          actions.updateBalance({
+            spendable: balance.spendable,
+            total: balance.total,
+            immature: balance.immature,
+            unconfirmed: balance.unconfirmed,
+            locked: balance.locked,
+            formatCb: utilsService.formatGrinAmount,
+          });
+        })
+        .catch((error) => {
+          require("electron-log").info(
+            `trying to get Wallet Balance: ${error}`
+          );
+        });
     }
   ),
   cancelTransaction: thunk(

@@ -95,7 +95,7 @@ export const TransactionsTableComponent = ({
                   : new Date(+transaction.creationDate * 1000).toLocaleString()
               }
               kernels={transaction.kernels}
-              outputs={transaction.ouputs}
+              outputs={transaction.outputs}
               onCancelTransactionButtonClickedCb={
                 onCancelTransactionButtonClickedCb
               }

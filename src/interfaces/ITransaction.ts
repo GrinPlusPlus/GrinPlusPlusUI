@@ -10,7 +10,7 @@ export interface ITransaction {
   slateId: string;
   slateMessage?: string;
   kernels?: string[]
-  ouputs?: {
+  outputs?: {
     amount: number,
     commitment: string
   }[]

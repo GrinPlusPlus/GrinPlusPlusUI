@@ -1,8 +1,10 @@
-import classNames from "classnames";
-import React, { useCallback } from "react";
-import { SendUsingAddressComponent } from "../../components/transaction/send/SendUsingAddress";
-import { useHistory } from "react-router-dom";
-import { useStoreActions, useStoreState } from "../../hooks";
+import classNames from 'classnames';
+import React, { useCallback } from 'react';
+import { PasswordPromptComponent } from '../../components/wallet/open/PasswordPrompt';
+import { SendUsingAddressComponent } from '../../components/transaction/send/SendUsingAddress';
+import { useHistory } from 'react-router-dom';
+import { useStoreActions, useStoreState } from '../../hooks';
+import { useTranslation } from 'react-i18next';
 import {
   Intent,
   Position,
@@ -12,7 +14,6 @@ import {
   Spinner,
   Text,
 } from "@blueprintjs/core";
-import { useTranslation } from "react-i18next";
 
 export const SendUsingAddressContainer = () => {
   const { t } = useTranslation();
@@ -30,7 +31,9 @@ export const SendUsingAddressContainer = () => {
     isAddressValid,
     fee,
   } = useStoreState((state) => state.sendCoinsModel);
-  const { token } = useStoreState((state) => state.session);
+
+  const { token, username } = useStoreState((state) => state.session);
+  const { status } = useStoreState((state) => state.nodeSummary);
   const { sendUsingListener, setWaitingResponse } = useStoreActions(
     (actions) => actions.sendCoinsModel
   );
@@ -39,6 +42,17 @@ export const SendUsingAddressContainer = () => {
   const { useGrinJoin, grinJoinAddress } = useStoreState(
     (state) => state.settings
   );
+
+  const {
+    username: usernamePrompt,
+    password: passwordPrompt,
+    waitingResponse: waitingForPassword,
+  } = useStoreState((state) => state.passwordPrompt);
+
+  const {
+    setUsername: setUsernamePrompt,
+    setPassword: setPasswordPrompt,
+  } = useStoreActions((state) => state.passwordPrompt);
 
   const onSendButtonClicked = useCallback(async () => {
     if (amount === undefined || amount.slice(-1) === ".") return;
@@ -103,7 +117,7 @@ export const SendUsingAddressContainer = () => {
         amount={amount ? Number(amount) : 0}
         inputsSelected={inputs.length !== 0}
         isAddressValid={isAddressValid}
-        onSendButtonClickedCb={onSendButtonClicked}
+        onSendButtonClickedCb={() => setUsernamePrompt(username)}
         fee={fee}
       />
       <Overlay
@@ -126,6 +140,19 @@ export const SendUsingAddressContainer = () => {
           <Text>{t("sending_wait")}</Text>
         </div>
       </Overlay>
+      {usernamePrompt ? (
+        <PasswordPromptComponent
+          isOpen={usernamePrompt && usernamePrompt.length > 0 ? true : false}
+          username={usernamePrompt ? usernamePrompt : ""}
+          password={passwordPrompt ? passwordPrompt : ""}
+          passwordCb={(value: string) => setPasswordPrompt(value)}
+          onCloseCb={() => setUsernamePrompt(undefined)}
+          waitingResponse={waitingForPassword}
+          passwordButtonCb={onSendButtonClicked}
+          connected={status.toLocaleLowerCase() !== "not connected"}
+          buttonText={t("confirm_password")}
+        />
+      ) : null}
     </div>
   );
 };

@@ -100,6 +100,7 @@ export class BaseApi {
       | "tx_finalize"
       | "tor_address"
       | "tx_details"
+      | "get_balance"
       | "login"
       | "logout"
       | "create_wallet"
@@ -139,6 +140,8 @@ export class BaseApi {
       case "list_txs":
         return `${this._getOwnerRPCURL()}`;
       case "logout":
+        return `${this._getOwnerRPCURL()}`;
+      case "get_balance":
         return `${this._getOwnerRPCURL()}`;
       case "tx_details":
         return `${this._getForeignRPCURL()}`;

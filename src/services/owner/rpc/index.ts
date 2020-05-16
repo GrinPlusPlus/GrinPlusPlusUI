@@ -156,10 +156,7 @@ export class OwnerRPCApi extends BaseApi {
     );
   }
 
-  public async getSeed(
-    username: string,
-    password: string
-  ): Promise<string[]> {
+  public async getSeed(username: string, password: string): Promise<string[]> {
     return await this.makeRPCRequest(
       this.getRequestURL("get_seed"),
       "get_wallet_seed",
@@ -168,9 +165,34 @@ export class OwnerRPCApi extends BaseApi {
         password: password,
       }
     ).then((response) => {
-      require("electron-log").info(response);
       if (response.error) throw new Error(response.error.message);
       return response.result.wallet_seed.split(" ");
+    });
+  }
+
+  public async getWalletBalance(
+    token: string
+  ): Promise<{
+    spendable: number;
+    total: number;
+    immature: number;
+    unconfirmed: number;
+    locked: number;
+  }> {
+    return await this.makeRPCRequest(
+      this.getRequestURL("get_balance"),
+      "get_balance",
+      {
+        session_token: token,
+      }
+    ).then((response) => {
+      if (response.error) throw new Error(response.error.message);
+      return {
+        spendable: response.result.spendable,
+        total: response.result.total,
+        immature: response.result.immature,
+        unconfirmed: response.result.unconfirmed,
+        locked: response.result.locked };
     });
   }
 }
