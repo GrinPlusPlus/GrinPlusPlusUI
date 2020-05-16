@@ -60,44 +60,33 @@ const wallet: WalletModel = {
       payload,
       { injections, getStoreState, getStoreActions }
     ) => {
-      const { nodeService, ownerService } = injections;
+      const { nodeService } = injections;
       const settings = getStoreState().settings.defaultSettings;
 
-      if (
-        new nodeService.REST(
-          settings.floonet,
-          settings.protocol,
-          settings.ip,
-          settings.mode
-        ).shutdownNode()
-      ) {
-        setTimeout({}, 3000);
-      } else {
-        if (nodeService.isNodeRunning()) {
+      if (nodeService.isNodeRunning()) {
+        try {
+          new nodeService.REST(
+            settings.floonet,
+            settings.protocol,
+            settings.ip,
+            settings.mode
+          ).shutdownNode();
+        } catch (error) {
           nodeService.stopNode();
         }
       }
-
-      nodeService.runNode(settings.mode, settings.binaryPath, settings.floonet);
-      actions.setIsNodeRunning(nodeService.isNodeRunning());
-
-      const token = getStoreState().session.token;
-      if (token) {
-        await new ownerService.RPC(
-          settings.floonet,
-          settings.protocol,
-          settings.ip,
-          settings.mode
-        )
-          .logout(token)
-          .then((response) => {
-            getStoreActions().session.updateSession({
-              username: "",
-              token: "",
-              address: "",
-            });
-          });
-      }
+      getStoreActions().ui.toggleSettings();
+      getStoreActions().ui.setAlert(undefined);
+      getStoreActions().wallet.replaceLogs("");
+      getStoreActions().finalizeModel.setResponseFile(undefined);
+      getStoreActions().sendCoinsModel.setInitialValues();
+      getStoreActions().createWallet.setInitialValues();
+      getStoreActions().restoreWallet.setInitialValues();
+      getStoreActions().session.updateSession({
+        username: "",
+        token: "",
+        address: "",
+      });
     }
   ),
   reSyncBlockchain: thunk(

@@ -1,16 +1,11 @@
-import React, { useCallback } from 'react';
-import {
-  Alert,
-  Intent,
-  Position,
-  Toaster
-  } from '@blueprintjs/core';
-import { ISeed } from '../../interfaces/ISeed';
-import { PasswordPromptComponent } from '../../components/wallet/open/PasswordPrompt';
-import { SettingsComponent } from '../../components/extras/Settings';
-import { useStoreActions, useStoreState } from '../../hooks';
-import { useTranslation } from 'react-i18next';
-import { WalletSeedInputComponent } from '../../components/shared/WalletSeedInput';
+import React, { useCallback } from "react";
+import { Alert, Intent, Position, Toaster } from "@blueprintjs/core";
+import { ISeed } from "../../interfaces/ISeed";
+import { PasswordPromptComponent } from "../../components/wallet/open/PasswordPrompt";
+import { SettingsComponent } from "../../components/extras/Settings";
+import { useStoreActions, useStoreState } from "../../hooks";
+import { useTranslation } from "react-i18next";
+import { WalletSeedInputComponent } from "../../components/shared/WalletSeedInput";
 
 export const SettingsContainer = () => {
   const { t } = useTranslation();
@@ -66,8 +61,8 @@ export const SettingsContainer = () => {
     }
   }, [toggleConfirmationDialog, reSyncBlockchain]);
 
-  const restartGrinNode = useCallback(() => {
-    restartNode();
+  const restartGrinNode = useCallback(async () => {
+    await restartNode();
   }, [restartNode]);
 
   const backupSeed = useCallback(async () => {
