@@ -1,8 +1,8 @@
-import React from 'react';
-import { Icon, Text } from '@blueprintjs/core';
-import { ITransaction } from '../../interfaces/ITransaction';
-import { TansactionDetailsComponent } from '../transaction/Details';
-import { useTranslation } from 'react-i18next';
+import React from "react";
+import { Icon, Text } from "@blueprintjs/core";
+import { ITransaction } from "../../interfaces/ITransaction";
+import { TansactionDetailsComponent } from "../transaction/Details";
+import { useTranslation } from "react-i18next";
 import {
   cleanTxType,
   cutAddress,
@@ -16,7 +16,11 @@ type TransactionsTableProps = {
   transactionOpened: number;
   openTransactionCb: (transactionId: number) => void;
   onCancelTransactionButtonClickedCb: (transactionId: number) => void;
-  onRepostTransactionButtonClickedCb: (transactionId: number) => void;
+  onRepostTransactionButtonClickedCb: (
+    transactionId: number,
+    method: string
+  ) => void;
+  method: string;
 };
 
 export const TransactionsTableComponent = ({
@@ -25,6 +29,7 @@ export const TransactionsTableComponent = ({
   openTransactionCb,
   onCancelTransactionButtonClickedCb,
   onRepostTransactionButtonClickedCb,
+  method,
 }: TransactionsTableProps) => {
   const { t } = useTranslation();
 
@@ -96,6 +101,7 @@ export const TransactionsTableComponent = ({
               }
               kernels={transaction.kernels}
               outputs={transaction.outputs}
+              method={method}
               onCancelTransactionButtonClickedCb={
                 onCancelTransactionButtonClickedCb
               }
@@ -111,7 +117,7 @@ export const TransactionsTableComponent = ({
   };
 
   return (
-    <div style={{ height: "calc(100vh - 247px)", overflowY: "auto"}} >
+    <div style={{ height: "calc(100vh - 247px)", overflowY: "auto" }}>
       {transactions.length === 0 ? (
         <Text>{t("no_transactions")}.</Text>
       ) : (

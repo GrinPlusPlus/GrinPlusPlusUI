@@ -1,9 +1,9 @@
-import React from 'react';
-import { ITransaction } from '../../interfaces/ITransaction';
-import { Tab, Tabs } from '@blueprintjs/core';
-import { Title } from '../styled';
-import { TransactionsTableComponent } from '../shared/TransactionsTable';
-import { useTranslation } from 'react-i18next';
+import React from "react";
+import { ITransaction } from "../../interfaces/ITransaction";
+import { Tab, Tabs } from "@blueprintjs/core";
+import { Title } from "../styled";
+import { TransactionsTableComponent } from "../shared/TransactionsTable";
+import { useTranslation } from "react-i18next";
 
 type WalletActivityProps = {
   all: ITransaction[];
@@ -15,7 +15,11 @@ type WalletActivityProps = {
   transactionOpened: number;
   openTransactionCb: (transactionId: number) => void;
   onCancelTransactionButtonClickedCb: (transactionId: number) => void;
-  onRepostTransactionButtonClickedCb: (transactionId: number) => void;
+  onRepostTransactionButtonClickedCb: (
+    transactionId: number,
+    method: string
+  ) => void;
+  method: string;
 };
 
 export const WalletActivityComponent = ({
@@ -29,6 +33,7 @@ export const WalletActivityComponent = ({
   openTransactionCb,
   onCancelTransactionButtonClickedCb,
   onRepostTransactionButtonClickedCb,
+  method,
 }: WalletActivityProps) => {
   const { t } = useTranslation();
 
@@ -58,6 +63,7 @@ export const WalletActivityComponent = ({
               onRepostTransactionButtonClickedCb={
                 onRepostTransactionButtonClickedCb
               }
+              method={method}
             />
           }
         />
@@ -78,6 +84,7 @@ export const WalletActivityComponent = ({
               onRepostTransactionButtonClickedCb={
                 onRepostTransactionButtonClickedCb
               }
+              method={method}
             />
           }
         />
@@ -97,6 +104,7 @@ export const WalletActivityComponent = ({
               onRepostTransactionButtonClickedCb={
                 onRepostTransactionButtonClickedCb
               }
+              method={method}
             />
           }
         />
@@ -116,6 +124,7 @@ export const WalletActivityComponent = ({
               onRepostTransactionButtonClickedCb={
                 onRepostTransactionButtonClickedCb
               }
+              method={method}
             />
           }
         />
@@ -135,6 +144,7 @@ export const WalletActivityComponent = ({
               onRepostTransactionButtonClickedCb={
                 onRepostTransactionButtonClickedCb
               }
+              method={method}
             />
           }
         />
@@ -154,6 +164,7 @@ export const WalletActivityComponent = ({
               onRepostTransactionButtonClickedCb={
                 onRepostTransactionButtonClickedCb
               }
+              method={method}
             />
           }
         />

@@ -60,6 +60,7 @@ export interface WalletSummaryModel {
     {
       token: string;
       txId: number;
+      method: string;
     },
     Injections,
     StoreModel
@@ -214,7 +215,7 @@ const walletSummary: WalletSummaryModel = {
         apiSettings.protocol,
         apiSettings.ip,
         apiSettings.mode
-      ).repostTx(payload.token, payload.txId);
+      ).repostTx(payload.token, payload.txId, payload.method);
     }
   ),
   getAllTransactions: computed((state) => {

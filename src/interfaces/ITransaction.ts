@@ -9,9 +9,9 @@ export interface ITransaction {
   fee: number;
   slateId: string;
   slateMessage?: string;
-  kernels?: string[]
+  kernels?: string[];
   outputs?: {
-    amount: number,
-    commitment: string
-  }[]
+    amount: number;
+    commitment: string;
+  }[];
 }

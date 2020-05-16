@@ -1,6 +1,6 @@
-import React from 'react';
-import { Button, Intent } from '@blueprintjs/core';
-import { useTranslation } from 'react-i18next';
+import React from "react";
+import { Button, Intent } from "@blueprintjs/core";
+import { useTranslation } from "react-i18next";
 
 export type TansactionDetailsProps = {
   id: number;
@@ -11,8 +11,12 @@ export type TansactionDetailsProps = {
   message: string;
   fee: string;
   date: string;
+  method: string;
   onCancelTransactionButtonClickedCb: (transactionId: number) => void;
-  onRepostTransactionButtonClickedCb: (transactionId: number) => void;
+  onRepostTransactionButtonClickedCb: (
+    transactionId: number,
+    method: string
+  ) => void;
   kernels?: string[];
   outputs?: {
     amount: number;
@@ -29,6 +33,7 @@ export const TansactionDetailsComponent = ({
   message,
   fee,
   date,
+  method,
   onCancelTransactionButtonClickedCb,
   onRepostTransactionButtonClickedCb,
   kernels,
@@ -64,12 +69,12 @@ export const TansactionDetailsComponent = ({
           return (
             <div>
               <p>
-                {t('amount')}: <b>{output.amount}</b>
+                {t("amount")}: <b>{output.amount}</b>
               </p>
               <p>
-                {t('commitment')}: <b>{output.commitment}</b>
+                {t("commitment")}: <b>{output.commitment}</b>
               </p>
-              <p>{" "}</p>
+              <p> </p>
             </div>
           );
         }
@@ -151,7 +156,7 @@ export const TansactionDetailsComponent = ({
             text="Repost Transaction"
             minimal={true}
             intent={Intent.WARNING}
-            onClick={() => onRepostTransactionButtonClickedCb(id)}
+            onClick={() => onRepostTransactionButtonClickedCb(id, method)}
           />
         ) : null}
       </div>

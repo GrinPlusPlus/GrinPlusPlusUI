@@ -18,8 +18,9 @@ export const WalletActivitiyContainer = () => {
   } = useStoreState((state) => state.walletSummary);
   const { token } = useStoreState((state) => state.session);
   const { transactionOpened } = useStoreState((state) => state.ui);
-  const { openTransaction } = useStoreActions((state) => state.ui);
+  const { useGrinJoin } = useStoreState((state) => state.settings);
 
+  const { openTransaction } = useStoreActions((state) => state.ui);
   const {
     cancelTransaction,
     repostTransaction,
@@ -44,13 +45,14 @@ export const WalletActivitiyContainer = () => {
   );
 
   const onRepostTransactionButtonClicked = useCallback(
-    async (txId: number) => {
+    async (txId: number, method: string) => {
       setSelectedTx(-1); // not the best practice, but it's faster
       try {
         require("electron-log").info(`Trying to Repost Tx with Id: ${txId}`);
         await repostTransaction({
           token: token,
           txId: txId,
+          method: method,
         }).then((response: string) => {
           if (response.length > 0) return;
           Toaster.create({ position: Position.BOTTOM }).show({
@@ -80,6 +82,7 @@ export const WalletActivitiyContainer = () => {
         openTransactionCb={openTransaction}
         onCancelTransactionButtonClickedCb={setSelectedTx}
         onRepostTransactionButtonClickedCb={onRepostTransactionButtonClicked}
+        method={useGrinJoin ? "JOIN" : "STEM"}
       />
       <Alert
         className="bp3-dark"

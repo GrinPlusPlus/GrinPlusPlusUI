@@ -321,18 +321,22 @@ export class OwnerRPCApi extends BaseApi {
     return await this.makeRPCRequest(
       `${this.getRequestURL("cancel_tx")}`,
       "cancel_tx",
-      { session_token: token, id: txId }
+      { session_token: token, tx_id: txId }
     ).then((response) => {
       if (response.error) throw new Error(response.error.message);
       return response.result;
     });
   }
 
-  public async repostTx(token: string, txId: number): Promise<string> {
+  public async repostTx(
+    token: string,
+    txId: number,
+    method: string
+  ): Promise<string> {
     return await this.makeRPCRequest(
       `${this.getRequestURL("repost_tx")}`,
       "repost_tx",
-      { session_token: token, id: txId }
+      { session_token: token, tx_id: txId, method: method }
     ).then((response) => {
       if (response.error) throw new Error(response.error.message);
       return response.result;
