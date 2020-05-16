@@ -16,7 +16,7 @@ type PasswordPromptProps = {
   password: string;
   passwordCb: (password: string) => void;
   onCloseCb: () => void;
-  passwordButtonCb: () => void;
+  passwordButtonCb?: () => Promise<void>;
   waitingResponse: boolean;
   connected: boolean;
   buttonText: string;

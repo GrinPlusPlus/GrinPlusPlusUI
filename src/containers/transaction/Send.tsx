@@ -1,4 +1,4 @@
-import React, { useEffect, Suspense } from "react";
+import React, { useEffect, Suspense, useCallback } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
 import {
   Left,
@@ -6,6 +6,8 @@ import {
   SendGrinTopRow,
 } from "../../components/styled";
 import { LoadingComponent } from "../../components/extras/Loading";
+import { useTranslation } from "react-i18next";
+import { PasswordPromptComponent } from "../../components/wallet/open/PasswordPrompt";
 
 const SpendableContainer = React.lazy(() =>
   import("./Spendable").then((module) => ({
@@ -46,16 +48,29 @@ const CoinControlContainer = React.lazy(() =>
 const renderLoader = () => <LoadingComponent />;
 
 export const SendContainer = () => {
+  const { t } = useTranslation();
+
   const { token } = useStoreState((state) => state.session);
+  const { status } = useStoreState((state) => state.nodeSummary);
+  const {
+    username: usernamePrompt,
+    password: passwordPrompt,
+    callback: promptCallback,
+    waitingResponse: waitingForPassword,
+  } = useStoreState((state) => state.passwordPrompt);
 
   const { getOutputs, setInitialValues } = useStoreActions(
     (actions) => actions.sendCoinsModel
   );
+  const {
+    setUsername: setUsernamePrompt,
+    setPassword: setPasswordPrompt,
+  } = useStoreActions((state) => state.passwordPrompt);
 
   useEffect(() => {
     setInitialValues();
     async function init(t: string) {
-      await getOutputs(t).catch(() => { });
+      await getOutputs(t).catch(() => {});
     }
     init(token);
   }, [getOutputs, token, setInitialValues]);
@@ -78,6 +93,19 @@ export const SendContainer = () => {
         <TransactionAddressContainer />
         <CoinControlContainer />
       </SendGrinsContent>
+      {usernamePrompt ? (
+        <PasswordPromptComponent
+          isOpen={usernamePrompt && usernamePrompt.length > 0 ? true : false}
+          username={usernamePrompt ? usernamePrompt : ""}
+          password={passwordPrompt ? passwordPrompt : ""}
+          passwordCb={(value: string) => setPasswordPrompt(value)}
+          onCloseCb={() => setUsernamePrompt(undefined)}
+          waitingResponse={waitingForPassword}
+          passwordButtonCb={promptCallback}
+          connected={status.toLocaleLowerCase() !== "not connected"}
+          buttonText={t("confirm_password")}
+        />
+      ) : null}
     </Suspense>
   );
 };

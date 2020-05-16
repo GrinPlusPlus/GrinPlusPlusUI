@@ -1,58 +1,39 @@
-import classNames from 'classnames';
-import React, { useCallback } from 'react';
-import { PasswordPromptComponent } from '../../components/wallet/open/PasswordPrompt';
-import { SendUsingAddressComponent } from '../../components/transaction/send/SendUsingAddress';
-import { useHistory } from 'react-router-dom';
-import { useStoreActions, useStoreState } from '../../hooks';
-import { useTranslation } from 'react-i18next';
+import classNames from "classnames";
+import React, { useCallback } from "react";
+import { SendUsingAddressComponent } from "../../components/transaction/send/SendUsingAddress";
+import { useStoreActions, useStoreState } from "../../hooks";
+import { useTranslation } from "react-i18next";
 import {
-  Intent,
-  Position,
-  Toaster,
   Classes,
   Overlay,
   Spinner,
   Text,
+  Toaster,
+  Position,
+  Intent,
 } from "@blueprintjs/core";
+import { useHistory } from "react-router-dom";
 
 export const SendUsingAddressContainer = () => {
   const { t } = useTranslation();
-
   let history = useHistory();
 
-  const { spendable } = useStoreState((state) => state.walletSummary);
-  const {
-    amount,
-    message,
-    strategy,
-    inputs,
-    address,
-    waitingResponse,
-    isAddressValid,
-    fee,
-  } = useStoreState((state) => state.sendCoinsModel);
-
-  const { token, username } = useStoreState((state) => state.session);
-  const { status } = useStoreState((state) => state.nodeSummary);
-  const { sendUsingListener, setWaitingResponse } = useStoreActions(
-    (actions) => actions.sendCoinsModel
+  const { token } = useStoreState((state) => state.session);
+  const { amount, message, strategy, inputs, address } = useStoreState(
+    (state) => state.sendCoinsModel
   );
-  const { updateLogs } = useStoreActions((actions) => actions.wallet);
-
   const { useGrinJoin, grinJoinAddress } = useStoreState(
     (state) => state.settings
   );
 
   const {
-    username: usernamePrompt,
-    password: passwordPrompt,
-    waitingResponse: waitingForPassword,
-  } = useStoreState((state) => state.passwordPrompt);
-
-  const {
     setUsername: setUsernamePrompt,
-    setPassword: setPasswordPrompt,
+    setCallback: setCallbackPrompt,
   } = useStoreActions((state) => state.passwordPrompt);
+  const { sendUsingListener, setWaitingResponse } = useStoreActions(
+    (actions) => actions.sendCoinsModel
+  );
+  const { updateLogs } = useStoreActions((actions) => actions.wallet);
 
   const onSendButtonClicked = useCallback(async () => {
     if (amount === undefined || amount.slice(-1) === ".") return;
@@ -108,6 +89,12 @@ export const SendUsingAddressContainer = () => {
     updateLogs,
   ]);
 
+  const { spendable } = useStoreState((state) => state.walletSummary);
+  const { waitingResponse, isAddressValid, fee } = useStoreState(
+    (state) => state.sendCoinsModel
+  );
+  const { username } = useStoreState((state) => state.session);
+
   const classes = classNames("bp3-dark", Classes.CARD, Classes.ELEVATION_4);
 
   return (
@@ -117,7 +104,10 @@ export const SendUsingAddressContainer = () => {
         amount={amount ? Number(amount) : 0}
         inputsSelected={inputs.length !== 0}
         isAddressValid={isAddressValid}
-        onSendButtonClickedCb={() => setUsernamePrompt(username)}
+        onSendButtonClickedCb={() => {
+          setUsernamePrompt(username);
+          setCallbackPrompt(onSendButtonClicked);
+        }}
         fee={fee}
       />
       <Overlay
@@ -140,19 +130,6 @@ export const SendUsingAddressContainer = () => {
           <Text>{t("sending_wait")}</Text>
         </div>
       </Overlay>
-      {usernamePrompt ? (
-        <PasswordPromptComponent
-          isOpen={usernamePrompt && usernamePrompt.length > 0 ? true : false}
-          username={usernamePrompt ? usernamePrompt : ""}
-          password={passwordPrompt ? passwordPrompt : ""}
-          passwordCb={(value: string) => setPasswordPrompt(value)}
-          onCloseCb={() => setUsernamePrompt(undefined)}
-          waitingResponse={waitingForPassword}
-          passwordButtonCb={onSendButtonClicked}
-          connected={status.toLocaleLowerCase() !== "not connected"}
-          buttonText={t("confirm_password")}
-        />
-      ) : null}
     </div>
   );
 };
