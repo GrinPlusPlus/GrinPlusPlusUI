@@ -84,31 +84,35 @@ export const TransactionsTableComponent = ({
               cursor: "default",
             }}
           >
-            <TansactionDetailsComponent
-              id={transaction.Id}
-              address={transaction.address ? transaction.address : "-"}
-              slate={transaction.slateId}
-              type={transaction.type}
-              mType={mType}
-              message={
-                transaction.slateMessage ? transaction.slateMessage : "n/a"
-              }
-              fee={transaction.fee ? transaction.fee.toFixed(9) : "n/a"}
-              date={
-                transaction.creationDate === undefined
-                  ? "n/a"
-                  : new Date(+transaction.creationDate * 1000).toLocaleString()
-              }
-              kernels={transaction.kernels}
-              outputs={transaction.outputs}
-              method={method}
-              onCancelTransactionButtonClickedCb={
-                onCancelTransactionButtonClickedCb
-              }
-              onRepostTransactionButtonClickedCb={
-                onRepostTransactionButtonClickedCb
-              }
-            />
+            {transactionOpened === transaction.Id ? (
+              <TansactionDetailsComponent
+                id={transaction.Id}
+                address={transaction.address ? transaction.address : "-"}
+                slate={transaction.slateId}
+                type={transaction.type}
+                mType={mType}
+                message={
+                  transaction.slateMessage ? transaction.slateMessage : "n/a"
+                }
+                fee={transaction.fee ? transaction.fee.toFixed(9) : "n/a"}
+                date={
+                  transaction.creationDate === undefined
+                    ? "n/a"
+                    : new Date(
+                        +transaction.creationDate * 1000
+                      ).toLocaleString()
+                }
+                kernels={transaction.kernels}
+                outputs={transaction.outputs}
+                method={method}
+                onCancelTransactionButtonClickedCb={
+                  onCancelTransactionButtonClickedCb
+                }
+                onRepostTransactionButtonClickedCb={
+                  onRepostTransactionButtonClickedCb
+                }
+              />
+            ) : null}
           </td>
         </tr>
       );
