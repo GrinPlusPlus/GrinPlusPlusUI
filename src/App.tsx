@@ -1,16 +1,16 @@
-import React from 'react';
-import store from './store';
-import { InitializerContainer } from './containers/Initializer';
-import { MemoryRouter as Router, Route, Switch } from 'react-router-dom';
-import { RestoreContainer } from './containers/Recover';
-import { SendGrinContainer } from './containers/SendGrins';
-import { SignInContainer } from './containers/SignIn';
-import { SignUpContainer } from './containers/SingUp';
-import { StatusContainer } from './containers/Status';
-import { StoreProvider } from 'easy-peasy';
-import { useInterval } from './helpers';
-import { WalletContainer } from './containers/Wallet';
-import './App.scss';
+import React from "react";
+import store from "./store";
+import { InitializerContainer } from "./containers/Initializer";
+import { MemoryRouter as Router, Route, Switch } from "react-router-dom";
+import { RestoreContainer } from "./containers/Recover";
+import { SendGrinContainer } from "./containers/SendGrins";
+import { SignInContainer } from "./containers/SignIn";
+import { SignUpContainer } from "./containers/SingUp";
+import { StatusContainer } from "./containers/Status";
+import { StoreProvider } from "easy-peasy";
+import { useInterval } from "./helpers";
+import { WalletContainer } from "./containers/Wallet";
+import "./App.scss";
 
 const App: React.FC = () => {
   useInterval(async () => {
@@ -75,7 +75,6 @@ const App: React.FC = () => {
       );
     }
   }, store.getState().walletSummary.updateSummaryInterval);
-
 
   useInterval(async () => {
     const token = store.getState().session.token;

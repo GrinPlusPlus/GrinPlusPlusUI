@@ -156,9 +156,9 @@ const walletSummary: WalletSummaryModel = {
   ),
   updateWalletBalance: thunk(
     async (actions, token, { injections, getStoreActions, getStoreState }) => {
-      if (getStoreState().walletSummary.waitingResponse) return;
       const { ownerService, utilsService } = injections;
       const apiSettings = getStoreState().settings.defaultSettings;
+
       await new ownerService.RPC(
         apiSettings.floonet,
         apiSettings.protocol,
@@ -175,11 +175,6 @@ const walletSummary: WalletSummaryModel = {
             locked: balance.locked,
             formatCb: utilsService.formatGrinAmount,
           });
-        })
-        .catch((error) => {
-          require("electron-log").info(
-            `trying to get Wallet Balance: ${error}`
-          );
         });
     }
   ),
