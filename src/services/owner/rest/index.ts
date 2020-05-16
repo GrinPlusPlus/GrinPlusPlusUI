@@ -1,5 +1,5 @@
-import { BaseApi } from './../../api';
-import { ITransaction } from '../../../interfaces/ITransaction';
+import { BaseApi } from "./../../api";
+import { ITransaction } from "../../../interfaces/ITransaction";
 
 export class OwnerAPI extends BaseApi {
   public get url(): string {
@@ -15,7 +15,7 @@ export class OwnerAPI extends BaseApi {
       }
     ).then((response) => {
       let transactions: ITransaction[] = [];
-      require("electron-log").error(response.result.txs);
+      if (!response.result.txs) return transactions;
       transactions = response.result.txs.reverse().map((transaction: any) => {
         return {
           Id: transaction.id,
