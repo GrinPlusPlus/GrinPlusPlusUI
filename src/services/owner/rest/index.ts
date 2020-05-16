@@ -1,59 +1,8 @@
 import { BaseApi } from "./../../api";
-import { ITransaction } from "../../../interfaces/ITransaction";
 
 export class OwnerAPI extends BaseApi {
   public get url(): string {
     return this.getURL("owner");
-  }
-
-  public async getWalletSummary(token: string): Promise<ITransaction[]> {
-    return await this.makeRPCRequest(
-      this.getRequestURL("list_txs"),
-      "list_txs",
-      {
-        session_token: token,
-      }
-    ).then((response) => {
-      let transactions: ITransaction[] = [];
-      if (!response.result.txs) return transactions;
-      transactions = response.result.txs.reverse().map((transaction: any) => {
-        return {
-          Id: transaction.id,
-          address: transaction.address,
-          creationDate: transaction.creation_date_time,
-          amountCredited: transaction.amount_credited,
-          amountDebited: transaction.amount_debited,
-          type: transaction.type,
-          confirmedHeight: transaction.confirmed_height,
-          fee: transaction.fee,
-          slateId: transaction.slate_id,
-          slateMessage: transaction.slate_message,
-          kernels: transaction.kernels?.map(
-            (kernel: { commitment: string }) => kernel.commitment
-          ),
-          output: transaction.outputs?.map(
-            (output: {
-              amount: number;
-              block_height: number;
-              commitment: string;
-              keychain_path: string;
-              label: string;
-              status: string;
-              transaction_id: number;
-            }) => {
-              return { amount: output.amount, commitment: output.commitment };
-            }
-          ),
-        };
-      });
-      return transactions;
-    });
-  }
-
-  public async logout(token: string): Promise<boolean> {
-    return await this.makeRPCRequest(this.getRequestURL("logout"), "logout", {
-      session_token: token,
-    }).then((response) => (response.error ? false : true));
   }
 
   public async createWallet(

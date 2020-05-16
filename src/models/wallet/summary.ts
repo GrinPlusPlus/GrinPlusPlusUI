@@ -1,15 +1,8 @@
-import {
-  Action,
-  action,
-  Computed,
-  computed,
-  Thunk,
-  thunk
-  } from 'easy-peasy';
-import { cleanTxType } from '../../helpers';
-import { Injections } from '../../store';
-import { ITransaction } from '../../interfaces/ITransaction';
-import { StoreModel } from '..';
+import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy";
+import { cleanTxType } from "../../helpers";
+import { Injections } from "../../store";
+import { ITransaction } from "../../interfaces/ITransaction";
+import { StoreModel } from "..";
 
 export interface WalletSummaryModel {
   spendable: number;
@@ -110,7 +103,7 @@ const walletSummary: WalletSummaryModel = {
     state.total = payload.formatCb(payload.total);
     state.immature = payload.formatCb(payload.immature);
     state.unconfirmed = payload.formatCb(payload.unconfirmed);
-    state.locked = payload.formatCb( payload.locked);
+    state.locked = payload.formatCb(payload.locked);
   }),
   updateWalletSummary: thunk(
     async (actions, token, { injections, getStoreActions, getStoreState }) => {
@@ -118,7 +111,7 @@ const walletSummary: WalletSummaryModel = {
       actions.setWaitingResponse(true);
       const { ownerService, utilsService } = injections;
       const apiSettings = getStoreState().settings.defaultSettings;
-      await new ownerService.REST(
+      await new ownerService.RPC(
         apiSettings.floonet,
         apiSettings.protocol,
         apiSettings.ip,

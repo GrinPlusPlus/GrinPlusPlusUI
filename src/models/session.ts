@@ -1,14 +1,7 @@
-import {
-  Action,
-  action,
-  Computed,
-  computed,
-  Thunk,
-  thunk
-  } from 'easy-peasy';
-import { Injections } from '../store';
-import { ISeed } from '../interfaces/ISeed';
-import { StoreModel } from '.';
+import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy";
+import { Injections } from "../store";
+import { ISeed } from "../interfaces/ISeed";
+import { StoreModel } from ".";
 
 export interface SessionModel {
   username: string;
@@ -54,7 +47,7 @@ const session: SessionModel = {
     async (actions, token, { injections, getStoreState, getStoreActions }) => {
       const { ownerService } = injections;
       const apiSettings = getStoreState().settings.defaultSettings;
-      await new ownerService.REST(
+      await new ownerService.RPC(
         apiSettings.floonet,
         apiSettings.protocol,
         apiSettings.ip,
@@ -76,7 +69,11 @@ const session: SessionModel = {
     return state.username.length > 0 && state.token.length > 0;
   }),
   getWalletSeed: thunk(
-    async (actions, payload, { injections, getStoreState }): Promise<string[]> => {
+    async (
+      actions,
+      payload,
+      { injections, getStoreState }
+    ): Promise<string[]> => {
       const { ownerService } = injections;
       const apiSettings = getStoreState().settings.defaultSettings;
       return await new ownerService.RPC(
