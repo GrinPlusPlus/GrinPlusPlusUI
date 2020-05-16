@@ -44,6 +44,7 @@ export const OpenWalletContainer = () => {
 
   useEffect(() => {
     (async function() {
+      if (status.toLowerCase() !== "running") return;
       try {
         const accounts = await getAccounts();
         setAccounts(accounts);
