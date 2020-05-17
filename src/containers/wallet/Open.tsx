@@ -35,7 +35,7 @@ export const OpenWalletContainer = () => {
     (actions) => actions.signinModel
   );
 
-  const { updateWalletSummary } = useStoreActions(
+  const { updateWalletSummary, updateWalletBalance } = useStoreActions(
     (actions) => actions.walletSummary
   );
   const { getAddress } = useStoreActions(
@@ -69,6 +69,14 @@ export const OpenWalletContainer = () => {
         );
 
         try {
+          await updateWalletBalance(token);
+        } catch (error) {
+          require("electron-log").error(
+            `Error trying to get Wallet Balance: ${error.message}`
+          );
+        }
+
+        try {
           await updateWalletSummary(token);
         } catch (error) {
           require("electron-log").error(
@@ -77,7 +85,7 @@ export const OpenWalletContainer = () => {
         }
 
         try {
-          getAddress(token);
+          await getAddress(token);
         } catch (error) {
           require("electron-log").error(
             `Error trying to get Wallet address: ${error.message}`
