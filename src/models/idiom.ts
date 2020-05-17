@@ -10,6 +10,7 @@ export interface IdiomModel {
     | "es"
     | "fa"
     | "fr"
+    | "it"
     | "pl"
     | "pr"
     | "ru"
@@ -17,7 +18,18 @@ export interface IdiomModel {
     | "ua";
   setLanguage: Action<
     IdiomModel,
-    "ch" | "de" | "en" | "es" | "fa" | "fr" | "pl" | "pr" | "ru" | "tr" | "ua"
+    | "ch"
+    | "de"
+    | "en"
+    | "es"
+    | "fa"
+    | "fr"
+    | "it"
+    | "pl"
+    | "pr"
+    | "ru"
+    | "tr"
+    | "ua"
   >;
 }
 
@@ -40,7 +52,7 @@ const AsyncStore = {
   removeItem(key: any) {
     console.log("Removing item: " + key);
     this.electronStore.delete(key);
-  }
+  },
 };
 
 const idiom: IdiomModel = {
@@ -48,7 +60,7 @@ const idiom: IdiomModel = {
   setLanguage: action((state, language) => {
     AsyncStore.setItem("language", language);
     state.language = language;
-  })
+  }),
 };
 
 export default idiom;

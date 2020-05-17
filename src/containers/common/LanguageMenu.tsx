@@ -7,8 +7,8 @@ import { useTranslation } from "react-i18next";
 export const LanguageMenuContainer = () => {
   const { i18n } = useTranslation();
 
-  const { language } = useStoreState(actions => actions.idiom);
-  const { setLanguage } = useStoreActions(actions => actions.idiom);
+  const { language } = useStoreState((actions) => actions.idiom);
+  const { setLanguage } = useStoreActions((actions) => actions.idiom);
 
   const changeLanguage = useCallback(
     (
@@ -19,6 +19,7 @@ export const LanguageMenuContainer = () => {
         | "es"
         | "fa"
         | "fr"
+        | "it"
         | "pl"
         | "pr"
         | "ru"
@@ -64,6 +65,11 @@ export const LanguageMenuContainer = () => {
             icon={language === "fr" ? "tick" : undefined}
             text="Français"
             onClick={() => changeLanguage("fr")}
+          />
+          <MenuItem
+            icon={language === "it" ? "tick" : undefined}
+            text="Italiano"
+            onClick={() => changeLanguage("it")}
           />
           <MenuItem
             icon={language === "pl" ? "tick" : undefined}
