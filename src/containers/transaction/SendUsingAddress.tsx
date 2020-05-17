@@ -42,6 +42,7 @@ export const SendUsingAddressContainer = () => {
     require("electron-log").info(`Trying to Send ${amount} to ${address}...`);
     updateLogs(`${t("sending")} ${amount} ツ...`);
 
+    setUsernamePrompt(undefined); // to close prompt
     setWaitingResponse(true);
 
     try {
@@ -97,6 +98,7 @@ export const SendUsingAddressContainer = () => {
     setWaitingResponse,
     t,
     updateLogs,
+    setUsernamePrompt,
   ]);
 
   const { spendable } = useStoreState((state) => state.walletSummary);
