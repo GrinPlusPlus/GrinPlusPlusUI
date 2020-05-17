@@ -144,7 +144,7 @@ const walletSummary: WalletSummaryModel = {
               currentTransactions.filter((t) => cleanTxType(t.type) === "sent")
                 .length
             ) {
-              // New transaction Sent
+              // New Transaction Sent
               getStoreActions().ui.setAlert("last_transaction_sent");
             }
             if (
@@ -154,11 +154,11 @@ const walletSummary: WalletSummaryModel = {
                 (t) => cleanTxType(t.type) === "received"
               ).length
             ) {
-              // New transaction Received
+              // New Transaction Received
               getStoreActions().ui.setAlert("new_transaction_received");
             }
           }
-          // Upadte transactions
+          // Update transactions
           actions.updateSummary({
             transactions: transactions,
             formatCb: utilsService.formatGrinAmount,
