@@ -1,4 +1,4 @@
-import React, { useEffect, Suspense } from "react";
+import React, { useEffect, Suspense, useCallback } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
 import {
   Left,
@@ -77,7 +77,9 @@ export const SendContainer = () => {
   return (
     <Suspense fallback={renderLoader()}>
       <SendGrinsContent>
-        <SpendableContainer />
+        <div style={{ float: "right" }}>
+          <SpendableContainer />
+        </div>
         <SendGrinTopRow>
           <Left>
             <TransactionAmountContainer />

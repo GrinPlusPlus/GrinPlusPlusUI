@@ -108,7 +108,7 @@ export const SubmitButton = styled.section`
 `;
 
 export const SendGrinsContent = styled.section`
-  width: 70%;
+  width: 75%;
   overflow: auto;
   display: block;
   margin-left: auto;
