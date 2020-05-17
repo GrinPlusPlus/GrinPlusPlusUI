@@ -15,8 +15,9 @@ export const ReceiveUsingFileContainer = () => {
       receiveTx(files).then((results: [string[], [string, {}][]]) => {
         const errors = results[0];
         if (errors.length === 0) {
+          updateLogs(t("finished_without_errors"));
           Toaster.create({ position: Position.BOTTOM }).show({
-            message: t("finished_without_warnings"),
+            message: t("finished_without_errors"),
             intent: Intent.SUCCESS,
             icon: "tick-circle",
           });
