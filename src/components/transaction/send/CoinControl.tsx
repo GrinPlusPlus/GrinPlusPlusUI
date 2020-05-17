@@ -97,26 +97,17 @@ export const CoinControlComponent = ({
         <Radio label={t("custom")} value="CUSTOM" />
       </RadioGroup>
       <br />
-      <div
-        style={{
-          minHeight: "345px",
-          maxHeight: "345px",
-          width: "100%",
-          overflowY: "auto",
-        }}
-      >
-        <table className="transactions">
-          <tbody>
-            <tr>
-              <th></th>
-              <th>{t("height")}</th>
-              <th>{t("commitment")}</th>
-              <th>{t("amount")}</th>
-            </tr>
-            {listInputs(inputsTable)}
-          </tbody>
-        </table>
-      </div>
+      <table className="transactions">
+        <tbody>
+          <tr>
+            <th></th>
+            <th>{t("height")}</th>
+            <th>{t("commitment")}</th>
+            <th>{t("amount")}</th>
+          </tr>
+          {listInputs(inputsTable)}
+        </tbody>
+      </table>
     </div>
   );
 };

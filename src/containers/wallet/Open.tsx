@@ -107,6 +107,7 @@ export const OpenWalletContainer = () => {
     setWaitingResponse,
     getAddress,
     updateWalletSummary,
+    updateWalletBalance,
   ]);
 
   const getAccountsList = useCallback(

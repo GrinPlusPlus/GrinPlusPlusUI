@@ -1,4 +1,4 @@
-import React, { useEffect, Suspense, useCallback } from "react";
+import React, { useEffect, Suspense } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
 import {
   Left,
@@ -68,7 +68,6 @@ export const SendContainer = () => {
   } = useStoreActions((state) => state.passwordPrompt);
 
   useEffect(() => {
-    setInitialValues();
     async function init(t: string) {
       await getOutputs(t).catch(() => {});
     }
@@ -78,9 +77,7 @@ export const SendContainer = () => {
   return (
     <Suspense fallback={renderLoader()}>
       <SendGrinsContent>
-        <div style={{ float: "right", marginTop: "10px" }}>
-          <SpendableContainer />
-        </div>
+        <SpendableContainer />
         <SendGrinTopRow>
           <Left>
             <TransactionAmountContainer />
