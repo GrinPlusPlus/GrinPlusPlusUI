@@ -5,7 +5,7 @@ import {
   Position,
   Spinner,
   Text,
-  Toaster
+  Toaster,
 } from "@blueprintjs/core";
 import React, { useCallback } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
@@ -19,22 +19,22 @@ export const SendUsingAddressContainer = () => {
   const { t } = useTranslation();
   let history = useHistory();
 
-  const { token } = useStoreState(state => state.session);
+  const { token } = useStoreState((state) => state.session);
   const { amount, message, strategy, inputs, address } = useStoreState(
-    state => state.sendCoinsModel
+    (state) => state.sendCoinsModel
   );
   const { useGrinJoin, grinJoinAddress } = useStoreState(
-    state => state.settings
+    (state) => state.settings
   );
 
   const {
     setUsername: setUsernamePrompt,
-    setCallback: setCallbackPrompt
-  } = useStoreActions(state => state.passwordPrompt);
+    setCallback: setCallbackPrompt,
+  } = useStoreActions((state) => state.passwordPrompt);
   const { sendUsingListener, setWaitingResponse } = useStoreActions(
-    actions => actions.sendCoinsModel
+    (actions) => actions.sendCoinsModel
   );
-  const { updateLogs } = useStoreActions(actions => actions.wallet);
+  const { updateLogs } = useStoreActions((actions) => actions.wallet);
 
   const onSendButtonClicked = useCallback(async () => {
     if (amount === undefined || amount.slice(-1) === ".") return;
@@ -44,36 +44,45 @@ export const SendUsingAddressContainer = () => {
 
     setWaitingResponse(true);
 
-    const sent = await sendUsingListener({
-      amount: Number(amount),
-      message: message,
-      address: address,
-      method: useGrinJoin ? "JOIN" : "STEM",
-      grinJoinAddress: grinJoinAddress,
-      inputs: inputs,
-      token: token,
-      strategy: strategy
-    });
+    try {
+      const sent = await sendUsingListener({
+        amount: Number(amount),
+        message: message,
+        address: address,
+        method: useGrinJoin ? "JOIN" : "STEM",
+        grinJoinAddress: grinJoinAddress,
+        inputs: inputs,
+        token: token,
+        strategy: strategy,
+      });
 
-    const v3 = "[a-z2-7]{56}";
-    const alert = new RegExp(`${v3}`).test(address)
-      ? t("transaction_sent")
-      : t("transaction_started");
+      const v3 = "[a-z2-7]{56}";
+      const alert = new RegExp(`${v3}`).test(address)
+        ? t("transaction_sent")
+        : t("transaction_started");
 
-    const toast = sent === "sent" ? alert : t(sent);
+      const toast = sent === "sent" ? alert : t(sent);
 
-    Toaster.create({ position: Position.BOTTOM }).show({
-      message: toast,
-      intent: sent === "sent" ? Intent.SUCCESS : Intent.DANGER,
-      icon: sent === "sent" ? "tick-circle" : "warning-sign"
-    });
+      Toaster.create({ position: Position.BOTTOM }).show({
+        message: toast,
+        intent: sent === "sent" ? Intent.SUCCESS : Intent.DANGER,
+        icon: sent === "sent" ? "tick-circle" : "warning-sign",
+      });
+      setWaitingResponse(false);
+      updateLogs(toast);
+      require("electron-log").info(toast);
 
-    setWaitingResponse(false);
-
-    updateLogs(toast);
-    require("electron-log").info(toast);
-
-    if (sent === "sent") history.push("/wallet");
+      if (sent === "sent") history.push("/wallet");
+    } catch (error) {
+      setWaitingResponse(false);
+      require("electron-log").error(`Error sending: ${error}`);
+      updateLogs(error);
+      Toaster.create({ position: Position.BOTTOM }).show({
+        message: error,
+        intent: Intent.DANGER,
+        icon: "warning-sign",
+      });
+    }
   }, [
     sendUsingListener,
     amount,
@@ -87,14 +96,14 @@ export const SendUsingAddressContainer = () => {
     history,
     setWaitingResponse,
     t,
-    updateLogs
+    updateLogs,
   ]);
 
-  const { spendable } = useStoreState(state => state.walletSummary);
+  const { spendable } = useStoreState((state) => state.walletSummary);
   const { waitingResponse, isAddressValid, fee } = useStoreState(
-    state => state.sendCoinsModel
+    (state) => state.sendCoinsModel
   );
-  const { username } = useStoreState(state => state.session);
+  const { username } = useStoreState((state) => state.session);
 
   const classes = classNames("bp3-dark", Classes.CARD, Classes.ELEVATION_4);
 
@@ -124,7 +133,7 @@ export const SendUsingAddressContainer = () => {
             top: "50%",
             left: "50%",
             position: "fixed",
-            transform: "translate(-50%, -50%)"
+            transform: "translate(-50%, -50%)",
           }}
         >
           <Spinner size={Spinner.SIZE_SMALL} />

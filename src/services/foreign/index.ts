@@ -11,12 +11,13 @@ export class RPC {
       body: JSON.stringify({
         jsonrpc: "2.0",
         id: uuidv4(),
-        method: "check_version"
-      })
+        method: "check_version",
+      }),
     };
     return new Promise((resolve, reject) => {
       request(options, (error: any, response: any, body: string) => {
         if (error) reject(error);
+        if (response === undefined) reject(`Service Unavailable ` + body);
         if (response.statusCode !== 200) {
           reject("Invalid status code <" + response.statusCode + ">");
         }
@@ -35,12 +36,13 @@ export class RPC {
         jsonrpc: "2.0",
         id: uuidv4(),
         method: "receive_tx",
-        params: [slate, null, ""]
-      })
+        params: [slate, null, ""],
+      }),
     };
     return new Promise((resolve, reject) => {
       request(options, (error: any, response: any, body: string) => {
         if (error) reject(error);
+        if (response === undefined) reject(`Service Unavailable ` + body);
         if (response.statusCode !== 200) {
           reject("Invalid status code <" + response.statusCode + ">");
         }
