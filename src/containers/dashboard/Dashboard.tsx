@@ -24,7 +24,7 @@ export const DashboardContainer = () => {
           <div
             style={{
               width: "100%",
-              textAlign: "right"
+              textAlign: "right",
             }}
           >
             <Button
@@ -33,7 +33,7 @@ export const DashboardContainer = () => {
               style={{
                 color: "black",
                 height: "40px",
-                marginTop: "15px"
+                marginTop: "15px",
               }}
               intent={Intent.PRIMARY}
               text={`${t("send_grins")} ツ`}
