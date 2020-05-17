@@ -9,7 +9,7 @@ type OpenWalletProps = {
   accounts: JSX.Element[];
   passwordCb: (password: string) => void;
   onCloseCb: () => void;
-  passwordButtonCb: () => void;
+  passwordButtonCb: () => Promise<void>;
   waitingResponse: boolean;
   connected: boolean;
 };
