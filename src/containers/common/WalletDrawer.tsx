@@ -1,7 +1,8 @@
-import { SettingsContainer } from "./Settings";
+import { useStoreActions, useStoreState } from "../../hooks";
+
 import { Drawer } from "@blueprintjs/core";
-import { useStoreState, useStoreActions } from "../../hooks";
 import React from "react";
+import { SettingsContainer } from "./Settings";
 import { useTranslation } from "react-i18next";
 
 export const WalletDrawer = () => {

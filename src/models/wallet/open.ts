@@ -1,4 +1,5 @@
-import { Action, action, Thunk, thunk } from "easy-peasy";
+import { Action, Thunk, action, thunk } from "easy-peasy";
+
 import { Injections } from "../../store";
 import { StoreModel } from "..";
 

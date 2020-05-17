@@ -1,8 +1,9 @@
+import { Intent, Position, Toaster } from "@blueprintjs/core";
 import React, { useCallback } from "react";
-import { SaveTransactionFileComponent } from "../../components/transaction/send/SaveTransactionFile";
 import { useStoreActions, useStoreState } from "../../hooks";
+
+import { SaveTransactionFileComponent } from "../../components/transaction/send/SaveTransactionFile";
 import { useHistory } from "react-router-dom";
-import { Toaster, Position, Intent } from "@blueprintjs/core";
 
 export const SaveTransactionFileContainer = () => {
   let history = useHistory();

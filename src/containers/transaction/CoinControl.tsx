@@ -1,6 +1,7 @@
-import { CoinControlComponent } from "../../components/transaction/send/CoinControl";
 import React, { useCallback } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
+
+import { CoinControlComponent } from "../../components/transaction/send/CoinControl";
 
 export const CoinControlContainer = () => {
   const { strategy, inputsTable, inputs } = useStoreState(

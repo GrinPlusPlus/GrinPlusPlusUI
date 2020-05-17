@@ -1,6 +1,7 @@
 import { InitComponent, InitComponentProps } from "../Init";
-import React from "react";
 import { fireEvent, render, waitForElement } from "@testing-library/react";
+
+import React from "react";
 
 function renderInitComponent(props: Partial<InitComponentProps> = {}) {
   const defaultProps: InitComponentProps = {

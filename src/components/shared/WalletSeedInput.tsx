@@ -1,6 +1,7 @@
-import React, { useCallback } from "react";
-import { Flex } from "../styled";
 import { FormGroup, InputGroup, Tag } from "@blueprintjs/core";
+import React, { useCallback } from "react";
+
+import { Flex } from "../styled";
 import { ISeed } from "../../interfaces/ISeed";
 
 type WalletSeedInputComponentTrops = {

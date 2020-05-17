@@ -1,7 +1,8 @@
-import { formatDistanceToNow } from "date-fns";
-import { Intent } from "@blueprintjs/core";
-import { ISeed } from "./interfaces/ISeed";
 import { useEffect, useRef } from "react";
+
+import { ISeed } from "./interfaces/ISeed";
+import { Intent } from "@blueprintjs/core";
+import { formatDistanceToNow } from "date-fns";
 import { wordlist } from "./seed";
 
 export const getPercentage = function(

@@ -1,13 +1,14 @@
-import React, { useEffect, Suspense } from "react";
-import { useStoreActions, useStoreState } from "../../hooks";
 import {
   Left,
-  SendGrinsContent,
-  SendGrinTopRow
+  SendGrinTopRow,
+  SendGrinsContent
 } from "../../components/styled";
+import React, { Suspense, useEffect } from "react";
+import { useStoreActions, useStoreState } from "../../hooks";
+
 import { LoadingComponent } from "../../components/extras/Loading";
-import { useTranslation } from "react-i18next";
 import { PasswordPromptComponent } from "../../components/wallet/open/PasswordPrompt";
+import { useTranslation } from "react-i18next";
 
 const SpendableContainer = React.lazy(() =>
   import("./Spendable").then(module => ({

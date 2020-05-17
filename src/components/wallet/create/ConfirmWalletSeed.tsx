@@ -1,6 +1,7 @@
+import { Button, Callout, Classes, Intent } from "@blueprintjs/core";
+
 import React from "react";
 import { WalletSeedInputComponent } from "../../../components/shared/WalletSeedInput";
-import { Button, Callout, Classes, Intent } from "@blueprintjs/core";
 import { useTranslation } from "react-i18next";
 
 type CreateWalletProps = {

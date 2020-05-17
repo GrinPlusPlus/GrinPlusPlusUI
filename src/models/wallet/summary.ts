@@ -1,8 +1,9 @@
-import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy";
-import { cleanTxType } from "../../helpers";
-import { Injections } from "../../store";
+import { Action, Computed, Thunk, action, computed, thunk } from "easy-peasy";
+
 import { ITransaction } from "../../interfaces/ITransaction";
+import { Injections } from "../../store";
 import { StoreModel } from "..";
+import { cleanTxType } from "../../helpers";
 
 export interface WalletSummaryModel {
   spendable: number;

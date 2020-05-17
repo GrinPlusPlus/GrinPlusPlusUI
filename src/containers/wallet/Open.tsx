@@ -1,8 +1,9 @@
-import React, { Suspense, useCallback, useEffect } from "react";
 import { Card, Icon, Intent, Position, Text, Toaster } from "@blueprintjs/core";
-import { Redirect } from "react-router-dom";
+import React, { Suspense, useCallback, useEffect } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
+
 import { LoadingComponent } from "../../components/extras/Loading";
+import { Redirect } from "react-router-dom";
 
 const NoAccountsComponent = React.lazy(() =>
   import("../../components/extras/NoAccounts").then(module => ({

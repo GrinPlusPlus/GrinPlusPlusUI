@@ -1,6 +1,7 @@
-import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy";
-import { Injections } from "../store";
+import { Action, Computed, Thunk, action, computed, thunk } from "easy-peasy";
+
 import { ISeed } from "../interfaces/ISeed";
+import { Injections } from "../store";
 import { StoreModel } from ".";
 
 export interface SessionModel {

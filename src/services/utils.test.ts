@@ -1,11 +1,11 @@
 import {
+  cleanOnionURL,
   formatGrinAmount,
   getFileExtension,
-  validateExtension,
-  validateUrl,
-  validateOnion,
   validateAddress,
-  cleanOnionURL
+  validateExtension,
+  validateOnion,
+  validateUrl
 } from "./utils";
 
 describe("Utils", () => {

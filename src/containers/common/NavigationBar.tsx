@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Alignment,
   Button,
@@ -7,6 +6,8 @@ import {
   NavbarGroup,
   NavbarHeading
 } from "@blueprintjs/core";
+
+import React from "react";
 import { useHistory } from "react-router-dom";
 
 type NavBarProps = {

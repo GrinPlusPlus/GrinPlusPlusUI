@@ -1,6 +1,6 @@
-import React from "react";
 import { AccountListContent } from "../../styled";
 import { PasswordPromptComponent } from "./PasswordPrompt";
+import React from "react";
 import { useTranslation } from "react-i18next";
 
 type OpenWalletProps = {

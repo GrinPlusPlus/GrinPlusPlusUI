@@ -1,8 +1,9 @@
+import { ControlGroup, FormGroup } from "@blueprintjs/core";
+import { useStoreActions, useStoreState } from "../../hooks";
+
 import React from "react";
 import { SendUsingAddressContainer } from "./SendUsingAddress";
 import { TransactionAddressComponent } from "../../components/transaction/send/TransactionAddress";
-import { ControlGroup, FormGroup } from "@blueprintjs/core";
-import { useStoreActions, useStoreState } from "../../hooks";
 import { useTranslation } from "react-i18next";
 
 export const TransactionAddressContainer = () => {

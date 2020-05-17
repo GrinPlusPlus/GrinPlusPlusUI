@@ -1,8 +1,3 @@
-import { InputPasswordComponent } from "../../custom/InputPassword";
-import React from "react";
-import { WalletSeedInputComponent } from "../../shared/WalletSeedInput";
-import { ISeed } from "../../../interfaces/ISeed";
-import { SubmitButton, HorizontallyCenter } from "../../styled";
 import {
   Button,
   FormGroup,
@@ -11,6 +6,12 @@ import {
   Radio,
   RadioGroup
 } from "@blueprintjs/core";
+import { HorizontallyCenter, SubmitButton } from "../../styled";
+
+import { ISeed } from "../../../interfaces/ISeed";
+import { InputPasswordComponent } from "../../custom/InputPassword";
+import React from "react";
+import { WalletSeedInputComponent } from "../../shared/WalletSeedInput";
 import { useTranslation } from "react-i18next";
 
 type RecoverWalletProps = {

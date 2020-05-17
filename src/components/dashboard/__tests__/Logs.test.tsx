@@ -1,6 +1,7 @@
 import { LogsComponent, LogsProps } from "../Logs";
-import React from "react";
 import { fireEvent, render, waitForElement } from "@testing-library/react";
+
+import React from "react";
 
 function renderLogsComponent(props: Partial<LogsProps> = {}) {
   const defaultProps: LogsProps = {

@@ -1,6 +1,7 @@
 import { InputPasswordComponent, InputPasswordProps } from "../InputPassword";
-import React from "react";
 import { fireEvent, render, waitForElement } from "@testing-library/react";
+
+import React from "react";
 
 function renderInputPasswordComponent(props: Partial<InputPasswordProps> = {}) {
   const defaultProps: InputPasswordProps = {

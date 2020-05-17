@@ -1,6 +1,3 @@
-import { InputPasswordComponent } from "../../../components/custom/InputPassword";
-import React from "react";
-import { SubmitButton } from "../../styled";
 import {
   Button,
   Dialog,
@@ -8,6 +5,10 @@ import {
   InputGroup,
   Intent
 } from "@blueprintjs/core";
+
+import { InputPasswordComponent } from "../../../components/custom/InputPassword";
+import React from "react";
+import { SubmitButton } from "../../styled";
 import { useTranslation } from "react-i18next";
 
 type CreateWalletProps = {

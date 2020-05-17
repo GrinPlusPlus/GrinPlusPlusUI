@@ -1,5 +1,6 @@
-import React from "react";
 import { Button, InputGroup } from "@blueprintjs/core";
+
+import React from "react";
 import { useTranslation } from "react-i18next";
 
 type TransactionAddressProps = {

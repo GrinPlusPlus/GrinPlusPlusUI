@@ -1,5 +1,5 @@
-import React from "react";
 import { Icon } from "@blueprintjs/core";
+import React from "react";
 import { StatusBarContent } from "../../components/styled";
 import { useTranslation } from "react-i18next";
 

@@ -1,5 +1,3 @@
-import React from "react";
-import { Title } from "../../styled";
 import {
   Button,
   ControlGroup,
@@ -7,6 +5,9 @@ import {
   FormGroup,
   Intent
 } from "@blueprintjs/core";
+
+import React from "react";
+import { Title } from "../../styled";
 import { useTranslation } from "react-i18next";
 
 type FinalizeProps = {

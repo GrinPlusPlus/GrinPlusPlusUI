@@ -1,6 +1,8 @@
 import createWalletModel, { CreateWalletModel } from "./wallet/create";
 import finalizeModel, { FinalizeModel } from "./coins/finalize";
+import idiom, { IdiomModel } from "./idiom";
 import nodeSummary, { NodeSummaryModel } from "./node";
+import prompt, { PasswordPromptModel } from "./prompt";
 import receiveCoinsModel, { ReceiveCoinsModel } from "./coins/receive";
 import restoreWallet, { RestoreWalletModel } from "./wallet/restore";
 import sendCoinsModel, { SendCoinsModel } from "./coins/send";
@@ -10,8 +12,6 @@ import signinModel, { SigninModel } from "./wallet/open";
 import ui, { UIModel } from "./ui";
 import wallet, { WalletModel } from "./wallet";
 import walletSummary, { WalletSummaryModel } from "./wallet/summary";
-import idiom, { IdiomModel } from "./idiom";
-import prompt, { PasswordPromptModel } from "./prompt";
 
 export interface StoreModel {
   settings: SettingsModel;

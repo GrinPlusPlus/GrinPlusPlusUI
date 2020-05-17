@@ -1,7 +1,8 @@
-import React, { useCallback } from "react";
-import { WalletActivityComponent } from "../../components/dashboard/WalletActivity";
 import { Alert, Intent, Position, Toaster } from "@blueprintjs/core";
+import React, { useCallback } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
+
+import { WalletActivityComponent } from "../../components/dashboard/WalletActivity";
 import { useTranslation } from "react-i18next";
 
 export const WalletActivitiyContainer = () => {

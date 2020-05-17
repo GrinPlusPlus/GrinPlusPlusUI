@@ -1,7 +1,8 @@
-import NumberFormat from "react-number-format";
-import React from "react";
 import { BalanceSuffix, Flex, SpendableBalance } from "../styled";
 import { Text, Tooltip } from "@blueprintjs/core";
+
+import NumberFormat from "react-number-format";
+import React from "react";
 import { useTranslation } from "react-i18next";
 
 export type WalletBalanceProps = {

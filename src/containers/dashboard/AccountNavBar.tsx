@@ -1,17 +1,18 @@
-import React from "react";
-import { useStoreActions, useStoreState } from "./../../hooks";
 import {
   Alignment,
   Button,
   Navbar,
+  NavbarDivider,
   NavbarGroup,
-  NavbarHeading,
-  NavbarDivider
+  NavbarHeading
 } from "@blueprintjs/core";
-import { WalletUsername } from "./../../components/styled";
-import { useHistory } from "react-router-dom";
+import { useStoreActions, useStoreState } from "./../../hooks";
+
 import { LanguageMenuContainer } from "../common/LanguageMenu";
+import React from "react";
+import { WalletUsername } from "./../../components/styled";
 import { getResourcePath } from "../../helpers";
+import { useHistory } from "react-router-dom";
 
 export const AccountNavBarContainer = () => {
   let history = useHistory();

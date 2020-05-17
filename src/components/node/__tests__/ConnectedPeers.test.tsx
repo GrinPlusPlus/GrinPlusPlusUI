@@ -2,6 +2,7 @@ import {
   ConnectedPeersComponent,
   ConnectedPeersProps
 } from "../ConnectedPeers";
+
 import React from "react";
 import { render } from "@testing-library/react";
 

@@ -1,14 +1,15 @@
-import classNames from "classnames";
-import { InputPasswordComponent } from "../../custom/InputPassword";
-import React from "react";
 import {
   Button,
   Classes,
   Intent,
   Overlay,
-  Text,
-  Spinner
+  Spinner,
+  Text
 } from "@blueprintjs/core";
+
+import { InputPasswordComponent } from "../../custom/InputPassword";
+import React from "react";
+import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 
 type PasswordPromptProps = {

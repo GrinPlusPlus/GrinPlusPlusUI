@@ -1,5 +1,5 @@
-import React from "react";
 import { Content } from "../../styled";
+import React from "react";
 import { useTranslation } from "react-i18next";
 
 type SpendableProps = {

@@ -1,6 +1,6 @@
-import React from "react";
 import { ConnectedPeersComponent } from "../../components/node/ConnectedPeers";
 import { NodeStatusComponent } from "../../components/node/NodeStatus";
+import React from "react";
 import { Spinner } from "@blueprintjs/core";
 import { useStoreState } from "../../hooks";
 

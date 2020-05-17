@@ -1,7 +1,8 @@
-import React from "react";
-import { ReceiveUsingListenerComponent } from "../../components/transaction/receive/ReceiveUsingListener";
 import { HorizontallyCenter, Title } from "../../components/styled";
 import { Spinner, Text } from "@blueprintjs/core";
+
+import React from "react";
+import { ReceiveUsingListenerComponent } from "../../components/transaction/receive/ReceiveUsingListener";
 import { useStoreState } from "../../hooks";
 import { useTranslation } from "react-i18next";
 

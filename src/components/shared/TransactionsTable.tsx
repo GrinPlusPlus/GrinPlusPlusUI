@@ -1,8 +1,4 @@
-import React from "react";
 import { Icon, Text } from "@blueprintjs/core";
-import { ITransaction } from "../../interfaces/ITransaction";
-import { TansactionDetailsComponent } from "../transaction/Details";
-import { useTranslation } from "react-i18next";
 import {
   cleanTxType,
   cutAddress,
@@ -10,6 +6,11 @@ import {
   getTxIcon,
   getTxIntent
 } from "../../helpers";
+
+import { ITransaction } from "../../interfaces/ITransaction";
+import React from "react";
+import { TansactionDetailsComponent } from "../transaction/Details";
+import { useTranslation } from "react-i18next";
 
 type TransactionsTableProps = {
   transactions: ITransaction[];

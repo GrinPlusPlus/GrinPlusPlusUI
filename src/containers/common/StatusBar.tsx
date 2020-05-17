@@ -1,5 +1,6 @@
-import React, { Suspense } from "react";
 import { Alert, Intent } from "@blueprintjs/core";
+import React, { Suspense } from "react";
+
 import { useHistory } from "react-router-dom";
 import { useStoreState } from "../../hooks";
 import { useTranslation } from "react-i18next";

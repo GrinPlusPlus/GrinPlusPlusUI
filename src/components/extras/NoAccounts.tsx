@@ -1,6 +1,7 @@
-import React from "react";
 import { Button, Intent } from "@blueprintjs/core";
+
 import { HorizontallyCenter } from "../styled";
+import React from "react";
 import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 

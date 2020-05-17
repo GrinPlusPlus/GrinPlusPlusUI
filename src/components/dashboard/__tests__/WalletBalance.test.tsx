@@ -1,6 +1,7 @@
-import React from "react";
 import { WalletBalanceComponent, WalletBalanceProps } from "../WalletBalance";
 import { fireEvent, render, waitForElement } from "@testing-library/react";
+
+import React from "react";
 
 function renderWalletBalanceComponent(props: Partial<WalletBalanceProps> = {}) {
   const defaultProps: WalletBalanceProps = {

@@ -1,7 +1,8 @@
-import React, { Suspense } from "react";
 import { Form, HorizontallyCenter } from "../components/styled";
-import { LoadingComponent } from "../components/extras/Loading";
+import React, { Suspense } from "react";
+
 import { Button } from "@blueprintjs/core";
+import { LoadingComponent } from "../components/extras/Loading";
 import { useHistory } from "react-router-dom";
 import { useStoreActions } from "../hooks";
 import { useTranslation } from "react-i18next";

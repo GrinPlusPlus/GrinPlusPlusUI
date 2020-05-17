@@ -1,8 +1,9 @@
 import React, { Suspense } from "react";
+import { useStoreActions, useStoreState } from "../hooks";
+
 import { AlertComponent } from "../components/extras/Alert";
 import { LoadingComponent } from "../components/extras/Loading";
 import { Redirect } from "react-router-dom";
-import { useStoreActions, useStoreState } from "../hooks";
 
 const AccountNavBarContainer = React.lazy(() =>
   import("./dashboard/AccountNavBar").then(module => ({

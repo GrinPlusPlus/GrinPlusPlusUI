@@ -1,5 +1,5 @@
-import React from "react";
 import { HorizontallyCenter } from "../styled";
+import React from "react";
 import { getResourcePath } from "../../helpers";
 
 export const GrinPPBannerComponent = () => {

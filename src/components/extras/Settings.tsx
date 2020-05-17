@@ -1,5 +1,3 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
 import {
   Alert,
   Button,
@@ -15,6 +13,9 @@ import {
   Switch,
   Text
 } from "@blueprintjs/core";
+
+import React from "react";
+import { useTranslation } from "react-i18next";
 
 type SettingsProps = {
   status: string;

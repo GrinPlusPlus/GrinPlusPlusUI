@@ -1,6 +1,7 @@
-import React, { useCallback } from "react";
-import { ReceiveUsingFileComponent } from "../../components/transaction/receive/ReceiveUsingFile";
 import { Intent, Position, Toaster } from "@blueprintjs/core";
+import React, { useCallback } from "react";
+
+import { ReceiveUsingFileComponent } from "../../components/transaction/receive/ReceiveUsingFile";
 import { useStoreActions } from "../../hooks";
 import { useTranslation } from "react-i18next";
 

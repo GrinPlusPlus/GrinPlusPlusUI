@@ -1,5 +1,6 @@
-import React, { useState } from "react";
 import { Button, InputGroup, Intent } from "@blueprintjs/core";
+import React, { useState } from "react";
+
 import { useTranslation } from "react-i18next";
 
 export type InputPasswordProps = {

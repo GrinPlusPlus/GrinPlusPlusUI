@@ -1,5 +1,5 @@
-import React from "react";
 import { IPeer } from "../../interfaces/IPeer";
+import React from "react";
 import { useTranslation } from "react-i18next";
 
 export type ConnectedPeersProps = { peers: IPeer[] };

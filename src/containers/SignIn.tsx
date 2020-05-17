@@ -1,4 +1,5 @@
 import React, { Suspense } from "react";
+
 import { HorizontallyCenter } from "../components/styled";
 import { LoadingComponent } from "../components/extras/Loading";
 

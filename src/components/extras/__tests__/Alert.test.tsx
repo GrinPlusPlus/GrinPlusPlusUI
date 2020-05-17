@@ -1,6 +1,7 @@
 import { AlertComponent, AlertProps } from "../Alert";
-import React from "react";
 import { fireEvent, render, waitForElement } from "@testing-library/react";
+
+import React from "react";
 
 function renderLogsComponent(props: Partial<AlertProps> = {}) {
   function changeMessage(message: string | undefined) {

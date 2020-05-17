@@ -1,10 +1,12 @@
-import * as serviceWorker from "./serviceWorker";
-import App from "./App";
-import React, { Suspense } from "react";
-import ReactDOM from "react-dom";
 import "./index.css";
-
 import "./i18n";
+
+import * as serviceWorker from "./serviceWorker";
+
+import React, { Suspense } from "react";
+
+import App from "./App";
+import ReactDOM from "react-dom";
 
 ReactDOM.render(
   <Suspense fallback={<div />}>

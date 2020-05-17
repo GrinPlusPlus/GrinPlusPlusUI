@@ -1,5 +1,6 @@
-import { BaseApi } from "./api";
 import { getCommand, getConfigFilePath, getNodeDataPath } from "./node";
+
+import { BaseApi } from "./api";
 import { NodeAPI } from "./node/rest";
 import { OwnerAPI } from "./owner/rest";
 import { OwnerRPCApi } from "./owner/rpc";

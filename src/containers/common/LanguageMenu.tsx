@@ -1,7 +1,8 @@
+import { Button, Menu, MenuItem, Popover } from "@blueprintjs/core";
 import React, { useCallback } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
+
 import { useTranslation } from "react-i18next";
-import { Popover, Button, Menu, MenuItem } from "@blueprintjs/core";
 
 export const LanguageMenuContainer = () => {
   const { i18n } = useTranslation();

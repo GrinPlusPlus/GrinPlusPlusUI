@@ -1,7 +1,8 @@
-import { FinalizeComponent } from "../../components/transaction/finalize/FinalizeGrins";
-import React, { useCallback } from "react";
 import { Intent, Position, Toaster } from "@blueprintjs/core";
+import React, { useCallback } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
+
+import { FinalizeComponent } from "../../components/transaction/finalize/FinalizeGrins";
 import { useTranslation } from "react-i18next";
 
 export const FinalizeContainer = () => {

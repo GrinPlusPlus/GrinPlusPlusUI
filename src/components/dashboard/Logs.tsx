@@ -1,5 +1,6 @@
-import React from "react";
 import { LogsBox, Title } from "../styled";
+
+import React from "react";
 import { useTranslation } from "react-i18next";
 
 export type LogsProps = { logs: string };

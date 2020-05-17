@@ -1,5 +1,6 @@
-import React from "react";
 import { Center, HorizontallyCenter } from "../styled";
+
+import React from "react";
 import { Spinner } from "@blueprintjs/core";
 
 export const LoadingComponent = () => {

@@ -1,11 +1,12 @@
-import React, { useCallback } from "react";
 import { Alert, Intent, Position, Toaster } from "@blueprintjs/core";
+import React, { useCallback } from "react";
+import { useStoreActions, useStoreState } from "../../hooks";
+
 import { ISeed } from "../../interfaces/ISeed";
 import { PasswordPromptComponent } from "../../components/wallet/open/PasswordPrompt";
 import { SettingsComponent } from "../../components/extras/Settings";
-import { useStoreActions, useStoreState } from "../../hooks";
-import { useTranslation } from "react-i18next";
 import { WalletSeedInputComponent } from "../../components/shared/WalletSeedInput";
+import { useTranslation } from "react-i18next";
 
 export const SettingsContainer = () => {
   const { t } = useTranslation();

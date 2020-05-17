@@ -1,16 +1,17 @@
+import {
+  Action,
+  Computed,
+  Thunk,
+  ThunkOn,
+  action,
+  computed,
+  thunk,
+  thunkOn
+} from "easy-peasy";
+
 import { Injections } from "../../store";
 import { StoreModel } from "..";
 import { validateAddress } from "../../services/utils";
-import {
-  Action,
-  action,
-  Computed,
-  computed,
-  Thunk,
-  thunk,
-  ThunkOn,
-  thunkOn
-} from "easy-peasy";
 
 export interface SendCoinsModel {
   amount: string | undefined;

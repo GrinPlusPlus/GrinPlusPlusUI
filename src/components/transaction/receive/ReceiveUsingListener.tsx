@@ -1,6 +1,7 @@
-import React from "react";
 import { Button, Intent } from "@blueprintjs/core";
+
 import { HorizontallyCenter } from "../../styled";
+import React from "react";
 
 type ReceiveUsingListenerProps = {
   address: string;

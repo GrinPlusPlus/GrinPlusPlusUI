@@ -1,8 +1,9 @@
-import React, { useEffect, Suspense } from "react";
-import { Redirect } from "react-router-dom";
+import React, { Suspense, useEffect } from "react";
 import { useStoreActions, useStoreState } from "../hooks";
-import { useTranslation } from "react-i18next";
+
 import { LoadingComponent } from "../components/extras/Loading";
+import { Redirect } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const InitComponent = React.lazy(() =>
   import("./../components/extras/Init").then(module => ({

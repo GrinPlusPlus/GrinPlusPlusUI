@@ -1,6 +1,7 @@
-import React from "react";
-import { Flex } from "../../styled";
 import { FormGroup, InputGroup } from "@blueprintjs/core";
+
+import { Flex } from "../../styled";
+import React from "react";
 import { useTranslation } from "react-i18next";
 
 type TransactionAmountProps = {

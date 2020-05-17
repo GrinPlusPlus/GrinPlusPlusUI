@@ -1,5 +1,6 @@
-import React from "react";
 import { Intent, Toast, Toaster } from "@blueprintjs/core";
+
+import React from "react";
 import { useTranslation } from "react-i18next";
 
 export type AlertProps = {

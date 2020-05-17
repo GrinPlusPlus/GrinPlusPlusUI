@@ -1,6 +1,7 @@
-import React from "react";
-import { ITransaction } from "../../interfaces/ITransaction";
 import { Tab, Tabs } from "@blueprintjs/core";
+
+import { ITransaction } from "../../interfaces/ITransaction";
+import React from "react";
 import { Title } from "../styled";
 import { TransactionsTableComponent } from "../shared/TransactionsTable";
 import { useTranslation } from "react-i18next";

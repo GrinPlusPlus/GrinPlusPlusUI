@@ -1,9 +1,10 @@
-import React, { useCallback } from "react";
-import { Intent } from "@blueprintjs/core";
 import { Position, Toaster } from "@blueprintjs/core";
-import { useHistory } from "react-router-dom";
+import React, { useCallback } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
+
+import { Intent } from "@blueprintjs/core";
 import { RecoverWalletComponent } from "./../../components/wallet/recover/RecoverWallet";
+import { useHistory } from "react-router-dom";
 
 export const RestoreWalletContainer = () => {
   let history = useHistory();

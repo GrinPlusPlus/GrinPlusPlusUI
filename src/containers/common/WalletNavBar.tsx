@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Alignment,
   Button,
@@ -6,10 +5,12 @@ import {
   NavbarDivider,
   NavbarGroup
 } from "@blueprintjs/core";
+
+import { LanguageMenuContainer } from "./LanguageMenu";
+import React from "react";
 import { useHistory } from "react-router-dom";
 import { useStoreActions } from "../../hooks";
 import { useTranslation } from "react-i18next";
-import { LanguageMenuContainer } from "./LanguageMenu";
 
 export const WalletNavBarContainer = () => {
   const { t } = useTranslation();

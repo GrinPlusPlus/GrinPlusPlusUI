@@ -1,11 +1,12 @@
-import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy";
+import { Action, Computed, Thunk, action, computed, thunk } from "easy-peasy";
 import {
   generateEmptySeed,
   getSeedWords,
   isValidSeedWord
 } from "../../helpers";
-import { Injections } from "../../store";
+
 import { ISeed } from "../../interfaces/ISeed";
+import { Injections } from "../../store";
 import { StoreModel } from "..";
 
 export interface RestoreWalletModel {

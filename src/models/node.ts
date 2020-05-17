@@ -1,8 +1,9 @@
-import { Action, action, Thunk, thunk } from "easy-peasy";
+import { Action, Thunk, action, thunk } from "easy-peasy";
 import { getStateColor, getStateText } from "../helpers";
-import { Injections } from "../store";
+
 import { INodeStatus } from "../interfaces/INodeStatus";
 import { IPeer } from "../interfaces/IPeer";
+import { Injections } from "../store";
 import { StoreModel } from ".";
 
 export interface NodeSummaryModel {

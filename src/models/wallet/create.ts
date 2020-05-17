@@ -1,8 +1,9 @@
-import update from "immutability-helper";
-import { Action, action, computed, Computed, Thunk, thunk } from "easy-peasy";
-import { Injections } from "../../store";
+import { Action, Computed, Thunk, action, computed, thunk } from "easy-peasy";
+
 import { ISeed } from "../../interfaces/ISeed";
+import { Injections } from "../../store";
 import { StoreModel } from "..";
+import update from "immutability-helper";
 
 export interface CreateWalletModel {
   username: string;

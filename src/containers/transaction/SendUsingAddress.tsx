@@ -1,18 +1,19 @@
-import classNames from "classnames";
-import React, { useCallback } from "react";
-import { SendUsingAddressComponent } from "../../components/transaction/send/SendUsingAddress";
-import { useStoreActions, useStoreState } from "../../hooks";
-import { useTranslation } from "react-i18next";
 import {
   Classes,
+  Intent,
   Overlay,
+  Position,
   Spinner,
   Text,
-  Toaster,
-  Position,
-  Intent
+  Toaster
 } from "@blueprintjs/core";
+import React, { useCallback } from "react";
+import { useStoreActions, useStoreState } from "../../hooks";
+
+import { SendUsingAddressComponent } from "../../components/transaction/send/SendUsingAddress";
+import classNames from "classnames";
 import { useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export const SendUsingAddressContainer = () => {
   const { t } = useTranslation();

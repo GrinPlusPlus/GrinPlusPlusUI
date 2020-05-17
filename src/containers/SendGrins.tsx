@@ -1,7 +1,8 @@
 import React, { Suspense } from "react";
+import { useStoreActions, useStoreState } from "../hooks";
+
 import { LoadingComponent } from "../components/extras/Loading";
 import { Redirect } from "react-router-dom";
-import { useStoreActions, useStoreState } from "../hooks";
 import { useTranslation } from "react-i18next";
 
 const NavBarContainer = React.lazy(() =>

@@ -1,6 +1,7 @@
+import { TansactionDetailsComponent, TansactionDetailsProps } from "../Details";
+
 import React from "react";
 import { render } from "@testing-library/react";
-import { TansactionDetailsComponent, TansactionDetailsProps } from "../Details";
 
 function renderTxDetailsComponent(props: Partial<TansactionDetailsProps> = {}) {
   const defaultProps: TansactionDetailsProps = {

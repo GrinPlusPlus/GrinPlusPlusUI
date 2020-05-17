@@ -1,8 +1,9 @@
-import React, { useCallback, Suspense } from "react";
-import { hideSeedWords } from "../../helpers";
 import { Intent, Position, Toaster } from "@blueprintjs/core";
-import { useHistory } from "react-router-dom";
+import React, { Suspense, useCallback } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
+
+import { hideSeedWords } from "../../helpers";
+import { useHistory } from "react-router-dom";
 
 const CreateWalletComponent = React.lazy(() =>
   import("./../../components/wallet/create/CreateWallet").then(module => ({
