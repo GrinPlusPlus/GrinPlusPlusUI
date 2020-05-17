@@ -111,6 +111,7 @@ export const WalletContainer = () => {
           passwordCb={(value: string) => setPassword(value)}
           onCloseCb={() => {
             setUsername(undefined);
+            setPassword(undefined);
           }}
           waitingResponse={waitingResponse}
           passwordButtonCb={backupSeed}

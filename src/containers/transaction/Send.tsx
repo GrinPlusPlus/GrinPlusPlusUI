@@ -1,7 +1,7 @@
 import {
   Left,
   SendGrinTopRow,
-  SendGrinsContent
+  SendGrinsContent,
 } from "../../components/styled";
 import React, { Suspense, useEffect } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
@@ -11,38 +11,38 @@ import { PasswordPromptComponent } from "../../components/wallet/open/PasswordPr
 import { useTranslation } from "react-i18next";
 
 const SpendableContainer = React.lazy(() =>
-  import("./Spendable").then(module => ({
-    default: module.SpendableContainer
+  import("./Spendable").then((module) => ({
+    default: module.SpendableContainer,
   }))
 );
 
 const TransactionAmountContainer = React.lazy(() =>
-  import("./TransactionAmount").then(module => ({
-    default: module.TransactionAmountContainer
+  import("./TransactionAmount").then((module) => ({
+    default: module.TransactionAmountContainer,
   }))
 );
 
 const SaveTransactionFileContainer = React.lazy(() =>
-  import("./SaveTransactionFile").then(module => ({
-    default: module.SaveTransactionFileContainer
+  import("./SaveTransactionFile").then((module) => ({
+    default: module.SaveTransactionFileContainer,
   }))
 );
 
 const TransactionMessageContainer = React.lazy(() =>
-  import("./TransactionMessage").then(module => ({
-    default: module.TransactionMessageContainer
+  import("./TransactionMessage").then((module) => ({
+    default: module.TransactionMessageContainer,
   }))
 );
 
 const TransactionAddressContainer = React.lazy(() =>
-  import("./TransactionAddress").then(module => ({
-    default: module.TransactionAddressContainer
+  import("./TransactionAddress").then((module) => ({
+    default: module.TransactionAddressContainer,
   }))
 );
 
 const CoinControlContainer = React.lazy(() =>
-  import("./CoinControl").then(module => ({
-    default: module.CoinControlContainer
+  import("./CoinControl").then((module) => ({
+    default: module.CoinControlContainer,
   }))
 );
 
@@ -51,22 +51,22 @@ const renderLoader = () => <LoadingComponent />;
 export const SendContainer = () => {
   const { t } = useTranslation();
 
-  const { token } = useStoreState(state => state.session);
-  const { status } = useStoreState(state => state.nodeSummary);
+  const { token } = useStoreState((state) => state.session);
+  const { status } = useStoreState((state) => state.nodeSummary);
   const {
     username: usernamePrompt,
     password: passwordPrompt,
     callback: promptCallback,
-    waitingResponse: waitingForPassword
-  } = useStoreState(state => state.passwordPrompt);
+    waitingResponse: waitingForPassword,
+  } = useStoreState((state) => state.passwordPrompt);
 
   const { getOutputs, setInitialValues } = useStoreActions(
-    actions => actions.sendCoinsModel
+    (actions) => actions.sendCoinsModel
   );
   const {
     setUsername: setUsernamePrompt,
-    setPassword: setPasswordPrompt
-  } = useStoreActions(state => state.passwordPrompt);
+    setPassword: setPasswordPrompt,
+  } = useStoreActions((state) => state.passwordPrompt);
 
   useEffect(() => {
     async function init(t: string) {
@@ -99,7 +99,10 @@ export const SendContainer = () => {
           username={usernamePrompt ? usernamePrompt : ""}
           password={passwordPrompt ? passwordPrompt : ""}
           passwordCb={(value: string) => setPasswordPrompt(value)}
-          onCloseCb={() => setUsernamePrompt(undefined)}
+          onCloseCb={() => {
+            setUsernamePrompt(undefined);
+            setPasswordPrompt(undefined);
+          }}
           waitingResponse={waitingForPassword}
           passwordButtonCb={promptCallback}
           connected={status.toLocaleLowerCase() !== "not connected"}
