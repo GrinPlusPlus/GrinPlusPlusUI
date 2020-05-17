@@ -135,28 +135,30 @@ const walletSummary: WalletSummaryModel = {
       )
         .getWalletSummary(token)
         .then((transactions) => {
-          const newSent = transactions.filter(
-            (t) => cleanTxType(t.type) === "sent"
-          ).length;
-          const newReceived = transactions.filter(
-            (t) => cleanTxType(t.type) === "received"
-          ).length;
-
-          const currentSent = getStoreState().walletSummary.transactions?.filter(
-            (t) => cleanTxType(t.type) === "sent"
-          ).length;
-          const currentReceived = getStoreState().walletSummary.transactions?.filter(
-            (t) => cleanTxType(t.type) === "received"
-          ).length;
-
-          if (currentSent !== undefined && newSent > currentSent) {
-            getStoreActions().ui.setAlert("last_transaction_sent");
-          } else if (
-            currentReceived !== undefined &&
-            newReceived > currentReceived
-          ) {
-            getStoreActions().ui.setAlert("new_transaction_received");
+          const currentTransactions = getStoreState().walletSummary
+            .transactions;
+          if (currentTransactions !== undefined) {
+            if (
+              transactions.filter((t) => cleanTxType(t.type) === "sent")
+                .length >
+              currentTransactions.filter((t) => cleanTxType(t.type) === "sent")
+                .length
+            ) {
+              // New transaction Sent
+              getStoreActions().ui.setAlert("last_transaction_sent");
+            }
+            if (
+              transactions.filter((t) => cleanTxType(t.type) === "received")
+                .length >
+              currentTransactions.filter(
+                (t) => cleanTxType(t.type) === "received"
+              ).length
+            ) {
+              // New transaction Received
+              getStoreActions().ui.setAlert("new_transaction_received");
+            }
           }
+          // Upadte transactions
           actions.updateSummary({
             transactions: transactions,
             formatCb: utilsService.formatGrinAmount,
