@@ -17,7 +17,7 @@ export const DashboardContainer = () => {
 
   return (
     <Content>
-      <div style={{ width: "45%", margin: "15px" }}>
+      <div style={{ width: "42%", margin: "10px" }}>
         <Flex>
           <WalletBalanceContainer />
           <div
@@ -53,7 +53,7 @@ export const DashboardContainer = () => {
           <LogsContainer />
         </div>
       </div>
-      <div style={{ width: "55%", margin: "10px" }}>
+      <div style={{ width: "58%", margin: "10px" }}>
         <WalletActivitiyContainer />
       </div>
     </Content>
