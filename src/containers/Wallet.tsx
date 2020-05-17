@@ -80,8 +80,16 @@ export const WalletContainer = () => {
         icon: "warning-sign",
       });
     }
+    setUsername(undefined); // to close prompt
     setWaitingResponse(false);
-  }, [getWalletSeed, username, password, setSeed, setWaitingResponse]);
+  }, [
+    getWalletSeed,
+    username,
+    password,
+    setSeed,
+    setWaitingResponse,
+    setUsername,
+  ]);
 
   return (
     <Suspense fallback={renderLoader()}>
