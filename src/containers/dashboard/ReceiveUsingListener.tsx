@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 
 export const ReceiveUsingListenerContainer = () => {
   const { t } = useTranslation();
-  const { address } = useStoreState((state) => state.session);
+  const { address } = useStoreState(state => state.session);
 
   return (
     <div>

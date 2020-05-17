@@ -1,5 +1,5 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
+import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   Alert,
   Button,
@@ -13,7 +13,7 @@ import {
   NumericInput,
   Slider,
   Switch,
-  Text,
+  Text
 } from "@blueprintjs/core";
 
 type SettingsProps = {
@@ -59,7 +59,7 @@ export const SettingsComponent = ({
   toggleConfirmationDialogCb,
   confirmReSyncBlockchainCb,
   restartNodeCb,
-  backupButtonCb,
+  backupButtonCb
 }: SettingsProps) => {
   const { t } = useTranslation();
 
@@ -95,7 +95,7 @@ export const SettingsComponent = ({
             data-testid="mininum-number-peers-input"
             id="mininum-number-peers"
             value={mininumPeers}
-            onValueChange={(value) => setMininumPeersCb(value)}
+            onValueChange={value => setMininumPeersCb(value)}
           />
         </FormGroup>
         <FormGroup
@@ -106,7 +106,7 @@ export const SettingsComponent = ({
             data-testid="maximum-number-peers-input"
             id="maximum-number-peers"
             value={maximumPeers}
-            onValueChange={(value) => setMaximumPeersCb(value)}
+            onValueChange={value => setMaximumPeersCb(value)}
           />
         </FormGroup>
         <FormGroup label={t("confirmations")}>
@@ -118,7 +118,7 @@ export const SettingsComponent = ({
             data-testid="confirmations-slider"
             value={confirmations}
             showTrackFill={false}
-            onChange={(value) => setConfirmationsCb(value)}
+            onChange={value => setConfirmationsCb(value)}
           />
         </FormGroup>
         <Divider />

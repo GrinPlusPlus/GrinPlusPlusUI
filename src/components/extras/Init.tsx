@@ -12,7 +12,7 @@ export type InitComponentProps = {
 export const InitComponent = ({
   isInitialized,
   error,
-  message,
+  message
 }: InitComponentProps) => {
   return (
     <Center>

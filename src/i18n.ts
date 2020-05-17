@@ -16,7 +16,7 @@ const availableLanguages = [
   "pr",
   "ru",
   "tr",
-  "ua",
+  "ua"
 ];
 
 const options = {
@@ -37,7 +37,7 @@ const options = {
   htmlTag: document.documentElement,
 
   // only detect languages that are in the whitelist
-  checkWhitelist: true,
+  checkWhitelist: true
 };
 
 i18n
@@ -50,12 +50,12 @@ i18n
     whitelist: availableLanguages,
     detection: options,
     interpolation: {
-      escapeValue: false,
+      escapeValue: false
     },
     backend: {
       // for all available options read the backend's repository readme file
-      loadPath: getResourcePath("./locales/{{lng}}/{{ns}}.json"),
-    },
+      loadPath: getResourcePath("./locales/{{lng}}/{{ns}}.json")
+    }
   });
 
 export default i18n;

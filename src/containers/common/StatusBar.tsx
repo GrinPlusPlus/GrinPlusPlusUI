@@ -5,8 +5,8 @@ import { useStoreState } from "../../hooks";
 import { useTranslation } from "react-i18next";
 
 const StatusBarComponent = React.lazy(() =>
-  import("../../components/shared/StatusBar").then((module) => ({
-    default: module.StatusBarComponent,
+  import("../../components/shared/StatusBar").then(module => ({
+    default: module.StatusBarComponent
   }))
 );
 
@@ -14,9 +14,9 @@ const renderLoader = () => null;
 
 export const StatusBarContainer = () => {
   const { intent, status, headers, blocks, network } = useStoreState(
-    (state) => state.nodeSummary
+    state => state.nodeSummary
   );
-  const { nodeHealthCheck } = useStoreState((state) => state.wallet);
+  const { nodeHealthCheck } = useStoreState(state => state.wallet);
 
   let history = useHistory();
 

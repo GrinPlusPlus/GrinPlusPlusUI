@@ -1,9 +1,9 @@
-import * as foreingService from './services/foreign';
-import * as nodeService from './services/node';
-import * as ownerService from './services/owner';
-import * as utilsService from './services/utils';
-import model from './models';
-import { createStore } from 'easy-peasy';
+import * as foreingService from "./services/foreign";
+import * as nodeService from "./services/node";
+import * as ownerService from "./services/owner";
+import * as utilsService from "./services/utils";
+import model from "./models";
+import { createStore } from "easy-peasy";
 
 export interface Injections {
   nodeService: typeof nodeService;
@@ -17,8 +17,8 @@ const store = createStore(model, {
     nodeService,
     ownerService,
     utilsService,
-    foreingService,
-  },
+    foreingService
+  }
 });
 
 export default store;

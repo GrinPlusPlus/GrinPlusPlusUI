@@ -17,7 +17,7 @@ export const SendUsingAddressComponent = ({
   spendable,
   inputsSelected,
   isAddressValid,
-  onSendButtonClickedCb,
+  onSendButtonClickedCb
 }: SendGrinsButtonsProps) => {
   const { t } = useTranslation();
   return (

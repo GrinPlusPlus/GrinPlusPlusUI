@@ -8,7 +8,7 @@ function renderWalletBalanceComponent(props: Partial<WalletBalanceProps> = {}) {
     spendable: 0,
     immature: 0,
     unconfirmed: 0,
-    locked: 0,
+    locked: 0
   };
   return render(<WalletBalanceComponent {...defaultProps} {...props} />);
 }
@@ -25,7 +25,7 @@ describe("<WalletBalanceComponent />", () => {
       spendable: 1,
       immature: 1,
       unconfirmed: 1,
-      locked: 1,
+      locked: 1
     });
     const spendable = await findByTestId("spendable");
     expect(spendable.textContent).toContain("1.000000");

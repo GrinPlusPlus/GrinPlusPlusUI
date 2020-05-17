@@ -14,7 +14,7 @@ export const TransactionAmountComponent = ({
   amount,
   fee,
   spendable,
-  onAmountChangeCb,
+  onAmountChangeCb
 }: TransactionAmountProps) => {
   const { t } = useTranslation();
 
@@ -34,7 +34,7 @@ export const TransactionAmountComponent = ({
           }}
           style={{
             width: "200px",
-            backgroundColor: "#21242D",
+            backgroundColor: "#21242D"
           }}
         />
       </FormGroup>
@@ -43,7 +43,7 @@ export const TransactionAmountComponent = ({
         labelFor="fee"
         inline={true}
         style={{
-          marginLeft: "15px",
+          marginLeft: "15px"
         }}
       >
         <InputGroup

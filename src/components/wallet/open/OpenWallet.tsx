@@ -22,7 +22,7 @@ export const OpenWalletComponent = ({
   onCloseCb,
   passwordButtonCb,
   waitingResponse,
-  connected,
+  connected
 }: OpenWalletProps) => {
   const { t } = useTranslation();
 

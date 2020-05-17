@@ -1,6 +1,6 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import { TansactionDetailsComponent, TansactionDetailsProps } from '../Details';
+import React from "react";
+import { render } from "@testing-library/react";
+import { TansactionDetailsComponent, TansactionDetailsProps } from "../Details";
 
 function renderTxDetailsComponent(props: Partial<TansactionDetailsProps> = {}) {
   const defaultProps: TansactionDetailsProps = {
@@ -13,7 +13,7 @@ function renderTxDetailsComponent(props: Partial<TansactionDetailsProps> = {}) {
     fee: "0.008000",
     date: "2020-01-01 00:00",
     onCancelTransactionButtonClickedCb: (transactionId: number) => {},
-    onRepostTransactionButtonClickedCb: (transactionId: number) => {},
+    onRepostTransactionButtonClickedCb: (transactionId: number) => {}
   };
   return render(<TansactionDetailsComponent {...defaultProps} {...props} />);
 }

@@ -5,13 +5,13 @@ import { TransactionAmountComponent } from "../../components/transaction/send/Tr
 import { useStoreActions, useStoreState } from "../../hooks";
 
 export const TransactionAmountContainer = () => {
-  const { spendable } = useStoreState((state) => state.walletSummary);
+  const { spendable } = useStoreState(state => state.walletSummary);
   const { amount, fee, message, strategy, inputs } = useStoreState(
-    (state) => state.sendCoinsModel
+    state => state.sendCoinsModel
   );
-  const { token } = useStoreState((state) => state.session);
+  const { token } = useStoreState(state => state.session);
   const { estimateFee, setAmount } = useStoreActions(
-    (actions) => actions.sendCoinsModel
+    actions => actions.sendCoinsModel
   );
 
   const onAmountChange = useCallback(
@@ -26,12 +26,12 @@ export const TransactionAmountContainer = () => {
         strategy: strategy,
         message: message,
         token: token,
-        inputs: inputs,
+        inputs: inputs
       }).catch((error: { message: string }) => {
         Toaster.create({ position: Position.BOTTOM }).show({
           message: error.message,
           intent: Intent.WARNING,
-          icon: "warning-sign",
+          icon: "warning-sign"
         });
       });
     },

@@ -102,7 +102,7 @@ const receiveCoinsModel: ReceiveCoinsModel = {
   waitingResponse: false,
   setWaitingResponse: action((state, waiting) => {
     state.waitingResponse = waiting;
-  }),
+  })
 };
 
 export default receiveCoinsModel;

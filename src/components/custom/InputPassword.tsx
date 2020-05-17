@@ -15,7 +15,7 @@ export const InputPasswordComponent = ({
   cb,
   autoFocus,
   onEnterCb,
-  waitingResponse,
+  waitingResponse
 }: InputPasswordProps) => {
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);

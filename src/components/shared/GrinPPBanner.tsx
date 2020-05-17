@@ -13,7 +13,7 @@ export const GrinPPBannerComponent = () => {
           maxWidth: "350px",
           height: "auto",
           marginTop: "50px",
-          marginBottom: "10px",
+          marginBottom: "10px"
         }}
       />
     </HorizontallyCenter>

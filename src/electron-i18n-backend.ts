@@ -2,7 +2,7 @@ const getDefaults = () => {
   return {
     loadPath: "/locales/{{lng}}/{{ns}}.json",
     addPath: "/locales/{{lng}}/{{ns}}.missing.json",
-    parse: JSON.parse,
+    parse: JSON.parse
   };
 };
 

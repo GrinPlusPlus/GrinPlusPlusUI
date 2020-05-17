@@ -33,7 +33,7 @@ export const WalletActivityComponent = ({
   openTransactionCb,
   onCancelTransactionButtonClickedCb,
   onRepostTransactionButtonClickedCb,
-  method,
+  method
 }: WalletActivityProps) => {
   const { t } = useTranslation();
 

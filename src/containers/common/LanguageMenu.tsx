@@ -6,8 +6,8 @@ import { Popover, Button, Menu, MenuItem } from "@blueprintjs/core";
 export const LanguageMenuContainer = () => {
   const { i18n } = useTranslation();
 
-  const { language } = useStoreState((actions) => actions.idiom);
-  const { setLanguage } = useStoreActions((actions) => actions.idiom);
+  const { language } = useStoreState(actions => actions.idiom);
+  const { setLanguage } = useStoreActions(actions => actions.idiom);
 
   const changeLanguage = useCallback(
     (

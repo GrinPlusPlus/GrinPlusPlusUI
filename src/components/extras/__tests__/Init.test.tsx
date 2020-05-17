@@ -6,7 +6,7 @@ function renderInitComponent(props: Partial<InitComponentProps> = {}) {
   const defaultProps: InitComponentProps = {
     isInitialized: false,
     error: false,
-    message: "",
+    message: ""
   };
   return render(<InitComponent {...defaultProps} {...props} />);
 }

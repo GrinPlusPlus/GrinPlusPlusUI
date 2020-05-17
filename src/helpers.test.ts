@@ -4,7 +4,7 @@ import { generateEmptySeed, getSeedWords, hideSeedWords } from "./helpers";
 describe("Helpers", () => {
   test("generateEmptySeed", () => {
     const emptySeed = generateEmptySeed();
-    emptySeed.forEach((word) => {
+    emptySeed.forEach(word => {
       expect(word.disabled).toBe(false);
       expect(word.text).toBe("");
     });
@@ -12,7 +12,7 @@ describe("Helpers", () => {
       getSeedWords([
         { position: 1, text: "word1", disabled: false },
         { position: 2, text: "word2", disabled: false },
-        { position: 3, text: "word3", disabled: false },
+        { position: 3, text: "word3", disabled: false }
       ])
     ).toBe("word1 word2 word3");
   });
@@ -31,7 +31,7 @@ describe("Helpers", () => {
     const words = 5;
     let hiddenWords = 0;
     const hiddenSeed = hideSeedWords({ seed: seed, words: words });
-    hiddenSeed.forEach((element) => {
+    hiddenSeed.forEach(element => {
       if (element.text === "" && element.disabled === false) hiddenWords++;
     });
     expect(hiddenWords).toBe(words);

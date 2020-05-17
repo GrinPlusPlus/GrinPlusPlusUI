@@ -125,7 +125,7 @@ const nodeSummary: NodeSummaryModel = {
   setWaitingResponse: action((state, waiting) => {
     state.waitingResponse = waiting;
   }),
-  updatedAt: 0,
+  updatedAt: 0
 };
 
 export default nodeSummary;

@@ -4,7 +4,7 @@ import { fireEvent, render, waitForElement } from "@testing-library/react";
 
 function renderLogsComponent(props: Partial<LogsProps> = {}) {
   const defaultProps: LogsProps = {
-    logs: "",
+    logs: ""
   };
   return render(<LogsComponent {...defaultProps} {...props} />);
 }

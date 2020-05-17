@@ -5,8 +5,8 @@ import { useTranslation } from "react-i18next";
 import { LoadingComponent } from "../components/extras/Loading";
 
 const InitComponent = React.lazy(() =>
-  import("./../components/extras/Init").then((module) => ({
-    default: module.InitComponent,
+  import("./../components/extras/Init").then(module => ({
+    default: module.InitComponent
   }))
 );
 
@@ -16,18 +16,18 @@ export const InitializerContainer = () => {
   const { t, i18n } = useTranslation();
 
   const { message, initializingError, isWalletInitialized } = useStoreState(
-    (state) => state.wallet
+    state => state.wallet
   );
 
-  const { language } = useStoreState((actions) => actions.idiom);
+  const { language } = useStoreState(actions => actions.idiom);
 
   const {
     initializeWallet,
     setMessage,
-    setInitializingError,
-  } = useStoreActions((state) => state.wallet);
+    setInitializingError
+  } = useStoreActions(state => state.wallet);
 
-  const { status } = useStoreState((state) => state.nodeSummary);
+  const { status } = useStoreState(state => state.nodeSummary);
 
   useEffect(() => {
     (async function() {

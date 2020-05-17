@@ -5,7 +5,7 @@ import {
   validateUrl,
   validateOnion,
   validateAddress,
-  cleanOnionURL,
+  cleanOnionURL
 } from "./utils";
 
 describe("Utils", () => {

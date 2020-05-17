@@ -22,7 +22,7 @@ export const CoinControlComponent = ({
   inputsTable,
   inputs,
   setStrategyCb,
-  updateInputsCb,
+  updateInputsCb
 }: CoinControlProps) => {
   const { t } = useTranslation();
 
@@ -36,7 +36,7 @@ export const CoinControlComponent = ({
       transaction_id: number;
     }[]
   ) => {
-    let table: JSX.Element[] = inputsList.map((input) => {
+    let table: JSX.Element[] = inputsList.map(input => {
       return (
         <tr
           id={input.commitment}
@@ -58,7 +58,7 @@ export const CoinControlComponent = ({
                   margin: "0 auto",
                   verticalAlign: "bottom",
                   bottom: "0",
-                  right: "0",
+                  right: "0"
                 }}
                 id={input.commitment}
                 key={input.commitment}

@@ -182,7 +182,7 @@ export class BaseApi {
       headers: headers,
       agent: false,
       encoding: "utf-8",
-      body: JSON.stringify(body),
+      body: JSON.stringify(body)
     };
 
     if (method.toLowerCase() === "get") {
@@ -221,14 +221,14 @@ export class BaseApi {
       agent: false,
       pool: { maxSockets: 5 },
       headers: {
-        Accept: "application/json, text/plain, */*",
+        Accept: "application/json, text/plain, */*"
       },
       body: JSON.stringify({
         jsonrpc: "2.0",
         id: uuidv4(),
         method: method,
-        params: params,
-      }),
+        params: params
+      })
     };
     return new Promise((resolve, reject) => {
       request.post(options, (error: string, response: {}, body: string) => {

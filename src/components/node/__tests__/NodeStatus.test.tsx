@@ -6,7 +6,7 @@ function renderNodeStatusComponent(props: Partial<NodeStatusProps> = {}) {
   const defaultProps: NodeStatusProps = {
     headers: 1000,
     blocks: 999,
-    network: 998,
+    network: 998
   };
   return render(<NodeStatusComponent {...defaultProps} {...props} />);
 }

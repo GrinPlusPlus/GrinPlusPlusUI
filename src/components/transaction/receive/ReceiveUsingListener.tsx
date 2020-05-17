@@ -10,7 +10,7 @@ type ReceiveUsingListenerProps = {
 export const ReceiveUsingListenerComponent = ({
   address,
   httpAddress,
-  shortenHttpAddress,
+  shortenHttpAddress
 }: ReceiveUsingListenerProps) => {
   return (
     <div style={{ marginTop: "15px" }}>

@@ -7,26 +7,26 @@ import { useStoreActions } from "../hooks";
 import { useTranslation } from "react-i18next";
 
 const LogoComponent = React.lazy(() =>
-  import("../components/shared/Logo").then((module) => ({
-    default: module.LogoComponent,
+  import("../components/shared/Logo").then(module => ({
+    default: module.LogoComponent
   }))
 );
 
 const NavigationBarContainer = React.lazy(() =>
-  import("./common/NavigationBar").then((module) => ({
-    default: module.NavigationBarContainer,
+  import("./common/NavigationBar").then(module => ({
+    default: module.NavigationBarContainer
   }))
 );
 
 const RestoreWalletContainer = React.lazy(() =>
-  import("./wallet/Restore").then((module) => ({
-    default: module.RestoreWalletContainer,
+  import("./wallet/Restore").then(module => ({
+    default: module.RestoreWalletContainer
   }))
 );
 
 const StatusBarContainer = React.lazy(() =>
-  import("./common/StatusBar").then((module) => ({
-    default: module.StatusBarContainer,
+  import("./common/StatusBar").then(module => ({
+    default: module.StatusBarContainer
   }))
 );
 
@@ -35,9 +35,7 @@ const renderLoader = () => <LoadingComponent />;
 export const RestoreContainer = () => {
   const { t } = useTranslation();
 
-  const { setInitialValues } = useStoreActions(
-    (actions) => actions.createWallet
-  );
+  const { setInitialValues } = useStoreActions(actions => actions.createWallet);
 
   let history = useHistory();
 

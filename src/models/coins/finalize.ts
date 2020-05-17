@@ -69,7 +69,7 @@ const finalizeModel: FinalizeModel = {
       // Alles gut!
       return "finalized";
     }
-  ),
+  )
 };
 
 export default finalizeModel;

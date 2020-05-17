@@ -6,7 +6,7 @@ import {
   Dialog,
   FormGroup,
   InputGroup,
-  Intent,
+  Intent
 } from "@blueprintjs/core";
 import { useTranslation } from "react-i18next";
 
@@ -39,7 +39,7 @@ export const CreateWalletComponent = ({
   setPasswordCb,
   setConfirmationCb,
   signUpButtonCb,
-  SeedValidationComponent,
+  SeedValidationComponent
 }: CreateWalletProps) => {
   const { t } = useTranslation();
 

@@ -4,11 +4,11 @@ import { useStoreActions, useStoreState } from "../../hooks";
 
 export const CoinControlContainer = () => {
   const { strategy, inputsTable, inputs } = useStoreState(
-    (state) => state.sendCoinsModel
+    state => state.sendCoinsModel
   );
 
   const { setStrategy, addCustomInput, removeCustomInput } = useStoreActions(
-    (actions) => actions.sendCoinsModel
+    actions => actions.sendCoinsModel
   );
 
   const updateInputs = useCallback(

@@ -7,8 +7,8 @@ import { useTranslation } from "react-i18next";
 export const ReceiveUsingFileContainer = () => {
   const { t } = useTranslation();
 
-  const { updateLogs } = useStoreActions((actions) => actions.wallet);
-  const { receiveTx } = useStoreActions((actions) => actions.receiveCoinsModel);
+  const { updateLogs } = useStoreActions(actions => actions.wallet);
+  const { receiveTx } = useStoreActions(actions => actions.receiveCoinsModel);
 
   const onResponseFilesDropped = useCallback(
     (files: File[]) => {
@@ -19,10 +19,10 @@ export const ReceiveUsingFileContainer = () => {
           Toaster.create({ position: Position.BOTTOM }).show({
             message: t("finished_without_errors"),
             intent: Intent.SUCCESS,
-            icon: "tick-circle",
+            icon: "tick-circle"
           });
         } else {
-          errors.forEach((error) => {
+          errors.forEach(error => {
             updateLogs(t(error));
           });
         }

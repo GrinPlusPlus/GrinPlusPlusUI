@@ -8,7 +8,7 @@ function renderLogsComponent(props: Partial<AlertProps> = {}) {
   }
   const defaultProps: AlertProps = {
     message: "",
-    setMessage: (message: string | undefined) => changeMessage(message),
+    setMessage: (message: string | undefined) => changeMessage(message)
   };
   return render(<AlertComponent {...defaultProps} {...props} />);
 }

@@ -1,8 +1,8 @@
-import { BaseApi } from './api';
-import { getCommand, getConfigFilePath, getNodeDataPath } from './node';
-import { NodeAPI } from './node/rest';
-import { OwnerAPI } from './owner/rest';
-import { OwnerRPCApi } from './owner/rpc';
+import { BaseApi } from "./api";
+import { getCommand, getConfigFilePath, getNodeDataPath } from "./node";
+import { NodeAPI } from "./node/rest";
+import { OwnerAPI } from "./owner/rest";
+import { OwnerRPCApi } from "./owner/rpc";
 
 class TestBasiApi extends BaseApi {}
 class TestOwnerRPCApi extends OwnerRPCApi {}

@@ -51,7 +51,7 @@ const createWalletModel: CreateWalletModel = {
       state.username = username;
     }
   }),
-  setInitialValues: action((state) => {
+  setInitialValues: action(state => {
     state.username = "";
     state.password = "";
     state.passwordConfirmation = "";
@@ -70,7 +70,7 @@ const createWalletModel: CreateWalletModel = {
         position: position++,
         text: word,
         disabled: true,
-        valid: true,
+        valid: true
       };
     });
     state.generatedSeed = newSeed;
@@ -90,7 +90,7 @@ const createWalletModel: CreateWalletModel = {
         apiSettings.mode
       )
         .createWallet(payload.username, payload.password)
-        .then((wallet) => {
+        .then(wallet => {
           actions.setGeneratedSeed(wallet.seed);
           actions.setPassword("");
           actions.setPasswordConfirmation("");
@@ -98,7 +98,7 @@ const createWalletModel: CreateWalletModel = {
           getStoreActions().session.updateSession({
             username: wallet.username,
             token: wallet.token,
-            address: "",
+            address: ""
           });
         });
     }
@@ -122,7 +122,7 @@ const createWalletModel: CreateWalletModel = {
         word.disabled = true;
       }
       let newSeed: ISeed[] = [];
-      [...getStoreState().createWallet.hiddenSeed].forEach((element) => {
+      [...getStoreState().createWallet.hiddenSeed].forEach(element => {
         let item = element;
         if (element.position === word.position) {
           item = word;
@@ -132,14 +132,14 @@ const createWalletModel: CreateWalletModel = {
       actions.setHiddenSeed(newSeed);
     }
   ),
-  seedsMatched: computed((state) => {
+  seedsMatched: computed(state => {
     if (state.hiddenSeed.length === 0) return true;
     let disabledWords: number = 0;
     state.hiddenSeed.forEach((word: any) => {
       if (word.disabled === true) disabledWords++;
     });
     return disabledWords === state.hiddenSeed.length;
-  }),
+  })
 };
 
 export default createWalletModel;

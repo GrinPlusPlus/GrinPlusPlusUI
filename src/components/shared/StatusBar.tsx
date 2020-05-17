@@ -14,7 +14,7 @@ type StatusBarProps = {
 export const StatusBarComponent = ({
   intent,
   status,
-  network,
+  network
 }: StatusBarProps) => {
   const { t } = useTranslation();
 
@@ -22,7 +22,8 @@ export const StatusBarComponent = ({
     <StatusBarContent>
       <div style={{ paddingLeft: "10px", width: "40%" }}>
         <div>
-          <Icon icon="symbol-circle" intent={intent} /> <b>{t("status")}</b>: {status}
+          <Icon icon="symbol-circle" intent={intent} /> <b>{t("status")}</b>:{" "}
+          {status}
         </div>
       </div>
       <div style={{ textAlign: "right", width: "60%", paddingRight: "35px" }}>

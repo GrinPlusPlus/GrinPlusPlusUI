@@ -13,7 +13,7 @@ export const TransactionAddressComponent = ({
   fee,
   spendable,
   address,
-  setAddressCb,
+  setAddressCb
 }: TransactionAddressProps) => {
   const { t } = useTranslation();
 

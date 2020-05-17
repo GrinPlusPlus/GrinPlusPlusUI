@@ -5,17 +5,15 @@ import { useHistory } from "react-router-dom";
 import { useStoreActions, useStoreState } from "../../hooks";
 
 const CreateWalletComponent = React.lazy(() =>
-  import("./../../components/wallet/create/CreateWallet").then((module) => ({
-    default: module.CreateWalletComponent,
+  import("./../../components/wallet/create/CreateWallet").then(module => ({
+    default: module.CreateWalletComponent
   }))
 );
 
 const WalletSeedConfirmation = React.lazy(() =>
-  import("./../../components/wallet/create/ConfirmWalletSeed").then(
-    (module) => ({
-      default: module.WalletSeedConfirmation,
-    })
-  )
+  import("./../../components/wallet/create/ConfirmWalletSeed").then(module => ({
+    default: module.WalletSeedConfirmation
+  }))
 );
 
 const renderLoader = () => null;
@@ -29,8 +27,8 @@ export const CreateWalletContainer = () => {
     passwordConfirmation,
     generatedSeed,
     hiddenSeed,
-    seedsMatched,
-  } = useStoreState((state) => state.createWallet);
+    seedsMatched
+  } = useStoreState(state => state.createWallet);
   const {
     setUsername,
     setPassword,
@@ -38,9 +36,9 @@ export const CreateWalletContainer = () => {
     create,
     setHiddenSeed,
     setHiddenSeedWord,
-    setGeneratedSeed,
-  } = useStoreActions((actions) => actions.createWallet);
-  const { status } = useStoreState((state) => state.nodeSummary);
+    setGeneratedSeed
+  } = useStoreActions(actions => actions.createWallet);
+  const { status } = useStoreState(state => state.nodeSummary);
 
   const onCreateWalletButtonClicked = useCallback(async () => {
     try {
@@ -49,7 +47,7 @@ export const CreateWalletContainer = () => {
           Toaster.create({ position: Position.BOTTOM }).show({
             message: error.message,
             intent: Intent.DANGER,
-            icon: "warning-sign",
+            icon: "warning-sign"
           });
         }
       );
@@ -75,14 +73,14 @@ export const CreateWalletContainer = () => {
     setUsername,
     setPassword,
     setGeneratedSeed,
-    setPasswordConfirmation,
+    setPasswordConfirmation
   ]);
 
   const onWordChange = useCallback(
     (word: string, position: number) => {
       setHiddenSeedWord({
         word: word,
-        position: position,
+        position: position
       });
     },
     [setHiddenSeedWord]

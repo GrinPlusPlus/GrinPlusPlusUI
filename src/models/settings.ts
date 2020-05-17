@@ -50,9 +50,9 @@ const settings: SettingsModel = {
       node: 3413,
       foreignRPC: 3415,
       owner: 3420,
-      ownerRPC: 3421,
+      ownerRPC: 3421
     },
-    grinJoinAddress: "grinjoin5pzzisnne3naxx4w2knwxsyamqmzfnzywnzdk7ra766u7vid",
+    grinJoinAddress: "grinjoin5pzzisnne3naxx4w2knwxsyamqmzfnzywnzdk7ra766u7vid"
   },
   mininumPeers: 15,
   maximumPeers: 50,
@@ -86,14 +86,14 @@ const settings: SettingsModel = {
   setGrinJoinAddress: action((state, payload) => {
     state.grinJoinAddress = payload;
   }),
-  toggleConfirmationDialog: action((state) => {
+  toggleConfirmationDialog: action(state => {
     state.isConfirmationDialogOpen = !state.isConfirmationDialogOpen;
   }),
   onSettingsChanged: thunkOn(
     (actions, storeActions) => [
       storeActions.settings.setMininumPeers,
       storeActions.settings.setMaximumPeers,
-      storeActions.settings.setConfirmations,
+      storeActions.settings.setConfirmations
     ],
     (actions, target, { injections }) => {
       const configFile = injections.nodeService.getConfigFilePath();
@@ -105,7 +105,7 @@ const settings: SettingsModel = {
       const [
         setMininumPeers,
         setMaximumPeers,
-        setConfirmations,
+        setConfirmations
       ] = target.resolvedTargets;
       switch (target.type) {
         case setMininumPeers:
@@ -124,7 +124,7 @@ const settings: SettingsModel = {
         target.payload
       );
     }
-  ),
+  )
 };
 
 export default settings;

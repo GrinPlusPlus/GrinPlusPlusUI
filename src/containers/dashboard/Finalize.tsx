@@ -7,16 +7,16 @@ import { useTranslation } from "react-i18next";
 export const FinalizeContainer = () => {
   const { t } = useTranslation();
 
-  const { responseFile } = useStoreState((state) => state.finalizeModel);
+  const { responseFile } = useStoreState(state => state.finalizeModel);
   const { useGrinJoin, grinJoinAddress } = useStoreState(
-    (state) => state.settings
+    state => state.settings
   );
 
   const { finalizeTx, setResponseFile } = useStoreActions(
-    (actions) => actions.finalizeModel
+    actions => actions.finalizeModel
   );
 
-  const { updateLogs } = useStoreActions((actions) => actions.wallet);
+  const { updateLogs } = useStoreActions(actions => actions.wallet);
 
   const setFileToFinalize = useCallback(
     (file: File) => {
@@ -32,12 +32,12 @@ export const FinalizeContainer = () => {
     finalizeTx({
       file: responseFile,
       method: useGrinJoin ? "JOIN" : "STEM",
-      grinJoinAddress: grinJoinAddress,
+      grinJoinAddress: grinJoinAddress
     }).then((message: string) => {
       Toaster.create({ position: Position.BOTTOM }).show({
         message: message,
         intent: message === "finalized" ? Intent.SUCCESS : Intent.DANGER,
-        icon: message === "finalized" ? "tick-circle" : "warning-sign",
+        icon: message === "finalized" ? "tick-circle" : "warning-sign"
       });
       updateLogs(t(message));
     });

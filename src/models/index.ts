@@ -44,7 +44,7 @@ const model = {
   finalizeModel: finalizeModel,
   wallet: wallet,
   idiom: idiom,
-  passwordPrompt: prompt,
+  passwordPrompt: prompt
 };
 
 export default model;

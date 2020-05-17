@@ -5,7 +5,7 @@ import {
   ControlGroup,
   FileInput,
   FormGroup,
-  Intent,
+  Intent
 } from "@blueprintjs/core";
 import { useTranslation } from "react-i18next";
 
@@ -18,7 +18,7 @@ type FinalizeProps = {
 export const FinalizeComponent = ({
   responseFile,
   setFileToFinalizeCb,
-  onFinalizeButtonClickedCb,
+  onFinalizeButtonClickedCb
 }: FinalizeProps) => {
   const { t } = useTranslation();
 

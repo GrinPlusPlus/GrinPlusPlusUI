@@ -55,12 +55,12 @@ const session: SessionModel = {
         apiSettings.mode
       )
         .logout(token)
-        .then((response) => {
+        .then(response => {
           actions.clean();
         });
     }
   ),
-  isLoggedIn: computed((state) => {
+  isLoggedIn: computed(state => {
     return state.username.length > 0 && state.token.length > 0;
   }),
   getWalletSeed: thunk(
@@ -78,7 +78,7 @@ const session: SessionModel = {
         apiSettings.mode
       )
         .getSeed(payload.username, payload.password)
-        .then((response) => {
+        .then(response => {
           return response;
         });
     }
@@ -98,7 +98,7 @@ const session: SessionModel = {
     getStoreActions().restoreWallet.setInitialValues();
     getStoreActions().ui.setAlert(undefined);
     actions.updateSession({ username: "", token: "", address: "" });
-  }),
+  })
 };
 
 export default session;

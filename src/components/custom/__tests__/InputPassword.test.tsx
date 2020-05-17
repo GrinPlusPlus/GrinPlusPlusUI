@@ -12,7 +12,7 @@ function renderInputPasswordComponent(props: Partial<InputPasswordProps> = {}) {
     onEnterCb: () => {
       return "p4ssw0rD";
     },
-    waitingResponse: false,
+    waitingResponse: false
   };
   return render(<InputPasswordComponent {...defaultProps} {...props} />);
 }

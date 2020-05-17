@@ -4,7 +4,7 @@ import {
   Button,
   Navbar,
   NavbarDivider,
-  NavbarGroup,
+  NavbarGroup
 } from "@blueprintjs/core";
 import { useHistory } from "react-router-dom";
 import { useStoreActions } from "../../hooks";
@@ -16,7 +16,7 @@ export const WalletNavBarContainer = () => {
 
   let history = useHistory();
 
-  const { toggleSettings } = useStoreActions((actions) => actions.ui);
+  const { toggleSettings } = useStoreActions(actions => actions.ui);
 
   return (
     <Navbar className="bp3-dark">

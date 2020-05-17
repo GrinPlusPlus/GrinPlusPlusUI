@@ -10,14 +10,14 @@ export class OwnerAPI extends BaseApi {
       `${this.getRequestURL("accounts")}`,
       "get"
     )
-      .then((data) => {
+      .then(data => {
         try {
           return JSON.parse(data);
         } catch (ex) {
           return [];
         }
       })
-      .catch((error) => {
+      .catch(error => {
         throw new Error(error);
       });
   }
@@ -38,7 +38,7 @@ export class OwnerAPI extends BaseApi {
       this.getRequestURL("retrieve_outputs"),
       "get",
       { session_token: token }
-    ).then((response) => {
+    ).then(response => {
       return JSON.parse(response).outputs;
     });
   }

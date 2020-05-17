@@ -89,7 +89,7 @@ export const generateEmptySeed = function(): ISeed[] {
       position: i++,
       text: "",
       disabled: false,
-      valid: true,
+      valid: true
     });
   } while (i <= 24);
   return seed;
@@ -97,7 +97,7 @@ export const generateEmptySeed = function(): ISeed[] {
 
 export const getSeedWords = function(seed: ISeed[]): string {
   let words: string = "";
-  seed.forEach((element) => {
+  seed.forEach(element => {
     if (element.text.length > 0) {
       words = words + " " + element.text;
     }
@@ -114,7 +114,7 @@ export const hideSeedWords = function(payload: {
   do {
     let word = { ...newSeed[Math.floor(Math.random() * newSeed.length)] };
     if (word.text === "") continue;
-    if (selectedWords.find((selected) => selected === word.text)) break;
+    if (selectedWords.find(selected => selected === word.text)) break;
     selectedWords.push(word.text);
     word.text = "";
     word.disabled = false;

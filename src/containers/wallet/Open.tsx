@@ -5,42 +5,40 @@ import { useStoreActions, useStoreState } from "../../hooks";
 import { LoadingComponent } from "../../components/extras/Loading";
 
 const NoAccountsComponent = React.lazy(() =>
-  import("../../components/extras/NoAccounts").then((module) => ({
-    default: module.NoAccountsComponent,
+  import("../../components/extras/NoAccounts").then(module => ({
+    default: module.NoAccountsComponent
   }))
 );
 
 const OpenWalletComponent = React.lazy(() =>
-  import("../../components/wallet/open/OpenWallet").then((module) => ({
-    default: module.OpenWalletComponent,
+  import("../../components/wallet/open/OpenWallet").then(module => ({
+    default: module.OpenWalletComponent
   }))
 );
 
 const renderLoader = () => null;
 
 export const OpenWalletContainer = () => {
-  const { status } = useStoreState((state) => state.nodeSummary);
+  const { status } = useStoreState(state => state.nodeSummary);
 
   const { username, password, accounts, waitingResponse } = useStoreState(
-    (state) => state.signinModel
+    state => state.signinModel
   );
   const {
     setUsername,
     setPassword,
     login,
-    setWaitingResponse,
-  } = useStoreActions((actions) => actions.signinModel);
+    setWaitingResponse
+  } = useStoreActions(actions => actions.signinModel);
 
   const { getAccounts, setAccounts } = useStoreActions(
-    (actions) => actions.signinModel
+    actions => actions.signinModel
   );
 
   const { updateWalletSummary, updateWalletBalance } = useStoreActions(
-    (actions) => actions.walletSummary
+    actions => actions.walletSummary
   );
-  const { getAddress } = useStoreActions(
-    (actions) => actions.receiveCoinsModel
-  );
+  const { getAddress } = useStoreActions(actions => actions.receiveCoinsModel);
 
   useEffect(() => {
     (async function() {
@@ -61,7 +59,7 @@ export const OpenWalletContainer = () => {
     try {
       const token = await login({
         username: username,
-        password: password,
+        password: password
       });
       if (token !== undefined && token.length > 0) {
         require("electron-log").info(
@@ -96,7 +94,7 @@ export const OpenWalletContainer = () => {
       Toaster.create({ position: Position.BOTTOM }).show({
         message: error.message,
         intent: Intent.DANGER,
-        icon: "warning-sign",
+        icon: "warning-sign"
       });
     }
     setWaitingResponse(false);
@@ -107,12 +105,12 @@ export const OpenWalletContainer = () => {
     setWaitingResponse,
     getAddress,
     updateWalletSummary,
-    updateWalletBalance,
+    updateWalletBalance
   ]);
 
   const getAccountsList = useCallback(
     (accounts: string[]) => {
-      let buttons: JSX.Element[] = accounts?.map((account) => {
+      let buttons: JSX.Element[] = accounts?.map(account => {
         return (
           <div key={account} style={{ margin: "10px" }}>
             <Card
@@ -123,7 +121,7 @@ export const OpenWalletContainer = () => {
                 width: "165px",
                 height: "75px",
                 backgroundColor: "#252D31",
-                textAlign: "center",
+                textAlign: "center"
               }}
             >
               <div>
@@ -140,7 +138,7 @@ export const OpenWalletContainer = () => {
     },
     [setUsername]
   );
-  const { isLoggedIn } = useStoreState((state) => state.session);
+  const { isLoggedIn } = useStoreState(state => state.session);
 
   return (
     <Suspense fallback={renderLoader()}>

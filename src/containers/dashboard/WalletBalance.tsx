@@ -4,7 +4,7 @@ import { useStoreState } from "../../hooks";
 
 export const WalletBalanceContainer = () => {
   const { total, spendable, immature, unconfirmed, locked } = useStoreState(
-    (state) => state.walletSummary
+    state => state.walletSummary
   );
 
   return (

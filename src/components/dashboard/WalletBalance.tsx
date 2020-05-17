@@ -16,7 +16,7 @@ export const WalletBalanceComponent = ({
   spendable,
   immature,
   unconfirmed,
-  locked,
+  locked
 }: WalletBalanceProps) => {
   const { t } = useTranslation();
 

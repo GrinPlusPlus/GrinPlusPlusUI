@@ -92,11 +92,11 @@ const walletSummary: WalletSummaryModel = {
       state.transactions = [];
       return;
     }
-    state.transactions = payload.transactions.map((tx) => {
-      tx.outputs = tx.outputs?.map((output) => {
+    state.transactions = payload.transactions.map(tx => {
+      tx.outputs = tx.outputs?.map(output => {
         return {
           amount: payload.formatCb(output.amount),
-          commitment: output.commitment,
+          commitment: output.commitment
         };
       });
       tx.amountCredited = payload.formatCb(tx.amountCredited);
@@ -134,24 +134,23 @@ const walletSummary: WalletSummaryModel = {
         apiSettings.mode
       )
         .getWalletSummary(token)
-        .then((transactions) => {
+        .then(transactions => {
           const currentTransactions = getStoreState().walletSummary
             .transactions;
           if (currentTransactions !== undefined) {
             if (
-              transactions.filter((t) => cleanTxType(t.type) === "sent")
-                .length >
-              currentTransactions.filter((t) => cleanTxType(t.type) === "sent")
+              transactions.filter(t => cleanTxType(t.type) === "sent").length >
+              currentTransactions.filter(t => cleanTxType(t.type) === "sent")
                 .length
             ) {
               // New Transaction Sent
               getStoreActions().ui.setAlert("last_transaction_sent");
             }
             if (
-              transactions.filter((t) => cleanTxType(t.type) === "received")
+              transactions.filter(t => cleanTxType(t.type) === "received")
                 .length >
               currentTransactions.filter(
-                (t) => cleanTxType(t.type) === "received"
+                t => cleanTxType(t.type) === "received"
               ).length
             ) {
               // New Transaction Received
@@ -161,10 +160,10 @@ const walletSummary: WalletSummaryModel = {
           // Update transactions
           actions.updateSummary({
             transactions: transactions,
-            formatCb: utilsService.formatGrinAmount,
+            formatCb: utilsService.formatGrinAmount
           });
         })
-        .catch((error) => {
+        .catch(error => {
           require("electron-log").info(
             `trying to get Wallet Summary: ${error}`
           );
@@ -184,14 +183,14 @@ const walletSummary: WalletSummaryModel = {
         apiSettings.mode
       )
         .getWalletBalance(token)
-        .then((balance) => {
+        .then(balance => {
           actions.updateBalance({
             spendable: balance.spendable,
             total: balance.total,
             immature: balance.immature,
             unconfirmed: balance.unconfirmed,
             locked: balance.locked,
-            formatCb: utilsService.formatGrinAmount,
+            formatCb: utilsService.formatGrinAmount
           });
         });
     }
@@ -220,42 +219,42 @@ const walletSummary: WalletSummaryModel = {
       ).repostTx(payload.token, payload.txId, payload.method);
     }
   ),
-  getAllTransactions: computed((state) => {
+  getAllTransactions: computed(state => {
     if (state.transactions === undefined) return [];
     return state.transactions;
   }),
-  getTransactionsSent: computed((state) => {
+  getTransactionsSent: computed(state => {
     if (state.transactions === undefined) return [];
-    return state.transactions.filter((t) =>
+    return state.transactions.filter(t =>
       ["sent"].includes(cleanTxType(t.type))
     );
   }),
-  getTransactionsReceived: computed((state) => {
+  getTransactionsReceived: computed(state => {
     if (state.transactions === undefined) return [];
-    return state.transactions.filter((t) => cleanTxType(t.type) === "received");
+    return state.transactions.filter(t => cleanTxType(t.type) === "received");
   }),
-  getUnconfirmedTransactions: computed((state) => {
+  getUnconfirmedTransactions: computed(state => {
     if (state.transactions === undefined) return [];
-    return state.transactions.filter((t) =>
+    return state.transactions.filter(t =>
       [
         "sending_not_finalized",
         "receiving_unconfirmed",
-        "sending_finalized",
+        "sending_finalized"
       ].includes(cleanTxType(t.type))
     );
   }),
-  getCancelledTransactions: computed((state) => {
+  getCancelledTransactions: computed(state => {
     if (state.transactions === undefined) return [];
-    return state.transactions.filter((t) => cleanTxType(t.type) === "canceled");
+    return state.transactions.filter(t => cleanTxType(t.type) === "canceled");
   }),
-  getCoinbaseTransactions: computed((state) => {
+  getCoinbaseTransactions: computed(state => {
     if (state.transactions === undefined) return [];
-    return state.transactions.filter((t) => cleanTxType(t.type) === "coinbase");
+    return state.transactions.filter(t => cleanTxType(t.type) === "coinbase");
   }),
   waitingResponse: false,
   setWaitingResponse: action((state, waiting) => {
     state.waitingResponse = waiting;
-  }),
+  })
 };
 
 export default walletSummary;

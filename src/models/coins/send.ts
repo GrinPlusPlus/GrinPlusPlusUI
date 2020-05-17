@@ -9,7 +9,7 @@ import {
   Thunk,
   thunk,
   ThunkOn,
-  thunkOn,
+  thunkOn
 } from "easy-peasy";
 
 export interface SendCoinsModel {
@@ -234,13 +234,13 @@ const sendCoinsModel: SendCoinsModel = {
         apiSettings.mode
       )
         .getOutputs(token)
-        .then((response) => {
+        .then(response => {
           if (typeof response === "string") {
             throw new Error(response);
           }
           actions.setInputsTable(response);
           let commitments: string[] = [];
-          response.forEach((input) => {
+          response.forEach(input => {
             if (input.status.toLowerCase() === "spendable")
               commitments.push(input.commitment);
           });
@@ -270,9 +270,9 @@ const sendCoinsModel: SendCoinsModel = {
           payload.inputs,
           payload.message
         )
-        .then((response) => {
+        .then(response => {
           let commitments: string[] = [];
-          response.inputs.forEach((input) => {
+          response.inputs.forEach(input => {
             commitments.push(input.commitment);
           });
           actions.fillInputs(commitments);
@@ -308,13 +308,13 @@ const sendCoinsModel: SendCoinsModel = {
           payload.message,
           file.filePath
         )
-        .then((response) => {
+        .then(response => {
           // Let's clean a bit
           actions.setInitialValues();
 
           return true;
         })
-        .catch((error) => {
+        .catch(error => {
           throw new Error(error);
         });
     }
@@ -418,7 +418,7 @@ const sendCoinsModel: SendCoinsModel = {
           strategy: getStoreState().sendCoinsModel.strategy,
           message: getStoreState().sendCoinsModel.message,
           token: getStoreState().session.token,
-          inputs: getStoreState().sendCoinsModel.inputs,
+          inputs: getStoreState().sendCoinsModel.inputs
         })
         .catch((error: { message: string }) => {
           actions.setError(error.message);
@@ -428,7 +428,7 @@ const sendCoinsModel: SendCoinsModel = {
   onCustomInputsChanged: thunkOn(
     (actions, storeActions) => [
       storeActions.sendCoinsModel.addCustomInput,
-      storeActions.sendCoinsModel.removeCustomInput,
+      storeActions.sendCoinsModel.removeCustomInput
     ],
     async (actions, target, { injections, getStoreState }) => {
       await actions
@@ -437,17 +437,17 @@ const sendCoinsModel: SendCoinsModel = {
           strategy: getStoreState().sendCoinsModel.strategy,
           message: getStoreState().sendCoinsModel.message,
           token: getStoreState().session.token,
-          inputs: getStoreState().sendCoinsModel.inputs,
+          inputs: getStoreState().sendCoinsModel.inputs
         })
         .catch((error: { message: string }) => {
           actions.setError(error.message);
         });
     }
   ),
-  isAddressValid: computed((state) => {
+  isAddressValid: computed(state => {
     if (validateAddress(state.address) === false) return false;
     return true;
-  }),
+  })
 };
 
 export default sendCoinsModel;

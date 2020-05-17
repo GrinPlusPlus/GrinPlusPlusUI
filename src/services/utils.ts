@@ -28,7 +28,7 @@ export const validateExtension = (fileName: string, ext: string): boolean => {
 
 export const getTextFileContent = async (file: File): Promise<string> => {
   const content = await readFileAsText(file)
-    .then((content) => content)
+    .then(content => content)
     .catch(() => "");
   return content;
 };
@@ -91,12 +91,12 @@ export const saveAs = async (
   path: string,
   filters: { name: string; extensions: string[] }[] = [
     { name: "Tx Files", extensions: ["tx"] },
-    { name: "All Files", extensions: ["*"] },
+    { name: "All Files", extensions: ["*"] }
   ]
 ): Promise<{ canceled: boolean; filePath: string }> => {
   let results = await require("electron").remote.dialog.showSaveDialog({
     defaultPath: path,
-    filters: filters,
+    filters: filters
   });
   return { canceled: results.canceled, filePath: results.filePath };
 };

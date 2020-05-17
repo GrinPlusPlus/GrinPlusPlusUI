@@ -6,7 +6,7 @@ import { useStoreState } from "../../hooks";
 
 export const NodeCheckContainer = () => {
   const { headers, blocks, network, connectedPeers } = useStoreState(
-    (state) => state.nodeSummary
+    state => state.nodeSummary
   );
 
   return (

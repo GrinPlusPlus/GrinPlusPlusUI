@@ -9,7 +9,7 @@ type TransactionMessageProps = {
 
 export const TransactionMessageComponent = ({
   message,
-  setMessageCb,
+  setMessageCb
 }: TransactionMessageProps) => {
   const { t } = useTranslation();
 

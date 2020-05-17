@@ -13,7 +13,7 @@ const isProcessRunning = function(processName: string): boolean {
   })();
   const results = require("child_process").execSync(cmd, {
     windowsHide: true,
-    encoding: "utf-8",
+    encoding: "utf-8"
   });
   return results.toLowerCase().indexOf(processName.toLowerCase()) > -1;
 };
@@ -116,7 +116,7 @@ export const runNode = function(
     encoding: "utf-8",
     detached: true,
     shell: false,
-    cwd: absolutePath,
+    cwd: absolutePath
   });
 };
 
@@ -177,9 +177,9 @@ export const getDefaultSettings = function(
       node: defaults.ports.node,
       foreignRPC: defaults.ports.foreignRPC,
       owner: defaults.ports.owner,
-      ownerRPC: defaults.ports.ownerRPC,
+      ownerRPC: defaults.ports.ownerRPC
     },
-    grinJoinAddress: defaults.grinJoinAddress,
+    grinJoinAddress: defaults.grinJoinAddress
   };
 };
 

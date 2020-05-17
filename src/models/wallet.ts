@@ -215,7 +215,7 @@ const wallet: WalletModel = {
         resolve(true);
       });
     }
-  ),
+  )
 };
 
 export default wallet;

@@ -18,31 +18,31 @@ export const SettingsContainer = () => {
     nodeBinaryPath,
     useGrinJoin,
     grinJoinAddress,
-    isConfirmationDialogOpen,
-  } = useStoreState((state) => state.settings);
-  const { status } = useStoreState((state) => state.nodeSummary);
-  const { floonet } = useStoreState((state) => state.settings.defaultSettings);
+    isConfirmationDialogOpen
+  } = useStoreState(state => state.settings);
+  const { status } = useStoreState(state => state.nodeSummary);
+  const { floonet } = useStoreState(state => state.settings.defaultSettings);
   const { isLoggedIn, username: sessionUsername, seed } = useStoreState(
-    (state) => state.session
+    state => state.session
   );
   const { username, password, waitingResponse } = useStoreState(
-    (state) => state.passwordPrompt
+    state => state.passwordPrompt
   );
 
   const { setUsername, setPassword, setWaitingResponse } = useStoreActions(
-    (state) => state.passwordPrompt
+    state => state.passwordPrompt
   );
-  const { getWalletSeed, setSeed } = useStoreActions((state) => state.session);
+  const { getWalletSeed, setSeed } = useStoreActions(state => state.session);
   const {
     setMininumPeers,
     setMaximumPeers,
     setConfirmations,
     setGrinJoinUse,
     setGrinJoinAddress,
-    toggleConfirmationDialog,
-  } = useStoreActions((actions) => actions.settings);
+    toggleConfirmationDialog
+  } = useStoreActions(actions => actions.settings);
   const { reSyncBlockchain, restartNode } = useStoreActions(
-    (state) => state.wallet
+    state => state.wallet
   );
 
   const toggleDialog = useCallback(() => {
@@ -71,7 +71,7 @@ export const SettingsContainer = () => {
     try {
       const seed: string[] = await getWalletSeed({
         username: username,
-        password: password,
+        password: password
       });
       if (seed !== undefined && seed.length > 0) {
         let _seed: ISeed[] = [];
@@ -81,7 +81,7 @@ export const SettingsContainer = () => {
             position: index + 1,
             text: word,
             disabled: true,
-            valid: true,
+            valid: true
           });
         }
         setSeed(_seed);
@@ -90,7 +90,7 @@ export const SettingsContainer = () => {
       Toaster.create({ position: Position.BOTTOM }).show({
         message: error.message,
         intent: Intent.DANGER,
-        icon: "warning-sign",
+        icon: "warning-sign"
       });
     }
     setWaitingResponse(false);

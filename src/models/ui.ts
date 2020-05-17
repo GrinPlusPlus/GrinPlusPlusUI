@@ -21,7 +21,7 @@ const ui: UIModel = {
   }),
   setAlert: action((state, alert) => {
     state.alert = alert;
-  }),
+  })
 };
 
 export default ui;

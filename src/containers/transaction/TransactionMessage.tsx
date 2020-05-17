@@ -3,8 +3,8 @@ import { TransactionMessageComponent } from "../../components/transaction/send/T
 import { useStoreActions, useStoreState } from "../../hooks";
 
 export const TransactionMessageContainer = () => {
-  const { message } = useStoreState((state) => state.sendCoinsModel);
-  const { setMessage } = useStoreActions((actions) => actions.sendCoinsModel);
+  const { message } = useStoreState(state => state.sendCoinsModel);
+  const { setMessage } = useStoreActions(actions => actions.sendCoinsModel);
 
   return (
     <TransactionMessageComponent message={message} setMessageCb={setMessage} />

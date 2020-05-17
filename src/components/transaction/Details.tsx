@@ -37,7 +37,7 @@ export const TansactionDetailsComponent = ({
   onCancelTransactionButtonClickedCb,
   onRepostTransactionButtonClickedCb,
   kernels,
-  outputs,
+  outputs
 }: TansactionDetailsProps) => {
   const { t } = useTranslation();
 
@@ -86,7 +86,7 @@ export const TansactionDetailsComponent = ({
   return (
     <div
       style={{
-        padding: "5px",
+        padding: "5px"
       }}
     >
       <div className="divTable">

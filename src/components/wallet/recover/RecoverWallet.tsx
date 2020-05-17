@@ -9,7 +9,7 @@ import {
   InputGroup,
   Intent,
   Radio,
-  RadioGroup,
+  RadioGroup
 } from "@blueprintjs/core";
 import { useTranslation } from "react-i18next";
 
@@ -38,7 +38,7 @@ export const RecoverWalletComponent = ({
   setPasswordCb,
   setSeedLengthCb,
   onWordChangeCb,
-  onButtonClickedCb,
+  onButtonClickedCb
 }: RecoverWalletProps) => {
   const { t } = useTranslation();
 

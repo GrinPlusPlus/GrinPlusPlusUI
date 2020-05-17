@@ -3,7 +3,7 @@ import { SpendableComponent } from "../../components/transaction/send/SpendableC
 import { useStoreState } from "../../hooks";
 
 export const SpendableContainer = () => {
-  const { spendable } = useStoreState((state) => state.walletSummary);
+  const { spendable } = useStoreState(state => state.walletSummary);
 
   return <SpendableComponent spendable={spendable} />;
 };

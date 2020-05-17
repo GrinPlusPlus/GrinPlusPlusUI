@@ -24,7 +24,7 @@ export const WalletSeedConfirmation = ({
   partiallyHiddenSeed,
   receivedSeed,
   onWordChangeCb,
-  onButtonClickedCb,
+  onButtonClickedCb
 }: CreateWalletProps) => {
   const { t } = useTranslation();
   return (

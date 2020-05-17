@@ -13,17 +13,17 @@ export const RestoreWalletContainer = () => {
     password,
     seed,
     isSeedCompleted,
-    seedLength,
-  } = useStoreState((state) => state.restoreWallet);
+    seedLength
+  } = useStoreState(state => state.restoreWallet);
   const {
     setUsername,
     setPassword,
     setSeedWord,
     restore,
-    setSeedLength,
-  } = useStoreActions((actions) => actions.restoreWallet);
+    setSeedLength
+  } = useStoreActions(actions => actions.restoreWallet);
 
-  const { status } = useStoreState((state) => state.nodeSummary);
+  const { status } = useStoreState(state => state.nodeSummary);
 
   const onButtonClicked = useCallback(async () => {
     require("electron-log").info("Trying to Restore Wallet...");
@@ -35,7 +35,7 @@ export const RestoreWalletContainer = () => {
       Toaster.create({ position: Position.BOTTOM }).show({
         message: error.message,
         intent: Intent.DANGER,
-        icon: "warning-sign",
+        icon: "warning-sign"
       });
       require("electron-log").error(
         `Error trying to Restore Wallet: ${error.message}`

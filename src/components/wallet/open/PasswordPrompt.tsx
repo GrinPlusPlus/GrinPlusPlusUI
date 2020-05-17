@@ -7,7 +7,7 @@ import {
   Intent,
   Overlay,
   Text,
-  Spinner,
+  Spinner
 } from "@blueprintjs/core";
 import { useTranslation } from "react-i18next";
 
@@ -32,7 +32,7 @@ export const PasswordPromptComponent = ({
   waitingResponse,
   connected,
   buttonText,
-  isOpen,
+  isOpen
 }: PasswordPromptProps) => {
   const { t } = useTranslation();
   const classes = classNames("bp3-dark", Classes.CARD, Classes.ELEVATION_4);
@@ -53,7 +53,7 @@ export const PasswordPromptComponent = ({
           left: "50%",
           position: "fixed",
           transform: "translate(-50%, -50%)",
-          backgroundColor: "#060707",
+          backgroundColor: "#060707"
         }}
       >
         <div style={{ marginBottom: "8px", fontSize: "14px" }}>

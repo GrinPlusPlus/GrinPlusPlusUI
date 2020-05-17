@@ -39,7 +39,7 @@ const AsyncStore = {
   removeItem(key: any) {
     console.log("Removing item: " + key);
     this.electronStore.delete(key);
-  },
+  }
 };
 
 const idiom: IdiomModel = {
@@ -47,7 +47,7 @@ const idiom: IdiomModel = {
   setLanguage: action((state, language) => {
     AsyncStore.setItem("language", language);
     state.language = language;
-  }),
+  })
 };
 
 export default idiom;

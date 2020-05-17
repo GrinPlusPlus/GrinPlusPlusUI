@@ -6,7 +6,7 @@ import {
   Navbar,
   NavbarGroup,
   NavbarHeading,
-  NavbarDivider,
+  NavbarDivider
 } from "@blueprintjs/core";
 import { WalletUsername } from "./../../components/styled";
 import { useHistory } from "react-router-dom";
@@ -16,9 +16,9 @@ import { getResourcePath } from "../../helpers";
 export const AccountNavBarContainer = () => {
   let history = useHistory();
 
-  const { username, token } = useStoreState((state) => state.session);
-  const { toggleSettings } = useStoreActions((actions) => actions.ui);
-  const { logout } = useStoreActions((actions) => actions.session);
+  const { username, token } = useStoreState(state => state.session);
+  const { toggleSettings } = useStoreActions(actions => actions.ui);
+  const { logout } = useStoreActions(actions => actions.session);
 
   return (
     <Navbar>
@@ -28,7 +28,7 @@ export const AccountNavBarContainer = () => {
           alt=""
           style={{
             maxWidth: "35px",
-            height: "auto",
+            height: "auto"
           }}
         />
         <NavbarHeading>
