@@ -106,6 +106,6 @@
   "wallet_seed": "Seed фраза кошелька",
   "invalid_destination_address": "Адрес назначения неверный",
   "not_online": "Кошелек не доступен ⛔️",
-  "outputs": "Outputs",
+  "outputs": "Выходы",
   "kernels": "Kernels"
 }
