@@ -56,14 +56,15 @@ export const WalletContainer = () => {
     if (username === undefined || password === undefined) return;
     setWaitingResponse(true);
     try {
-      const seed: string[] = await getWalletSeed({
+      const seed_tmp: string[] = await getWalletSeed({
         username: username,
         password: password,
       });
-      if (seed !== undefined && seed.length > 0) {
+      if (seed_tmp !== undefined && seed_tmp.length > 0) {
+        console.log(seed_tmp);
         let _seed: ISeed[] = [];
-        for (let index = 0; index < seed.length; index++) {
-          const word = seed[index];
+        for (let index = 0; index < seed_tmp.length; index++) {
+          const word = seed_tmp[index];
           _seed.push({
             position: index + 1,
             text: word,
@@ -71,6 +72,7 @@ export const WalletContainer = () => {
             valid: true,
           });
         }
+        console.log(_seed);
         setSeed(_seed);
       }
     } catch (error) {
