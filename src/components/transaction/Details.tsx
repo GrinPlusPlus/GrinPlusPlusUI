@@ -48,7 +48,20 @@ export const TansactionDetailsComponent = ({
       elements = kernels.map((kernel: string) => {
         return (
           <p key={kernel}>
-            <b>{kernel}</b>
+            <Button
+              className="bp3-dark"
+              intent={Intent.NONE}
+              minimal={true}
+              rightIcon="duplicate"
+              text={kernel.replace(
+                kernel.substr(
+                  kernel.length / 2 - kernel.length / 4,
+                  (kernel.length / 4) * 2
+                ),
+                ".........."
+              )}
+              onClick={() => navigator.clipboard.writeText(kernel)}
+            />
           </p>
         );
       });
@@ -73,7 +86,24 @@ export const TansactionDetailsComponent = ({
                 {t("amount")}: <b>{output.amount}</b>
               </p>
               <p>
-                {t("commitment")}: <b>{output.commitment}</b>
+                {t("commitment")}:{" "}
+                <Button
+                  className="bp3-dark"
+                  intent={Intent.NONE}
+                  minimal={true}
+                  rightIcon="duplicate"
+                  text={output.commitment.replace(
+                    output.commitment.substr(
+                      output.commitment.length / 2 -
+                        output.commitment.length / 3,
+                      (output.commitment.length / 3) * 2
+                    ),
+                    ".........."
+                  )}
+                  onClick={() =>
+                    navigator.clipboard.writeText(output.commitment)
+                  }
+                />
               </p>
               <p> </p>
             </div>
