@@ -61,7 +61,6 @@ export const WalletContainer = () => {
         password: password,
       });
       if (seed_tmp !== undefined && seed_tmp.length > 0) {
-        console.log(seed_tmp);
         let _seed: ISeed[] = [];
         for (let index = 0; index < seed_tmp.length; index++) {
           const word = seed_tmp[index];
@@ -72,7 +71,6 @@ export const WalletContainer = () => {
             valid: true,
           });
         }
-        console.log(_seed);
         setSeed(_seed);
       }
     } catch (error) {
