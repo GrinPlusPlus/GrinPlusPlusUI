@@ -43,10 +43,10 @@ export const OpenWalletContainer = () => {
 
   useEffect(() => {
     (async function() {
-      if (status.toLowerCase() !== "running") return;
+      if (accounts !== undefined) return;
       try {
-        const accounts = await getAccounts();
-        setAccounts(accounts);
+        const _accounts = await getAccounts();
+        setAccounts(_accounts);
       } catch (error) {
         require("electron-log").error(
           `Error trying to get Accounts: ${error.message}`

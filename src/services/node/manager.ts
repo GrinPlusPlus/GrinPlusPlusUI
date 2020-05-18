@@ -125,7 +125,11 @@ export const isNodeRunning = function(): boolean {
 };
 
 export const stopNode = function(): void {
-  killProcess(getCommand());
+  try {
+    killProcess(getCommand());
+  } catch (e) {
+    
+  }
 };
 
 export const getDefaultSettings = function(
