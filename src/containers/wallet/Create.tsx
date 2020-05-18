@@ -6,15 +6,17 @@ import { hideSeedWords } from "../../helpers";
 import { useHistory } from "react-router-dom";
 
 const CreateWalletComponent = React.lazy(() =>
-  import("./../../components/wallet/create/CreateWallet").then(module => ({
-    default: module.CreateWalletComponent
+  import("./../../components/wallet/create/CreateWallet").then((module) => ({
+    default: module.CreateWalletComponent,
   }))
 );
 
 const WalletSeedConfirmation = React.lazy(() =>
-  import("./../../components/wallet/create/ConfirmWalletSeed").then(module => ({
-    default: module.WalletSeedConfirmation
-  }))
+  import("./../../components/wallet/create/ConfirmWalletSeed").then(
+    (module) => ({
+      default: module.WalletSeedConfirmation,
+    })
+  )
 );
 
 const renderLoader = () => null;
@@ -28,8 +30,9 @@ export const CreateWalletContainer = () => {
     passwordConfirmation,
     generatedSeed,
     hiddenSeed,
-    seedsMatched
-  } = useStoreState(state => state.createWallet);
+    seedsMatched,
+    seedLength,
+  } = useStoreState((state) => state.createWallet);
   const {
     setUsername,
     setPassword,
@@ -37,23 +40,26 @@ export const CreateWalletContainer = () => {
     create,
     setHiddenSeed,
     setHiddenSeedWord,
-    setGeneratedSeed
-  } = useStoreActions(actions => actions.createWallet);
-  const { status } = useStoreState(state => state.nodeSummary);
+    setGeneratedSeed,
+    setSeedLength,
+  } = useStoreActions((actions) => actions.createWallet);
+  const { status } = useStoreState((state) => state.nodeSummary);
 
   const onCreateWalletButtonClicked = useCallback(async () => {
     try {
-      await create({ username: username, password: password }).catch(
-        (error: { message: string }) => {
-          Toaster.create({ position: Position.BOTTOM }).show({
-            message: error.message,
-            intent: Intent.DANGER,
-            icon: "warning-sign"
-          });
-        }
-      );
+      await create({
+        username: username,
+        password: password,
+        seedLength: seedLength,
+      }).catch((error: { message: string }) => {
+        Toaster.create({ position: Position.BOTTOM }).show({
+          message: error.message,
+          intent: Intent.DANGER,
+          icon: "warning-sign",
+        });
+      });
     } catch (error) {}
-  }, [username, password, create]);
+  }, [username, password, create, seedLength]);
 
   const onContinueButtonClicked = useCallback(async () => {
     if (hiddenSeed.length > 0 && seedsMatched) {
@@ -74,17 +80,24 @@ export const CreateWalletContainer = () => {
     setUsername,
     setPassword,
     setGeneratedSeed,
-    setPasswordConfirmation
+    setPasswordConfirmation,
   ]);
 
   const onWordChange = useCallback(
     (word: string, position: number) => {
       setHiddenSeedWord({
         word: word,
-        position: position
+        position: position,
       });
     },
     [setHiddenSeedWord]
+  );
+
+  const onSeedLengthChange = useCallback(
+    (length: string) => {
+      setSeedLength(length);
+    },
+    [setSeedLength]
   );
 
   return (
@@ -95,6 +108,8 @@ export const CreateWalletContainer = () => {
         status={status}
         minPasswordLength={minPasswordLength}
         confirmation={passwordConfirmation}
+        seedLength={seedLength}
+        setSeedLengthCb={onSeedLengthChange}
         receivedSeed={generatedSeed}
         setUsernameCb={setUsername}
         setPasswordCb={setPassword}

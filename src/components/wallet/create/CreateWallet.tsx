@@ -3,7 +3,9 @@ import {
   Dialog,
   FormGroup,
   InputGroup,
-  Intent
+  Intent,
+  RadioGroup,
+  Radio,
 } from "@blueprintjs/core";
 
 import { InputPasswordComponent } from "../../../components/custom/InputPassword";
@@ -27,6 +29,8 @@ type CreateWalletProps = {
   setConfirmationCb: (password: string) => void;
   signUpButtonCb: () => void;
   SeedValidationComponent: React.ReactNode;
+  seedLength: string;
+  setSeedLengthCb: (length: string) => void;
 };
 
 export const CreateWalletComponent = ({
@@ -40,7 +44,9 @@ export const CreateWalletComponent = ({
   setPasswordCb,
   setConfirmationCb,
   signUpButtonCb,
-  SeedValidationComponent
+  SeedValidationComponent,
+  seedLength,
+  setSeedLengthCb,
 }: CreateWalletProps) => {
   const { t } = useTranslation();
 
@@ -91,6 +97,25 @@ export const CreateWalletComponent = ({
           autoFocus={false}
         />
       </FormGroup>
+      <div>
+        <RadioGroup
+          inline={true}
+          className="bp3-dark"
+          label={t("seed")}
+          name="seedLength"
+          selectedValue={seedLength}
+          onChange={(event: React.FormEvent<HTMLInputElement>) => {
+            let target = event.target as HTMLInputElement;
+            setSeedLengthCb(target.value);
+          }}
+        >
+          <Radio label="12" value="12" />
+          <Radio label="15" value="15" />
+          <Radio label="18" value="18" />
+          <Radio label="21" value="21" />
+          <Radio label="24" value="24" />
+        </RadioGroup>
+      </div>
       <SubmitButton>
         <Button
           data-testid="create-wallet-button"

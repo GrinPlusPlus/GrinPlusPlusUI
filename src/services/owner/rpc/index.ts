@@ -8,12 +8,13 @@ export class OwnerRPCApi extends BaseApi {
 
   public async createWallet(
     username: string,
-    password: string
+    password: string,
+    seedLength: string
   ): Promise<{ username: string; token: string; seed: string[] }> {
     return await this.makeRPCRequest(
       this.getRequestURL("create_wallet"),
       "create_wallet",
-      { username: username, password: password }
+      { username: username, password: password, num_seed_words: +seedLength }
     ).then((response) => {
       if (response.error) throw new Error(response.error.message);
       return {
