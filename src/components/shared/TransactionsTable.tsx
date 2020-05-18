@@ -4,7 +4,7 @@ import {
   cutAddress,
   getDateAsString,
   getTxIcon,
-  getTxIntent
+  getTxIntent,
 } from "../../helpers";
 
 import { ITransaction } from "../../interfaces/ITransaction";
@@ -30,14 +30,14 @@ export const TransactionsTableComponent = ({
   openTransactionCb,
   onCancelTransactionButtonClickedCb,
   onRepostTransactionButtonClickedCb,
-  method
+  method,
 }: TransactionsTableProps) => {
   const { t } = useTranslation();
 
   const listTransactions = (rows: ITransaction[]) => {
     let table: JSX.Element[] = [];
     if (rows.length === 0) return table;
-    rows.forEach(transaction => {
+    rows.forEach((transaction) => {
       let date =
         transaction.creationDate === undefined
           ? ""
@@ -82,12 +82,13 @@ export const TransactionsTableComponent = ({
             colSpan={6}
             style={{
               backgroundColor: "black",
-              cursor: "default"
+              cursor: "default",
             }}
           >
             {transactionOpened === transaction.Id ? (
               <TansactionDetailsComponent
                 id={transaction.Id}
+                key={transaction.Id}
                 address={transaction.address ? transaction.address : "-"}
                 slate={transaction.slateId}
                 type={transaction.type}

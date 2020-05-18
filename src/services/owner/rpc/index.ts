@@ -14,12 +14,12 @@ export class OwnerRPCApi extends BaseApi {
       this.getRequestURL("create_wallet"),
       "create_wallet",
       { username: username, password: password }
-    ).then(response => {
+    ).then((response) => {
       if (response.error) throw new Error(response.error.message);
       return {
         username: username,
         token: response.result.session_token,
-        seed: response.result.wallet_seed.split(" ")
+        seed: response.result.wallet_seed.split(" "),
       };
     });
   }
@@ -35,9 +35,9 @@ export class OwnerRPCApi extends BaseApi {
       {
         username: username,
         password: password,
-        wallet_seed: seed
+        wallet_seed: seed,
       }
-    ).then(response => {
+    ).then((response) => {
       if (response.error) throw new Error(response.error.message);
       return { username: username, token: response.result.session_token };
     });
@@ -57,11 +57,11 @@ export class OwnerRPCApi extends BaseApi {
       fee_base: 1000000,
       selection_strategy: {
         strategy: strategy,
-        inputs: strategy === "SMALLEST" ? [] : inputs
+        inputs: strategy === "SMALLEST" ? [] : inputs,
       },
       message: message,
-      file: file
-    }).then(response =>
+      file: file,
+    }).then((response) =>
       response.error ? response.error.message : response.result.slate
     );
   }
@@ -80,11 +80,11 @@ export class OwnerRPCApi extends BaseApi {
     if (method === "JOIN") {
       postTx = {
         method: method,
-        grinjoin_address: grinJoinAddress
+        grinjoin_address: grinJoinAddress,
       };
     } else {
       postTx = {
-        method: method
+        method: method,
       };
     }
     let params = {
@@ -93,11 +93,11 @@ export class OwnerRPCApi extends BaseApi {
       fee_base: 1000000,
       selection_strategy: {
         strategy: strategy,
-        inputs: strategy === "SMALLEST" ? [] : inputs
+        inputs: strategy === "SMALLEST" ? [] : inputs,
       },
       address: address,
       message: message,
-      post_tx: postTx
+      post_tx: postTx,
     };
     if (message === "") {
       delete params["message"];
@@ -112,7 +112,7 @@ export class OwnerRPCApi extends BaseApi {
       this.getRequestURL("send"),
       "send",
       params
-    ).then(response =>
+    ).then((response) =>
       response.error ? response.error.message : response.result.slate
     );
   }
@@ -125,8 +125,8 @@ export class OwnerRPCApi extends BaseApi {
     return await this.makeRPCRequest(this.getRequestURL("receive"), "receive", {
       session_token: token,
       slate: slate,
-      file: file
-    }).then(response =>
+      file: file,
+    }).then((response) =>
       response.error ? response.error.message : response.result.slate
     );
   }
@@ -142,11 +142,11 @@ export class OwnerRPCApi extends BaseApi {
     if (method === "JOIN") {
       postTx = {
         method: method,
-        grinjoin_address: grinJoinAddress
+        grinjoin_address: grinJoinAddress,
       };
     } else {
       postTx = {
-        method: method
+        method: method,
       };
     }
     return await this.makeRPCRequest(
@@ -156,9 +156,9 @@ export class OwnerRPCApi extends BaseApi {
         session_token: token,
         slate: slate,
         file: file,
-        post_tx: postTx
+        post_tx: postTx,
       }
-    ).then(response =>
+    ).then((response) =>
       response.error
         ? response.error.message
         : response.result.success === "FINALIZED"
@@ -171,9 +171,9 @@ export class OwnerRPCApi extends BaseApi {
       this.getRequestURL("get_address"),
       "retry_tor",
       {
-        session_token: token
+        session_token: token,
       }
-    ).then(response => {
+    ).then((response) => {
       require("electron-log").info(response.result);
       return response.result?.status === "SUCCESS"
         ? response.result.tor_address
@@ -184,8 +184,8 @@ export class OwnerRPCApi extends BaseApi {
   public async login(username: string, password: string): Promise<string> {
     return await this.makeRPCRequest(this.getRequestURL("login"), "login", {
       username: username,
-      password: password
-    }).then(response =>
+      password: password,
+    }).then((response) =>
       response.error ? response.error.message : response.result.session_token
     );
   }
@@ -196,9 +196,9 @@ export class OwnerRPCApi extends BaseApi {
       "get_wallet_seed",
       {
         username: username,
-        password: password
+        password: password,
       }
-    ).then(response => {
+    ).then((response) => {
       if (response.error) throw new Error(response.error.message);
       return response.result.wallet_seed.split(" ");
     });
@@ -217,28 +217,28 @@ export class OwnerRPCApi extends BaseApi {
       this.getRequestURL("get_balance"),
       "get_balance",
       {
-        session_token: token
+        session_token: token,
       }
-    ).then(response => {
+    ).then((response) => {
       if (response.error) throw new Error(response.error.message);
       return {
         spendable: response.result.spendable,
         total: response.result.total,
         immature: response.result.immature,
         unconfirmed: response.result.unconfirmed,
-        locked: response.result.locked
+        locked: response.result.locked,
       };
     });
   }
 
-  public async getWalletSummary(token: string): Promise<ITransaction[]> {
+  public async getTransactionsList(token: string): Promise<ITransaction[]> {
     return await this.makeRPCRequest(
       this.getRequestURL("list_txs"),
       "list_txs",
       {
-        session_token: token
+        session_token: token,
       }
-    ).then(response => {
+    ).then((response) => {
       let transactions: ITransaction[] = [];
       if (!response.result?.txs) return transactions;
       transactions = response.result.txs.reverse().map((transaction: any) => {
@@ -256,7 +256,7 @@ export class OwnerRPCApi extends BaseApi {
           kernels: transaction.kernels?.map(
             (kernel: { commitment: string }) => kernel.commitment
           ),
-          output: transaction.outputs?.map(
+          outputs: transaction.outputs?.map(
             (output: {
               amount: number;
               block_height: number;
@@ -268,7 +268,7 @@ export class OwnerRPCApi extends BaseApi {
             }) => {
               return { amount: output.amount, commitment: output.commitment };
             }
-          )
+          ),
         };
       });
       return transactions;
@@ -277,8 +277,8 @@ export class OwnerRPCApi extends BaseApi {
 
   public async logout(token: string): Promise<boolean> {
     return await this.makeRPCRequest(this.getRequestURL("logout"), "logout", {
-      session_token: token
-    }).then(response => (response.error ? false : true));
+      session_token: token,
+    }).then((response) => (response.error ? false : true));
   }
 
   public async estimateFee(
@@ -307,11 +307,11 @@ export class OwnerRPCApi extends BaseApi {
         fee_base: 1000000,
         selection_strategy: {
           strategy: strategy,
-          inputs: strategy === "SMALLEST" ? [] : inputs
+          inputs: strategy === "SMALLEST" ? [] : inputs,
         },
-        message: message
+        message: message,
       }
-    ).then(response => {
+    ).then((response) => {
       if (response.error) throw new Error(response.error.message);
       return response.result;
     });
@@ -322,7 +322,7 @@ export class OwnerRPCApi extends BaseApi {
       `${this.getRequestURL("cancel_tx")}`,
       "cancel_tx",
       { session_token: token, tx_id: txId }
-    ).then(response => {
+    ).then((response) => {
       if (response.error) throw new Error(response.error.message);
       return response.result;
     });
@@ -337,7 +337,7 @@ export class OwnerRPCApi extends BaseApi {
       `${this.getRequestURL("repost_tx")}`,
       "repost_tx",
       { session_token: token, tx_id: txId, method: method }
-    ).then(response => {
+    ).then((response) => {
       if (response.error) throw new Error(response.error.message);
       return response.result;
     });

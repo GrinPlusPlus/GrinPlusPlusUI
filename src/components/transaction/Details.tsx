@@ -38,7 +38,7 @@ export const TansactionDetailsComponent = ({
   onCancelTransactionButtonClickedCb,
   onRepostTransactionButtonClickedCb,
   kernels,
-  outputs
+  outputs,
 }: TansactionDetailsProps) => {
   const { t } = useTranslation();
 
@@ -47,7 +47,7 @@ export const TansactionDetailsComponent = ({
     if (kernels && kernels.length > 0) {
       elements = kernels.map((kernel: string) => {
         return (
-          <p>
+          <p key={kernel}>
             <b>{kernel}</b>
           </p>
         );
@@ -68,7 +68,7 @@ export const TansactionDetailsComponent = ({
       elements = outputs.map(
         (output: { amount: number; commitment: string }) => {
           return (
-            <div>
+            <div key={output.commitment}>
               <p>
                 {t("amount")}: <b>{output.amount}</b>
               </p>
@@ -83,11 +83,10 @@ export const TansactionDetailsComponent = ({
     }
     return elements;
   };
-
   return (
     <div
       style={{
-        padding: "5px"
+        padding: "5px",
       }}
     >
       <div className="divTable">

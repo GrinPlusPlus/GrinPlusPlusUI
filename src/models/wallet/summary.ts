@@ -133,7 +133,7 @@ const walletSummary: WalletSummaryModel = {
         apiSettings.ip,
         apiSettings.mode
       )
-        .getWalletSummary(token)
+        .getTransactionsList(token)
         .then((transactions) => {
           const currentTransactions = getStoreState().walletSummary
             .transactions;
