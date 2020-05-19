@@ -90,6 +90,7 @@ const session: SessionModel = {
     getStoreActions().ui.toggleSettings(false);
     getStoreActions().walletSummary.updateBalance(undefined);
     getStoreActions().walletSummary.updateSummary(undefined);
+    getStoreActions().walletSummary.setSelectedTx(-1);
     getStoreActions().wallet.replaceLogs("");
     getStoreActions().finalizeModel.setResponseFile(undefined);
     getStoreActions().sendCoinsModel.setInitialValues();
