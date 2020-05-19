@@ -56,8 +56,7 @@ const receiveCoinsModel: ReceiveCoinsModel = {
         const response = await new ownerService.RPC(
           apiSettings.floonet,
           apiSettings.protocol,
-          apiSettings.ip,
-          apiSettings.mode
+          apiSettings.ip
         ).receiveTx(getStoreState().session.token, slate, filePath);
 
         // Let's make sure there is no error...
@@ -88,8 +87,7 @@ const receiveCoinsModel: ReceiveCoinsModel = {
         const address = await new ownerService.RPC(
           apiSettings.floonet,
           apiSettings.protocol,
-          apiSettings.ip,
-          apiSettings.mode
+          apiSettings.ip
         ).getWalletAddress(token);
         getStoreActions().session.setAddress(address);
       } catch (error) {
@@ -103,7 +101,7 @@ const receiveCoinsModel: ReceiveCoinsModel = {
   waitingResponse: false,
   setWaitingResponse: action((state, waiting) => {
     state.waitingResponse = waiting;
-  })
+  }),
 };
 
 export default receiveCoinsModel;

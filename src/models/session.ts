@@ -52,16 +52,15 @@ const session: SessionModel = {
       await new ownerService.RPC(
         apiSettings.floonet,
         apiSettings.protocol,
-        apiSettings.ip,
-        apiSettings.mode
+        apiSettings.ip
       )
         .logout(token)
-        .then(response => {
+        .then((response) => {
           actions.clean();
         });
     }
   ),
-  isLoggedIn: computed(state => {
+  isLoggedIn: computed((state) => {
     return state.username.length > 0 && state.token.length > 0;
   }),
   getWalletSeed: thunk(
@@ -75,11 +74,10 @@ const session: SessionModel = {
       return await new ownerService.RPC(
         apiSettings.floonet,
         apiSettings.protocol,
-        apiSettings.ip,
-        apiSettings.mode
+        apiSettings.ip
       )
         .getSeed(payload.username, payload.password)
-        .then(response => {
+        .then((response) => {
           return response;
         });
     }
@@ -99,7 +97,7 @@ const session: SessionModel = {
     getStoreActions().restoreWallet.setInitialValues();
     getStoreActions().ui.setAlert(undefined);
     actions.updateSession({ username: "", token: "", address: "" });
-  })
+  }),
 };
 
 export default session;

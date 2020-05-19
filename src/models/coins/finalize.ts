@@ -52,8 +52,7 @@ const finalizeModel: FinalizeModel = {
       const response = await new ownerService.RPC(
         apiSettings.floonet,
         apiSettings.protocol,
-        apiSettings.ip,
-        apiSettings.mode
+        apiSettings.ip
       ).finalizeTx(
         getStoreState().session.token,
         slate,
@@ -70,7 +69,7 @@ const finalizeModel: FinalizeModel = {
       // Alles gut!
       return "finalized";
     }
-  )
+  ),
 };
 
 export default finalizeModel;

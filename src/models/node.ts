@@ -94,8 +94,7 @@ const nodeSummary: NodeSummaryModel = {
       return await new nodeService.REST(
         apiSettings.floonet,
         apiSettings.protocol,
-        apiSettings.ip,
-        apiSettings.mode
+        apiSettings.ip
       ).getStatus();
     }
   ),
@@ -110,8 +109,7 @@ const nodeSummary: NodeSummaryModel = {
       const api = new nodeService.REST(
         apiSettings.floonet,
         apiSettings.protocol,
-        apiSettings.ip,
-        apiSettings.mode
+        apiSettings.ip
       );
       return await api.getConnectedPeers();
     }
@@ -126,7 +124,7 @@ const nodeSummary: NodeSummaryModel = {
   setWaitingResponse: action((state, waiting) => {
     state.waitingResponse = waiting;
   }),
-  updatedAt: 0
+  updatedAt: 0,
 };
 
 export default nodeSummary;

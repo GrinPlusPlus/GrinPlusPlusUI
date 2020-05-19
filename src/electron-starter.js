@@ -17,21 +17,38 @@ const app = electron.app;
 let mainWindow;
 
 function isRunning(win, mac, linux) {
-  const plat = process.platform
-  const cmd = plat == 'win32' ? 'tasklist' : (plat == 'darwin' ? 'ps -ax | grep ' + mac : (plat == 'linux' ? 'ps -A' : ''))
-  const proc = plat == 'win32' ? win : (plat == 'darwin' ? mac : (plat == 'linux' ? linux : ''))
-  if (cmd === '' || proc === '') {
-    throw new Error("Unknown platform")
+  const plat = process.platform;
+  const cmd =
+    plat == "win32"
+      ? "tasklist"
+      : plat == "darwin"
+      ? "ps -ax | grep " + mac
+      : plat == "linux"
+      ? "ps -A"
+      : "";
+  const proc =
+    plat == "win32"
+      ? win
+      : plat == "darwin"
+      ? mac
+      : plat == "linux"
+      ? linux
+      : "";
+  if (cmd === "" || proc === "") {
+    throw new Error("Unknown platform");
   }
-  var stdout = require('child_process').execSync(cmd).toString();
-  return (stdout.toLowerCase().indexOf(proc.toLowerCase()) > -1)
+  var stdout = require("child_process")
+    .execSync(cmd)
+    .toString();
+  return stdout.toLowerCase().indexOf(proc.toLowerCase()) > -1;
 }
 
 function closeGrinNode(cb) {
-  var running = isRunning('GrinNode.exe', 'GrinNode', 'GrinNode');
-  log.error(running);
-  if (!running) { log.info("GrinNode does not appear to be running. Calling app.quit()"); }
-  else {
+  var running = isRunning("GrinNode.exe", "GrinNode", "GrinNode");
+  if (!running) {
+    log.info("GrinNode does not appear to be running. Calling app.quit()");
+  } else {
+    log.info("GrinNode seems to be running...");
     const filePath = require("path").join(
       require("electron").app.getAppPath(),
       "defaults.json"
@@ -41,14 +58,16 @@ function closeGrinNode(cb) {
     let options = {
       url: `http://${settings.ip}:${
         settings.floonet ? settings.ports.node + 10000 : settings.ports.node
-        }/v1/shutdown`,
+      }/v1/shutdown`,
       method: "post",
     };
     request(options, (error, response, body) => {
+      log.info("==============================");
       log.info("Shutdown API called");
       log.error(error);
       log.info(response);
       log.info(body);
+      log.info("==============================");
     });
   }
   cb();
@@ -102,7 +121,7 @@ function createWindow() {
     minHeight: 790,
     resizable: true,
     frame: false,
-    titleBarStyle: 'hidden',
+    titleBarStyle: "hidden",
     backgroundColor: "#0D0D0D",
     title: "Grin++ v" + app.getVersion(),
     webPreferences: {

@@ -233,8 +233,7 @@ const sendCoinsModel: SendCoinsModel = {
       return await new ownerService.REST(
         apiSettings.floonet,
         apiSettings.protocol,
-        apiSettings.ip,
-        apiSettings.mode
+        apiSettings.ip
       )
         .getOutputs(token)
         .then((response) => {
@@ -263,8 +262,7 @@ const sendCoinsModel: SendCoinsModel = {
       return await new ownerService.RPC(
         apiSettings.floonet,
         apiSettings.protocol,
-        apiSettings.ip,
-        apiSettings.mode
+        apiSettings.ip
       )
         .estimateFee(
           payload.token,
@@ -300,8 +298,7 @@ const sendCoinsModel: SendCoinsModel = {
       return await new ownerService.RPC(
         apiSettings.floonet,
         apiSettings.protocol,
-        apiSettings.ip,
-        apiSettings.mode
+        apiSettings.ip
       )
         .sendCoinsViaFile(
           payload.token,
@@ -356,8 +353,7 @@ const sendCoinsModel: SendCoinsModel = {
           const response = await new ownerService.RPC(
             defaultSettings.floonet,
             defaultSettings.protocol,
-            defaultSettings.ip,
-            defaultSettings.mode
+            defaultSettings.ip
           ).sendCoins(
             payload.token,
             payload.amount,
@@ -376,8 +372,7 @@ const sendCoinsModel: SendCoinsModel = {
           const slate = await new ownerService.RPC(
             defaultSettings.floonet,
             defaultSettings.protocol,
-            defaultSettings.ip,
-            defaultSettings.mode
+            defaultSettings.ip
           ).sendCoins(
             payload.token,
             payload.amount,

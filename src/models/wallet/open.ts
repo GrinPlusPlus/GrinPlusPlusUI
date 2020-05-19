@@ -53,8 +53,7 @@ const openWallet: SigninModel = {
       return await new ownerService.REST(
         apiSettings.floonet,
         apiSettings.protocol,
-        apiSettings.ip,
-        apiSettings.mode
+        apiSettings.ip
       ).getAccounts();
     }
   ),
@@ -69,11 +68,10 @@ const openWallet: SigninModel = {
       return await new ownerService.RPC(
         apiSettings.floonet,
         apiSettings.protocol,
-        apiSettings.ip,
-        apiSettings.mode
+        apiSettings.ip
       )
         .login(payload.username, payload.password)
-        .then(response => {
+        .then((response) => {
           var base64Matcher = new RegExp(
             "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$"
           );
@@ -81,14 +79,14 @@ const openWallet: SigninModel = {
           getStoreActions().session.updateSession({
             username: payload.username,
             token: response,
-            address: ""
+            address: "",
           });
           actions.setUsername("");
           actions.setPassword("");
           return response;
         });
     }
-  )
+  ),
 };
 
 export default openWallet;

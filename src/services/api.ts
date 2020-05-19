@@ -1,7 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 
 export class BaseApi {
-  private _mode: "DEV" | "TEST" | "PROD";
   private _protocol: string;
   private _ip: string;
   private _floonet: boolean;
@@ -15,18 +14,13 @@ export class BaseApi {
   constructor(
     floonet: boolean = true,
     protocol: string = "http",
-    ip: string = "127.0.0.1",
-    mode: "DEV" | "TEST" | "PROD" = "DEV"
+    ip: string = "127.0.0.1"
   ) {
     this._protocol = protocol;
     this._ip = ip;
     this._floonet = floonet;
-    this._mode = mode;
   }
 
-  public get mode() {
-    return this._mode;
-  }
   public get protocol() {
     return this._protocol;
   }
@@ -182,7 +176,7 @@ export class BaseApi {
       headers: headers,
       agent: false,
       encoding: "utf-8",
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
     };
 
     if (method.toLowerCase() === "get") {
@@ -221,14 +215,14 @@ export class BaseApi {
       agent: false,
       pool: { maxSockets: 5 },
       headers: {
-        Accept: "application/json, text/plain, */*"
+        Accept: "application/json, text/plain, */*",
       },
       body: JSON.stringify({
         jsonrpc: "2.0",
         id: uuidv4(),
         method: method,
-        params: params
-      })
+        params: params,
+      }),
     };
     return new Promise((resolve, reject) => {
       request.post(options, (error: string, response: {}, body: string) => {

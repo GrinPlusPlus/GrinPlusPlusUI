@@ -2,7 +2,7 @@ import { Action, Computed, Thunk, action, computed, thunk } from "easy-peasy";
 import {
   generateEmptySeed,
   getSeedWords,
-  isValidSeedWord
+  isValidSeedWord,
 } from "../../helpers";
 
 import { ISeed } from "../../interfaces/ISeed";
@@ -44,7 +44,7 @@ const restoreWallet: RestoreWalletModel = {
   password: "",
   seed: generateEmptySeed(),
   seedLength: "24",
-  setInitialValues: action(state => {
+  setInitialValues: action((state) => {
     state.username = "";
     state.password = "";
     state.seed = generateEmptySeed();
@@ -76,33 +76,32 @@ const restoreWallet: RestoreWalletModel = {
       return await new ownerService.RPC(
         apiSettings.floonet,
         apiSettings.protocol,
-        apiSettings.ip,
-        apiSettings.mode
+        apiSettings.ip
       )
         .restoreWallet(
           payload.username,
           payload.password,
           getSeedWords(payload.seed)
         )
-        .then(response => {
+        .then((response) => {
           actions.setUsername("");
           actions.setPassword("");
           actions.setSeed([]);
           getStoreActions().session.updateSession({
             username: response.username,
             token: response.token,
-            address: ""
+            address: "",
           });
         });
     }
   ),
-  isSeedCompleted: computed(state => {
+  isSeedCompleted: computed((state) => {
     let filled: number = 0;
-    state.seed.forEach(word => {
+    state.seed.forEach((word) => {
       if (word.text.length) filled++;
     });
     return filled === state.seed.length;
-  })
+  }),
 };
 
 export default restoreWallet;

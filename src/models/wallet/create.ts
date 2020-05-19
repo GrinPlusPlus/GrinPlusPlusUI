@@ -94,8 +94,7 @@ const createWalletModel: CreateWalletModel = {
       await new ownerService.RPC(
         apiSettings.floonet,
         apiSettings.protocol,
-        apiSettings.ip,
-        apiSettings.mode
+        apiSettings.ip
       )
         .createWallet(payload.username, payload.password, payload.seedLength)
         .then((wallet) => {

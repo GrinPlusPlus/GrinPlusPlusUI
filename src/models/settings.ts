@@ -3,20 +3,13 @@ import { Action, ThunkOn, action, thunkOn } from "easy-peasy";
 import { Injections } from "../store";
 import { StoreModel } from ".";
 
-interface IWalletSettings {
-  ip: string;
-  protocol: string;
-  mode: "DEV" | "TEST" | "PROD";
-  binaryPath: string;
-  floonet: boolean;
-  minimumPeers: number;
-  maximumPeers: number;
-  minimumConfirmations: number;
-  ports: { node: number; foreignRPC: number; owner: number; ownerRPC: number };
-  grinJoinAddress: string;
-}
 export interface SettingsModel {
-  defaultSettings: IWalletSettings;
+  defaultSettings: {
+    floonet: boolean;
+    protocol: string;
+    ip: string;
+    mode: "DEV" | "TEST" | "PROD";
+  };
   mininumPeers: number;
   maximumPeers: number;
   confirmations: number;
@@ -25,7 +18,15 @@ export interface SettingsModel {
   useGrinJoin: boolean;
   grinJoinAddress: string;
   isConfirmationDialogOpen: boolean;
-  setDefaultSettings: Action<SettingsModel, IWalletSettings>;
+  setDefaultSettings: Action<
+    SettingsModel,
+    {
+      floonet: boolean;
+      protocol: string;
+      ip: string;
+      mode: "DEV" | "TEST" | "PROD";
+    }
+  >;
   setNodeDataPath: Action<SettingsModel, string>;
   setNodeBinaryPath: Action<SettingsModel, string>;
   setMininumPeers: Action<SettingsModel, number>;
@@ -39,21 +40,10 @@ export interface SettingsModel {
 
 const settings: SettingsModel = {
   defaultSettings: {
-    ip: "127.0.0.1",
-    protocol: "http",
-    mode: "DEV",
-    binaryPath: ".\\GrinPlusPlus\\bin\\RelWithDebInfo",
     floonet: false,
-    minimumPeers: 15,
-    maximumPeers: 50,
-    minimumConfirmations: 10,
-    ports: {
-      node: 3413,
-      foreignRPC: 3415,
-      owner: 3420,
-      ownerRPC: 3421
-    },
-    grinJoinAddress: "grinjoin5pzzisnne3naxx4w2knwxsyamqmzfnzywnzdk7ra766u7vid"
+    protocol: "http",
+    ip: "127.0.0.1",
+    mode: "DEV",
   },
   mininumPeers: 15,
   maximumPeers: 50,
@@ -64,7 +54,12 @@ const settings: SettingsModel = {
   grinJoinAddress: "grinjoin5pzzisnne3naxx4w2knwxsyamqmzfnzywnzdk7ra766u7vid",
   isConfirmationDialogOpen: false,
   setDefaultSettings: action((state, settings) => {
-    state.defaultSettings = settings;
+    state.defaultSettings = {
+      floonet: settings.floonet,
+      protocol: settings.protocol,
+      ip: settings.ip,
+      mode: settings.mode,
+    };
   }),
   setMininumPeers: action((state, mininumPeers) => {
     state.mininumPeers = mininumPeers;
@@ -87,14 +82,14 @@ const settings: SettingsModel = {
   setGrinJoinAddress: action((state, payload) => {
     state.grinJoinAddress = payload;
   }),
-  toggleConfirmationDialog: action(state => {
+  toggleConfirmationDialog: action((state) => {
     state.isConfirmationDialogOpen = !state.isConfirmationDialogOpen;
   }),
   onSettingsChanged: thunkOn(
     (actions, storeActions) => [
       storeActions.settings.setMininumPeers,
       storeActions.settings.setMaximumPeers,
-      storeActions.settings.setConfirmations
+      storeActions.settings.setConfirmations,
     ],
     (actions, target, { injections }) => {
       const configFile = injections.nodeService.getConfigFilePath();
@@ -106,7 +101,7 @@ const settings: SettingsModel = {
       const [
         setMininumPeers,
         setMaximumPeers,
-        setConfirmations
+        setConfirmations,
       ] = target.resolvedTargets;
       switch (target.type) {
         case setMininumPeers:
@@ -125,7 +120,7 @@ const settings: SettingsModel = {
         target.payload
       );
     }
-  )
+  ),
 };
 
 export default settings;

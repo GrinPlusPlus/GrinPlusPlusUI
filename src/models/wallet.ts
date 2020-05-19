@@ -64,13 +64,12 @@ const wallet: WalletModel = {
       const { nodeService } = injections;
       const settings = getStoreState().settings.defaultSettings;
 
-      if (nodeService.isNodeRunning()) {
+      if (nodeService.isNodeRunning(0)) {
         try {
           new nodeService.REST(
             settings.floonet,
             settings.protocol,
-            settings.ip,
-            settings.mode
+            settings.ip
           ).shutdownNode();
         } catch (error) {
           nodeService.stopNode();
@@ -86,8 +85,7 @@ const wallet: WalletModel = {
       return await new nodeService.REST(
         defaultSettings.floonet,
         defaultSettings.protocol,
-        defaultSettings.ip,
-        defaultSettings.mode
+        defaultSettings.ip
       ).resyncNode();
     }
   ),
@@ -112,7 +110,7 @@ const wallet: WalletModel = {
           if (!isInstalled) reject("node_is_not_installed");
 
           // if the node is running we should stop it
-          if (nodeService.isNodeRunning()) {
+          if (nodeService.isNodeRunning(0)) {
             nodeService.stopNode();
           }
           nodeService.runNode(
@@ -122,7 +120,7 @@ const wallet: WalletModel = {
           );
 
           // Let's double check if the Node is running...
-          const isRunning = nodeService.isNodeRunning();
+          const isRunning = nodeService.isNodeRunning(10);
           if (!isRunning) reject("node_is_not_running");
           actions.setIsNodeRunning(isRunning);
 
@@ -185,7 +183,7 @@ const wallet: WalletModel = {
         if (!isInstalled) reject("node_is_not_installed");
 
         // Let's double check if the Node is running...
-        const isRunning = nodeService.isNodeRunning();
+        const isRunning = nodeService.isNodeRunning(0);
         actions.setIsNodeRunning(isRunning);
 
         if (!isRunning) {
@@ -216,7 +214,7 @@ const wallet: WalletModel = {
         resolve(true);
       });
     }
-  )
+  ),
 };
 
 export default wallet;

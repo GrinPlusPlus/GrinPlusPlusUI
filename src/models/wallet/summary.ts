@@ -130,8 +130,7 @@ const walletSummary: WalletSummaryModel = {
       await new ownerService.RPC(
         apiSettings.floonet,
         apiSettings.protocol,
-        apiSettings.ip,
-        apiSettings.mode
+        apiSettings.ip
       )
         .getTransactionsList(token)
         .then((transactions) => {
@@ -180,8 +179,7 @@ const walletSummary: WalletSummaryModel = {
       await new ownerService.RPC(
         apiSettings.floonet,
         apiSettings.protocol,
-        apiSettings.ip,
-        apiSettings.mode
+        apiSettings.ip
       )
         .getWalletBalance(token)
         .then((balance) => {
@@ -203,8 +201,7 @@ const walletSummary: WalletSummaryModel = {
       return await new ownerService.RPC(
         apiSettings.floonet,
         apiSettings.protocol,
-        apiSettings.ip,
-        apiSettings.mode
+        apiSettings.ip
       ).cancelTx(payload.token, payload.txId);
     }
   ),
@@ -215,8 +212,7 @@ const walletSummary: WalletSummaryModel = {
       return await new ownerService.RPC(
         apiSettings.floonet,
         apiSettings.protocol,
-        apiSettings.ip,
-        apiSettings.mode
+        apiSettings.ip
       ).repostTx(payload.token, payload.txId, payload.method);
     }
   ),

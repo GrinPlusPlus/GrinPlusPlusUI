@@ -1,3 +1,21 @@
+import { IWalletSettings } from "../../interfaces/IWalletSettings";
+
+export const getCommand = function(): string {
+  const cmd = (() => {
+    switch (require("electron").remote.process.platform) {
+      case "win32":
+        return "GrinNode.exe";
+      case "darwin":
+        return "GrinNode";
+      case "linux":
+        return "GrinNode";
+      default:
+        throw "Unknown Platform";
+    }
+  })();
+  return cmd;
+};
+
 const isProcessRunning = function(processName: string): boolean {
   const cmd = (() => {
     switch (require("electron").remote.process.platform) {
@@ -8,12 +26,12 @@ const isProcessRunning = function(processName: string): boolean {
       case "linux":
         return `ps -A`;
       default:
-        return false;
+        throw "Unknown Platform";
     }
   })();
   const results = require("child_process").execSync(cmd, {
     windowsHide: true,
-    encoding: "utf-8"
+    encoding: "utf-8",
   });
   return results.toLowerCase().indexOf(processName.toLowerCase()) > -1;
 };
@@ -28,7 +46,7 @@ const killProcess = function(processName: string): void {
       case "linux":
         return `pkill -9 ${processName}`;
       default:
-        return false;
+        throw "Unknown Platform";
     }
   })();
   window
@@ -64,23 +82,6 @@ export const updateSettings = function(
   fs.writeFileSync(file, JSON.stringify(settings));
 };
 
-export const getCommand = function(): string {
-  const { remote } = require("electron");
-  const cmd = (() => {
-    switch (remote.process.platform) {
-      case "win32":
-        return "GrinNode.exe";
-      case "darwin":
-        return "GrinNode";
-      case "linux":
-        return "GrinNode";
-      default:
-        return "";
-    }
-  })();
-  return cmd;
-};
-
 export const getAbsoluteNodePath = function(
   mode: "DEV" | "TEST" | "PROD",
   nodePath: string
@@ -107,45 +108,67 @@ export const runNode = function(
   nodePath: string,
   isFloonet: boolean = false
 ): void {
-  const params = isFloonet ? ["", "--floonet"] : ["--headless"];
-
+  const params = isFloonet ? ["--headless", "--floonet"] : ["--headless"];
   const absolutePath = getAbsoluteNodePath(mode, nodePath);
   const command = getCommandPath(absolutePath);
-  require("child_process").spawn(command, params, {
+
+  require("electron-log").info(`Trying to run Backend: ${absolutePath}`);
+  let node = require("child_process").spawn(command, params, {
     windowsHide: true,
     encoding: "utf-8",
-    detached: true,
+    detached: false,
     shell: false,
-    cwd: absolutePath
+    cwd: absolutePath,
+  });
+  require("electron-log").info(`Backend spawned pid: ${node.pid}`);
+  node.stdout.on("data", function(data: any) {
+    data = data.toString();
+    require("electron-log").error("Backend stdout: " + data);
+  });
+  node.stderr.on("data", function(data: any) {
+    data = data.toString();
+    require("electron-log").error("Backend stderr: " + data);
+  });
+  node.stderr.on("data", function(data: any) {
+    data = data.toString();
+    require("electron-log").error("Backend stderr: " + data);
+  });
+  node.on("close", (code: number) => {
+    require("electron-log").info(`Backend process exited with code ${code}`);
   });
 };
 
-export const isNodeRunning = function(): boolean {
-  return isProcessRunning(getCommand());
+export const isNodeRunning = function(retries: number): boolean {
+  const command = getCommand();
+  require("electron-log").info(`Checking if ${command} is running...`);
+  let attempts = 0;
+  let check = isProcessRunning(command);
+  if (!check && retries > 0) {
+    attempts++;
+    while (attempts < retries && !check) {
+      setTimeout(() => {
+        require("electron-log").info(
+          `${command} is not running... checking again...`
+        );
+        check = isProcessRunning(command);
+      }, 1000);
+      attempts++;
+    }
+  }
+  if (check) require("electron-log").info(`${command} is running`);
+  else require("electron-log").error(`${command} is not running`);
+  return check;
 };
 
 export const stopNode = function(): void {
   try {
     killProcess(getCommand());
-  } catch (e) {
-    
-  }
+  } catch (e) {}
 };
 
 export const getDefaultSettings = function(
   file: string = "defaults.json"
-): {
-  ip: string;
-  protocol: string;
-  mode: "DEV" | "TEST" | "PROD";
-  binaryPath: string;
-  floonet: boolean;
-  minimumPeers: number;
-  maximumPeers: number;
-  minimumConfirmations: number;
-  ports: { node: number; foreignRPC: number; owner: number; ownerRPC: number };
-  grinJoinAddress: string;
-} {
+): IWalletSettings {
   const filePath = require("path").join(
     require("electron").remote.app.getAppPath(),
     file
@@ -181,9 +204,9 @@ export const getDefaultSettings = function(
       node: defaults.ports.node,
       foreignRPC: defaults.ports.foreignRPC,
       owner: defaults.ports.owner,
-      ownerRPC: defaults.ports.ownerRPC
+      ownerRPC: defaults.ports.ownerRPC,
     },
-    grinJoinAddress: defaults.grinJoinAddress
+    grinJoinAddress: defaults.grinJoinAddress,
   };
 };
 
