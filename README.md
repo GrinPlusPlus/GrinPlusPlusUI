@@ -27,9 +27,10 @@ Grin++ offers several advantages. Here are just a few:
 
 brew install tor
 brew install rocksdb
+brew install cmake
 git submodule update --init
 cd GrinPlusPlus
-rm -Rf buiLd
+rm -Rf build
 mkdir build && cd build
 CC=gcc-9 CXX=g++-9 cmake ..
 cmake --build . --config RelWithDebInfo
