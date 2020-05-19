@@ -10,7 +10,7 @@ export const getCommand = function(): string {
       case "linux":
         return "GrinNode";
       default:
-        throw "Unknown Platform";
+        throw new Error("Unknown Platform");
     }
   })();
   return cmd;
@@ -26,7 +26,7 @@ const isProcessRunning = function(processName: string): boolean {
       case "linux":
         return `ps -A`;
       default:
-        throw "Unknown Platform";
+        throw new Error("Unknown Platform");
     }
   })();
   const results = require("child_process").execSync(cmd, {
@@ -46,7 +46,7 @@ const killProcess = function(processName: string): void {
       case "linux":
         return `pkill -9 ${processName}`;
       default:
-        throw "Unknown Platform";
+        throw new Error("Unknown Platform");
     }
   })();
   window
@@ -122,7 +122,7 @@ export const runNode = function(
   });
   require("electron-log").info(`Backend spawned pid: ${node.pid}`);
   node.stdout.on("data", function(data: any) {
-    require("electron-log").error(data.toString());
+    require("electron-log").info(data.toString());
   });
   node.stderr.on("data", function(data: any) {
     require("electron-log").error(data.toString());
