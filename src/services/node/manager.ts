@@ -139,12 +139,12 @@ export const isNodeRunning = function(retries: number = 0): boolean {
   let check = isProcessRunning(command);
   if (!check && retries > 0) {
     attempts++;
-    while (attempts < retries && !check) {
+    while (attempts < retries) {
       setTimeout(() => {
         require("electron-log").info(
           `${command} is not running... checking again...`
         );
-        check = isProcessRunning(command);
+        if (isProcessRunning(command)) return true;
       }, 1000);
       attempts++;
     }
