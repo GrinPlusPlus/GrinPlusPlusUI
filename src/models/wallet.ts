@@ -113,6 +113,7 @@ const wallet: WalletModel = {
           if (nodeService.isNodeRunning(0)) {
             nodeService.stopNode();
           }
+
           nodeService.runNode(
             defaultSettings.mode,
             defaultSettings.binaryPath,
@@ -121,9 +122,10 @@ const wallet: WalletModel = {
 
           // Let's double check if the Node is running...
           const isRunning = nodeService.isNodeRunning(10);
-          if (!isRunning) reject("node_is_not_running");
-          actions.setIsNodeRunning(isRunning);
 
+          if (!isRunning) reject("node_is_not_running");
+
+          actions.setIsNodeRunning(isRunning);
           settingsActions.setNodeBinaryPath(
             `${nodeService.getCommandPath(defaultSettings.binaryPath)}`
           );

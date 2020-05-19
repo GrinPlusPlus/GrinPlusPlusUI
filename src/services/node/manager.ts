@@ -138,7 +138,7 @@ export const runNode = function(
   });
 };
 
-export const isNodeRunning = function(retries: number): boolean {
+export const isNodeRunning = function(retries: number = 0): boolean {
   const command = getCommand();
   require("electron-log").info(`Checking if ${command} is running...`);
   let attempts = 0;
