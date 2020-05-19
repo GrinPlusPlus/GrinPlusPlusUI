@@ -122,16 +122,10 @@ export const runNode = function(
   });
   require("electron-log").info(`Backend spawned pid: ${node.pid}`);
   node.stdout.on("data", function(data: any) {
-    data = data.toString();
-    require("electron-log").error("Backend stdout: " + data);
+    require("electron-log").error(data.toString());
   });
   node.stderr.on("data", function(data: any) {
-    data = data.toString();
-    require("electron-log").error("Backend stderr: " + data);
-  });
-  node.stderr.on("data", function(data: any) {
-    data = data.toString();
-    require("electron-log").error("Backend stderr: " + data);
+    require("electron-log").error(data.toString());
   });
   node.on("close", (code: number) => {
     require("electron-log").info(`Backend process exited with code ${code}`);
