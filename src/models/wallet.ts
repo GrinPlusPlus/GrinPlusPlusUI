@@ -183,6 +183,10 @@ const wallet: WalletModel = {
         actions.setMessage("node_is_not_running");
         return false;
       }
+      actions.setInitializingError(false);
+      actions.setWalletInitialized(true);
+      actions.setNodeHealthCheck(true);
+      actions.setMessage("");
       return true;
     }
   ),
