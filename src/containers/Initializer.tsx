@@ -1,67 +1,48 @@
-import React, { Suspense, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useStoreActions, useStoreState } from "../hooks";
 
-import { LoadingComponent } from "../components/extras/Loading";
 import { Redirect } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 const InitComponent = React.lazy(() =>
-  import("./../components/extras/Init").then(module => ({
-    default: module.InitComponent
+  import("./../components/extras/Init").then((module) => ({
+    default: module.InitComponent,
   }))
 );
-
-const renderLoader = () => <LoadingComponent />;
 
 export const InitializerContainer = () => {
   const { t, i18n } = useTranslation();
 
-  const { message, initializingError, isWalletInitialized } = useStoreState(
-    state => state.wallet
-  );
+  const { message, initializingError } = useStoreState((state) => state.wallet);
+  const { language } = useStoreState((state) => state.idiom);
+  const { status } = useStoreState((state) => state.nodeSummary);
 
-  const { language } = useStoreState(actions => actions.idiom);
-
-  const {
-    initializeWallet,
-    setMessage,
-    setInitializingError
-  } = useStoreActions(state => state.wallet);
-
-  const { status } = useStoreState(state => state.nodeSummary);
+  const { initializeWallet } = useStoreActions((state) => state.wallet);
 
   useEffect(() => {
     (async function() {
-      if (!isWalletInitialized) {
-        require("electron-log").info(`Setting "${language}" as language...`);
-        i18n.changeLanguage(language);
-
-        require("electron-log").info("Initializing Backend.");
-        await initializeWallet()
-          .then(() => {
-            require("electron-log").info("Backend initialized.");
-          })
-          .catch((error: string) => {
-            setMessage(error);
-            setInitializingError(true);
-            require("electron-log").info(
-              `Error trying to Initialize the Backend: ${error}`
-            );
-          });
+      const log = require("electron-log");
+      log.info("Initializing Backend.");
+      log.info(`Setting "${language}" as language...`);
+      i18n.changeLanguage(language);
+      try {
+        if (await initializeWallet()) {
+          log.info("Backend initialized.");
+        } else {
+          log.info("Backend is not Running.");
+        }
+      } catch (error) {
+        log.error(`Error trying to Initialize the Backend: ${error}`);
       }
     })();
-  });
+  }, [language, initializeWallet, i18n]);
 
   return (
-    <Suspense fallback={renderLoader()}>
+    <div>
       {status.toLowerCase() !== "not connected" ? (
         <Redirect to="/login" />
       ) : null}
-      <InitComponent
-        isInitialized={status.toLowerCase() !== "not connected"}
-        error={initializingError}
-        message={message ? t(`${message}`) : ""}
-      />
-    </Suspense>
+      <InitComponent error={initializingError} message={t(`${message}`)} />
+    </div>
   );
 };

@@ -16,7 +16,7 @@ import { useInterval } from "./helpers";
 
 const App: React.FC = () => {
   useInterval(async () => {
-    if (store.getState().wallet.initializingError) return;
+    if (!store.getState().wallet.isWalletInitialized) return;
     try {
       store
         .getActions()
@@ -28,12 +28,19 @@ const App: React.FC = () => {
         `Error trying to get Node Status: ${error.message}`
       );
       store.getActions().nodeSummary.updateStatus(undefined);
-      require("electron-log").info("Performing HealthCheck...");
-      try {
-        await store.getActions().wallet.checkNodeHealth();
-        require("electron-log").info("HealthCheck passed, all good!");
-      } catch (error) {
-        require("electron-log").error(`HealthCheck failed: ${error}`);
+      if (store.getState().wallet.isWalletInitialized) {
+        try {
+          require("electron-log").info("Performing HealthCheck...");
+          if (await store.getActions().wallet.checkNodeHealth()) {
+            require("electron-log").info("HealthCheck passed, all good!");
+          } else {
+            require("electron-log").info(
+              "HealthCheck failed: Backend is not Running"
+            );
+          }
+        } catch (error) {
+          require("electron-log").error(`HealthCheck failed: ${error}`);
+        }
       }
     }
   }, store.getState().nodeSummary.updateInterval);

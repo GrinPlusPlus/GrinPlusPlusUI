@@ -5,22 +5,17 @@ import { GrinPPBannerComponent } from "../shared/GrinPPBanner";
 import React from "react";
 
 export type InitComponentProps = {
-  isInitialized: boolean;
   error: boolean;
   message: string;
 };
 
-export const InitComponent = ({
-  isInitialized,
-  error,
-  message
-}: InitComponentProps) => {
+export const InitComponent = ({ error, message }: InitComponentProps) => {
   return (
     <Center>
       <HorizontallyCenter>
         <GrinPPBannerComponent />
       </HorizontallyCenter>
-      {!isInitialized && !error ? (
+      {!error ? (
         <div data-testid="init-spinner">
           <HorizontallyCenter>
             <Spinner size={30} />

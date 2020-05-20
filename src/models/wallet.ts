@@ -29,9 +29,10 @@ const wallet: WalletModel = {
   isNodeInstalled: false,
   isNodeRunning: false,
   isWalletInitialized: false,
+  nodeHealthCheck: false,
+  initializingError: false,
   message: "initializing_node",
   logs: "",
-  initializingError: false,
   setIsNodeInstalled: action((state, payload) => {
     state.isNodeInstalled = payload;
   }),
@@ -90,131 +91,99 @@ const wallet: WalletModel = {
     }
   ),
   initializeWallet: thunk(
-    (actions, payload, { injections, getStoreActions }): Promise<boolean> => {
+    async (
+      actions,
+      payload,
+      { injections, getStoreActions }
+    ): Promise<boolean> => {
       const { nodeService, utilsService } = injections;
-      return new Promise((resolve, reject) => {
-        try {
-          const defaultSettings = nodeService.getDefaultSettings(); // Read defaults.json
+      const defaultSettings = nodeService.getDefaultSettings(); // Read defaults.json
 
-          const settingsActions = getStoreActions().settings;
-          settingsActions.setDefaultSettings(defaultSettings); // Update state
+      // Check if we can find the node...
+      if (
+        !nodeService.verifyNodePath(
+          defaultSettings.mode,
+          defaultSettings.binaryPath
+        )
+      ) {
+        actions.setInitializingError(true);
+        actions.setWalletInitialized(false);
+        actions.setNodeHealthCheck(false);
+        actions.setMessage("node_is_not_installed");
+        return false;
+      }
 
-          // Check if we can find the node...
-          const isInstalled = nodeService.verifyNodePath(
-            defaultSettings.mode,
-            defaultSettings.binaryPath
-          );
+      // if the Node is running we should stop it
+      if (await nodeService.isNodeRunning(1)) {
+        nodeService.stopNode();
+      }
 
-          actions.setIsNodeInstalled(isInstalled);
+      try {
+        require("electron-log").info("Running Node...");
+        nodeService.runNode(
+          defaultSettings.mode,
+          defaultSettings.binaryPath,
+          defaultSettings.floonet
+        );
+      } catch (error) {
+        require("electron-log").error(`Error running Node: ${error.message}`);
+      }
 
-          if (!isInstalled) reject("node_is_not_installed");
+      // Let's double check if the Node is running...
+      if (!(await nodeService.isNodeRunning(10))) {
+        actions.setInitializingError(true);
+        actions.setWalletInitialized(false);
+        actions.setNodeHealthCheck(false);
+        actions.setMessage("node_is_not_running");
+        return false;
+      }
 
-          // if the node is running we should stop it
-          if (nodeService.isNodeRunning(0)) {
-            nodeService.stopNode();
-          }
+      actions.setIsNodeInstalled(true);
+      actions.setIsNodeRunning(true);
 
-          nodeService.runNode(
-            defaultSettings.mode,
-            defaultSettings.binaryPath,
-            defaultSettings.floonet
-          );
+      const settingsActions = getStoreActions().settings;
+      settingsActions.setDefaultSettings(defaultSettings); // Update state
+      settingsActions.setNodeBinaryPath(
+        `${nodeService.getCommandPath(defaultSettings.binaryPath)}`
+      );
+      settingsActions.setNodeDataPath(
+        nodeService.getNodeDataPath(defaultSettings.floonet)
+      );
+      settingsActions.setGrinJoinAddress(defaultSettings.grinJoinAddress);
+      // Updating store with server_config.json
+      settingsActions.setMaximumPeers(defaultSettings.maximumPeers);
+      settingsActions.setMininumPeers(defaultSettings.minimumPeers);
+      settingsActions.setConfirmations(defaultSettings.minimumConfirmations);
 
-          // Let's double check if the Node is running...
-          const isRunning = nodeService.isNodeRunning(10);
+      getStoreActions().receiveCoinsModel.setResponsesDestination(
+        utilsService.getHomePath()
+      );
+      actions.setInitializingError(false);
+      actions.setWalletInitialized(true);
+      actions.setNodeHealthCheck(true);
+      actions.setMessage("");
 
-          if (!isRunning) reject("node_is_not_running");
-
-          actions.setIsNodeRunning(isRunning);
-          settingsActions.setNodeBinaryPath(
-            `${nodeService.getCommandPath(defaultSettings.binaryPath)}`
-          );
-          settingsActions.setNodeDataPath(
-            nodeService.getNodeDataPath(defaultSettings.floonet)
-          );
-          settingsActions.setGrinJoinAddress(defaultSettings.grinJoinAddress);
-          // Updating store with server_config.json
-          settingsActions.setMaximumPeers(defaultSettings.maximumPeers);
-          settingsActions.setMininumPeers(defaultSettings.minimumPeers);
-          settingsActions.setConfirmations(
-            defaultSettings.minimumConfirmations
-          );
-
-          actions.setMessage("");
-
-          actions.setInitializingError(false);
-          actions.setWalletInitialized(true);
-          getStoreActions().receiveCoinsModel.setResponsesDestination(
-            utilsService.getHomePath()
-          );
-
-          actions.setNodeHealthCheck(true);
-        } catch (ex) {
-          reject(ex.toString());
-        }
-        resolve(true);
-      });
+      return true;
     }
   ),
-  nodeHealthCheck: true,
   setNodeHealthCheck: action((state, check) => {
     state.nodeHealthCheck = check;
   }),
   checkNodeHealth: thunk(
-    (
+    async (
       actions,
       payload,
       { injections, getStoreState, getStoreActions }
     ): Promise<boolean> => {
-      return new Promise((resolve, reject) => {
-        const { nodeService, utilsService } = injections;
-
-        const defaultSettings = nodeService.getDefaultSettings(); // Read defaults.json
-
-        const settingsActions = getStoreActions().settings;
-        settingsActions.setDefaultSettings(defaultSettings); // Update state
-
-        // Check if we can find the node...
-        const isInstalled = nodeService.verifyNodePath(
-          defaultSettings.mode,
-          defaultSettings.binaryPath
-        );
-
-        actions.setIsNodeInstalled(isInstalled);
-
-        if (!isInstalled) reject("node_is_not_installed");
-
-        // Let's double check if the Node is running...
-        const isRunning = nodeService.isNodeRunning(0);
-        actions.setIsNodeRunning(isRunning);
-
-        if (!isRunning) {
-          actions.setWalletInitialized(false);
-          actions.setNodeHealthCheck(false);
-          reject("node_is_not_running");
-        }
-
-        settingsActions.setNodeBinaryPath(
-          `${nodeService.getCommandPath(defaultSettings.binaryPath)}`
-        );
-        settingsActions.setNodeDataPath(
-          nodeService.getNodeDataPath(defaultSettings.floonet)
-        );
-        settingsActions.setGrinJoinAddress(defaultSettings.grinJoinAddress);
-        // Updating store with server_config.json
-        settingsActions.setMaximumPeers(defaultSettings.maximumPeers);
-        settingsActions.setMininumPeers(defaultSettings.minimumPeers);
-        settingsActions.setConfirmations(defaultSettings.minimumConfirmations);
-
-        actions.setMessage("");
-
-        if (!getStoreState().receiveCoinsModel.responsesDestination) {
-          getStoreActions().receiveCoinsModel.setResponsesDestination(
-            utilsService.getHomePath()
-          );
-        }
-        resolve(true);
-      });
+      const { nodeService } = injections;
+      if (!(await nodeService.isNodeRunning(10))) {
+        actions.setInitializingError(true);
+        actions.setWalletInitialized(false);
+        actions.setNodeHealthCheck(false);
+        actions.setMessage("node_is_not_running");
+        return false;
+      }
+      return true;
     }
   ),
 };

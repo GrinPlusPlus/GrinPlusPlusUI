@@ -1,4 +1,5 @@
 import { IWalletSettings } from "../../interfaces/IWalletSettings";
+import { retry } from "ts-retry";
 
 export const getCommand = function(): string {
   const cmd = (() => {
@@ -112,7 +113,7 @@ export const runNode = function(
   const absolutePath = getAbsoluteNodePath(mode, nodePath);
   const command = getCommandPath(absolutePath);
 
-  require("electron-log").info(`Trying to run Backend: ${absolutePath}`);
+  require("electron-log").info(`Trying to run Backend: ${command}`);
   let node = require("child_process").spawn(command, params, {
     windowsHide: true,
     encoding: "utf-8",
@@ -132,26 +133,28 @@ export const runNode = function(
   });
 };
 
-export const isNodeRunning = function(retries: number = 0): boolean {
+export const isNodeRunning = async function(
+  retries: number = 0
+): Promise<boolean> {
+  const log = require("electron-log");
   const command = getCommand();
-  require("electron-log").info(`Checking if ${command} is running...`);
-  let attempts = 0;
-  let check = isProcessRunning(command);
-  if (!check && retries > 0) {
-    attempts++;
-    while (attempts < retries) {
-      setTimeout(() => {
-        require("electron-log").info(
-          `${command} is not running... checking again...`
-        );
-        if (isProcessRunning(command)) return true;
-      }, 1000);
-      attempts++;
-    }
+  let isRunning: boolean | undefined = false;
+  try {
+    isRunning = await retry(
+      () => {
+        log.info(`Checking if ${command} is running...`);
+        if (isProcessRunning(command)) {
+          log.info(`${command} is running`);
+          return true;
+        }
+        throw new Error(`${command} not found...`);
+      },
+      { delay: 1000, maxTry: retries }
+    );
+  } catch (error) {
+    log.error(`${command} is not running: ${error.message}`);
   }
-  if (check) require("electron-log").info(`${command} is running`);
-  else require("electron-log").error(`${command} is not running`);
-  return check;
+  return isRunning ? true : false;
 };
 
 export const stopNode = function(): void {
