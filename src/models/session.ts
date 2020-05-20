@@ -96,6 +96,7 @@ const session: SessionModel = {
     getStoreActions().sendCoinsModel.setInitialValues();
     getStoreActions().createWallet.setInitialValues();
     getStoreActions().restoreWallet.setInitialValues();
+    getStoreActions().signinModel.setAccounts(undefined);
     getStoreActions().ui.setAlert(undefined);
     actions.updateSession({ username: "", token: "", address: "" });
   }),

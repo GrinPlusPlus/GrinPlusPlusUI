@@ -92,19 +92,20 @@ const walletSummary: WalletSummaryModel = {
     if (payload === undefined) {
       state.transactions = undefined;
       return;
-    }
-    state.transactions = payload.transactions.map((tx) => {
-      tx.outputs = tx.outputs?.map((output) => {
-        return {
-          amount: payload.formatCb(output.amount),
-          commitment: output.commitment,
-        };
+    } else {
+      state.transactions = payload.transactions.map((tx) => {
+        tx.outputs = tx.outputs?.map((output) => {
+          return {
+            amount: payload.formatCb(output.amount),
+            commitment: output.commitment,
+          };
+        });
+        tx.amountCredited = payload.formatCb(tx.amountCredited);
+        tx.amountDebited = payload.formatCb(tx.amountDebited);
+        if (tx.fee) tx.fee = payload.formatCb(tx.fee);
+        return tx;
       });
-      tx.amountCredited = payload.formatCb(tx.amountCredited);
-      tx.amountDebited = payload.formatCb(tx.amountDebited);
-      if (tx.fee) tx.fee = payload.formatCb(tx.fee);
-      return tx;
-    });
+    }
   }),
   updateBalance: action((state, balance) => {
     if (balance === undefined) {
@@ -134,29 +135,6 @@ const walletSummary: WalletSummaryModel = {
       )
         .getTransactionsList(token)
         .then((transactions) => {
-          const currentTransactions = getStoreState().walletSummary
-            .transactions;
-          if (currentTransactions !== undefined) {
-            if (
-              transactions.filter((t) => cleanTxType(t.type) === "sent")
-                .length >
-              currentTransactions.filter((t) => cleanTxType(t.type) === "sent")
-                .length
-            ) {
-              // New Transaction Sent
-              getStoreActions().ui.setAlert("last_transaction_sent");
-            }
-            if (
-              transactions.filter((t) => cleanTxType(t.type) === "received")
-                .length >
-              currentTransactions.filter(
-                (t) => cleanTxType(t.type) === "received"
-              ).length
-            ) {
-              // New Transaction Received
-              getStoreActions().ui.setAlert("new_transaction_received");
-            }
-          }
           // Update transactions
           actions.updateSummary({
             transactions: transactions,

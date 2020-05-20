@@ -10,7 +10,7 @@ export interface SigninModel {
   waitingResponse: boolean;
   setUsername: Action<SigninModel, string>;
   setPassword: Action<SigninModel, string>;
-  setAccounts: Action<SigninModel, string[]>;
+  setAccounts: Action<SigninModel, string[] | undefined>;
   setWaitingResponse: Action<SigninModel, boolean>;
   getAccounts: Thunk<SigninModel, undefined, Injections, StoreModel>;
   login: Thunk<
@@ -37,7 +37,7 @@ const openWallet: SigninModel = {
   }),
   setAccounts: action((state, accounts) => {
     if (accounts === null) state.accounts = [];
-    else state.accounts = accounts.sort();
+    else state.accounts = accounts;
   }),
   setWaitingResponse: action((state, waiting) => {
     state.waitingResponse = waiting;
