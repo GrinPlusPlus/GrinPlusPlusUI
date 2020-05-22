@@ -151,7 +151,6 @@ export const SettingsComponent = ({
           />
           <Button
             text={t("resync")}
-            disabled={status.toLowerCase() !== "running"}
             style={{ width: isLoggedIn ? "40%" : "50%" }}
             intent={Intent.WARNING}
             onClick={() => toggleConfirmationDialogCb()}
