@@ -16,6 +16,7 @@ export const SaveTransactionFileContainer = () => {
 
   const {
     setUsername: setUsernamePrompt,
+    setPassword: setPasswordPrompt,
     setCallback: setCallbackPrompt,
   } = useStoreActions((state) => state.passwordPrompt);
   const { sendViaFile } = useStoreActions((actions) => actions.sendCoinsModel);
@@ -24,6 +25,7 @@ export const SaveTransactionFileContainer = () => {
     if (amount === undefined || amount.slice(-1) === ".") return;
     try {
       setUsernamePrompt(undefined); // to close prompt
+      setPasswordPrompt(undefined); // to clean prompt
       const sent = await sendViaFile({
         amount: Number(amount),
         strategy: strategy,
@@ -50,6 +52,7 @@ export const SaveTransactionFileContainer = () => {
     strategy,
     history,
     setUsernamePrompt,
+    setPasswordPrompt,
   ]);
 
   return (

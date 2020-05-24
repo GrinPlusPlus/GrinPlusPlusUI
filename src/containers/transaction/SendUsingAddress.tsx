@@ -29,6 +29,7 @@ export const SendUsingAddressContainer = () => {
 
   const {
     setUsername: setUsernamePrompt,
+    setPassword: setPasswordPrompt,
     setCallback: setCallbackPrompt,
   } = useStoreActions((state) => state.passwordPrompt);
   const { sendUsingListener, setWaitingResponse } = useStoreActions(
@@ -43,6 +44,7 @@ export const SendUsingAddressContainer = () => {
     updateLogs(`${t("sending")} ${amount} ツ...`);
 
     setUsernamePrompt(undefined); // to close prompt
+    setPasswordPrompt(undefined); // to clean prompt
     setWaitingResponse(true);
 
     try {
@@ -99,6 +101,7 @@ export const SendUsingAddressContainer = () => {
     t,
     updateLogs,
     setUsernamePrompt,
+    setPasswordPrompt,
   ]);
 
   const { spendable } = useStoreState((state) => state.walletSummary);
