@@ -60,9 +60,7 @@ export const SendContainer = () => {
     waitingResponse: waitingForPassword,
   } = useStoreState((state) => state.passwordPrompt);
 
-  const { getOutputs, setInitialValues } = useStoreActions(
-    (actions) => actions.sendCoinsModel
-  );
+  const { getOutputs } = useStoreActions((actions) => actions.sendCoinsModel);
   const {
     setUsername: setUsernamePrompt,
     setPassword: setPasswordPrompt,
