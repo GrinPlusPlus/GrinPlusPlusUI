@@ -19,20 +19,6 @@ export const WalletBalanceDetailsComponent = ({
   return (
     <div>
       <p>
-        {t("total")}:{" "}
-        <strong>
-          <NumberFormat
-            data-testid="total"
-            value={total}
-            displayType={"text"}
-            thousandSeparator={true}
-            decimalScale={9}
-            fixedDecimalScale={true}
-          />
-        </strong>{" "}
-        ツ
-      </p>
-      <p>
         {t("immature")}:{" "}
         <strong>
           <NumberFormat

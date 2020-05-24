@@ -19,7 +19,7 @@ export const DashboardContainer = () => {
 
   return (
     <Content>
-      <div style={{ width: "40%", margin: "10px" }}>
+      <div style={{ width: "40%", margin: "5px" }}>
         <Flex>
           <WalletBalanceContainer />
           <div
@@ -37,26 +37,28 @@ export const DashboardContainer = () => {
                 marginTop: "15px",
               }}
               intent={Intent.PRIMARY}
-              text={`${t("send_grins")} ツ`}
+              text={`${t("send")} ツ`}
               onClick={() => history.push("/send")}
             />
           </div>
         </Flex>
-        <div style={{ marginTop: "30px" }}>
+        <div style={{ marginTop: "10px" }}>
+          <WalletBalanceDetailsContainer />
+        </div>
+        <div style={{ marginTop: "10px" }}>
           <ReceiveUsingListenerContainer />
-          <div style={{ marginTop: "30px" }}>
+          <div style={{ marginTop: "10px" }}>
             <ReceiveUsingFileContainer />
           </div>
         </div>
-        <div style={{ marginTop: "30px" }}>
+        <div style={{ marginTop: "20px" }}>
           <FinalizeContainer />
         </div>
-        <div style={{ marginTop: "30px" }}>
+        <div style={{ marginTop: "15px" }}>
           <LogsContainer />
         </div>
       </div>
-      <div style={{ width: "60%", margin: "10px" }}>
-        <WalletBalanceDetailsContainer />
+      <div style={{ width: "60%", marginLeft: "10px", marginTop: "5px" }}>
         <WalletActivitiyContainer />
       </div>
     </Content>

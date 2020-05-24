@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 
 export const ReceiveUsingListenerContainer = () => {
   const { t } = useTranslation();
-  const { address } = useStoreState(state => state.session);
+  const { address } = useStoreState((state) => state.session);
 
   return (
     <div>
@@ -20,8 +20,8 @@ export const ReceiveUsingListenerContainer = () => {
             httpAddress={`http://${address}.grinplusplus.com/`}
             shortenHttpAddress={`http://${address.replace(
               address.substr(
-                address.length / 2 - address.length / 5,
-                (address.length / 5) * 2
+                address.length / 2 - address.length / 4,
+                (address.length / 4) * 2
               ),
               ".........."
             )}.grinplusplus.com/`}
