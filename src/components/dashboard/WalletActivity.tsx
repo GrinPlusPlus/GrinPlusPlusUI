@@ -21,6 +21,8 @@ type WalletActivityProps = {
     method: string
   ) => void;
   method: string;
+  lastConfirmedHeight: number;
+  confirmations: number;
 };
 
 export const WalletActivityComponent = ({
@@ -34,7 +36,9 @@ export const WalletActivityComponent = ({
   openTransactionCb,
   onCancelTransactionButtonClickedCb,
   onRepostTransactionButtonClickedCb,
-  method
+  method,
+  lastConfirmedHeight,
+  confirmations,
 }: WalletActivityProps) => {
   const { t } = useTranslation();
 
@@ -65,6 +69,8 @@ export const WalletActivityComponent = ({
                 onRepostTransactionButtonClickedCb
               }
               method={method}
+              lastConfirmedHeight={lastConfirmedHeight}
+              confirmations={confirmations}
             />
           }
         />
@@ -86,6 +92,8 @@ export const WalletActivityComponent = ({
                 onRepostTransactionButtonClickedCb
               }
               method={method}
+              lastConfirmedHeight={lastConfirmedHeight}
+              confirmations={confirmations}
             />
           }
         />
@@ -106,6 +114,8 @@ export const WalletActivityComponent = ({
                 onRepostTransactionButtonClickedCb
               }
               method={method}
+              lastConfirmedHeight={lastConfirmedHeight}
+              confirmations={confirmations}
             />
           }
         />
@@ -126,13 +136,15 @@ export const WalletActivityComponent = ({
                 onRepostTransactionButtonClickedCb
               }
               method={method}
+              lastConfirmedHeight={lastConfirmedHeight}
+              confirmations={confirmations}
             />
           }
         />
         <Tab
           id="cancelled"
           key="cancelled"
-          title={t("cancelled")}
+          title={t("canceled")}
           style={{ fontSize: "16px" }}
           panel={
             <TransactionsTableComponent
@@ -146,6 +158,8 @@ export const WalletActivityComponent = ({
                 onRepostTransactionButtonClickedCb
               }
               method={method}
+              lastConfirmedHeight={lastConfirmedHeight}
+              confirmations={confirmations}
             />
           }
         />
@@ -166,6 +180,8 @@ export const WalletActivityComponent = ({
                 onRepostTransactionButtonClickedCb
               }
               method={method}
+              lastConfirmedHeight={lastConfirmedHeight}
+              confirmations={confirmations}
             />
           }
         />

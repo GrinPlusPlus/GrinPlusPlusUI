@@ -9,7 +9,7 @@
   "cancel": "Отмена",
   "cancel_transaction": "Отмена транзакции",
   "cancelation_confirmation": "Вы уверены, что хотите отменить эту транзакцию?",
-  "cancelled": "Отмененные",
+  "canceled": "Отмененные",
   "choose_response_file": "Выберите .response файл...",
   "close": "Закрыть",
   "coinbase": "Coinbase",

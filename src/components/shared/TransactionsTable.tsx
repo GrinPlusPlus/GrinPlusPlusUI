@@ -22,6 +22,8 @@ type TransactionsTableProps = {
     method: string
   ) => void;
   method: string;
+  lastConfirmedHeight: number;
+  confirmations: number;
 };
 
 export const TransactionsTableComponent = ({
@@ -31,8 +33,30 @@ export const TransactionsTableComponent = ({
   onCancelTransactionButtonClickedCb,
   onRepostTransactionButtonClickedCb,
   method,
+  lastConfirmedHeight,
+  confirmations,
 }: TransactionsTableProps) => {
   const { t } = useTranslation();
+
+  const getStatus = (
+    status: string,
+    txHeight: number,
+    lastHeight: number,
+    confirms: number
+  ): string => {
+    if (["sent", "received"].includes(status)) {
+      if (txHeight + (confirms - 1) > lastHeight) {
+        return `${t(status)} (${lastHeight - txHeight}/${confirms} ${t(
+          "confirmations"
+        )})`;
+      }
+      return t(status.toLowerCase());
+    } else if (status === "sending_finalized") {
+      return `{${t("sending")} ${t("unconfirmed")}}`;
+    } else {
+      return t(status);
+    }
+  };
 
   const listTransactions = (rows: ITransaction[]) => {
     let table: JSX.Element[] = [];
@@ -91,7 +115,12 @@ export const TransactionsTableComponent = ({
                 key={transaction.Id}
                 address={transaction.address ? transaction.address : "-"}
                 slate={transaction.slateId}
-                type={transaction.type}
+                type={getStatus(
+                  mType,
+                  transaction.confirmedHeight,
+                  lastConfirmedHeight,
+                  confirmations
+                )}
                 mType={mType}
                 message={
                   transaction.slateMessage ? transaction.slateMessage : "n/a"
@@ -130,7 +159,7 @@ export const TransactionsTableComponent = ({
         <table className="transactions">
           <tbody>
             <tr style={{ cursor: "default" }}>
-              <th style={{ paddingLeft: "10px" }}></th>
+              <th></th>
               <th style={{ paddingLeft: "10px" }}>{t("amount")} ツ</th>
               <th style={{ paddingLeft: "10px" }}>{t("address")}</th>
               <th style={{ paddingLeft: "10px" }}>{t("date")}</th>

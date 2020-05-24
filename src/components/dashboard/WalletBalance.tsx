@@ -1,5 +1,5 @@
 import { BalanceSuffix, Flex, SpendableBalance } from "../styled";
-import { Text, Tooltip } from "@blueprintjs/core";
+import { Text } from "@blueprintjs/core";
 
 import NumberFormat from "react-number-format";
 import React from "react";
@@ -25,9 +25,7 @@ export const WalletBalanceComponent = ({ spendable }: WalletBalanceProps) => {
             fixedDecimalScale={true}
           />
         </SpendableBalance>
-        <Tooltip>
-          <BalanceSuffix>ツ</BalanceSuffix>
-        </Tooltip>
+        <BalanceSuffix>ツ</BalanceSuffix>
       </Flex>
     </div>
   );

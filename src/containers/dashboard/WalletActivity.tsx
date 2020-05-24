@@ -15,18 +15,22 @@ export const WalletActivitiyContainer = () => {
     getUnconfirmedTransactions,
     getCancelledTransactions,
     getCoinbaseTransactions,
-    selectedTx
-  } = useStoreState(state => state.walletSummary);
-  const { token } = useStoreState(state => state.session);
-  const { transactionOpened } = useStoreState(state => state.ui);
-  const { useGrinJoin } = useStoreState(state => state.settings);
+    selectedTx,
+  } = useStoreState((state) => state.walletSummary);
+  const { token } = useStoreState((state) => state.session);
+  const { transactionOpened } = useStoreState((state) => state.ui);
+  const { useGrinJoin } = useStoreState((state) => state.settings);
+  const { blocks: lastConfirmedHeight } = useStoreState(
+    (state) => state.nodeSummary
+  );
+  const { confirmations } = useStoreState((state) => state.settings);
 
-  const { openTransaction } = useStoreActions(state => state.ui);
+  const { openTransaction } = useStoreActions((state) => state.ui);
   const {
     cancelTransaction,
     repostTransaction,
-    setSelectedTx
-  } = useStoreActions(state => state.walletSummary);
+    setSelectedTx,
+  } = useStoreActions((state) => state.walletSummary);
 
   const onCancelTransactionButtonClicked = useCallback(
     async (txId: number) => {
@@ -35,7 +39,7 @@ export const WalletActivitiyContainer = () => {
         require("electron-log").info(`Trying to Cancel Tx with Id: ${txId}`);
         await cancelTransaction({
           token: token,
-          txId: txId
+          txId: txId,
         });
         require("electron-log").info("Canceled!");
       } catch (error) {
@@ -53,13 +57,13 @@ export const WalletActivitiyContainer = () => {
         await repostTransaction({
           token: token,
           txId: txId,
-          method: method
+          method: method,
         }).then((response: string) => {
           if (response.length > 0) return;
           Toaster.create({ position: Position.BOTTOM }).show({
             message: response,
             intent: Intent.WARNING,
-            icon: "warning-sign"
+            icon: "warning-sign",
           });
         });
         require("electron-log").info("Reposted!");
@@ -84,6 +88,8 @@ export const WalletActivitiyContainer = () => {
         onCancelTransactionButtonClickedCb={setSelectedTx}
         onRepostTransactionButtonClickedCb={onRepostTransactionButtonClicked}
         method={useGrinJoin ? "JOIN" : "STEM"}
+        lastConfirmedHeight={lastConfirmedHeight}
+        confirmations={confirmations}
       />
       <Alert
         className="bp3-dark"

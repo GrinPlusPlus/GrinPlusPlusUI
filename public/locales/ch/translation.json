@@ -9,7 +9,7 @@
   "cancel": "取消",
   "cancel_transaction": "取消交易",
   "cancelation_confirmation": "是否确定取消此交易？",
-  "cancelled": "已取消",
+  "canceled": "已取消",
   "choose_response_file": "请选择 .response 文件…",
   "close": "关闭",
   "coinbase": "区块奖励",
