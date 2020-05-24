@@ -6,19 +6,9 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 export type WalletBalanceProps = {
-  total: number;
   spendable: number;
-  immature: number;
-  unconfirmed: number;
-  locked: number;
 };
-export const WalletBalanceComponent = ({
-  total,
-  spendable,
-  immature,
-  unconfirmed,
-  locked
-}: WalletBalanceProps) => {
+export const WalletBalanceComponent = ({ spendable }: WalletBalanceProps) => {
   const { t } = useTranslation();
 
   return (
@@ -37,60 +27,6 @@ export const WalletBalanceComponent = ({
         </SpendableBalance>
         <Tooltip>
           <BalanceSuffix>ツ</BalanceSuffix>
-          <div data-testid="balance-tooltip">
-            <p>
-              {t("total")}:{" "}
-              <strong>
-                <NumberFormat
-                  data-testid="total"
-                  value={total}
-                  displayType={"text"}
-                  thousandSeparator={true}
-                  decimalScale={9}
-                  fixedDecimalScale={true}
-                />
-              </strong>
-            </p>
-            <p>
-              {t("immature")}:{" "}
-              <strong>
-                <NumberFormat
-                  data-testid="immature"
-                  value={immature}
-                  displayType={"text"}
-                  thousandSeparator={true}
-                  decimalScale={9}
-                  fixedDecimalScale={true}
-                />
-              </strong>
-            </p>
-            <p>
-              {t("unconfirmed")}:{" "}
-              <strong>
-                <NumberFormat
-                  data-testid="unconfirmed"
-                  value={unconfirmed}
-                  displayType={"text"}
-                  thousandSeparator={true}
-                  decimalScale={9}
-                  fixedDecimalScale={true}
-                />
-              </strong>
-            </p>
-            <p>
-              {t("locked")}:{" "}
-              <strong>
-                <NumberFormat
-                  data-testid="locked"
-                  value={locked}
-                  displayType={"text"}
-                  thousandSeparator={true}
-                  decimalScale={9}
-                  fixedDecimalScale={true}
-                />
-              </strong>
-            </p>
-          </div>
         </Tooltip>
       </Flex>
     </div>

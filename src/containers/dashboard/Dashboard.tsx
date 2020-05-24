@@ -8,6 +8,7 @@ import { ReceiveUsingFileContainer } from "./ReceiveUsingFile";
 import { ReceiveUsingListenerContainer } from "./ReceiveUsingListener";
 import { WalletActivitiyContainer } from "./WalletActivity";
 import { WalletBalanceContainer } from "./WalletBalance";
+import { WalletBalanceDetailsContainer } from "./WalletBalanceDetails";
 import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -18,7 +19,7 @@ export const DashboardContainer = () => {
 
   return (
     <Content>
-      <div style={{ width: "42%", margin: "10px" }}>
+      <div style={{ width: "40%", margin: "10px" }}>
         <Flex>
           <WalletBalanceContainer />
           <div
@@ -54,7 +55,8 @@ export const DashboardContainer = () => {
           <LogsContainer />
         </div>
       </div>
-      <div style={{ width: "58%", margin: "10px" }}>
+      <div style={{ width: "60%", margin: "10px" }}>
+        <WalletBalanceDetailsContainer />
         <WalletActivitiyContainer />
       </div>
     </Content>
