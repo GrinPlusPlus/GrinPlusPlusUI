@@ -309,9 +309,7 @@ const sendCoinsModel: SendCoinsModel = {
           file.filePath
         )
         .then((response) => {
-          // Let's clean a bit
-          actions.setInitialValues();
-
+          actions.setInitialValues(); // alles gut!
           return true;
         })
         .catch((error) => {
@@ -364,6 +362,7 @@ const sendCoinsModel: SendCoinsModel = {
           if (typeof response === "string") {
             return response;
           }
+          actions.setInitialValues(); // alles gut!
           return "sent";
         } else if (type === "http") {
           const slate = await new ownerService.RPC(
@@ -395,8 +394,7 @@ const sendCoinsModel: SendCoinsModel = {
           if (typeof finalized === "string") {
             return finalized;
           }
-          // We're good to go; Let's clean a bit
-          actions.setInitialValues();
+          actions.setInitialValues(); // alles gut!
           return "sent";
         }
       } catch (error) {

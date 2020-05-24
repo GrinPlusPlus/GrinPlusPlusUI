@@ -73,7 +73,7 @@ export const SendContainer = () => {
       await getOutputs(t).catch(() => {});
     }
     init(token);
-  }, [getOutputs, token, setInitialValues]);
+  }, [getOutputs, token]);
 
   return (
     <Suspense fallback={renderLoader()}>
