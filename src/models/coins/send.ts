@@ -345,9 +345,6 @@ const sendCoinsModel: SendCoinsModel = {
         }
       }
 
-      // We're good to go; Let's clean a bit
-      actions.setInitialValues();
-
       try {
         if (type === "tor") {
           const response = await new ownerService.RPC(
@@ -398,6 +395,8 @@ const sendCoinsModel: SendCoinsModel = {
           if (typeof finalized === "string") {
             return finalized;
           }
+          // We're good to go; Let's clean a bit
+          actions.setInitialValues();
           return "sent";
         }
       } catch (error) {

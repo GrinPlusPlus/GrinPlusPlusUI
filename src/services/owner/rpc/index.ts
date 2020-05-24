@@ -107,7 +107,7 @@ export class OwnerRPCApi extends BaseApi {
       delete params["address"];
     }
     require("electron-log").info(`${address}`);
-    require("electron-log").info(`${params}`);
+    require("electron-log").info(params);
 
     return await this.makeRPCRequest(
       this.getRequestURL("send"),
