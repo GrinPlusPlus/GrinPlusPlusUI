@@ -58,7 +58,7 @@ export const DashboardContainer = () => {
           <LogsContainer />
         </div>
       </div>
-      <div style={{ width: "60%", marginLeft: "10px", marginTop: "5px" }}>
+      <div style={{ width: "60%", marginLeft: "15px", marginTop: "5px" }}>
         <WalletActivitiyContainer />
       </div>
     </Content>

@@ -123,7 +123,7 @@ export const TransactionsTableComponent = ({
   };
 
   return (
-    <div style={{ height: "calc(100vh - 247px)", overflowY: "auto" }}>
+    <div style={{ height: "calc(100vh - 245px)", overflowY: "auto" }}>
       {transactions.length === 0 ? (
         <Text>{t("no_transactions")}.</Text>
       ) : (
