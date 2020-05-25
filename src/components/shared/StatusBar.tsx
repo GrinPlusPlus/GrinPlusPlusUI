@@ -6,15 +6,13 @@ import { useTranslation } from "react-i18next";
 type StatusBarProps = {
   intent: "none" | "primary" | "success" | "warning" | "danger" | undefined;
   status: string;
-  headers: number;
-  blocks: number;
   network: { height: number; outbound: number; inbound: number };
 };
 
 export const StatusBarComponent = ({
   intent,
   status,
-  network
+  network,
 }: StatusBarProps) => {
   const { t } = useTranslation();
 

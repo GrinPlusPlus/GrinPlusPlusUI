@@ -11,17 +11,17 @@ import {
   NumericInput,
   Slider,
   Switch,
-  Text
+  Text,
 } from "@blueprintjs/core";
 
 import React from "react";
 import { useTranslation } from "react-i18next";
 
 type SettingsProps = {
-  status: string;
   floonet: boolean;
   useGrinJoin: boolean;
   grinJoinAddress: string;
+  grinChckAddress: string;
   mininumPeers: number;
   maximumPeers: number;
   confirmations: number;
@@ -31,6 +31,7 @@ type SettingsProps = {
   isLoggedIn: boolean;
   setGrinJoinUseCb: (active: boolean) => void;
   setGrinJoinAddressCb: (address: string) => void;
+  setGrinChckAddressCb: (address: string) => void;
   setMininumPeersCb: (peers: number) => void;
   setMaximumPeersCb: (peers: number) => void;
   setConfirmationsCb: (confirmations: number) => void;
@@ -41,10 +42,10 @@ type SettingsProps = {
 };
 
 export const SettingsComponent = ({
-  status,
   floonet,
   useGrinJoin,
   grinJoinAddress,
+  grinChckAddress,
   mininumPeers,
   maximumPeers,
   confirmations,
@@ -54,19 +55,30 @@ export const SettingsComponent = ({
   isLoggedIn,
   setGrinJoinUseCb,
   setGrinJoinAddressCb,
+  setGrinChckAddressCb,
   setMininumPeersCb,
   setMaximumPeersCb,
   setConfirmationsCb,
   toggleConfirmationDialogCb,
   confirmReSyncBlockchainCb,
   restartNodeCb,
-  backupButtonCb
+  backupButtonCb,
 }: SettingsProps) => {
   const { t } = useTranslation();
 
   return (
     <div>
       <div className={Classes.DIALOG_BODY}>
+        <InputGroup
+          data-testid="grinchck-address-input"
+          placeholder="GrinChck"
+          value={grinChckAddress}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setGrinChckAddressCb(e.target.value)
+          }
+        />
+        <Divider />
+        <br />
         <Switch
           disabled={floonet}
           checked={useGrinJoin}
@@ -96,7 +108,7 @@ export const SettingsComponent = ({
             data-testid="mininum-number-peers-input"
             id="mininum-number-peers"
             value={mininumPeers}
-            onValueChange={value => setMininumPeersCb(value)}
+            onValueChange={(value) => setMininumPeersCb(value)}
           />
         </FormGroup>
         <FormGroup
@@ -107,7 +119,7 @@ export const SettingsComponent = ({
             data-testid="maximum-number-peers-input"
             id="maximum-number-peers"
             value={maximumPeers}
-            onValueChange={value => setMaximumPeersCb(value)}
+            onValueChange={(value) => setMaximumPeersCb(value)}
           />
         </FormGroup>
         <FormGroup label={t("confirmations")}>
@@ -119,7 +131,7 @@ export const SettingsComponent = ({
             data-testid="confirmations-slider"
             value={confirmations}
             showTrackFill={false}
-            onChange={value => setConfirmationsCb(value)}
+            onChange={(value) => setConfirmationsCb(value)}
           />
         </FormGroup>
         <Divider />

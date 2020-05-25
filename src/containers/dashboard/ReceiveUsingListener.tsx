@@ -1,6 +1,5 @@
 import { HorizontallyCenter, Title } from "../../components/styled";
 import { Spinner, Text } from "@blueprintjs/core";
-
 import React from "react";
 import { ReceiveUsingListenerComponent } from "../../components/transaction/receive/ReceiveUsingListener";
 import { useStoreState } from "../../hooks";
@@ -9,13 +8,15 @@ import { useTranslation } from "react-i18next";
 export const ReceiveUsingListenerContainer = () => {
   const { t } = useTranslation();
   const { address } = useStoreState((state) => state.session);
+  const { walletReachable } = useStoreState((state) => state.walletSummary);
 
   return (
     <div>
-      <Title>{t("receive")}</Title>
+      <Title>{t("receive")} </Title>
       <div>
         {address ? (
           <ReceiveUsingListenerComponent
+            isWalletReachable={walletReachable}
             address={address}
             httpAddress={`http://${address}.grinplusplus.com/`}
             shortenHttpAddress={`http://${address.replace(
@@ -27,13 +28,10 @@ export const ReceiveUsingListenerContainer = () => {
             )}.grinplusplus.com/`}
           />
         ) : (
-          <div>
-            <HorizontallyCenter>
-              <Spinner size={30} />
-              <Text>{t("trying_get_address")}</Text>
-            </HorizontallyCenter>
-            <br />
-          </div>
+          <HorizontallyCenter>
+            <Spinner size={30} />
+            <Text>{t("trying_get_address")}</Text>
+          </HorizontallyCenter>
         )}
       </div>
     </div>

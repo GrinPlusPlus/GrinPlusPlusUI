@@ -150,6 +150,7 @@ const wallet: WalletModel = {
         nodeService.getNodeDataPath(defaultSettings.floonet)
       );
       settingsActions.setGrinJoinAddress(defaultSettings.grinJoinAddress);
+      settingsActions.setGrinChckAddress(defaultSettings.grinChckAddress);
       // Updating store with server_config.json
       settingsActions.setMaximumPeers(defaultSettings.maximumPeers);
       settingsActions.setMininumPeers(defaultSettings.minimumPeers);

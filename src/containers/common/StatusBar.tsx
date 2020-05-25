@@ -6,22 +6,21 @@ import { useStoreState } from "../../hooks";
 import { useTranslation } from "react-i18next";
 
 const StatusBarComponent = React.lazy(() =>
-  import("../../components/shared/StatusBar").then(module => ({
-    default: module.StatusBarComponent
+  import("../../components/shared/StatusBar").then((module) => ({
+    default: module.StatusBarComponent,
   }))
 );
 
 const renderLoader = () => null;
 
 export const StatusBarContainer = () => {
-  const { intent, status, headers, blocks, network } = useStoreState(
-    state => state.nodeSummary
-  );
-  const { nodeHealthCheck } = useStoreState(state => state.wallet);
-
+  const { t } = useTranslation();
   let history = useHistory();
 
-  const { t } = useTranslation();
+  const { intent, status, network } = useStoreState(
+    (state) => state.nodeSummary
+  );
+  const { nodeHealthCheck } = useStoreState((state) => state.wallet);
 
   return (
     <Suspense fallback={renderLoader()}>
@@ -34,13 +33,7 @@ export const StatusBarContainer = () => {
       >
         <p>{t("node_process_not_running")}</p>
       </Alert>
-      <StatusBarComponent
-        intent={intent}
-        status={status}
-        headers={headers}
-        blocks={blocks}
-        network={network}
-      />
+      <StatusBarComponent intent={intent} status={status} network={network} />
     </Suspense>
   );
 };

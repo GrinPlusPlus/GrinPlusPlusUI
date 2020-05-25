@@ -12,9 +12,9 @@ export const SettingsContainer = () => {
     nodeBinaryPath,
     useGrinJoin,
     grinJoinAddress,
+    grinChckAddress,
     isConfirmationDialogOpen,
   } = useStoreState((state) => state.settings);
-  const { status } = useStoreState((state) => state.nodeSummary);
   const { floonet } = useStoreState((state) => state.settings.defaultSettings);
   const { isLoggedIn, username: sessionUsername } = useStoreState(
     (state) => state.session
@@ -28,6 +28,7 @@ export const SettingsContainer = () => {
     setGrinJoinUse,
     setGrinJoinAddress,
     toggleConfirmationDialog,
+    setGrinChckAddress,
   } = useStoreActions((actions) => actions.settings);
   const { reSyncBlockchain, restartNode } = useStoreActions(
     (state) => state.wallet
@@ -56,10 +57,10 @@ export const SettingsContainer = () => {
 
   return (
     <SettingsComponent
-      status={status}
       floonet={floonet}
       useGrinJoin={useGrinJoin}
       grinJoinAddress={grinJoinAddress}
+      grinChckAddress={grinChckAddress}
       mininumPeers={mininumPeers}
       maximumPeers={maximumPeers}
       confirmations={confirmations}
@@ -68,6 +69,7 @@ export const SettingsContainer = () => {
       isConfirmationDialogOpen={isConfirmationDialogOpen}
       setGrinJoinUseCb={setGrinJoinUse}
       setGrinJoinAddressCb={setGrinJoinAddress}
+      setGrinChckAddressCb={setGrinChckAddress}
       setMininumPeersCb={setMininumPeers}
       setMaximumPeersCb={setMaximumPeers}
       setConfirmationsCb={setConfirmations}

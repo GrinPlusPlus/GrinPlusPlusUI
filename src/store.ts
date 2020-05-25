@@ -18,8 +18,8 @@ const store = createStore(model, {
     nodeService,
     ownerService,
     utilsService,
-    foreingService
-  }
+    foreingService,
+  },
 });
 
 export default store;

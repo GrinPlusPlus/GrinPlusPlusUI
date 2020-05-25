@@ -9,4 +9,5 @@ export interface IWalletSettings {
   minimumConfirmations: number;
   ports: { node: number; foreignRPC: number; owner: number; ownerRPC: number };
   grinJoinAddress: string;
+  grinChckAddress: string;
 }
