@@ -7,7 +7,7 @@ type ReceiveUsingListenerProps = {
   address: string;
   httpAddress: string;
   shortenHttpAddress: string;
-  isWalletReachable: boolean;
+  isWalletReachable: boolean | undefined;
 };
 export const ReceiveUsingListenerComponent = ({
   address,
@@ -30,7 +30,13 @@ export const ReceiveUsingListenerComponent = ({
       <HorizontallyCenter>
         <Button
           className="bp3-dark"
-          intent={isWalletReachable ? Intent.SUCCESS : Intent.WARNING}
+          intent={
+            isWalletReachable === undefined
+              ? Intent.NONE
+              : isWalletReachable
+              ? Intent.SUCCESS
+              : Intent.WARNING
+          }
           minimal={true}
           rightIcon="duplicate"
           text={shortenHttpAddress}

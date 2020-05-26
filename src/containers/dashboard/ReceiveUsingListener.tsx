@@ -1,4 +1,4 @@
-import { HorizontallyCenter, Title } from "../../components/styled";
+import { HorizontallyCenter, Title, Flex } from "../../components/styled";
 import { Spinner, Text } from "@blueprintjs/core";
 import React from "react";
 import { ReceiveUsingListenerComponent } from "../../components/transaction/receive/ReceiveUsingListener";
@@ -12,7 +12,14 @@ export const ReceiveUsingListenerContainer = () => {
 
   return (
     <div>
-      <Title>{t("receive")} </Title>
+      <Flex>
+        <Title>{t("receive")}</Title>
+        {address && walletReachable === undefined ? (
+          <div style={{ padding: "10px" }}>
+            <Spinner size={12} />
+          </div>
+        ) : null}
+      </Flex>
       <div>
         {address ? (
           <ReceiveUsingListenerComponent

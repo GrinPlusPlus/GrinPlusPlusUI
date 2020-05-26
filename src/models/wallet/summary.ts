@@ -80,7 +80,7 @@ export interface WalletSummaryModel {
     Injections,
     StoreModel
   >;
-  walletReachable: boolean;
+  walletReachable: boolean | undefined;
   setWalletReachable: Action<WalletSummaryModel, boolean>;
 }
 
@@ -238,7 +238,7 @@ const walletSummary: WalletSummaryModel = {
   setWaitingResponse: action((state, waiting) => {
     state.waitingResponse = waiting;
   }),
-  walletReachable: false,
+  walletReachable: undefined,
   setWalletReachable: action((state, reachable) => {
     state.walletReachable = reachable;
   }),
