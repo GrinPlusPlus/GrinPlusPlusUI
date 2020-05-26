@@ -14,6 +14,7 @@
       "owner": 3420,
       "ownerRPC": 3421
     },
-    "grinJoinAddress": "grinjoin5pzzisnne3naxx4w2knwxsyamqmzfnzywnzdk7ra766u7vid"
+    "grinJoinAddress": "grinjoin5pzzisnne3naxx4w2knwxsyamqmzfnzywnzdk7ra766u7vid",
+    "grinChckAddress": "http://grinchck.ahcbagldgzdpa74g2mh74fvk5zjzpfjbvgqin6g3mfuu66tynv2gkiid.onion/check/"
   }
   

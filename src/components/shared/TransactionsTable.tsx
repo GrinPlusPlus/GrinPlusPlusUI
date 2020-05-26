@@ -52,7 +52,7 @@ export const TransactionsTableComponent = ({
       }
       return t(status.toLowerCase());
     } else if (status === "sending_finalized") {
-      return `{${t("sending")} ${t("unconfirmed")}}`;
+      return `${t("sending")} (${t("unconfirmed")})`;
     } else {
       return t(status);
     }
