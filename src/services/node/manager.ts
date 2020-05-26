@@ -38,6 +38,7 @@ const isProcessRunning = function(processName: string): boolean {
 };
 
 const killProcess = function(processName: string): void {
+  require("electron-log").info("Calling killProcess");
   const cmd = (() => {
     switch (require("electron").remote.process.platform) {
       case "win32":
@@ -117,7 +118,7 @@ export const runNode = function(
   let node = require("child_process").spawn(command, params, {
     windowsHide: true,
     encoding: "utf-8",
-    detached: false,
+    detached: true,
     shell: false,
     cwd: absolutePath,
   });

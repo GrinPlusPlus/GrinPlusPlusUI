@@ -107,11 +107,16 @@ async function closeGrinNode(cb) {
 
       let waitAttempts = 0;
       let waitForCloseInterval = setInterval(() => {
-        if (!isRunning("GrinNode.exe", "GrinNode", "GrinNode") || ++waitAttempts === 6) {
+        if (!isRunning("GrinNode.exe", "GrinNode", "GrinNode")) {
+          log.info("GrinNode is no longer running");
+          clearInterval(waitForCloseInterval);
+          cb();
+        } else if (++waitAttempts === 10) {
+          log.info("GrinNode is still running after 5 seconds");
           clearInterval(waitForCloseInterval);
           cb();
         }
-      }, 250);
+      }, 500);
     } catch (e) {
       log.error(e);
       cb();
@@ -224,7 +229,8 @@ app.on("activate", function() {
 });
 
 // Quit when all windows are closed.
-app.on("window-all-closed", async () => {
+app.on("window-all-closed", async (event) => {
+  event.preventDefault();
   await closeGrinNode(() => {
     log.info("GrinNode stopped. Calling app.quit()");
     app.quit();
