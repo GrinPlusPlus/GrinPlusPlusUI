@@ -100,7 +100,7 @@ const restoreWallet: RestoreWalletModel = {
   isSeedCompleted: computed((state) => {
     let filled: number = 0;
     state.seed.forEach((word) => {
-      if (word.text.length) filled++;
+      if (word.text.trim().length && word.valid) filled++;
     });
     return filled === state.seed.length;
   }),
