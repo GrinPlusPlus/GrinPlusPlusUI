@@ -30,7 +30,7 @@ export const ReceiveUsingListenerComponent = ({
       <HorizontallyCenter>
         <Button
           className="bp3-dark"
-          intent={isWalletReachable ? Intent.SUCCESS : Intent.NONE}
+          intent={isWalletReachable ? Intent.SUCCESS : Intent.WARNING}
           minimal={true}
           rightIcon="duplicate"
           text={shortenHttpAddress}

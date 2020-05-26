@@ -111,7 +111,7 @@ const App: React.FC = () => {
         `Error trying to get Wallet Availability: ${error.message}`
       );
     }
-  }, store.getState().walletSummary.updateSummaryInterval);
+  }, 30000);
 
   return (
     <StoreProvider store={store}>

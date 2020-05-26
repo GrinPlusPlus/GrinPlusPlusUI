@@ -78,13 +78,16 @@ const receiveCoinsModel: ReceiveCoinsModel = {
       if (
         getStoreState().walletSummary.waitingResponse ||
         getStoreState().session.address.length === 56
-      )
-        return;
+      ) {
+        return getStoreState().session.address;
+      }
       actions.setWaitingResponse(true);
+
+      let address = null;
       try {
         const { ownerService } = injections;
         const apiSettings = getStoreState().settings.defaultSettings;
-        const address = await new ownerService.RPC(
+        address = await new ownerService.RPC(
           apiSettings.floonet,
           apiSettings.protocol,
           apiSettings.ip
@@ -96,6 +99,7 @@ const receiveCoinsModel: ReceiveCoinsModel = {
         );
       }
       actions.setWaitingResponse(false);
+      return address;
     }
   ),
   waitingResponse: false,
