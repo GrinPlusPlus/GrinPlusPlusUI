@@ -36,7 +36,7 @@ export const OpenWalletContainer = () => {
     actions => actions.signinModel
   );
 
-  const { updateWalletSummary, updateWalletBalance } = useStoreActions(
+  const { updateWalletSummary, updateWalletBalance, checkWalletAvailability } = useStoreActions(
     actions => actions.walletSummary
   );
   const { getAddress } = useStoreActions(actions => actions.receiveCoinsModel);
@@ -83,11 +83,21 @@ export const OpenWalletContainer = () => {
           );
         }
 
+        let address = null;
         try {
-          await getAddress(token);
+          address = await getAddress(token);
         } catch (error) {
           require("electron-log").error(
             `Error trying to get Wallet address: ${error.message}`
+          );
+        }
+
+        try {
+          if (address.length !== 56) return;
+          await checkWalletAvailability(address);
+        } catch (error) {
+          require("electron-log").error(
+            `Error trying to check Wallet availability: ${error.message}`
           );
         }
       }
