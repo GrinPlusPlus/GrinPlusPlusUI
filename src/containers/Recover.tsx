@@ -37,7 +37,7 @@ export const RestoreContainer = () => {
   const { t } = useTranslation();
 
   const { setInitialValues } = useStoreActions(
-    (actions) => actions.createWallet
+    (actions) => actions.restoreWallet
   );
 
   let history = useHistory();

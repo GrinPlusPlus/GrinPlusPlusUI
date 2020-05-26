@@ -47,6 +47,7 @@ const restoreWallet: RestoreWalletModel = {
   setInitialValues: action((state) => {
     state.username = "";
     state.password = "";
+    state.seedLength = "24";
     state.seed = generateEmptySeed(24);
   }),
   setUsername: action((state, payload) => {
