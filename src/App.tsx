@@ -99,6 +99,20 @@ const App: React.FC = () => {
     }
   }, 30000);
 
+  useInterval(async () => {
+    const token = store.getState().session.token;
+    if (token.length === 0) return;
+    const address = store.getState().session.address;
+    if (address.length !== 56) return;
+    try {
+      await store.getActions().walletSummary.checkWalletAvailability(address);
+    } catch (error) {
+      require("electron-log").error(
+        `Error trying to get Wallet Availability: ${error.message}`
+      );
+    }
+  }, store.getState().walletSummary.updateSummaryInterval);
+
   return (
     <StoreProvider store={store}>
       <Router>

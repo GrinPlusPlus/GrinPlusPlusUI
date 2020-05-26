@@ -204,6 +204,7 @@ export const getDefaultSettings = function(
       ownerRPC: defaults.ports.ownerRPC,
     },
     grinJoinAddress: defaults.grinJoinAddress,
+    grinChckAddress: defaults.grinChckAddress,
   };
 };
 

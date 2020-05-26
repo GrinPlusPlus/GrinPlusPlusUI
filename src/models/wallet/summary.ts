@@ -74,6 +74,14 @@ export interface WalletSummaryModel {
   getCoinbaseTransactions: Computed<WalletSummaryModel, ITransaction[]>;
   waitingResponse: boolean;
   setWaitingResponse: Action<WalletSummaryModel, boolean>;
+  checkWalletAvailability: Thunk<
+    WalletSummaryModel,
+    string,
+    Injections,
+    StoreModel
+  >;
+  walletReachable: boolean;
+  setWalletReachable: Action<WalletSummaryModel, boolean>;
 }
 
 const walletSummary: WalletSummaryModel = {
@@ -230,6 +238,24 @@ const walletSummary: WalletSummaryModel = {
   setWaitingResponse: action((state, waiting) => {
     state.waitingResponse = waiting;
   }),
+  walletReachable: false,
+  setWalletReachable: action((state, reachable) => {
+    state.walletReachable = reachable;
+  }),
+  checkWalletAvailability: thunk(
+    async (actions, wallet, { injections, getStoreState }) => {
+      const { foreingService } = injections;
+      try {
+        const reachable = await foreingService.GrinChck.reach(
+          getStoreState().settings.grinChckAddress,
+          wallet
+        );
+        actions.setWalletReachable(reachable);
+      } catch (error) {
+        throw new Error(error);
+      }
+    }
+  ),
 };
 
 export default walletSummary;

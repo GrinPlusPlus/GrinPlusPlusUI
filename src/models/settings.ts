@@ -17,6 +17,7 @@ export interface SettingsModel {
   nodeBinaryPath: string;
   useGrinJoin: boolean;
   grinJoinAddress: string;
+  grinChckAddress: string;
   isConfirmationDialogOpen: boolean;
   setDefaultSettings: Action<
     SettingsModel,
@@ -34,6 +35,7 @@ export interface SettingsModel {
   setConfirmations: Action<SettingsModel, number>;
   setGrinJoinUse: Action<SettingsModel, boolean>;
   setGrinJoinAddress: Action<SettingsModel, string>;
+  setGrinChckAddress: Action<SettingsModel, string>;
   toggleConfirmationDialog: Action<SettingsModel>;
   onSettingsChanged: ThunkOn<SettingsModel, Injections, StoreModel>;
 }
@@ -52,6 +54,8 @@ const settings: SettingsModel = {
   nodeBinaryPath: "./bin/",
   useGrinJoin: false,
   grinJoinAddress: "grinjoin5pzzisnne3naxx4w2knwxsyamqmzfnzywnzdk7ra766u7vid",
+  grinChckAddress:
+    "http://grinchck.ahcbagldgzdpa74g2mh74fvk5zjzpfjbvgqin6g3mfuu66tynv2gkiid.onion/check/",
   isConfirmationDialogOpen: false,
   setDefaultSettings: action((state, settings) => {
     state.defaultSettings = {
@@ -81,6 +85,9 @@ const settings: SettingsModel = {
   }),
   setGrinJoinAddress: action((state, payload) => {
     state.grinJoinAddress = payload;
+  }),
+  setGrinChckAddress: action((state, payload) => {
+    state.grinChckAddress = payload;
   }),
   toggleConfirmationDialog: action((state) => {
     state.isConfirmationDialogOpen = !state.isConfirmationDialogOpen;

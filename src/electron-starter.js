@@ -16,6 +16,43 @@ const app = electron.app;
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
+const requestPromise = (options, postData = null) =>
+  new Promise((resolve, reject) => {
+    const isPostWithData =
+      options && options.method === "POST" && postData !== null;
+    if (
+      isPostWithData &&
+      (!options.headers || !options.headers["Content-Length"])
+    ) {
+      // Convenience: Add Content-Length header
+      options = Object.assign({}, options, {
+        headers: Object.assign({}, options.headers, {
+          "Content-Length": Buffer.byteLength(postData),
+        }),
+      });
+    }
+    const http = require("http");
+    const body = [];
+    const req = http.request(options, (res) => {
+      res.on("data", (chunk) => {
+        body.push(chunk);
+      });
+      res.on("end", () => {
+        res.body = Buffer.concat(body);
+        resolve(res);
+      });
+    });
+
+    req.on("error", (e) => {
+      reject(e);
+    });
+
+    if (isPostWithData) {
+      req.write(postData);
+    }
+    req.end();
+  });
+
 function isRunning(win, mac, linux) {
   const plat = process.platform;
   const cmd =
@@ -43,7 +80,7 @@ function isRunning(win, mac, linux) {
   return stdout.toLowerCase().indexOf(proc.toLowerCase()) > -1;
 }
 
-function closeGrinNode(cb) {
+async function closeGrinNode(cb) {
   var running = isRunning("GrinNode.exe", "GrinNode", "GrinNode");
   if (!running) {
     log.info("GrinNode does not appear to be running. Calling app.quit()");
@@ -54,21 +91,21 @@ function closeGrinNode(cb) {
       "defaults.json"
     );
     let settings = JSON.parse(require("fs").readFileSync(filePath, "utf8"));
-    let request = require("request");
-    let options = {
-      url: `http://${settings.ip}:${
-        settings.floonet ? settings.ports.node + 10000 : settings.ports.node
-      }/v1/shutdown`,
-      method: "post",
-    };
-    request(options, (error, response, body) => {
+    try {
       log.info("==============================");
       log.info("Shutdown API called");
-      log.error(error);
-      log.info(response);
-      log.info(body);
+      await requestPromise({
+        hostname: settings.ip,
+        port: settings.floonet
+          ? settings.ports.node + 10000
+          : settings.ports.node,
+        path: "/v1/shutdown",
+        method: "post",
+      });
       log.info("==============================");
-    });
+    } catch (e) {
+      log.error(e);
+    }
   }
   cb();
 }
@@ -84,7 +121,7 @@ autoUpdater.on("update-available", () => {
 
 autoUpdater.on("update-not-available", () => {});
 
-autoUpdater.on("update-downloaded", () => {
+autoUpdater.on("update-downloaded", async () => {
   log.info("update-downloaded: Prompting to install");
   const buttonIndex = dialog.showMessageBoxSync({
     type: "info",
@@ -97,7 +134,7 @@ autoUpdater.on("update-downloaded", () => {
   log.info("buttonIndex: " + buttonIndex);
   if (buttonIndex === 0) {
     log.info("User chose to install");
-    closeGrinNode(() => {
+    await closeGrinNode(() => {
       log.info("Client stopped. Calling quitAndInstall");
       autoUpdater.quitAndInstall(true, true);
     });
@@ -178,8 +215,8 @@ app.on("activate", function() {
 });
 
 // Quit when all windows are closed.
-app.on("window-all-closed", () => {
-  closeGrinNode(() => {
+app.on("window-all-closed", async () => {
+  await closeGrinNode(() => {
     app.quit();
   });
 });
