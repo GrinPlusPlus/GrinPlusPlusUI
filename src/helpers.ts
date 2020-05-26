@@ -82,7 +82,7 @@ export const getStateColor = function(state: string): string {
   return Intent.WARNING;
 };
 
-export const generateEmptySeed = function(): ISeed[] {
+export const generateEmptySeed = function(length: number = 24): ISeed[] {
   const seed = new Array<ISeed>();
   let i = 1;
   do {
@@ -92,7 +92,7 @@ export const generateEmptySeed = function(): ISeed[] {
       disabled: false,
       valid: true,
     });
-  } while (i <= 24);
+  } while (i <= length);
   return seed;
 };
 

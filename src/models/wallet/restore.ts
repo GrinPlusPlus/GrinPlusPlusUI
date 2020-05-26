@@ -42,12 +42,12 @@ export interface RestoreWalletModel {
 const restoreWallet: RestoreWalletModel = {
   username: "",
   password: "",
-  seed: generateEmptySeed(),
+  seed: generateEmptySeed(24),
   seedLength: "24",
   setInitialValues: action((state) => {
     state.username = "";
     state.password = "";
-    state.seed = generateEmptySeed();
+    state.seed = generateEmptySeed(24);
   }),
   setUsername: action((state, payload) => {
     state.username = payload;
@@ -60,7 +60,8 @@ const restoreWallet: RestoreWalletModel = {
     state.seed[payload.position].valid = isValidSeedWord(payload.word);
   }),
   setSeedLength: action((state, length) => {
-    state.seedLength = length.toString();
+    state.seedLength = length;
+    state.seed = generateEmptySeed(+length);
   }),
   setSeed: action((state, seed) => {
     state.seed = seed;
