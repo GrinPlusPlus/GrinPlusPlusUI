@@ -246,11 +246,9 @@ const sendCoinsModel: SendCoinsModel = {
           actions.setInputsTable(response);
           let commitments: string[] = [];
           response.forEach((input) => {
-            if (
-              input.status.toLowerCase() === "spendable" &&
-              input.block_height
-            )
+            if (input.status.toLowerCase() === "spendable") {
               commitments.push(input.commitment);
+            }
           });
           actions.fillInputs(commitments);
           actions.fillOutputs(commitments);
