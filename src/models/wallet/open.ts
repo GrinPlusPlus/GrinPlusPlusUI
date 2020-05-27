@@ -80,6 +80,9 @@ const openWallet: SigninModel = {
           actions.setUsername("");
           actions.setPassword("");
           return response;
+        })
+        .finally(() => {
+          actions.setWaitingResponse(false);
         });
     }
   ),

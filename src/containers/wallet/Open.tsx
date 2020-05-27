@@ -29,6 +29,7 @@ export const OpenWalletContainer = () => {
     setUsername,
     setPassword,
     login,
+    setWaitingResponse,
   } = useStoreActions((actions) => actions.signinModel);
 
   const { getAccounts, setAccounts } = useStoreActions(
@@ -51,26 +52,25 @@ export const OpenWalletContainer = () => {
 
   const onOpenWalletButtonClicked = useCallback(async () => {
     try {
+      setWaitingResponse(true);
       await login({
         username: username,
         password: password,
-      }).then(() => {
-        require("electron-log").info(
-          "User logged in... redirecting to Wallet..."
-        );
-      }).catch((error: { message: string }) => {
-        Toaster.create({ position: Position.BOTTOM }).show({
-          message: error.message,
-          intent: Intent.DANGER,
-          icon: "warning-sign",
-        });
       })
-    } catch (error) { }
-  }, [
-    username,
-    password,
-    login,
-  ]);
+        .then(() => {
+          require("electron-log").info(
+            "User logged in... redirecting to Wallet..."
+          );
+        })
+        .catch((error: { message: string }) => {
+          Toaster.create({ position: Position.BOTTOM }).show({
+            message: error.message,
+            intent: Intent.DANGER,
+            icon: "warning-sign",
+          });
+        });
+    } catch (error) {}
+  }, [username, password, login, setWaitingResponse]);
 
   const getAccountsList = useCallback(
     (accounts: string[]) => {
