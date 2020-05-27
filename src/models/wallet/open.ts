@@ -72,14 +72,10 @@ const openWallet: SigninModel = {
       )
         .login(payload.username, payload.password)
         .then((response) => {
-          var base64Matcher = new RegExp(
-            "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$"
-          );
-          if (!base64Matcher.test(response)) throw new Error(response);
           getStoreActions().session.updateSession({
             username: payload.username,
-            token: response,
-            address: "",
+            token: response.token,
+            address: response.address,
           });
           actions.setUsername("");
           actions.setPassword("");

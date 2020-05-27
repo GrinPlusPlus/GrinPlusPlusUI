@@ -169,18 +169,16 @@ export const cleanTxType = function(type: string): string {
     .join("");
 };
 
-export const useInterval = function(callback: any, delay: number) {
+export const useInterval = function(callback: any, delay: number, deps?: ReadonlyArray<any>) {
   const savedCallback = useRef(callback);
 
   // Remember the latest function.
   useEffect(() => {
     savedCallback.current = callback;
-  }, [callback]);
+  }, deps);
 
   // Set up the interval.
   useEffect(() => {
-    // console.log("Using callback: " + delay);
-
     function tick() {
       savedCallback.current();
     }
@@ -189,7 +187,7 @@ export const useInterval = function(callback: any, delay: number) {
       let id = setInterval(tick, delay);
       return () => clearInterval(id);
     }
-  }, [delay]);
+  }, deps);
 };
 
 export const cutAddress = (address: string): string => {

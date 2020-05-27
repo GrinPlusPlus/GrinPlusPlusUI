@@ -82,6 +82,7 @@ export interface WalletSummaryModel {
   >;
   walletReachable: boolean | undefined;
   setWalletReachable: Action<WalletSummaryModel, boolean>;
+  clearWalletReachable: Action<WalletSummaryModel>;
 }
 
 const walletSummary: WalletSummaryModel = {
@@ -241,6 +242,9 @@ const walletSummary: WalletSummaryModel = {
   walletReachable: undefined,
   setWalletReachable: action((state, reachable) => {
     state.walletReachable = reachable;
+  }),
+  clearWalletReachable: action((state) => {
+    state.walletReachable = undefined;
   }),
   checkWalletAvailability: thunk(
     async (actions, wallet, { injections, getStoreState }) => {

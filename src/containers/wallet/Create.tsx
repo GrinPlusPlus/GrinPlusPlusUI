@@ -44,6 +44,14 @@ export const CreateWalletContainer = () => {
     setSeedLength,
   } = useStoreActions((actions) => actions.createWallet);
   const { status } = useStoreState((state) => state.nodeSummary);
+  const {
+    updateWalletSummary,
+    updateWalletBalance,
+    checkWalletAvailability,
+  } = useStoreActions((actions) => actions.walletSummary);
+  const { getAddress } = useStoreActions(
+    (actions) => actions.receiveCoinsModel
+  );
 
   const onCreateWalletButtonClicked = useCallback(async () => {
     try {
@@ -51,6 +59,10 @@ export const CreateWalletContainer = () => {
         username: username,
         password: password,
         seedLength: seedLength,
+      }).then(() => {
+        require("electron-log").info(
+          "User created... redirecting to Wallet..."
+        );
       }).catch((error: { message: string }) => {
         Toaster.create({ position: Position.BOTTOM }).show({
           message: error.message,

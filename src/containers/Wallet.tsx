@@ -1,4 +1,4 @@
-import React, { Suspense, useCallback } from "react";
+import React, { Suspense, useCallback, useEffect } from "react";
 import { useStoreActions, useStoreState } from "../hooks";
 
 import { AlertComponent } from "../components/extras/Alert";
@@ -9,6 +9,8 @@ import { ISeed } from "../interfaces/ISeed";
 import { Toaster, Position, Intent, Alert } from "@blueprintjs/core";
 import { WalletSeedInputComponent } from "../components/shared/WalletSeedInput";
 import { useTranslation } from "react-i18next";
+import { useInterval } from "../helpers";
+import Log from "electron-log";
 
 const AccountNavBarContainer = React.lazy(() =>
   import("./dashboard/AccountNavBar").then((module) => ({
@@ -39,10 +41,10 @@ const renderLoader = () => <LoadingComponent />;
 export const WalletContainer = () => {
   const { t } = useTranslation();
 
-  const { isLoggedIn, seed } = useStoreState((state) => state.session);
+  const { isLoggedIn, seed, token, address } = useStoreState((state) => state.session);
   const { alert } = useStoreState((state) => state.ui);
   const { status } = useStoreState((state) => state.nodeSummary);
-
+  
   const { username, password, waitingResponse } = useStoreState(
     (state) => state.passwordPrompt
   );
@@ -51,6 +53,60 @@ export const WalletContainer = () => {
   );
   const { setAlert } = useStoreActions((actions) => actions.ui);
   const { getWalletSeed, setSeed } = useStoreActions((state) => state.session);
+  const {
+    updateWalletSummary,
+    updateWalletBalance,
+    checkWalletAvailability,
+  } = useStoreActions((actions) => actions.walletSummary);
+  const { getAddress } = useStoreActions(
+    (actions) => actions.receiveCoinsModel
+  );
+
+  useInterval(async () => {
+    if (token !== undefined && token.length > 0) {
+      if (token.length === 0) return;
+      try {
+        await updateWalletSummary(token);
+      } catch (error) {
+        Log.error(
+          `Error trying to get Wallet Summary: ${error.message}`
+        );
+      }
+      try {
+        await updateWalletBalance(token);
+      } catch (error) {
+        Log.error(
+          `Error trying to get Wallet Balance: ${error.message}`
+        );
+      }
+    }
+  }, 5000, [token]);
+  
+  useInterval(async () => {
+    if (token.length === 0) return;
+
+    let walletAddress = address;
+    if (walletAddress.length !== 56) {
+      try {
+        Log.info("Checking address: " + token);
+        walletAddress = await getAddress(token);
+      } catch (error) {
+        Log.error(
+          `Error trying to get Wallet address: ${error.message}`
+        );
+      }
+    }
+
+    if (walletAddress.length === 56) {
+      try {
+        await checkWalletAvailability(walletAddress);
+      } catch (error) {
+        Log.error(
+          `Error trying to get Wallet Availability: ${error.message}`
+        );
+      }
+    }
+  }, 30000, [token]);
 
   const backupSeed = useCallback(async () => {
     if (username === undefined || password === undefined) return;

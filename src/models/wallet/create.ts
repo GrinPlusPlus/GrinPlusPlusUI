@@ -105,8 +105,10 @@ const createWalletModel: CreateWalletModel = {
           getStoreActions().session.updateSession({
             username: wallet.username,
             token: wallet.token,
-            address: "",
+            address: wallet.address,
           });
+
+          return wallet.token;
         });
     }
   ),
