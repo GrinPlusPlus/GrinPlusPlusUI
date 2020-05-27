@@ -190,8 +190,11 @@ const sendCoinsModel: SendCoinsModel = {
         status: string;
         transaction_id: number;
       };
-      table.push(element);
+      if (element.status.toLowerCase() === "spendable") {
+        table.push(element);
+      }
     }
+
     state.inputsTable = table;
   }),
   setInputs: action((state, inputs) => {
@@ -243,7 +246,10 @@ const sendCoinsModel: SendCoinsModel = {
           actions.setInputsTable(response);
           let commitments: string[] = [];
           response.forEach((input) => {
-            if (input.status.toLowerCase() === "spendable")
+            if (
+              input.status.toLowerCase() === "spendable" &&
+              input.block_height
+            )
               commitments.push(input.commitment);
           });
           actions.fillInputs(commitments);
