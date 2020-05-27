@@ -13,7 +13,6 @@ import React from "react";
 import { WalletUsername } from "./../../components/styled";
 import { getResourcePath } from "../../helpers";
 import { useHistory } from "react-router-dom";
-import { useStore } from "easy-peasy";
 
 export const AccountNavBarContainer = () => {
   let history = useHistory();

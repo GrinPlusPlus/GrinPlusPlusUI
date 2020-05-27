@@ -29,7 +29,6 @@ export const OpenWalletContainer = () => {
     setUsername,
     setPassword,
     login,
-    setWaitingResponse,
   } = useStoreActions((actions) => actions.signinModel);
 
   const { getAccounts, setAccounts } = useStoreActions(
@@ -71,7 +70,6 @@ export const OpenWalletContainer = () => {
     username,
     password,
     login,
-    setWaitingResponse,
   ]);
 
   const getAccountsList = useCallback(

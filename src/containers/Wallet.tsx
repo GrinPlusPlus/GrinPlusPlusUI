@@ -1,4 +1,4 @@
-import React, { Suspense, useCallback, useEffect } from "react";
+import React, { Suspense, useCallback } from "react";
 import { useStoreActions, useStoreState } from "../hooks";
 
 import { AlertComponent } from "../components/extras/Alert";

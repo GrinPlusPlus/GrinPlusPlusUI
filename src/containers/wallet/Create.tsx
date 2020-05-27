@@ -44,14 +44,6 @@ export const CreateWalletContainer = () => {
     setSeedLength,
   } = useStoreActions((actions) => actions.createWallet);
   const { status } = useStoreState((state) => state.nodeSummary);
-  const {
-    updateWalletSummary,
-    updateWalletBalance,
-    checkWalletAvailability,
-  } = useStoreActions((actions) => actions.walletSummary);
-  const { getAddress } = useStoreActions(
-    (actions) => actions.receiveCoinsModel
-  );
 
   const onCreateWalletButtonClicked = useCallback(async () => {
     try {
