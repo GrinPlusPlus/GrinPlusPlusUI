@@ -92,7 +92,7 @@ const restoreWallet: RestoreWalletModel = {
           getStoreActions().session.updateSession({
             username: response.username,
             token: response.token,
-            address: "",
+            address: response.address,
           });
         });
     }

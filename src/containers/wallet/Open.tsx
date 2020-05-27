@@ -29,20 +29,10 @@ export const OpenWalletContainer = () => {
     setUsername,
     setPassword,
     login,
-    setWaitingResponse,
   } = useStoreActions((actions) => actions.signinModel);
 
   const { getAccounts, setAccounts } = useStoreActions(
     (actions) => actions.signinModel
-  );
-
-  const {
-    updateWalletSummary,
-    updateWalletBalance,
-    checkWalletAvailability,
-  } = useStoreActions((actions) => actions.walletSummary);
-  const { getAddress } = useStoreActions(
-    (actions) => actions.receiveCoinsModel
   );
 
   useEffect(() => {
@@ -60,68 +50,26 @@ export const OpenWalletContainer = () => {
   });
 
   const onOpenWalletButtonClicked = useCallback(async () => {
-    setWaitingResponse(true);
     try {
-      const token = await login({
+      await login({
         username: username,
         password: password,
-      });
-      if (token !== undefined && token.length > 0) {
+      }).then(() => {
         require("electron-log").info(
           "User logged in... redirecting to Wallet..."
         );
-
-        try {
-          await updateWalletBalance(token);
-        } catch (error) {
-          require("electron-log").error(
-            `Error trying to get Wallet Balance: ${error.message}`
-          );
-        }
-
-        try {
-          await updateWalletSummary(token);
-        } catch (error) {
-          require("electron-log").error(
-            `Error trying to get Wallet Summary: ${error.message}`
-          );
-        }
-
-        let address = null;
-        try {
-          address = await getAddress(token);
-        } catch (error) {
-          require("electron-log").error(
-            `Error trying to get Wallet address: ${error.message}`
-          );
-        }
-
-        try {
-          if (address.length !== 56) return;
-          await checkWalletAvailability(address);
-        } catch (error) {
-          require("electron-log").error(
-            `Error trying to check Wallet availability: ${error.message}`
-          );
-        }
-      }
-    } catch (error) {
-      Toaster.create({ position: Position.BOTTOM }).show({
-        message: error.message,
-        intent: Intent.DANGER,
-        icon: "warning-sign",
-      });
-    }
-    setWaitingResponse(false);
+      }).catch((error: { message: string }) => {
+        Toaster.create({ position: Position.BOTTOM }).show({
+          message: error.message,
+          intent: Intent.DANGER,
+          icon: "warning-sign",
+        });
+      })
+    } catch (error) { }
   }, [
     username,
     password,
     login,
-    setWaitingResponse,
-    getAddress,
-    updateWalletSummary,
-    updateWalletBalance,
-    checkWalletAvailability,
   ]);
 
   const getAccountsList = useCallback(

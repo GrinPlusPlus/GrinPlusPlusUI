@@ -10,7 +10,7 @@ export class OwnerRPCApi extends BaseApi {
     username: string,
     password: string,
     seedLength: string
-  ): Promise<{ username: string; token: string; seed: string[] }> {
+  ): Promise<{ username: string; token: string; address: string; seed: string[] }> {
     return await this.makeRPCRequest(
       this.getRequestURL("create_wallet"),
       "create_wallet",
@@ -20,6 +20,7 @@ export class OwnerRPCApi extends BaseApi {
       return {
         username: username,
         token: response.result.session_token,
+        address: response.result.tor_address,
         seed: response.result.wallet_seed.split(" "),
       };
     });
@@ -29,7 +30,7 @@ export class OwnerRPCApi extends BaseApi {
     username: string,
     password: string,
     seed: string
-  ): Promise<{ username: string; token: string }> {
+  ): Promise<{ username: string; token: string; address: string }> {
     return await this.makeRPCRequest(
       this.getRequestURL("restore_wallet"),
       "restore_wallet",
@@ -40,7 +41,7 @@ export class OwnerRPCApi extends BaseApi {
       }
     ).then((response) => {
       if (response.error) throw new Error(response.error.message);
-      return { username: username, token: response.result.session_token };
+      return { username: username, token: response.result.session_token, address: response.result.tor_address };
     });
   }
 
@@ -182,13 +183,18 @@ export class OwnerRPCApi extends BaseApi {
     });
   }
 
-  public async login(username: string, password: string): Promise<string> {
+  public async login(username: string, password: string): Promise<{ username: string; token: string; address: string }> {
     return await this.makeRPCRequest(this.getRequestURL("login"), "login", {
       username: username,
       password: password,
-    }).then((response) =>
-      response.error ? response.error.message : response.result.session_token
-    );
+    }).then((response) => {
+      if (response.error) throw new Error(response.error.message);
+      return {
+        username: username,
+        token: response.result.session_token,
+        address: response.result.tor_address
+      }
+    });
   }
 
   public async getSeed(username: string, password: string): Promise<string[]> {
