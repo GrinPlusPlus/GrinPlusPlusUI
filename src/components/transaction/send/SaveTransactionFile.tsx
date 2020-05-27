@@ -16,7 +16,7 @@ export const SaveTransactionFileComponent = ({
   fee,
   spendable,
   inputsSelected,
-  onSaveButtonClickedCb
+  onSaveButtonClickedCb,
 }: SendGrinsButtonsProps) => {
   const { t } = useTranslation();
 
@@ -25,10 +25,12 @@ export const SaveTransactionFileComponent = ({
       intent={Intent.PRIMARY}
       style={{
         color: "black",
-        width: "120px"
+        width: "120px",
       }}
       icon="document"
-      disabled={amount <= 0 || spendable < amount + fee || !inputsSelected}
+      disabled={
+        fee <= 0 || amount <= 0 || spendable < amount + fee || !inputsSelected
+      }
       onClick={onSaveButtonClickedCb}
     >
       {t("save_tx")}

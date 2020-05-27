@@ -18,7 +18,7 @@ export const SendUsingAddressComponent = ({
   spendable,
   inputsSelected,
   isAddressValid,
-  onSendButtonClickedCb
+  onSendButtonClickedCb,
 }: SendGrinsButtonsProps) => {
   const { t } = useTranslation();
   return (
@@ -27,6 +27,7 @@ export const SendUsingAddressComponent = ({
       style={{ color: "black", width: "120px" }}
       icon="globe"
       disabled={
+        fee <= 0 ||
         amount <= 0 ||
         spendable < amount + fee ||
         !isAddressValid ||
