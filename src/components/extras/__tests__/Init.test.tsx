@@ -5,7 +5,6 @@ import React from "react";
 
 function renderInitComponent(props: Partial<InitComponentProps> = {}) {
   const defaultProps: InitComponentProps = {
-    isInitialized: false,
     error: false,
     message: ""
   };
@@ -18,9 +17,9 @@ describe("<InitComponent />", () => {
     const spinner = queryAllByTestId("init-spinner");
     expect(spinner).toHaveLength(1);
   });
-  test("should display check when did init", async () => {
-    const { findByTestId } = renderInitComponent({ isInitialized: true });
+  test("should display error when can not init", async () => {
+    const { findByTestId } = renderInitComponent({ error: true });
     const icon = await findByTestId("init-icon");
-    expect(icon.getAttribute("icon")).toEqual("tick-circle");
+    expect(icon.getAttribute("icon")).toEqual("error");
   });
 });

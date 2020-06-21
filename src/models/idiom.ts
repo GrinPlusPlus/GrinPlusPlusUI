@@ -1,5 +1,4 @@
 import { Action, action } from "easy-peasy";
-
 import ElectronStore from "electron-store";
 
 export interface IdiomModel {
