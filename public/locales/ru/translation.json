@@ -110,5 +110,6 @@
   "invalid_destination_address": "Адрес назначения неверный",
   "not_online": "Кошелек не доступен ⛔️",
   "outputs": "Выходы",
-  "kernels": "Kernels"
+  "kernels": "Kernels",
+  "slatepack": "Slatepack"
 }

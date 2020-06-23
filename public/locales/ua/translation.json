@@ -110,5 +110,6 @@
   "invalid_destination_address": "Адреса призначення недійсна",
   "not_online": "Гаманець недоступний ⛔️",
   "outputs": "Outputs",
-  "kernels": "Kernels"
+  "kernels": "Kernels",
+  "slatepack": "Slatepack"
 }

@@ -110,5 +110,6 @@
   "invalid_destination_address": "آدرس مقصد نامعتبر است",
   "not_online": "کیف پول قابل دسترسی نیست ⛔️",
   "outputs": "Outputs",
-  "kernels": "Kernels"
+  "kernels": "Kernels",
+  "slatepack": "Slatepack"
 }

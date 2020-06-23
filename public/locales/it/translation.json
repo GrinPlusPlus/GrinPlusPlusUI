@@ -110,5 +110,6 @@
   "invalid_destination_address": "L'indirizzo di destinazione non è valido",
   "not_online": "Il portafoglio non si può connettere ⛔️",
   "outputs": "Outputs",
-  "kernels": "Kernels"
+  "kernels": "Kernels",
+  "slatepack": "Slatepack"
 }

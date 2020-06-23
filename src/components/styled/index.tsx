@@ -24,18 +24,19 @@ export const Flex = styled.section`
   margin: 0 auto;
 `;
 
-export const LogsBox = styled.section`
+export const SlatesBox = styled.textarea`
   font-size: 13px;
   width: 100%;
   min-height: 150px;
   max-height: 150px;
   background-color: #171920;
   overflow-y: auto;
-  margin-top: 10px;
   border-radius: 3px;
-  padding: 7px;
+  padding: 10px;
   font-family: Courier New;
   white-space: pre-line;
+  color: #ffffff;
+  resize: none;
 `;
 
 export const Title = styled.section`

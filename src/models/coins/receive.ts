@@ -5,15 +5,18 @@ import { StoreModel } from "..";
 
 export interface ReceiveCoinsModel {
   responsesDestination: string | undefined;
+  slate: string;
   setResponsesDestination: Action<ReceiveCoinsModel, string>;
   receiveTx: Thunk<ReceiveCoinsModel, File[], Injections, StoreModel>;
   getAddress: Thunk<ReceiveCoinsModel, string, Injections, StoreModel>;
   waitingResponse: boolean;
   setWaitingResponse: Action<ReceiveCoinsModel, boolean>;
+  receiveTxViaSlate: Thunk<ReceiveCoinsModel, string, Injections, StoreModel>;
 }
 
 const receiveCoinsModel: ReceiveCoinsModel = {
   responsesDestination: undefined,
+  slate: "",
   setResponsesDestination: action((state, path) => {
     state.responsesDestination = path.trim();
   }),
@@ -106,6 +109,15 @@ const receiveCoinsModel: ReceiveCoinsModel = {
   setWaitingResponse: action((state, waiting) => {
     state.waitingResponse = waiting;
   }),
+  receiveTxViaSlate: thunk(
+    (
+      actions,
+      slate,
+      { injections, getStoreState, getStoreActions }
+    ): boolean => {
+      return true;
+    }
+  ),
 };
 
 export default receiveCoinsModel;

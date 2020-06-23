@@ -110,5 +110,6 @@
   "invalid_destination_address": "Destination address is invalid",
   "not_online": "Wallet not reachable ⛔️",
   "outputs": "Outputs",
-  "kernels": "Kernels"
+  "kernels": "Kernels",
+  "slatepack": "Slatepack"
 }
