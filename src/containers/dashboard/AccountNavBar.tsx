@@ -4,7 +4,7 @@ import {
   Navbar,
   NavbarDivider,
   NavbarGroup,
-  NavbarHeading
+  NavbarHeading,
 } from "@blueprintjs/core";
 import { useStoreActions, useStoreState } from "./../../hooks";
 
@@ -17,10 +17,12 @@ import { useHistory } from "react-router-dom";
 export const AccountNavBarContainer = () => {
   let history = useHistory();
 
-  const { username, token } = useStoreState(state => state.session);
-  const { toggleSettings } = useStoreActions(actions => actions.ui);
-  const { logout } = useStoreActions(actions => actions.session);
-  const { clearWalletReachable } = useStoreActions(actions => actions.walletSummary);
+  const { username, token } = useStoreState((state) => state.session);
+  const { toggleSettings } = useStoreActions((actions) => actions.ui);
+  const { logout } = useStoreActions((actions) => actions.session);
+  const { clearWalletReachable } = useStoreActions(
+    (actions) => actions.walletSummary
+  );
 
   return (
     <Navbar>
@@ -30,7 +32,7 @@ export const AccountNavBarContainer = () => {
           alt=""
           style={{
             maxWidth: "35px",
-            height: "auto"
+            height: "auto",
           }}
         />
         <NavbarHeading>
@@ -41,7 +43,12 @@ export const AccountNavBarContainer = () => {
         <Button
           minimal={true}
           icon="ip-address"
-          onClick={() => history.push("/Status")}
+          onClick={() => history.push("/status")}
+        />
+        <Button
+          minimal={true}
+          icon="console"
+          onClick={() => history.push("/logs")}
         />
         <NavbarDivider />
         <LanguageMenuContainer />
