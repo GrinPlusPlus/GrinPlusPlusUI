@@ -39,6 +39,21 @@ export const SlatesBox = styled.textarea`
   resize: none;
 `;
 
+export const LargeSlatesBox = styled.textarea`
+  font-size: 13px;
+  width: 500px;
+  min-height: 300px;
+  max-height: 300px;
+  background-color: #171920;
+  overflow-y: auto;
+  border-radius: 3px;
+  padding: 10px;
+  font-family: Courier New;
+  white-space: pre-line;
+  color: #ffffff;
+  resize: none;
+`;
+
 export const LogsBox = styled.textarea`
   font-size: 13px;
   width: 100%;

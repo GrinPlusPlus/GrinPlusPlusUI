@@ -6,9 +6,12 @@ import {
 import React, { Suspense, useEffect } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
 
+import { Alert } from "@blueprintjs/core";
+
 import { LoadingComponent } from "../../components/extras/Loading";
 import { PasswordPromptComponent } from "../../components/wallet/open/PasswordPrompt";
 import { useTranslation } from "react-i18next";
+import { SlatepackComponent } from "../../components/extras/Slatepack";
 
 const SpendableContainer = React.lazy(() =>
   import("./Spendable").then((module) => ({
@@ -60,7 +63,11 @@ export const SendContainer = () => {
     waitingResponse: waitingForPassword,
   } = useStoreState((state) => state.passwordPrompt);
 
-  const { getOutputs } = useStoreActions((actions) => actions.sendCoinsModel);
+  const { returnedSlatepack } = useStoreState((state) => state.sendCoinsModel);
+  const { getOutputs, setReturnedSlatepack } = useStoreActions(
+    (actions) => actions.sendCoinsModel
+  );
+
   const {
     setUsername: setUsernamePrompt,
     setPassword: setPasswordPrompt,
@@ -107,6 +114,19 @@ export const SendContainer = () => {
           buttonText={t("confirm_password")}
         />
       ) : null}
+      <Alert
+        className="bp3-dark"
+        confirmButtonText="Copy & Continue"
+        canEscapeKeyCancel={false}
+        canOutsideClickCancel={false}
+        isOpen={returnedSlatepack.length !== 0}
+        onClose={() => {
+          navigator.clipboard.writeText(returnedSlatepack);
+          setReturnedSlatepack("");
+        }}
+      >
+        <SlatepackComponent slatepack={returnedSlatepack} />
+      </Alert>
     </Suspense>
   );
 };

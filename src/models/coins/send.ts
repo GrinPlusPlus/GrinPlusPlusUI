@@ -31,6 +31,8 @@ export interface SendCoinsModel {
   strategy: string;
   error: string;
   waitingResponse: boolean;
+  returnedSlatepack: string;
+  setReturnedSlatepack: Action<SendCoinsModel, string>;
   setError: Action<SendCoinsModel, string>;
   setStrategy: Action<SendCoinsModel, string>;
   addCustomInput: Action<SendCoinsModel, string>;
@@ -121,6 +123,10 @@ const sendCoinsModel: SendCoinsModel = {
   strategy: "SMALLEST",
   error: "",
   waitingResponse: false,
+  returnedSlatepack: "",
+  setReturnedSlatepack: action((state, slatepack) => {
+    state.returnedSlatepack = slatepack;
+  }),
   setError: action((state, error) => {
     state.error = error;
   }),
