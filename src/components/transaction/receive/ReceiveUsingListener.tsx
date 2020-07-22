@@ -16,13 +16,12 @@ export const ReceiveUsingListenerComponent = ({
   isWalletReachable,
 }: ReceiveUsingListenerProps) => {
   return (
-    <div style={{ marginTop: "15px" }}>
+    <div style={{ marginTop: "10px" }}>
       <HorizontallyCenter>
         <Button
           className="bp3-dark"
           intent={Intent.NONE}
           minimal={true}
-          rightIcon="duplicate"
           text={slatepack_address}
           onClick={() => navigator.clipboard.writeText(slatepack_address)}
         />
@@ -38,7 +37,6 @@ export const ReceiveUsingListenerComponent = ({
               : Intent.WARNING
           }
           minimal={true}
-          rightIcon="duplicate"
           text={shortenHttpAddress}
           onClick={() => navigator.clipboard.writeText(httpAddress)}
         />

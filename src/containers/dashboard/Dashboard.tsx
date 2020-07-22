@@ -54,7 +54,7 @@ export const DashboardContainer = () => {
         <div style={{ marginTop: "20px" }}>
           <FinalizeContainer />
         </div>
-        <div style={{ marginTop: "15px" }}>
+        <div style={{ marginTop: "10px" }}>
           <ReceiveUsingSlateContainer />
         </div>
       </div>
