@@ -379,7 +379,7 @@ const sendCoinsModel: SendCoinsModel = {
             return "FINALIZED";
           }
         } else if (type === "http") {
-          const slate = await new ownerService.RPC(
+          const send_response = await new ownerService.RPC(
             defaultSettings.floonet,
             defaultSettings.protocol,
             defaultSettings.ip
@@ -392,12 +392,12 @@ const sendCoinsModel: SendCoinsModel = {
             payload.method,
             payload.grinJoinAddress
           );
-          if (typeof slate === "string") {
-            return slate;
+          if (typeof send_response === "string") {
+            return send_response;
           }
           const receivedSlate = await foreignService.RPC.receive(
             destinationAddress,
-            slate
+            send_response.slate
           );
           const finalized = await foreignService.RPC.finalize(
             'http://localhost:3421',

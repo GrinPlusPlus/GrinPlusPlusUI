@@ -83,7 +83,7 @@ export class OwnerRPCApi extends BaseApi {
     method: string,
     grinJoinAddress: string,
     address?: string
-  ): Promise<string | { slatepack: string; status: "SENT" | "FINALIZED";}> {
+  ): Promise<string | { slate: {}; slatepack: string; status: "SENT" | "FINALIZED";}> {
     let postTx = {};
     if (method === "JOIN") {
       postTx = {
@@ -122,6 +122,7 @@ export class OwnerRPCApi extends BaseApi {
       params
     ).then((response) =>
       response.error ? response.error.message : {
+        slate: response.result.slate,
         slatepack: response.result.slatepack,
         status: response.result.status
        }
