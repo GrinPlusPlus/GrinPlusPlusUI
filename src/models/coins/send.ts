@@ -333,7 +333,7 @@ const sendCoinsModel: SendCoinsModel = {
       payload,
       { injections, getStoreState, getStoreActions }
     ): Promise<string> => {
-      const { ownerService, utilsService, foreingService } = injections;
+      const { ownerService, utilsService, foreignService } = injections;
       const defaultSettings = getStoreState().settings.defaultSettings;
 
       let destinationAddress = payload.address.replace(/\/?$/, ""); //removing trailing /
@@ -343,7 +343,7 @@ const sendCoinsModel: SendCoinsModel = {
       } else if (type === "http") {
         // Let's try to reach the wallet first
         try {
-          if (!(await foreingService.RPC.check(destinationAddress))) {
+          if (!(await foreignService.RPC.check(destinationAddress))) {
             return "not_online";
           }
         } catch (error) {
@@ -395,15 +395,13 @@ const sendCoinsModel: SendCoinsModel = {
           if (typeof slate === "string") {
             return slate;
           }
-          const receivedSlate = await foreingService.RPC.receive(
+          const receivedSlate = await foreignService.RPC.receive(
             destinationAddress,
             slate
           );
-          const finalized = await new ownerService.RPC().finalizeTx(
-            payload.token,
-            receivedSlate,
-            payload.method,
-            payload.grinJoinAddress
+          const finalized = await foreignService.RPC.finalize(
+            'http://localhost:3421',
+            receivedSlate
           );
           if (typeof finalized === "string") {
             return finalized;

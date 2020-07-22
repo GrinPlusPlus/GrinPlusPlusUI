@@ -8,12 +8,14 @@ export type ReceiveUsingSlateProps = {
   slate: string;
   onReceiveSlatepackCb: (slatepack: string) => void;
   setSlatepackTextCb: (slatepack: string) => void;
+  onFinalizeSlatepackCb: (slatepack: string) => void;
 };
 
 export const ReceiveUsingSlateComponent = ({
   slate,
   onReceiveSlatepackCb,
-  setSlatepackTextCb
+  setSlatepackTextCb,
+  onFinalizeSlatepackCb
 }: ReceiveUsingSlateProps) => {
   const { t } = useTranslation();
 
@@ -44,7 +46,7 @@ export const ReceiveUsingSlateComponent = ({
             large={true}
             intent={Intent.PRIMARY}
             text={t("finalize")}
-            onClick={() => {}}
+            onClick={() => { onFinalizeSlatepackCb(slate); }}
           />
         </Flex>
       </Flex>

@@ -10,6 +10,7 @@ export const ReceiveUsingSlateContainer = () => {
   const { slatepack } = useStoreState((actions) => actions.receiveCoinsModel);
   const { updateLogs } = useStoreActions(actions => actions.wallet);
   const { setSlatepack, receiveTxViaSlatepack } = useStoreActions(actions => actions.receiveCoinsModel);
+  const { finalizeTxViaSlatepack } = useStoreActions(actions => actions.finalizeModel);
 
 
   const onReceiveSlatepack = useCallback(
@@ -32,9 +33,30 @@ export const ReceiveUsingSlateContainer = () => {
     [receiveTxViaSlatepack, updateLogs, t]
   );
 
+  const onFinalizeSlatepack = useCallback(
+    (slatepack: string) => {
+      finalizeTxViaSlatepack(slatepack).then((result: { error: string; }) => {
+        if (result.error == null) {
+          updateLogs(t("finished_without_errors"));
+          Toaster.create({ position: Position.BOTTOM }).show({
+            message: t("finished_without_errors"),
+            intent: Intent.SUCCESS,
+            icon: "tick-circle"
+          });
+
+          setSlatepack("");
+        } else {
+          updateLogs(t(result.error));
+        }
+      });
+    },
+    [finalizeTxViaSlatepack, updateLogs, t]
+  );
+
   return <ReceiveUsingSlateComponent
     slate={slatepack}
     onReceiveSlatepackCb={onReceiveSlatepack}
     setSlatepackTextCb={setSlatepack}
+    onFinalizeSlatepackCb={onFinalizeSlatepack}
   />;
 };

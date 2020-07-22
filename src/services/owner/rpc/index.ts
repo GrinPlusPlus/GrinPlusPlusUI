@@ -147,10 +147,10 @@ export class OwnerRPCApi extends BaseApi {
 
   public async finalizeTx(
     token: string,
-    slate: {},
+    slatepack: string,
     method: string,
     grinJoinAddress: string,
-    file?: string
+    file?: string | null
   ): Promise<boolean | string> {
     let postTx = {};
     if (method === "JOIN") {
@@ -163,19 +163,25 @@ export class OwnerRPCApi extends BaseApi {
         method: method,
       };
     }
+
+    var payload : any = {
+      session_token: token,
+      slatepack: slatepack,
+      post_tx: postTx,
+    }
+
+    if (file != null) {
+      payload.file = file;
+    }
+
     return await this.makeRPCRequest(
       this.getRequestURL("finalize"),
       "finalize",
-      {
-        session_token: token,
-        slate: slate,
-        file: file,
-        post_tx: postTx,
-      }
+      payload
     ).then((response) =>
       response.error
         ? response.error.message
-        : response.result.success === "FINALIZED"
+        : response.result.status === "FINALIZED"
     );
   }
 
