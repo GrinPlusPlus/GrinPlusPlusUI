@@ -99,6 +99,8 @@ const wallet: WalletModel = {
       const { nodeService, utilsService } = injections;
       const defaultSettings = nodeService.getDefaultSettings(); // Read defaults.json
 
+      nodeService.stopRustNode();
+
       // Check if we can find the node...
       if (
         !nodeService.verifyNodePath(

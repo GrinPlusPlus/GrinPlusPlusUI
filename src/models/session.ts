@@ -9,12 +9,14 @@ export interface SessionModel {
   token: string;
   address: string;
   setAddress: Action<SessionModel, string>;
+  slatepack_address: string;
   updateSession: Action<
     SessionModel,
     {
       username: string;
       token: string;
       address: string;
+      slatepack_address: string;
     }
   >;
   logout: Thunk<SessionModel, string, Injections, StoreModel>;
@@ -37,6 +39,7 @@ const session: SessionModel = {
   username: "",
   token: "",
   address: "",
+  slatepack_address: "",
   setAddress: action((state, payload) => {
     state.address = payload;
   }),
@@ -44,6 +47,7 @@ const session: SessionModel = {
     state.username = payload.username;
     state.token = payload.token;
     state.address = payload.address;
+    state.slatepack_address = payload.slatepack_address;
   }),
   logout: thunk(
     async (actions, token, { injections, getStoreState, getStoreActions }) => {
@@ -98,7 +102,7 @@ const session: SessionModel = {
     getStoreActions().restoreWallet.setInitialValues();
     getStoreActions().signinModel.setAccounts(undefined);
     getStoreActions().ui.setAlert(undefined);
-    actions.updateSession({ username: "", token: "", address: "" });
+    actions.updateSession({ username: "", token: "", address: "", slatepack_address: "" });
   }),
 };
 

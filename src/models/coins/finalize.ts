@@ -58,7 +58,7 @@ const finalizeModel: FinalizeModel = {
         slate,
         payload.method,
         payload.grinJoinAddress,
-        `${payload.file.name}.response`
+        `${payload.file.name}.finalized`
       );
 
       // Check the results

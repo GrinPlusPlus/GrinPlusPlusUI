@@ -76,6 +76,7 @@ const openWallet: SigninModel = {
             username: payload.username,
             token: response.token,
             address: response.address,
+            slatepack_address: response.slatepack_address
           });
           actions.setUsername("");
           actions.setPassword("");

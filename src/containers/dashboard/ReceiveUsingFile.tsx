@@ -13,8 +13,14 @@ export const ReceiveUsingFileContainer = () => {
 
   const onResponseFilesDropped = useCallback(
     (files: File[]) => {
-      receiveTx(files).then((results: [string[], [string, {}][]]) => {
-        const errors = results[0];
+      receiveTx(files).then((results: {
+        errors: string[];
+        slatepacks: {
+          filename: string;
+          slatepack: string;
+        }[];
+      }) => {
+        const errors = results.errors;
         if (errors.length === 0) {
           updateLogs(t("finished_without_errors"));
           Toaster.create({ position: Position.BOTTOM }).show({

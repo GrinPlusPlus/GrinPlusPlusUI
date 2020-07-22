@@ -93,6 +93,7 @@ const restoreWallet: RestoreWalletModel = {
             username: response.username,
             token: response.token,
             address: response.address,
+            slatepack_address: response.slatepack_address
           });
         });
     }
