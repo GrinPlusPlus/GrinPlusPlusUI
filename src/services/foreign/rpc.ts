@@ -43,7 +43,7 @@ export class RPC {
         params: [slate, null, null],
       }),
     };
-    require("electron-log").info("Foreign receive request: \n" + JSON.stringify(options));
+    require("electron-log").info("Foreign receive request: \n" + options.body);
     return new Promise((resolve, reject) => {
       request(options, (error: any, response: any, body: string) => {
         require("electron-log").info("Foreign receive response: \n" + body);
@@ -75,7 +75,7 @@ export class RPC {
         params: [slate],
       }),
     };
-    require("electron-log").info("Foreign finalize request: \n" + JSON.stringify(options));
+    require("electron-log").info("Foreign finalize request: \n" + options.body);
     return new Promise((resolve, reject) => {
       request(options, (error: any, response: any, body: string) => {
         require("electron-log").info("Foreign finalize response: \n" + body);

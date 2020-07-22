@@ -400,7 +400,7 @@ const sendCoinsModel: SendCoinsModel = {
             send_response.slate
           );
           const finalized = await foreignService.RPC.finalize(
-            'http://localhost:3421',
+            'http://localhost:' + getStoreState().session.listener_port, 
             receivedSlate
           );
           if (typeof finalized === "string") {

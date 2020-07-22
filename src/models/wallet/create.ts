@@ -106,6 +106,7 @@ const createWalletModel: CreateWalletModel = {
             username: wallet.username,
             token: wallet.token,
             address: wallet.address,
+            listener_port: wallet.listener_port,
             slatepack_address: wallet.slatepack_address
           });
 
