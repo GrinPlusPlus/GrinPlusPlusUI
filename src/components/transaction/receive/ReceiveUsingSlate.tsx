@@ -3,7 +3,7 @@ import { SlatesBox, Title, Flex } from "../../styled";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Intent } from "@blueprintjs/core";
-import { validateSlatepackAddress } from "../../../services/utils";
+import { validateSlatepack } from "../../../services/utils";
 
 export type ReceiveUsingSlateProps = {
   slate: string;
@@ -36,7 +36,7 @@ export const ReceiveUsingSlateComponent = ({
         <Button
           minimal={true}
           large={true}
-          disabled={validateSlatepackAddress(slate) === false}
+          disabled={validateSlatepack(slate) === false}
           intent={Intent.SUCCESS}
           text={t("receive")}
           onClick={() => {
@@ -46,7 +46,7 @@ export const ReceiveUsingSlateComponent = ({
         <Button
           minimal={true}
           large={true}
-          disabled={validateSlatepackAddress(slate) === false}
+          disabled={validateSlatepack(slate) === false}
           intent={Intent.PRIMARY}
           text={t("finalize")}
           onClick={() => {

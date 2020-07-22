@@ -6,7 +6,9 @@ import { StoreModel } from "..";
 export interface ReceiveCoinsModel {
   responsesDestination: string | undefined;
   slatepack: string;
+  returnedSlatepack: string;
   setSlatepack: Action<ReceiveCoinsModel, string>;
+  setReturnedSlatepack: Action<ReceiveCoinsModel, string>;
   setResponsesDestination: Action<ReceiveCoinsModel, string>;
   receiveTx: Thunk<ReceiveCoinsModel, File[], Injections, StoreModel>;
   getAddress: Thunk<ReceiveCoinsModel, string, Injections, StoreModel>;
@@ -25,6 +27,10 @@ const receiveCoinsModel: ReceiveCoinsModel = {
   slatepack: "",
   setSlatepack: action((state, slatepack) => {
     state.slatepack = slatepack;
+  }),
+  returnedSlatepack: "",
+  setReturnedSlatepack: action((state, slatepack) => {
+    state.returnedSlatepack = slatepack;
   }),
   setResponsesDestination: action((state, path) => {
     state.responsesDestination = path.trim();

@@ -1,18 +1,23 @@
 import { ReceiveUsingSlateComponent } from "../../components/transaction/receive/ReceiveUsingSlate";
-import { Intent, Position, Toaster } from "@blueprintjs/core";
+import { Alert, Intent, Position, Toaster } from "@blueprintjs/core";
 import React, { useCallback } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
 import { useTranslation } from "react-i18next";
 import { Title } from "../../components/styled";
+import { SlatepackComponent } from "../../components/extras/Slatepack";
 
 export const ReceiveUsingSlateContainer = () => {
   const { t } = useTranslation();
 
-  const { slatepack } = useStoreState((actions) => actions.receiveCoinsModel);
-  const { updateLogs } = useStoreActions((actions) => actions.wallet);
-  const { setSlatepack, receiveTxViaSlatepack } = useStoreActions(
+  const { slatepack, returnedSlatepack } = useStoreState(
     (actions) => actions.receiveCoinsModel
   );
+  const { updateLogs } = useStoreActions((actions) => actions.wallet);
+  const {
+    setSlatepack,
+    receiveTxViaSlatepack,
+    setReturnedSlatepack,
+  } = useStoreActions((actions) => actions.receiveCoinsModel);
   const { finalizeTxViaSlatepack } = useStoreActions(
     (actions) => actions.finalizeModel
   );
@@ -28,8 +33,7 @@ export const ReceiveUsingSlateContainer = () => {
               intent: Intent.SUCCESS,
               icon: "tick-circle",
             });
-
-            setSlatepack(result.slatepack);
+            setReturnedSlatepack(result.slatepack);
           } else {
             updateLogs(t(result.error));
           }
@@ -70,6 +74,16 @@ export const ReceiveUsingSlateContainer = () => {
           onFinalizeSlatepackCb={onFinalizeSlatepack}
         />
       </div>
+      <Alert
+        className="bp3-dark"
+        confirmButtonText="Copy & Continue"
+        canEscapeKeyCancel={false}
+        canOutsideClickCancel={false}
+        isOpen={returnedSlatepack.length !== 0}
+        onClose={() => setSlatepack("")}
+      >
+        <SlatepackComponent slatepack={returnedSlatepack} />
+      </Alert>
     </div>
   );
 };
