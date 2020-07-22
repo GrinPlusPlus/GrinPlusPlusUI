@@ -33,6 +33,7 @@ export const ReceiveUsingSlateContainer = () => {
               intent: Intent.SUCCESS,
               icon: "tick-circle",
             });
+
             setReturnedSlatepack(result.slatepack);
           } else {
             updateLogs(t(result.error));
@@ -80,7 +81,11 @@ export const ReceiveUsingSlateContainer = () => {
         canEscapeKeyCancel={false}
         canOutsideClickCancel={false}
         isOpen={returnedSlatepack.length !== 0}
-        onClose={() => setSlatepack("")}
+        onClose={() => {
+          navigator.clipboard.writeText(returnedSlatepack);
+          setSlatepack("");
+          setReturnedSlatepack("");
+        }}
       >
         <SlatepackComponent slatepack={returnedSlatepack} />
       </Alert>
