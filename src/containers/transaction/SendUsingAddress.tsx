@@ -64,18 +64,20 @@ export const SendUsingAddressContainer = () => {
         ? t("transaction_sent")
         : t("transaction_started");
 
-      const toast = sent === "sent" ? alert : t(sent);
+      const toast = sent === "FINALIZED" ? alert : t(sent);
 
-      Toaster.create({ position: Position.BOTTOM }).show({
-        message: toast,
-        intent: sent === "sent" ? Intent.SUCCESS : Intent.DANGER,
-        icon: sent === "sent" ? "tick-circle" : "warning-sign",
-      });
+      if (sent !== "SENT") {
+        Toaster.create({ position: Position.BOTTOM }).show({
+          message: toast,
+          intent: sent === "FINALIZED" ? Intent.SUCCESS : Intent.DANGER,
+          icon: sent === "FINALIZED" ? "tick-circle" : "warning-sign",
+        });
+      }
       setWaitingResponse(false);
       updateLogs(toast);
       require("electron-log").info(toast);
 
-      if (sent === "sent") history.push("/wallet");
+      if (sent === "FINALIZED") history.push("/wallet");
     } catch (error) {
       setWaitingResponse(false);
       require("electron-log").error(`Error sending: ${error}`);
@@ -109,6 +111,8 @@ export const SendUsingAddressContainer = () => {
     (state) => state.sendCoinsModel
   );
   const { username } = useStoreState((state) => state.session);
+
+  const { setReturnedSlatepack } = useStoreActions((state) => state.sendCoinsModel);
 
   const classes = classNames("bp3-dark", Classes.CARD, Classes.ELEVATION_4);
 

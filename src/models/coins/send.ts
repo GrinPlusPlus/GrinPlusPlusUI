@@ -340,8 +340,6 @@ const sendCoinsModel: SendCoinsModel = {
       const type = utilsService.validateAddress(destinationAddress); // check if the address is valid
       if (type === false) {
         return "invalid_destination_address";
-      } else if (type === "tor") {
-        destinationAddress = utilsService.cleanOnionURL(destinationAddress); // clean the Tor address
       } else if (type === "http") {
         // Let's try to reach the wallet first
         try {
@@ -354,7 +352,7 @@ const sendCoinsModel: SendCoinsModel = {
       }
 
       try {
-        if (type === "tor") {
+        if (type === "slatepack") {
           const response = await new ownerService.RPC(
             defaultSettings.floonet,
             defaultSettings.protocol,
@@ -373,7 +371,13 @@ const sendCoinsModel: SendCoinsModel = {
             return response;
           }
           actions.setInitialValues(); // alles gut!
-          return "sent";
+
+          if (response.status === "SENT") {
+            actions.setReturnedSlatepack(response.slatepack);
+            return "SENT";
+          } else {
+            return "FINALIZED";
+          }
         } else if (type === "http") {
           const slate = await new ownerService.RPC(
             defaultSettings.floonet,
@@ -405,7 +409,7 @@ const sendCoinsModel: SendCoinsModel = {
             return finalized;
           }
           actions.setInitialValues(); // alles gut!
-          return "sent";
+          return "FINALIZED";
         }
       } catch (error) {
         return error;
