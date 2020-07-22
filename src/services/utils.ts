@@ -48,10 +48,10 @@ export const validateSlatepackAddress = (address: string): boolean => {
   return false;
 };
 
-export const validateAddress = (address: string): "http" | "tor" | false => {
+export const validateAddress = (address: string): "http" | "slatepack" | false => {
   address = address.replace(/\/$/, "");
   if (validateSlatepackAddress(address)) {
-    return "tor";
+    return "slatepack";
   } else if (validateUrl(address)) return "http";
   return false;
 };
@@ -100,13 +100,4 @@ export const saveAs = async (
     filters: filters
   });
   return { canceled: results.canceled, filePath: results.filePath };
-};
-
-export const cleanOnionURL = (url: string): string => {
-  if (url.length === 56) {
-    const v3 = "[a-z2-7]{56}";
-    if (new RegExp(`${v3}`).test(url)) return url;
-  }
-  const parsed = new URL(url);
-  return parsed.hostname.replace(".onion", "");
 };
