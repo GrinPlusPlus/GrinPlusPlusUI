@@ -118,6 +118,7 @@ export const SendContainer = () => {
         />
       ) : null}
       <Dialog
+        title="Slatepack"
         className="bp3-dark"
         isOpen={returnedSlatepack.length !== 0}
         onOpened={() => navigator.clipboard.writeText(returnedSlatepack)}
