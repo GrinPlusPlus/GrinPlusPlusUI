@@ -12,7 +12,12 @@ export interface ReceiveCoinsModel {
   getAddress: Thunk<ReceiveCoinsModel, string, Injections, StoreModel>;
   waitingResponse: boolean;
   setWaitingResponse: Action<ReceiveCoinsModel, boolean>;
-  receiveTxViaSlatepack: Thunk<ReceiveCoinsModel, string, Injections, StoreModel>;
+  receiveTxViaSlatepack: Thunk<
+    ReceiveCoinsModel,
+    string,
+    Injections,
+    StoreModel
+  >;
 }
 
 const receiveCoinsModel: ReceiveCoinsModel = {
@@ -37,7 +42,7 @@ const receiveCoinsModel: ReceiveCoinsModel = {
       }[];
     }> => {
       const errors: string[] = [];
-      let slatepacks: { filename: string; slatepack: string; }[] = [];
+      let slatepacks: { filename: string; slatepack: string }[] = [];
 
       const { ownerService, utilsService } = injections;
 
@@ -118,14 +123,14 @@ const receiveCoinsModel: ReceiveCoinsModel = {
   setWaitingResponse: action((state, waiting) => {
     state.waitingResponse = waiting;
   }),
-  receiveTxViaSlatepack:thunk(
+  receiveTxViaSlatepack: thunk(
     async (
       actions,
       slatepack,
       { injections, getStoreState, getStoreActions }
-    ): Promise<{ error: string; slatepack: string; }> => {
-      var error: string = '';
-      let received_slatepack: string = '';
+    ): Promise<{ error: string; slatepack: string }> => {
+      var error: string = "";
+      let received_slatepack: string = "";
 
       const { ownerService } = injections;
 
@@ -136,7 +141,7 @@ const receiveCoinsModel: ReceiveCoinsModel = {
         apiSettings.floonet,
         apiSettings.protocol,
         apiSettings.ip
-      ).receiveTx(getStoreState().session.token, slatepack, '');
+      ).receiveTx(getStoreState().session.token, slatepack, "");
 
       // Let's make sure there is no error...
       if (response == null) {
@@ -150,9 +155,7 @@ const receiveCoinsModel: ReceiveCoinsModel = {
       return { error: error, slatepack: received_slatepack };
     }
   ),
-  
-  
-  
+
   // thunk(
   //   (
   //     actions,
