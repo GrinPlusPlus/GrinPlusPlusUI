@@ -1,5 +1,5 @@
 import { ReceiveUsingSlateComponent } from "../../components/transaction/receive/ReceiveUsingSlate";
-import { Alert, Intent, Position, Toaster } from "@blueprintjs/core";
+import { Dialog, Intent, Position, Toaster } from "@blueprintjs/core";
 import React, { useCallback } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
 import { useTranslation } from "react-i18next";
@@ -75,20 +75,18 @@ export const ReceiveUsingSlateContainer = () => {
           onFinalizeSlatepackCb={onFinalizeSlatepack}
         />
       </div>
-      <Alert
+      <Dialog
+        title="Slatepack"
         className="bp3-dark"
-        confirmButtonText="Copy & Continue"
-        canEscapeKeyCancel={false}
-        canOutsideClickCancel={false}
         isOpen={returnedSlatepack.length !== 0}
+        onOpened={() => navigator.clipboard.writeText(returnedSlatepack)}
         onClose={() => {
-          navigator.clipboard.writeText(returnedSlatepack);
           setSlatepack("");
           setReturnedSlatepack("");
         }}
       >
         <SlatepackComponent slatepack={returnedSlatepack} />
-      </Alert>
+      </Dialog>
     </div>
   );
 };

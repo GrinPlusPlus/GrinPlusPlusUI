@@ -4,9 +4,10 @@ import {
   SendGrinsContent,
 } from "../../components/styled";
 import React, { Suspense, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { useStoreActions, useStoreState } from "../../hooks";
 
-import { Alert } from "@blueprintjs/core";
+import { Dialog } from "@blueprintjs/core";
 
 import { LoadingComponent } from "../../components/extras/Loading";
 import { PasswordPromptComponent } from "../../components/wallet/open/PasswordPrompt";
@@ -52,6 +53,8 @@ const CoinControlContainer = React.lazy(() =>
 const renderLoader = () => <LoadingComponent />;
 
 export const SendContainer = () => {
+  let history = useHistory();
+
   const { t } = useTranslation();
 
   const { token } = useStoreState((state) => state.session);
@@ -114,19 +117,17 @@ export const SendContainer = () => {
           buttonText={t("confirm_password")}
         />
       ) : null}
-      <Alert
+      <Dialog
         className="bp3-dark"
-        confirmButtonText="Copy & Continue"
-        canEscapeKeyCancel={false}
-        canOutsideClickCancel={false}
         isOpen={returnedSlatepack.length !== 0}
+        onOpened={() => navigator.clipboard.writeText(returnedSlatepack)}
         onClose={() => {
-          navigator.clipboard.writeText(returnedSlatepack);
           setReturnedSlatepack("");
+          history.push("/wallet");
         }}
       >
         <SlatepackComponent slatepack={returnedSlatepack} />
-      </Alert>
+      </Dialog>
     </Suspense>
   );
 };

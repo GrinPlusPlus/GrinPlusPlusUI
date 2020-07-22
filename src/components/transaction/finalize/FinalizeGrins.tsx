@@ -3,7 +3,7 @@ import {
   ControlGroup,
   FileInput,
   FormGroup,
-  Intent
+  Intent,
 } from "@blueprintjs/core";
 
 import React from "react";
@@ -19,17 +19,14 @@ type FinalizeProps = {
 export const FinalizeComponent = ({
   responseFile,
   setFileToFinalizeCb,
-  onFinalizeButtonClickedCb
+  onFinalizeButtonClickedCb,
 }: FinalizeProps) => {
   const { t } = useTranslation();
 
   return (
     <div>
       <Title>{t("finalize")}</Title>
-      <FormGroup
-        helperText={t("finalize_helper")}
-        style={{ marginTop: "10px" }}
-      >
+      <FormGroup style={{ marginTop: "10px" }}>
         <ControlGroup>
           <Button
             data-testid="send-using-tor-button"
