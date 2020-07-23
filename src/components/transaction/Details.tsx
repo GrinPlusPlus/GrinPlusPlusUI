@@ -176,18 +176,26 @@ export const TansactionDetailsComponent = ({
       <div style={{ textAlign: "center" }}>
         {["sending_not_finalized", "receiving_unconfirmed"].includes(mType) ? (
           <Button
-            text="Cancel Transaction"
+            text={t("cancel_transaction")}
             minimal={true}
             intent={Intent.WARNING}
             onClick={() => onCancelTransactionButtonClickedCb(id)}
           />
         ) : mType === "sending_finalized" ? (
-          <Button
-            text="Repost Transaction"
-            minimal={true}
-            intent={Intent.WARNING}
-            onClick={() => onRepostTransactionButtonClickedCb(id, method)}
-          />
+          <span>
+            <Button
+              text={t("cancel_transaction")}
+              minimal={true}
+              intent={Intent.WARNING}
+              onClick={() => onCancelTransactionButtonClickedCb(id)}
+            />
+            <Button
+              text={t("repost_transaction")}
+              minimal={true}
+              intent={Intent.WARNING}
+              onClick={() => onRepostTransactionButtonClickedCb(id, method)}
+            />
+          </span>
         ) : null}
       </div>
     </div>
