@@ -31,6 +31,8 @@ export interface SendCoinsModel {
   strategy: string;
   error: string;
   waitingResponse: boolean;
+  returnedSlatepack: string;
+  setReturnedSlatepack: Action<SendCoinsModel, string>;
   setError: Action<SendCoinsModel, string>;
   setStrategy: Action<SendCoinsModel, string>;
   addCustomInput: Action<SendCoinsModel, string>;
@@ -121,6 +123,10 @@ const sendCoinsModel: SendCoinsModel = {
   strategy: "SMALLEST",
   error: "",
   waitingResponse: false,
+  returnedSlatepack: "",
+  setReturnedSlatepack: action((state, slatepack) => {
+    state.returnedSlatepack = slatepack;
+  }),
   setError: action((state, error) => {
     state.error = error;
   }),
@@ -327,19 +333,17 @@ const sendCoinsModel: SendCoinsModel = {
       payload,
       { injections, getStoreState, getStoreActions }
     ): Promise<string> => {
-      const { ownerService, utilsService, foreingService } = injections;
+      const { ownerService, utilsService, foreignService } = injections;
       const defaultSettings = getStoreState().settings.defaultSettings;
 
       let destinationAddress = payload.address.replace(/\/?$/, ""); //removing trailing /
       const type = utilsService.validateAddress(destinationAddress); // check if the address is valid
       if (type === false) {
         return "invalid_destination_address";
-      } else if (type === "tor") {
-        destinationAddress = utilsService.cleanOnionURL(destinationAddress); // clean the Tor address
       } else if (type === "http") {
         // Let's try to reach the wallet first
         try {
-          if (!(await foreingService.RPC.check(destinationAddress))) {
+          if (!(await foreignService.RPC.check(destinationAddress))) {
             return "not_online";
           }
         } catch (error) {
@@ -348,7 +352,7 @@ const sendCoinsModel: SendCoinsModel = {
       }
 
       try {
-        if (type === "tor") {
+        if (type === "slatepack") {
           const response = await new ownerService.RPC(
             defaultSettings.floonet,
             defaultSettings.protocol,
@@ -367,9 +371,15 @@ const sendCoinsModel: SendCoinsModel = {
             return response;
           }
           actions.setInitialValues(); // alles gut!
-          return "sent";
+
+          if (response.status === "SENT") {
+            actions.setReturnedSlatepack(response.slatepack);
+            return "SENT";
+          } else {
+            return "FINALIZED";
+          }
         } else if (type === "http") {
-          const slate = await new ownerService.RPC(
+          const send_response = await new ownerService.RPC(
             defaultSettings.floonet,
             defaultSettings.protocol,
             defaultSettings.ip
@@ -382,24 +392,22 @@ const sendCoinsModel: SendCoinsModel = {
             payload.method,
             payload.grinJoinAddress
           );
-          if (typeof slate === "string") {
-            return slate;
+          if (typeof send_response === "string") {
+            return send_response;
           }
-          const receivedSlate = await foreingService.RPC.receive(
+          const receivedSlate = await foreignService.RPC.receive(
             destinationAddress,
-            slate
+            send_response.slate
           );
-          const finalized = await new ownerService.RPC().finalizeTx(
-            payload.token,
-            receivedSlate,
-            payload.method,
-            payload.grinJoinAddress
+          const finalized = await foreignService.RPC.finalize(
+            'http://localhost:' + getStoreState().session.listener_port, 
+            receivedSlate
           );
           if (typeof finalized === "string") {
             return finalized;
           }
           actions.setInitialValues(); // alles gut!
-          return "sent";
+          return "FINALIZED";
         }
       } catch (error) {
         return error;

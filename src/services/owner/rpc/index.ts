@@ -10,7 +10,7 @@ export class OwnerRPCApi extends BaseApi {
     username: string,
     password: string,
     seedLength: string
-  ): Promise<{ username: string; token: string; address: string; seed: string[] }> {
+  ): Promise<{ username: string; token: string; address: string; slatepack_address: string;  listener_port: number; seed: string[] }> {
     return await this.makeRPCRequest(
       this.getRequestURL("create_wallet"),
       "create_wallet",
@@ -21,6 +21,8 @@ export class OwnerRPCApi extends BaseApi {
         username: username,
         token: response.result.session_token,
         address: response.result.tor_address,
+        slatepack_address: response.result.slatepack_address,
+        listener_port: response.result.listener_port,
         seed: response.result.wallet_seed.split(" "),
       };
     });
@@ -30,7 +32,7 @@ export class OwnerRPCApi extends BaseApi {
     username: string,
     password: string,
     seed: string
-  ): Promise<{ username: string; token: string; address: string }> {
+  ): Promise<{ username: string; token: string; address: string; listener_port: number; slatepack_address: string }> {
     return await this.makeRPCRequest(
       this.getRequestURL("restore_wallet"),
       "restore_wallet",
@@ -41,7 +43,13 @@ export class OwnerRPCApi extends BaseApi {
       }
     ).then((response) => {
       if (response.error) throw new Error(response.error.message);
-      return { username: username, token: response.result.session_token, address: response.result.tor_address };
+      return {
+        username: username,
+        token: response.result.session_token,
+        address: response.result.tor_address,
+        listener_port: response.result.listener_port,
+        slatepack_address: response.result.slatepack_address
+      };
     });
   }
 
@@ -77,7 +85,7 @@ export class OwnerRPCApi extends BaseApi {
     method: string,
     grinJoinAddress: string,
     address?: string
-  ): Promise<string | {}> {
+  ): Promise<string | { slate: {}; slatepack: string; status: "SENT" | "FINALIZED";}> {
     let postTx = {};
     if (method === "JOIN") {
       postTx = {
@@ -115,30 +123,37 @@ export class OwnerRPCApi extends BaseApi {
       "send",
       params
     ).then((response) =>
-      response.error ? response.error.message : response.result.slate
+      response.error ? response.error.message : {
+        slate: response.result.slate,
+        slatepack: response.result.slatepack,
+        status: response.result.status
+       }
     );
   }
 
   public async receiveTx(
     token: string,
-    slate: {},
+    slatepack: string,
     file: string
-  ): Promise<{} | string> {
+  ): Promise<{
+    error: string;
+    slatepack: string;
+  }> {
     return await this.makeRPCRequest(this.getRequestURL("receive"), "receive", {
       session_token: token,
-      slate: slate,
+      slatepack: slatepack,
       file: file,
     }).then((response) =>
-      response.error ? response.error.message : response.result.slate
+      response.error ? { error: response.error.message, slatepack: '' } : { error: '', slatepack: response.result.slatepack }
     );
   }
 
   public async finalizeTx(
     token: string,
-    slate: {},
+    slatepack: string,
     method: string,
     grinJoinAddress: string,
-    file?: string
+    file?: string | null
   ): Promise<boolean | string> {
     let postTx = {};
     if (method === "JOIN") {
@@ -151,19 +166,25 @@ export class OwnerRPCApi extends BaseApi {
         method: method,
       };
     }
+
+    var payload : any = {
+      session_token: token,
+      slatepack: slatepack,
+      post_tx: postTx,
+    }
+
+    if (file != null) {
+      payload.file = file;
+    }
+
     return await this.makeRPCRequest(
       this.getRequestURL("finalize"),
       "finalize",
-      {
-        session_token: token,
-        slate: slate,
-        file: file,
-        post_tx: postTx,
-      }
+      payload
     ).then((response) =>
       response.error
         ? response.error.message
-        : response.result.success === "FINALIZED"
+        : response.result.status === "FINALIZED"
     );
   }
 
@@ -183,7 +204,7 @@ export class OwnerRPCApi extends BaseApi {
     });
   }
 
-  public async login(username: string, password: string): Promise<{ username: string; token: string; address: string }> {
+  public async login(username: string, password: string): Promise<{ username: string; token: string; address: string, listener_port: number, slatepack_address: string }> {
     return await this.makeRPCRequest(this.getRequestURL("login"), "login", {
       username: username,
       password: password,
@@ -192,7 +213,9 @@ export class OwnerRPCApi extends BaseApi {
       return {
         username: username,
         token: response.result.session_token,
-        address: response.result.tor_address
+        address: response.result.tor_address,
+        listener_port: response.result.listener_port,
+        slatepack_address: response.result.slatepack_address
       }
     });
   }

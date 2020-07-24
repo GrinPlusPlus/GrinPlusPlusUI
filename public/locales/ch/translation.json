@@ -110,5 +110,6 @@
   "invalid_destination_address": "目标地址无效",
   "not_online": "无法连接钱包 ⛔️",
   "outputs": "Outputs",
-  "kernels": "Kernels"
+  "kernels": "Kernels",
+  "slatepack": "Slatepack"
 }

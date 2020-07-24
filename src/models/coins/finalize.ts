@@ -16,6 +16,12 @@ export interface FinalizeModel {
     Injections,
     StoreModel
   >;
+  finalizeTxViaSlatepack: Thunk<
+    FinalizeModel,
+    string,
+    Injections,
+    StoreModel
+  >;
 }
 
 const finalizeModel: FinalizeModel = {
@@ -39,14 +45,6 @@ const finalizeModel: FinalizeModel = {
         return "error_reading_file";
       }
 
-      // Parse the file...
-      let slate: {};
-      try {
-        slate = JSON.parse(content);
-      } catch (error) {
-        return "error_parsing_file";
-      }
-
       // Send the file to the node
       const apiSettings = getStoreState().settings.defaultSettings;
       const response = await new ownerService.RPC(
@@ -55,10 +53,10 @@ const finalizeModel: FinalizeModel = {
         apiSettings.ip
       ).finalizeTx(
         getStoreState().session.token,
-        slate,
+        content,
         payload.method,
         payload.grinJoinAddress,
-        `${payload.file.name}.response`
+        `${payload.file.name}.finalized`
       );
 
       // Check the results
@@ -68,6 +66,38 @@ const finalizeModel: FinalizeModel = {
 
       // Alles gut!
       return "finalized";
+    }
+  ),
+  finalizeTxViaSlatepack: thunk(
+    async (
+      actions,
+      slatepack,
+      { injections, getStoreState, getStoreActions }
+    ): Promise<{ error: string | null }> => {
+      actions.setResponseFile(undefined);
+      const { ownerService, utilsService } = injections;
+
+      // Send the file to the node
+      const apiSettings = getStoreState().settings.defaultSettings;
+      const response = await new ownerService.RPC(
+        apiSettings.floonet,
+        apiSettings.protocol,
+        apiSettings.ip
+      ).finalizeTx(
+        getStoreState().session.token,
+        slatepack,
+        'STEM',
+        '',
+        null
+      );
+
+      // Check the results
+      if (typeof response === "string") {
+        return { error: response };
+      }
+
+      // Alles gut!
+      return { error: null };
     }
   ),
 };

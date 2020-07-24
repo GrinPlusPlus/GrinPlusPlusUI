@@ -5,15 +5,33 @@ import { StoreModel } from "..";
 
 export interface ReceiveCoinsModel {
   responsesDestination: string | undefined;
+  slatepack: string;
+  returnedSlatepack: string;
+  setSlatepack: Action<ReceiveCoinsModel, string>;
+  setReturnedSlatepack: Action<ReceiveCoinsModel, string>;
   setResponsesDestination: Action<ReceiveCoinsModel, string>;
   receiveTx: Thunk<ReceiveCoinsModel, File[], Injections, StoreModel>;
   getAddress: Thunk<ReceiveCoinsModel, string, Injections, StoreModel>;
   waitingResponse: boolean;
   setWaitingResponse: Action<ReceiveCoinsModel, boolean>;
+  receiveTxViaSlatepack: Thunk<
+    ReceiveCoinsModel,
+    string,
+    Injections,
+    StoreModel
+  >;
 }
 
 const receiveCoinsModel: ReceiveCoinsModel = {
   responsesDestination: undefined,
+  slatepack: "",
+  setSlatepack: action((state, slatepack) => {
+    state.slatepack = slatepack;
+  }),
+  returnedSlatepack: "",
+  setReturnedSlatepack: action((state, slatepack) => {
+    state.returnedSlatepack = slatepack;
+  }),
   setResponsesDestination: action((state, path) => {
     state.responsesDestination = path.trim();
   }),
@@ -22,9 +40,15 @@ const receiveCoinsModel: ReceiveCoinsModel = {
       actions,
       files,
       { injections, getStoreState, getStoreActions }
-    ): Promise<[string[], [string, {}][]]> => {
+    ): Promise<{
+      errors: string[];
+      slatepacks: {
+        filename: string;
+        slatepack: string;
+      }[];
+    }> => {
       const errors: string[] = [];
-      let slates: [string, {}][] = [];
+      let slatepacks: { filename: string; slatepack: string }[] = [];
 
       const { ownerService, utilsService } = injections;
 
@@ -40,15 +64,6 @@ const receiveCoinsModel: ReceiveCoinsModel = {
           continue;
         } // Exit if the file is empty
 
-        // Let's try to parse the file...
-        let slate: {};
-        try {
-          slate = JSON.parse(content);
-        } catch (error) {
-          errors.push("error_parsing_file");
-          continue; //
-        }
-
         // Now, let's send the file to the Node
         const apiSettings = getStoreState().settings.defaultSettings;
 
@@ -57,7 +72,15 @@ const receiveCoinsModel: ReceiveCoinsModel = {
           apiSettings.floonet,
           apiSettings.protocol,
           apiSettings.ip
-        ).receiveTx(getStoreState().session.token, slate, filePath);
+        ).receiveTx(getStoreState().session.token, content, filePath);
+
+        if (response == null) {
+          errors.push("unknown_error");
+          continue;
+        } else if (response.error.length > 0) {
+          errors.push(`😪 ${response} (${fileName})`);
+          continue;
+        }
 
         // Let's make sure there is no error...
         if (typeof response === "string") {
@@ -68,9 +91,9 @@ const receiveCoinsModel: ReceiveCoinsModel = {
           continue;
         }
         // Alles gut!
-        slates.push([fileName, response]);
+        slatepacks.push({ filename: fileName, slatepack: response.slatepack });
       }
-      return [errors, slates];
+      return { errors: errors, slatepacks: slatepacks };
     }
   ),
   getAddress: thunk(
@@ -106,6 +129,48 @@ const receiveCoinsModel: ReceiveCoinsModel = {
   setWaitingResponse: action((state, waiting) => {
     state.waitingResponse = waiting;
   }),
+  receiveTxViaSlatepack: thunk(
+    async (
+      actions,
+      slatepack,
+      { injections, getStoreState, getStoreActions }
+    ): Promise<{ error: string; slatepack: string }> => {
+      var error: string = "";
+      let received_slatepack: string = "";
+
+      const { ownerService } = injections;
+
+      // Now, let's send the file to the Node
+      const apiSettings = getStoreState().settings.defaultSettings;
+
+      const response = await new ownerService.RPC(
+        apiSettings.floonet,
+        apiSettings.protocol,
+        apiSettings.ip
+      ).receiveTx(getStoreState().session.token, slatepack, "");
+
+      // Let's make sure there is no error...
+      if (response == null) {
+        error = "unknown_error";
+      } else if (response.error.length > 0) {
+        error = `😪 ${response.error}`;
+      } else {
+        received_slatepack = response.slatepack;
+      }
+
+      return { error: error, slatepack: received_slatepack };
+    }
+  ),
+
+  // thunk(
+  //   (
+  //     actions,
+  //     slate,
+  //     { injections, getStoreState, getStoreActions }
+  //   ): boolean => {
+  //     return true;
+  //   }
+  // ),
 };
 
 export default receiveCoinsModel;

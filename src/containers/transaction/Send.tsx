@@ -4,11 +4,15 @@ import {
   SendGrinsContent,
 } from "../../components/styled";
 import React, { Suspense, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { useStoreActions, useStoreState } from "../../hooks";
+
+import { Dialog } from "@blueprintjs/core";
 
 import { LoadingComponent } from "../../components/extras/Loading";
 import { PasswordPromptComponent } from "../../components/wallet/open/PasswordPrompt";
 import { useTranslation } from "react-i18next";
+import { SlatepackComponent } from "../../components/extras/Slatepack";
 
 const SpendableContainer = React.lazy(() =>
   import("./Spendable").then((module) => ({
@@ -49,6 +53,8 @@ const CoinControlContainer = React.lazy(() =>
 const renderLoader = () => <LoadingComponent />;
 
 export const SendContainer = () => {
+  let history = useHistory();
+
   const { t } = useTranslation();
 
   const { token } = useStoreState((state) => state.session);
@@ -60,7 +66,11 @@ export const SendContainer = () => {
     waitingResponse: waitingForPassword,
   } = useStoreState((state) => state.passwordPrompt);
 
-  const { getOutputs } = useStoreActions((actions) => actions.sendCoinsModel);
+  const { returnedSlatepack } = useStoreState((state) => state.sendCoinsModel);
+  const { getOutputs, setReturnedSlatepack } = useStoreActions(
+    (actions) => actions.sendCoinsModel
+  );
+
   const {
     setUsername: setUsernamePrompt,
     setPassword: setPasswordPrompt,
@@ -107,6 +117,18 @@ export const SendContainer = () => {
           buttonText={t("confirm_password")}
         />
       ) : null}
+      <Dialog
+        title="Slatepack"
+        className="bp3-dark"
+        isOpen={returnedSlatepack.length !== 0}
+        onOpened={() => navigator.clipboard.writeText(returnedSlatepack)}
+        onClose={() => {
+          setReturnedSlatepack("");
+          history.push("/wallet");
+        }}
+      >
+        <SlatepackComponent slatepack={returnedSlatepack} />
+      </Dialog>
     </Suspense>
   );
 };

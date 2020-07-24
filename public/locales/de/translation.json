@@ -110,5 +110,6 @@
   "invalid_destination_address": "Zieladresse ist ungültig",
   "not_online": "Brieftasche nicht erreichbar ⛔️",
   "outputs": "Outputs",
-  "kernels": "Kernels"
+  "kernels": "Kernels",
+  "slatepack": "Slatepack"
 }

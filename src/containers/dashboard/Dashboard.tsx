@@ -2,7 +2,7 @@ import { Button, Intent } from "@blueprintjs/core";
 import { Content, Flex } from "../../components/styled";
 
 import { FinalizeContainer } from "./Finalize";
-import { LogsContainer } from "./Logs";
+import { ReceiveUsingSlateContainer } from "./ReceiveUsingSlate";
 import React from "react";
 import { ReceiveUsingFileContainer } from "./ReceiveUsingFile";
 import { ReceiveUsingListenerContainer } from "./ReceiveUsingListener";
@@ -54,8 +54,8 @@ export const DashboardContainer = () => {
         <div style={{ marginTop: "20px" }}>
           <FinalizeContainer />
         </div>
-        <div style={{ marginTop: "15px" }}>
-          <LogsContainer />
+        <div style={{ marginTop: "10px" }}>
+          <ReceiveUsingSlateContainer />
         </div>
       </div>
       <div style={{ width: "60%", marginLeft: "15px", marginTop: "5px" }}>

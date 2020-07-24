@@ -4,27 +4,26 @@ import { HorizontallyCenter } from "../../styled";
 import React from "react";
 
 type ReceiveUsingListenerProps = {
-  address: string;
+  slatepack_address: string;
   httpAddress: string;
   shortenHttpAddress: string;
   isWalletReachable: boolean | undefined;
 };
 export const ReceiveUsingListenerComponent = ({
-  address,
+  slatepack_address,
   httpAddress,
   shortenHttpAddress,
   isWalletReachable,
 }: ReceiveUsingListenerProps) => {
   return (
-    <div style={{ marginTop: "15px" }}>
+    <div style={{ marginTop: "10px" }}>
       <HorizontallyCenter>
         <Button
           className="bp3-dark"
           intent={Intent.NONE}
           minimal={true}
-          rightIcon="duplicate"
-          text={address}
-          onClick={() => navigator.clipboard.writeText(address)}
+          text={slatepack_address}
+          onClick={() => navigator.clipboard.writeText(slatepack_address)}
         />
       </HorizontallyCenter>
       <HorizontallyCenter>
@@ -38,7 +37,6 @@ export const ReceiveUsingListenerComponent = ({
               : Intent.WARNING
           }
           minimal={true}
-          rightIcon="duplicate"
           text={shortenHttpAddress}
           onClick={() => navigator.clipboard.writeText(httpAddress)}
         />

@@ -7,13 +7,15 @@ import { useTranslation } from "react-i18next";
 
 export const ReceiveUsingListenerContainer = () => {
   const { t } = useTranslation();
-  const { address } = useStoreState((state) => state.session);
+  const { address, slatepack_address } = useStoreState(
+    (state) => state.session
+  );
   const { walletReachable } = useStoreState((state) => state.walletSummary);
 
   return (
     <div>
       <Flex>
-        <Title>{t("receive")}</Title>
+        <Title>{t("address")}</Title>
         {address && walletReachable === undefined ? (
           <div style={{ padding: "10px" }}>
             <Spinner size={12} />
@@ -24,7 +26,7 @@ export const ReceiveUsingListenerContainer = () => {
         {address ? (
           <ReceiveUsingListenerComponent
             isWalletReachable={walletReachable}
-            address={address}
+            slatepack_address={slatepack_address}
             httpAddress={`http://${address}.grinplusplus.com/`}
             shortenHttpAddress={`http://${address.replace(
               address.substr(

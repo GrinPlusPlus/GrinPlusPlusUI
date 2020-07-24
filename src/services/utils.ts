@@ -28,7 +28,7 @@ export const validateExtension = (fileName: string, ext: string): boolean => {
 
 export const getTextFileContent = async (file: File): Promise<string> => {
   const content = await readFileAsText(file)
-    .then(content => content)
+    .then((content) => content)
     .catch(() => "");
   return content;
 };
@@ -39,18 +39,28 @@ export const validateUrl = (url: string): boolean => {
   );
 };
 
-export const validateOnion = (url: string): boolean => {
-  const v3 = "[a-z2-7]{56}";
-  return new RegExp(`${v3}`).test(url);
+export const validateSlatepackAddress = (address: string): boolean => {
+  if (address.length === 63) {
+    const slatepack_fmt = "grin1[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{58}";
+    return new RegExp(`${slatepack_fmt}`).test(address.toLowerCase());
+  }
+
+  return false;
 };
 
-export const validateAddress = (address: string): "http" | "tor" | false => {
+export const validateSlatepack = (slate: string): boolean => {
+  return (
+    slate.toUpperCase().includes("BEGINSLATEPACK.") &&
+    slate.toUpperCase().includes("ENDSLATEPACK.")
+  );
+};
+
+export const validateAddress = (
+  address: string
+): "http" | "slatepack" | false => {
   address = address.replace(/\/$/, "");
-  if (validateOnion(address)) {
-    if (address.length === 56) return "tor";
-    if (address.indexOf(".onion") === address.length - ".onion".length)
-      return "tor";
-    return "http";
+  if (validateSlatepackAddress(address)) {
+    return "slatepack";
   } else if (validateUrl(address)) return "http";
   return false;
 };
@@ -91,21 +101,12 @@ export const saveAs = async (
   path: string,
   filters: { name: string; extensions: string[] }[] = [
     { name: "Tx Files", extensions: ["tx"] },
-    { name: "All Files", extensions: ["*"] }
+    { name: "All Files", extensions: ["*"] },
   ]
 ): Promise<{ canceled: boolean; filePath: string }> => {
   let results = await require("electron").remote.dialog.showSaveDialog({
     defaultPath: path,
-    filters: filters
+    filters: filters,
   });
   return { canceled: results.canceled, filePath: results.filePath };
-};
-
-export const cleanOnionURL = (url: string): string => {
-  if (url.length === 56) {
-    const v3 = "[a-z2-7]{56}";
-    if (new RegExp(`${v3}`).test(url)) return url;
-  }
-  const parsed = new URL(url);
-  return parsed.hostname.replace(".onion", "");
 };

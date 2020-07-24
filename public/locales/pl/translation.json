@@ -110,5 +110,6 @@
   "invalid_destination_address": "Adres docelowy jest nieprawidłowy",
   "not_online": "Portfel nieosiągalny ⛔️",
   "outputs": "Outputs",
-  "kernels": "Kernels"
+  "kernels": "Kernels",
+  "slatepack": "Slatepack"
 }

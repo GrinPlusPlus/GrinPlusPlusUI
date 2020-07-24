@@ -41,10 +41,12 @@ const renderLoader = () => <LoadingComponent />;
 export const WalletContainer = () => {
   const { t } = useTranslation();
 
-  const { isLoggedIn, seed, token, address } = useStoreState((state) => state.session);
+  const { isLoggedIn, seed, token, address } = useStoreState(
+    (state) => state.session
+  );
   const { alert } = useStoreState((state) => state.ui);
   const { status } = useStoreState((state) => state.nodeSummary);
-  
+
   const { username, password, waitingResponse } = useStoreState(
     (state) => state.passwordPrompt
   );
@@ -62,51 +64,54 @@ export const WalletContainer = () => {
     (actions) => actions.receiveCoinsModel
   );
 
-  useInterval(async () => {
-    if (token !== undefined && token.length > 0) {
+  useInterval(
+    async () => {
+      if (token !== undefined && token.length > 0) {
+        if (token.length === 0) return;
+        try {
+          await updateWalletSummary(token);
+        } catch (error) {
+          Log.error(`Error trying to get Wallet Summary: ${error.message}`);
+        }
+        try {
+          await updateWalletBalance(token);
+        } catch (error) {
+          Log.error(`Error trying to get Wallet Balance: ${error.message}`);
+        }
+      }
+    },
+    5000,
+    [token]
+  );
+
+  useInterval(
+    async () => {
       if (token.length === 0) return;
-      try {
-        await updateWalletSummary(token);
-      } catch (error) {
-        Log.error(
-          `Error trying to get Wallet Summary: ${error.message}`
-        );
-      }
-      try {
-        await updateWalletBalance(token);
-      } catch (error) {
-        Log.error(
-          `Error trying to get Wallet Balance: ${error.message}`
-        );
-      }
-    }
-  }, 5000, [token]);
-  
-  useInterval(async () => {
-    if (token.length === 0) return;
+      if (!address) return;
 
-    let walletAddress = address;
-    if (walletAddress.length !== 56) {
-      try {
-        Log.info("Checking address: " + token);
-        walletAddress = await getAddress(token);
-      } catch (error) {
-        Log.error(
-          `Error trying to get Wallet address: ${error.message}`
-        );
+      let walletAddress = address;
+      if (walletAddress.length !== 56) {
+        try {
+          Log.info("Checking address: " + token);
+          walletAddress = await getAddress(token);
+        } catch (error) {
+          Log.error(`Error trying to get Wallet address: ${error.message}`);
+        }
       }
-    }
 
-    if (walletAddress.length === 56) {
-      try {
-        await checkWalletAvailability(walletAddress);
-      } catch (error) {
-        Log.error(
-          `Error trying to get Wallet Availability: ${error.message}`
-        );
+      if (walletAddress.length === 56) {
+        try {
+          await checkWalletAvailability(walletAddress);
+        } catch (error) {
+          Log.error(
+            `Error trying to get Wallet Availability: ${error.message}`
+          );
+        }
       }
-    }
-  }, 30000, [token]);
+    },
+    30000,
+    [token]
+  );
 
   const backupSeed = useCallback(async () => {
     if (username === undefined || password === undefined) return;

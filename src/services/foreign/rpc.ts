@@ -40,11 +40,45 @@ export class RPC {
         jsonrpc: "2.0",
         id: uuidv4(),
         method: "receive_tx",
-        params: [slate, null, ""],
+        params: [slate, null, null],
       }),
     };
+    require("electron-log").info("Foreign receive request: \n" + options.body);
     return new Promise((resolve, reject) => {
       request(options, (error: any, response: any, body: string) => {
+        require("electron-log").info("Foreign receive response: \n" + body);
+        try {
+          if (error) reject(error);
+          if (response === null || response === undefined)
+            reject(`Service Unavailable ` + body);
+          if (response.statusCode !== 200) {
+            reject("Invalid status code <" + response.statusCode + ">");
+          }
+          resolve(JSON.parse(body).result.Ok);
+        } catch (error) {
+          reject(`Service Unavailable ` + body);
+        }
+      });
+    });
+  }
+
+  public static async finalize(address: string, slate: {}): Promise<{}> {
+    const request = window.require("request");
+    let options = {
+      timeout: 60000,
+      url: `${address}/v2/foreign`,
+      method: "post",
+      body: JSON.stringify({
+        jsonrpc: "2.0",
+        id: uuidv4(),
+        method: "finalize_tx",
+        params: [slate],
+      }),
+    };
+    require("electron-log").info("Foreign finalize request: \n" + options.body);
+    return new Promise((resolve, reject) => {
+      request(options, (error: any, response: any, body: string) => {
+        require("electron-log").info("Foreign finalize response: \n" + body);
         try {
           if (error) reject(error);
           if (response === null || response === undefined)

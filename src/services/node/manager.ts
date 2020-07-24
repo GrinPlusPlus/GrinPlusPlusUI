@@ -17,6 +17,22 @@ export const getCommand = function(): string {
   return cmd;
 };
 
+export const getRustNodeProcess = function(): string {
+  const cmd = (() => {
+    switch (require("electron").remote.process.platform) {
+      case "win32":
+        return "Grin.exe";
+      case "darwin":
+        return "Grin";
+      case "linux":
+        return "Grin";
+      default:
+        throw new Error("Unknown Platform");
+    }
+  })();
+  return cmd;
+};
+
 const isProcessRunning = function(processName: string): boolean {
   const cmd = (() => {
     switch (require("electron").remote.process.platform) {
@@ -163,6 +179,12 @@ export const stopNode = function(): void {
     killProcess(getCommand());
   } catch (e) {}
 };
+
+export const stopRustNode = function(): void {
+  try {
+    killProcess(getRustNodeProcess());
+  } catch (e) {}
+}
 
 export const getDefaultSettings = function(
   file: string = "defaults.json"
