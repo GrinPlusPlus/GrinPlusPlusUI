@@ -1,4 +1,4 @@
-import { SlatesBox, Title, Flex } from "../../styled";
+import { SlatesBox, Flex } from "../../styled";
 
 import React from "react";
 import { useTranslation } from "react-i18next";

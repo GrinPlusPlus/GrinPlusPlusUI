@@ -16,12 +16,7 @@ export interface FinalizeModel {
     Injections,
     StoreModel
   >;
-  finalizeTxViaSlatepack: Thunk<
-    FinalizeModel,
-    string,
-    Injections,
-    StoreModel
-  >;
+  finalizeTxViaSlatepack: Thunk<FinalizeModel, string, Injections, StoreModel>;
 }
 
 const finalizeModel: FinalizeModel = {
@@ -75,7 +70,7 @@ const finalizeModel: FinalizeModel = {
       { injections, getStoreState, getStoreActions }
     ): Promise<{ error: string | null }> => {
       actions.setResponseFile(undefined);
-      const { ownerService, utilsService } = injections;
+      const { ownerService } = injections;
 
       // Send the file to the node
       const apiSettings = getStoreState().settings.defaultSettings;
@@ -83,13 +78,7 @@ const finalizeModel: FinalizeModel = {
         apiSettings.floonet,
         apiSettings.protocol,
         apiSettings.ip
-      ).finalizeTx(
-        getStoreState().session.token,
-        slatepack,
-        'STEM',
-        '',
-        null
-      );
+      ).finalizeTx(getStoreState().session.token, slatepack, "STEM", "", null);
 
       // Check the results
       if (typeof response === "string") {

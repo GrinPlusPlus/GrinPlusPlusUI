@@ -112,8 +112,6 @@ export const SendUsingAddressContainer = () => {
   );
   const { username } = useStoreState((state) => state.session);
 
-  const { setReturnedSlatepack } = useStoreActions((state) => state.sendCoinsModel);
-
   const classes = classNames("bp3-dark", Classes.CARD, Classes.ELEVATION_4);
 
   return (
