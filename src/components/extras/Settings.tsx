@@ -107,6 +107,7 @@ export const SettingsComponent = ({
           <NumericInput
             data-testid="mininum-number-peers-input"
             id="mininum-number-peers"
+            min={8}
             value={mininumPeers}
             onValueChange={(value) => setMininumPeersCb(value)}
           />
