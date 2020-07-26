@@ -40,6 +40,14 @@ const finalizeModel: FinalizeModel = {
         return "error_reading_file";
       }
 
+      // Let's try to parse the file...
+      let slate = null;
+      try {
+        slate = JSON.parse(content);
+      } catch (error) {
+        //errors.push("error_parsing_file");
+      }
+
       // Send the file to the node
       const apiSettings = getStoreState().settings.defaultSettings;
       const response = await new ownerService.RPC(
@@ -48,7 +56,8 @@ const finalizeModel: FinalizeModel = {
         apiSettings.ip
       ).finalizeTx(
         getStoreState().session.token,
-        content,
+        slate === null ? content : null,
+        slate,
         payload.method,
         payload.grinJoinAddress,
         `${payload.file.name}.finalized`
@@ -78,7 +87,7 @@ const finalizeModel: FinalizeModel = {
         apiSettings.floonet,
         apiSettings.protocol,
         apiSettings.ip
-      ).finalizeTx(getStoreState().session.token, slatepack, "STEM", "", null);
+      ).finalizeTx(getStoreState().session.token, slatepack, null, "STEM", "", null);
 
       // Check the results
       if (typeof response === "string") {

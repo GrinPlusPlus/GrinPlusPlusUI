@@ -60,9 +60,9 @@ const killProcess = function(processName: string): void {
       case "win32":
         return `taskkill /F /IM ${processName}`;
       case "darwin":
-        return `pkill -9 ${processName}`;
+        return `killall ${processName}`;
       case "linux":
-        return `pkill -9 ${processName}`;
+        return `killall ${processName}`;
       default:
         throw new Error("Unknown Platform");
     }

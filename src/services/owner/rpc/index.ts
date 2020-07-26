@@ -10,7 +10,7 @@ export class OwnerRPCApi extends BaseApi {
     username: string,
     password: string,
     seedLength: string
-  ): Promise<{ username: string; token: string; address: string; slatepack_address: string;  listener_port: number; seed: string[] }> {
+  ): Promise<{ username: string; token: string; address: string; slatepack_address: string; listener_port: number; seed: string[] }> {
     return await this.makeRPCRequest(
       this.getRequestURL("create_wallet"),
       "create_wallet",
@@ -150,7 +150,8 @@ export class OwnerRPCApi extends BaseApi {
 
   public async finalizeTx(
     token: string,
-    slatepack: string,
+    slatepack: string | null,
+    slate: string | null,
     method: string,
     grinJoinAddress: string,
     file?: string | null
@@ -169,8 +170,15 @@ export class OwnerRPCApi extends BaseApi {
 
     var payload : any = {
       session_token: token,
-      slatepack: slatepack,
       post_tx: postTx,
+    }
+
+    if (slatepack != null) {
+      payload.slatepack = slatepack;
+    }
+
+    if (slate != null) {
+      payload.slate = slate;
     }
 
     if (file != null) {

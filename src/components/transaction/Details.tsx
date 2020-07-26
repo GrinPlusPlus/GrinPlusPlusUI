@@ -193,7 +193,7 @@ export const TansactionDetailsComponent = ({
               text={t("repost_transaction")}
               minimal={true}
               intent={Intent.WARNING}
-              onClick={() => onRepostTransactionButtonClickedCb(id, method)}
+              onClick={() => onRepostTransactionButtonClickedCb(id, "FLUFF")}
             />
           </span>
         ) : null}

@@ -50,7 +50,7 @@ const receiveCoinsModel: ReceiveCoinsModel = {
       const errors: string[] = [];
       let slatepacks: { filename: string; slatepack: string }[] = [];
 
-      const { ownerService, utilsService } = injections;
+      const { foreignService, ownerService, utilsService } = injections;
 
       for (let index = 0; index < files.length; index++) {
         const file = files[index];
@@ -63,35 +63,61 @@ const receiveCoinsModel: ReceiveCoinsModel = {
           errors.push("error_reading_file");
           continue;
         } // Exit if the file is empty
+        
+        // Let's try to parse the file...
+        let slate = null;
+        try {
+          slate = JSON.parse(content);
+        } catch (error) {
+          //errors.push("error_parsing_file");
+        }
 
         // Now, let's send the file to the Node
         const apiSettings = getStoreState().settings.defaultSettings;
 
         const filePath = `${file.path}.response`;
-        const response = await new ownerService.RPC(
-          apiSettings.floonet,
-          apiSettings.protocol,
-          apiSettings.ip
-        ).receiveTx(getStoreState().session.token, content, filePath);
 
-        if (response == null) {
-          errors.push("unknown_error");
-          continue;
-        } else if (response.error.length > 0) {
-          errors.push(`😪 ${response} (${fileName})`);
-          continue;
-        }
+        require("electron-log").info(slate);
+        require("electron-log").info(content);
+        if (slate === null) {
+          require("electron-log").info("slate null");
+          const response = await new ownerService.RPC(
+            apiSettings.floonet,
+            apiSettings.protocol,
+            apiSettings.ip
+          ).receiveTx(getStoreState().session.token, content, filePath);
+  
+          if (response == null) {
+            errors.push("unknown_error");
+            continue;
+          } else if (response.error.length > 0) {
+            errors.push(`😪 ${response} (${fileName})`);
+            continue;
+          }
+  
+          // Let's make sure there is no error...
+          if (typeof response === "string") {
+            errors.push(`😪 ${response} (${fileName})`);
+            continue;
+          } else if (!response) {
+            errors.push("unknown_error");
+            continue;
+          }
+          // Alles gut!
+          slatepacks.push({ filename: fileName, slatepack: response.slatepack });
 
-        // Let's make sure there is no error...
-        if (typeof response === "string") {
-          errors.push(`😪 ${response} (${fileName})`);
-          continue;
-        } else if (!response) {
-          errors.push("unknown_error");
-          continue;
+        } else {
+          require("electron-log").info("slate not null");
+          await foreignService.RPC.receive(
+            "http://localhost:" + getStoreState().session.listener_port,
+            slate
+          ).then((received_slate: {}) => {
+            utilsService.writeTextFile(filePath, JSON.stringify(received_slate));
+          })
+          .catch((error: any) => {
+            errors.push("unknown_error");
+          });
         }
-        // Alles gut!
-        slatepacks.push({ filename: fileName, slatepack: response.slatepack });
       }
       return { errors: errors, slatepacks: slatepacks };
     }

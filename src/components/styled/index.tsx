@@ -27,8 +27,8 @@ export const Flex = styled.section`
 export const SlatesBox = styled.textarea`
   font-size: 13px;
   width: 100%;
-  min-height: 150px;
-  max-height: 150px;
+  min-height: 140px;
+  max-height: 140px;
   background-color: #171920;
   overflow-y: auto;
   border-radius: 3px;
@@ -55,10 +55,10 @@ export const LargeSlatesBox = styled.textarea`
 `;
 
 export const LogsBox = styled.textarea`
+  display: block;
   font-size: 13px;
   width: 100%;
-  min-height: 100%;
-  max-height: 500px;
+  height: 100%;
   background-color: #171920;
   overflow-y: auto;
   border-radius: 3px;
@@ -104,13 +104,13 @@ export const BalanceSuffix = styled.section`
 `;
 
 export const Dropper = styled.section`
-  display: blaock;
+  display: block;
   border-style: dashed;
   border-width: 2px;
   border-color: white;
   width: 100%;
-  line-height: 50px;
-  height: 60px;
+  line-height: 35px;
+  height: 45px;
   margin-top: 15px;
   vertical-align: middle;
   font-size: 15px;
