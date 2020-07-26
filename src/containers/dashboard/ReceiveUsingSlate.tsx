@@ -41,7 +41,7 @@ export const ReceiveUsingSlateContainer = () => {
         }
       );
     },
-    [receiveTxViaSlatepack, updateLogs, t]
+    [receiveTxViaSlatepack, updateLogs, t, setReturnedSlatepack]
   );
 
   const onFinalizeSlatepack = useCallback(
@@ -61,7 +61,7 @@ export const ReceiveUsingSlateContainer = () => {
         }
       });
     },
-    [finalizeTxViaSlatepack, updateLogs, t]
+    [finalizeTxViaSlatepack, updateLogs, t, setSlatepack]
   );
 
   return (

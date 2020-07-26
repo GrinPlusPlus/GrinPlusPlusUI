@@ -69,8 +69,8 @@ export const fileExists = (path: string): boolean => {
   return require("fs").existsSync(path);
 };
 
-export const writeJson = (path: string, data: any) => {
-  require("fs").writeFileSync(path, JSON.stringify(data));
+export const writeTextFile = (path: string, text: string) => {
+  require("fs").writeFileSync(path, text);
 };
 
 export const getHomePath = (): string => {

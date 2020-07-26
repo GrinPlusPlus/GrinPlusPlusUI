@@ -303,6 +303,7 @@ const sendCoinsModel: SendCoinsModel = {
       const { ownerService, utilsService } = injections;
 
       const file = await utilsService.saveAs(utilsService.getHomePath());
+
       if (file.canceled) return false;
 
       return await new ownerService.RPC(
@@ -319,6 +320,7 @@ const sendCoinsModel: SendCoinsModel = {
           file.filePath
         )
         .then((response) => {
+          utilsService.writeTextFile(file.filePath, JSON.stringify(response));
           actions.setInitialValues(); // alles gut!
           return true;
         })
@@ -400,7 +402,7 @@ const sendCoinsModel: SendCoinsModel = {
             send_response.slate
           );
           const finalized = await foreignService.RPC.finalize(
-            'http://localhost:' + getStoreState().session.listener_port, 
+            "http://localhost:" + getStoreState().session.listener_port,
             receivedSlate
           );
           if (typeof finalized === "string") {
