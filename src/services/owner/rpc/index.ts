@@ -377,7 +377,7 @@ export class OwnerRPCApi extends BaseApi {
       { session_token: token, tx_id: txId, method: method }
     ).then((response) => {
       if (response.error) throw new Error(response.error.message);
-      return response.result;
+      return response.result.status === "SUCCESS" ? "" : response.result.status;
     });
   }
 }
