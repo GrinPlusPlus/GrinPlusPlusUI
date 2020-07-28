@@ -10,7 +10,14 @@ export class OwnerRPCApi extends BaseApi {
     username: string,
     password: string,
     seedLength: string
-  ): Promise<{ username: string; token: string; address: string; slatepack_address: string; listener_port: number; seed: string[] }> {
+  ): Promise<{
+    username: string;
+    token: string;
+    address: string;
+    slatepack_address: string;
+    listener_port: number;
+    seed: string[];
+  }> {
     return await this.makeRPCRequest(
       this.getRequestURL("create_wallet"),
       "create_wallet",
@@ -32,7 +39,13 @@ export class OwnerRPCApi extends BaseApi {
     username: string,
     password: string,
     seed: string
-  ): Promise<{ username: string; token: string; address: string; listener_port: number; slatepack_address: string }> {
+  ): Promise<{
+    username: string;
+    token: string;
+    address: string;
+    listener_port: number;
+    slatepack_address: string;
+  }> {
     return await this.makeRPCRequest(
       this.getRequestURL("restore_wallet"),
       "restore_wallet",
@@ -48,7 +61,7 @@ export class OwnerRPCApi extends BaseApi {
         token: response.result.session_token,
         address: response.result.tor_address,
         listener_port: response.result.listener_port,
-        slatepack_address: response.result.slatepack_address
+        slatepack_address: response.result.slatepack_address,
       };
     });
   }
@@ -85,7 +98,9 @@ export class OwnerRPCApi extends BaseApi {
     method: string,
     grinJoinAddress: string,
     address?: string
-  ): Promise<string | { slate: {}; slatepack: string; status: "SENT" | "FINALIZED";}> {
+  ): Promise<
+    string | { slate: {}; slatepack: string; status: "SENT" | "FINALIZED" }
+  > {
     let postTx = {};
     if (method === "JOIN") {
       postTx = {
@@ -123,11 +138,13 @@ export class OwnerRPCApi extends BaseApi {
       "send",
       params
     ).then((response) =>
-      response.error ? response.error.message : {
-        slate: response.result.slate,
-        slatepack: response.result.slatepack,
-        status: response.result.status
-       }
+      response.error
+        ? response.error.message
+        : {
+            slate: response.result.slate,
+            slatepack: response.result.slatepack,
+            status: response.result.status,
+          }
     );
   }
 
@@ -144,7 +161,9 @@ export class OwnerRPCApi extends BaseApi {
       slatepack: slatepack,
       file: file,
     }).then((response) =>
-      response.error ? { error: response.error.message, slatepack: '' } : { error: '', slatepack: response.result.slatepack }
+      response.error
+        ? { error: response.error.message, slatepack: "" }
+        : { error: "", slatepack: response.result.slatepack }
     );
   }
 
@@ -168,10 +187,10 @@ export class OwnerRPCApi extends BaseApi {
       };
     }
 
-    var payload : any = {
+    var payload: any = {
       session_token: token,
       post_tx: postTx,
-    }
+    };
 
     if (slatepack != null) {
       payload.slatepack = slatepack;
@@ -212,7 +231,16 @@ export class OwnerRPCApi extends BaseApi {
     });
   }
 
-  public async login(username: string, password: string): Promise<{ username: string; token: string; address: string, listener_port: number, slatepack_address: string }> {
+  public async login(
+    username: string,
+    password: string
+  ): Promise<{
+    username: string;
+    token: string;
+    address: string;
+    listener_port: number;
+    slatepack_address: string;
+  }> {
     return await this.makeRPCRequest(this.getRequestURL("login"), "login", {
       username: username,
       password: password,
@@ -223,8 +251,8 @@ export class OwnerRPCApi extends BaseApi {
         token: response.result.session_token,
         address: response.result.tor_address,
         listener_port: response.result.listener_port,
-        slatepack_address: response.result.slatepack_address
-      }
+        slatepack_address: response.result.slatepack_address,
+      };
     });
   }
 
@@ -377,7 +405,7 @@ export class OwnerRPCApi extends BaseApi {
       { session_token: token, tx_id: txId, method: method }
     ).then((response) => {
       if (response.error) throw new Error(response.error.message);
-      return response.result.status === "SUCCESS" ? "" : response.result.status;
+      return response.result.status;
     });
   }
 }

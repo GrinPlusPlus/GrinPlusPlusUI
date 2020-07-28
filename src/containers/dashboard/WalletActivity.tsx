@@ -59,12 +59,19 @@ export const WalletActivitiyContainer = () => {
           txId: txId,
           method: method,
         }).then((response: string) => {
-          if (response.length > 0) return;
-          Toaster.create({ position: Position.BOTTOM }).show({
-            message: response,
-            intent: Intent.WARNING,
-            icon: "warning-sign",
-          });
+          if (response.trim().toLowerCase() === "success") {
+            Toaster.create({ position: Position.BOTTOM }).show({
+              message: t("finished_without_errors"),
+              intent: Intent.SUCCESS,
+              icon: "tick-circle",
+            });
+          } else {
+            Toaster.create({ position: Position.BOTTOM }).show({
+              message: response,
+              intent: Intent.WARNING,
+              icon: "warning-sign",
+            });
+          }
         });
         require("electron-log").info("Reposted!");
       } catch (error) {
