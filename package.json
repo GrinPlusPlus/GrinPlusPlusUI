@@ -1,7 +1,7 @@
 {
   "name": "GrinPlusPlus",
   "productName": "Grin++",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Grin++ Wallet",
   "author": {
     "name": "David Burkett",
@@ -137,8 +137,7 @@
     "mac": {
       "category": "public.app-category.finance",
       "target": [
-        "dmg",
-        "zip"
+        "dmg"
       ],
       "gatekeeperAssess": false,
       "hardenedRuntime": true,

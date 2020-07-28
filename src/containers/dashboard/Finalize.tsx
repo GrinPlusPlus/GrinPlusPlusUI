@@ -32,7 +32,7 @@ export const FinalizeContainer = () => {
 
     finalizeTx({
       file: responseFile,
-      method: useGrinJoin ? "JOIN" : "STEM",
+      method: useGrinJoin ? "JOIN" : "FLUFF",
       grinJoinAddress: grinJoinAddress
     }).then((message: string) => {
       Toaster.create({ position: Position.BOTTOM }).show({

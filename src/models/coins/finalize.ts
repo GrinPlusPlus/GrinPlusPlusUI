@@ -87,7 +87,7 @@ const finalizeModel: FinalizeModel = {
         apiSettings.floonet,
         apiSettings.protocol,
         apiSettings.ip
-      ).finalizeTx(getStoreState().session.token, slatepack, null, "STEM", "", null);
+      ).finalizeTx(getStoreState().session.token, slatepack, null, "FLUFF", "", null);
 
       // Check the results
       if (typeof response === "string") {

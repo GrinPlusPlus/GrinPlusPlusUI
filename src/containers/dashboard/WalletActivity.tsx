@@ -87,7 +87,7 @@ export const WalletActivitiyContainer = () => {
         openTransactionCb={openTransaction}
         onCancelTransactionButtonClickedCb={setSelectedTx}
         onRepostTransactionButtonClickedCb={onRepostTransactionButtonClicked}
-        method={useGrinJoin ? "JOIN" : "STEM"}
+        method={useGrinJoin ? "JOIN" : "FLUFF"}
         lastConfirmedHeight={lastConfirmedHeight}
         confirmations={confirmations}
       />

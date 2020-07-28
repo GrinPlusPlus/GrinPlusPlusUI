@@ -52,7 +52,7 @@ export const SendUsingAddressContainer = () => {
         amount: Number(amount),
         message: message,
         address: address,
-        method: useGrinJoin ? "JOIN" : "STEM",
+        method: useGrinJoin ? "JOIN" : "FLUFF",
         grinJoinAddress: grinJoinAddress,
         inputs: inputs,
         token: token,
