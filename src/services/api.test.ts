@@ -33,7 +33,6 @@ describe("APIs", () => {
     expect(test.floonet).toBe(true);
     expect(test.protocol).toBe("http");
     expect(test.ip).toBe("127.0.0.1");
-    expect(test.mode).toBe("DEV");
   });
   test("isMainnet()", () => {
     const falseTest = new TestBasiApi();

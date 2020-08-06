@@ -3,6 +3,10 @@ import { fireEvent, render, waitForElement } from "@testing-library/react";
 
 import React from "react";
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({t: key => key})
+}));
+
 function renderInputPasswordComponent(props: Partial<InputPasswordProps> = {}) {
   const defaultProps: InputPasswordProps = {
     password: "p4ssw0rD",

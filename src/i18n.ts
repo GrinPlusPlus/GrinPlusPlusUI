@@ -60,5 +60,3 @@ i18n
   });
 
 export default i18n;
-
-require("electron-log").info(getResourcePath("./locales/{{lng}}/{{ns}}.json"));

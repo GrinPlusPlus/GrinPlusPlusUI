@@ -6,6 +6,10 @@ import {
 import React from "react";
 import { render } from "@testing-library/react";
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({t: key => key})
+}));
+
 function renderConnectedPeersComponent(
   props: Partial<ConnectedPeersProps> = {}
 ) {
