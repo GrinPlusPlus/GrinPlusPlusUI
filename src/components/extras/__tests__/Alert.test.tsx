@@ -3,6 +3,10 @@ import { fireEvent, render, waitForElement } from "@testing-library/react";
 
 import React from "react";
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({t: key => key})
+}));
+
 function renderLogsComponent(props: Partial<AlertProps> = {}) {
   function changeMessage(message: string | undefined) {
     props.message = message;

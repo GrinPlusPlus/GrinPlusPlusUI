@@ -3,6 +3,10 @@ import { TansactionDetailsComponent, TansactionDetailsProps } from "../Details";
 import React from "react";
 import { render } from "@testing-library/react";
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({t: key => key})
+}));
+
 function renderTxDetailsComponent(props: Partial<TansactionDetailsProps> = {}) {
   const defaultProps: TansactionDetailsProps = {
     id: 1,

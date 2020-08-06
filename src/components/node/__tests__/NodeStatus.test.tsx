@@ -3,6 +3,10 @@ import { NodeStatusComponent, NodeStatusProps } from "../NodeStatus";
 import React from "react";
 import { render } from "@testing-library/react";
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({t: key => key})
+}));
+
 function renderNodeStatusComponent(props: Partial<NodeStatusProps> = {}) {
   const defaultProps: NodeStatusProps = {
     headers: 1000,

@@ -78,7 +78,7 @@ export const WalletActivitiyContainer = () => {
         require("electron-log").error(`Error trying to Repost Tx: ${error}`);
       }
     },
-    [token, repostTransaction, setSelectedTx]
+    [token, repostTransaction, setSelectedTx, t]
   );
 
   return (

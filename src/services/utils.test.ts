@@ -1,10 +1,8 @@
 import {
-  cleanOnionURL,
   formatGrinAmount,
   getFileExtension,
   validateAddress,
   validateExtension,
-  validateOnion,
   validateUrl
 } from "./utils";
 
@@ -30,17 +28,6 @@ describe("Utils", () => {
     expect(validateUrl("http://duckduckgo.com:80")).toBe(true);
     expect(validateUrl("https://duckduckgo.com:5000/")).toBe(true);
   });
-  test("validateOnion()", () => {
-    expect(validateOnion("http://duckduckgo")).toBe(false);
-    expect(
-      validateOnion("jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid")
-    ).toBe(true);
-    expect(
-      validateOnion(
-        "http://jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid.onion"
-      )
-    ).toBe(true);
-  });
   test("validateAddress()", () => {
     expect(
       validateAddress(
@@ -54,50 +41,5 @@ describe("Utils", () => {
     ).toBe("http");
     expect(validateAddress("thisisnotavalidurl")).toBe(false);
     expect(validateAddress("http://duckduckgo.com")).toBe("http");
-    expect(
-      validateAddress(
-        "http://jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid.onion"
-      )
-    ).toBe("tor");
-    expect(
-      validateAddress(
-        "http://jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid.onion/"
-      )
-    ).toBe("tor");
-    expect(
-      validateAddress(
-        "jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid"
-      )
-    ).toBe("tor");
-    expect(
-      validateAddress(
-        "http://jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid.gripluslus.com"
-      )
-    ).toBe("http");
-    expect(
-      validateAddress(
-        "http://jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid.griplusplus.com"
-      )
-    ).toBe("http");
-    expect(
-      validateAddress(
-        "http://jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid.griplusplus.com/"
-      )
-    ).toBe("http");
-  });
-  test("cleanOnionURL()", () => {
-    expect(
-      cleanOnionURL("jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid")
-    ).toEqual("jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid");
-    expect(
-      cleanOnionURL(
-        "http://jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid.onion"
-      )
-    ).toEqual("jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid");
-    expect(
-      cleanOnionURL(
-        "http://jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid.onion/"
-      )
-    ).toEqual("jamie22ezawwi5r3o7lrgsno43jj7vq5en74czuw6wfmjzkhjjryxnid");
   });
 });

@@ -175,7 +175,7 @@ export const useInterval = function(callback: any, delay: number, deps?: Readonl
   // Remember the latest function.
   useEffect(() => {
     savedCallback.current = callback;
-  }, deps);
+  }, [callback]);
 
   // Set up the interval.
   useEffect(() => {
@@ -187,7 +187,7 @@ export const useInterval = function(callback: any, delay: number, deps?: Readonl
       let id = setInterval(tick, delay);
       return () => clearInterval(id);
     }
-  }, deps);
+  }, [delay]);
 };
 
 export const cutAddress = (address: string): string => {

@@ -33,9 +33,8 @@ export interface IdiomModel {
 }
 
 const AsyncStore = {
-  electronStore: new ElectronStore<IdiomModel>(),
+  electronStore: new ElectronStore<IdiomModel>({}),
   getItem(key: any, defaultValue: any) {
-    console.log("Getting item: " + key);
     const value = this.electronStore.get(key);
     if (value == null) {
       return defaultValue;
@@ -44,12 +43,9 @@ const AsyncStore = {
     return value;
   },
   setItem(key: any, data: any) {
-    console.log("Setting item: " + key);
-    console.log(data);
     this.electronStore.set(key, data);
   },
   removeItem(key: any) {
-    console.log("Removing item: " + key);
     this.electronStore.delete(key);
   },
 };
