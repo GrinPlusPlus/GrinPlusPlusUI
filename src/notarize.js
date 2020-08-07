@@ -16,7 +16,7 @@ exports.default = async function notarizing(context) {
     appBundleId: config.build.appId,
     appPath: `${outDir}/${appName}.app`,
     appleId: "davidburkett38@gmail.com",
-    appleIdPassword: `@keychain:AC_PASSWORD`
+    appleIdPassword: process.env.APPLE_PASSWORD
   });
   console.log("afterSign: Notarized");
 };
