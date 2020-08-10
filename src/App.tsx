@@ -44,7 +44,7 @@ const App: React.FC = () => {
         }
       }
     }
-  }, store.getState().nodeSummary.updateInterval);
+  }, store.getState().nodeSummary.updateInterval, []);
 
   useInterval(async () => {
     if (store.getState().nodeSummary.status.toLowerCase() === "not connected")
@@ -60,7 +60,7 @@ const App: React.FC = () => {
         `Error trying to get Connected Peers: ${error.message}`
       );
     }
-  }, 5000);
+  }, 5000, []);
 
   return (
     <StoreProvider store={store}>

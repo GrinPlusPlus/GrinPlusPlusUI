@@ -1,9 +1,10 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 
 import { ISeed } from "./interfaces/ISeed";
 import { Intent } from "@blueprintjs/core";
 import { formatDistanceToNow } from "date-fns";
 import { wordlist } from "./seed";
+import useDeepCompareEffect from 'use-deep-compare-effect'
 
 export const getPercentage = function(
   numerator?: number,
@@ -169,16 +170,16 @@ export const cleanTxType = function(type: string): string {
     .join("");
 };
 
-export const useInterval = function(callback: any, delay: number, deps?: ReadonlyArray<any>) {
+export const useInterval = function(callback: any, delay: number, deps: any[]) {
   const savedCallback = useRef(callback);
 
   // Remember the latest function.
-  useEffect(() => {
+  useDeepCompareEffect(() => {
     savedCallback.current = callback;
-  }, [callback]);
+  }, [...deps, callback]);
 
   // Set up the interval.
-  useEffect(() => {
+  useDeepCompareEffect(() => {
     function tick() {
       savedCallback.current();
     }
@@ -187,7 +188,7 @@ export const useInterval = function(callback: any, delay: number, deps?: Readonl
       let id = setInterval(tick, delay);
       return () => clearInterval(id);
     }
-  }, [delay]);
+  }, [...deps, delay]);
 };
 
 export const cutAddress = (address: string): string => {
