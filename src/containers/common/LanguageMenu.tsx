@@ -25,9 +25,11 @@ export const LanguageMenuContainer = () => {
         | "ru"
         | "tr"
         | "ua"
+        | "sl"
     ) => {
       i18n.changeLanguage(lng);
       setLanguage(lng);
+      require("electron-log").info(`Setting language to: ${lng}`);
     },
     [i18n, setLanguage]
   );
@@ -95,6 +97,11 @@ export const LanguageMenuContainer = () => {
             icon={language === "ua" ? "tick" : undefined}
             text="Україна"
             onClick={() => changeLanguage("ua")}
+          />
+          <MenuItem
+            icon={language === "sl" ? "tick" : undefined}
+            text="Slovenščina"
+            onClick={() => changeLanguage("sl")}
           />
         </Menu>
       }

@@ -18,6 +18,7 @@ const availableLanguages = [
   "ru",
   "tr",
   "ua",
+  "sl",
 ];
 
 const options = {
