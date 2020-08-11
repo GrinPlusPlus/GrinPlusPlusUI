@@ -176,7 +176,7 @@ export const useInterval = function(callback: any, delay: number, deps: any[]) {
   // Remember the latest function.
   useDeepCompareEffect(() => {
     savedCallback.current = callback;
-  }, [...deps, callback]);
+  }, deps);
 
   // Set up the interval.
   useDeepCompareEffect(() => {
@@ -188,7 +188,7 @@ export const useInterval = function(callback: any, delay: number, deps: any[]) {
       let id = setInterval(tick, delay);
       return () => clearInterval(id);
     }
-  }, [...deps, delay]);
+  }, deps);
 };
 
 export const cutAddress = (address: string): string => {
