@@ -89,10 +89,10 @@ export const WalletContainer = () => {
       if (token.length === 0) return;
       if (!address) return;
 
+      Log.info("Checking address: " + token);
       let walletAddress = address;
       if (walletAddress.length !== 56) {
         try {
-          Log.info("Checking address: " + token);
           walletAddress = await getAddress(token);
         } catch (error) {
           Log.error(`Error trying to get Wallet address: ${error.message}`);

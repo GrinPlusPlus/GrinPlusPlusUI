@@ -72,6 +72,7 @@ const openWallet: SigninModel = {
       )
         .login(payload.username, payload.password)
         .then((response) => {
+          require('electron-log').info("Login response: " + JSON.stringify(response));
           getStoreActions().session.updateSession({
             username: payload.username,
             token: response.token,
