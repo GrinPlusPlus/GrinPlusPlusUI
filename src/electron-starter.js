@@ -15,6 +15,7 @@ const app = electron.app;
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
+let appQuitting = false;
 
 const requestPromise = (options, postData = null) =>
   new Promise((resolve, reject) => {
@@ -111,8 +112,8 @@ async function closeGrinNode(cb) {
           log.info("GrinNode is no longer running");
           clearInterval(waitForCloseInterval);
           cb();
-        } else if (++waitAttempts === 10) {
-          log.info("GrinNode is still running after 5 seconds");
+        } else if (++waitAttempts === 20) {
+          log.info("GrinNode is still running after 10 seconds");
           clearInterval(waitForCloseInterval);
           cb();
         }
@@ -208,12 +209,35 @@ function createWindow() {
     mainWindow = null;
   });
 
-  mainWindow.on("close", () => {});
+  mainWindow.on("close", (event) => {
+    if (process.platform === 'darwin' && !appQuitting) {
+      event.preventDefault();
+      mainWindow.hide();
+    }
+  });
 
   mainWindow.once("ready-to-show", () => {});
 
   app.applicationMenu = null;
 }
+
+let nodeClosed = false;
+app.on("before-quit", async (event) => {
+  if (process.platform === 'darwin' && !nodeClosed) {
+    event.preventDefault();
+
+    if (!appQuitting) {
+      appQuitting = true;
+      mainWindow.close();
+
+      await closeGrinNode(() => {
+        log.info("GrinNode stopped. Calling app.quit()");
+        nodeClosed = true;
+        app.quit();
+      });
+    }
+  }
+});
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -225,14 +249,18 @@ app.on("activate", function() {
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) {
     createWindow();
+  } else {
+    mainWindow.show();
   }
 });
 
 // Quit when all windows are closed.
 app.on("window-all-closed", async (event) => {
   event.preventDefault();
-  await closeGrinNode(() => {
-    log.info("GrinNode stopped. Calling app.quit()");
-    app.quit();
-  });
+  if (process.platform !== 'darwin') {
+    await closeGrinNode(() => {
+      log.info("GrinNode stopped. Calling app.quit()");
+      app.quit();
+    });
+  }
 });
