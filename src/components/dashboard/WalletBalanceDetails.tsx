@@ -23,7 +23,10 @@ export const WalletBalanceDetailsComponent = ({
         <strong>
           <NumberFormat
             data-testid="immature"
-            value={immature}
+            value={immature.toLocaleString("en-US", {
+              useGrouping: true,
+              maximumSignificantDigits: 9,
+            })}
             displayType={"text"}
             thousandSeparator={true}
             decimalScale={9}
@@ -37,7 +40,10 @@ export const WalletBalanceDetailsComponent = ({
         <strong>
           <NumberFormat
             data-testid="unconfirmed"
-            value={unconfirmed}
+            value={unconfirmed.toLocaleString("en-US", {
+              useGrouping: true,
+              maximumSignificantDigits: 9,
+            })}
             displayType={"text"}
             thousandSeparator={true}
             decimalScale={9}
@@ -51,7 +57,10 @@ export const WalletBalanceDetailsComponent = ({
         <strong>
           <NumberFormat
             data-testid="locked"
-            value={locked}
+            value={locked.toLocaleString("en-US", {
+              useGrouping: true,
+              maximumSignificantDigits: 9,
+            })}
             displayType={"text"}
             thousandSeparator={true}
             decimalScale={9}

@@ -18,10 +18,14 @@ export const WalletBalanceComponent = ({ spendable }: WalletBalanceProps) => {
         <SpendableBalance>
           <NumberFormat
             data-testid="spendable"
-            value={spendable}
+            value={spendable.toLocaleString("en-US", {
+              useGrouping: true,
+              maximumSignificantDigits: 9,
+            })}
+            type={"text"}
             displayType={"text"}
-            thousandSeparator={true}
             decimalScale={9}
+            thousandSeparator={true}
             fixedDecimalScale={true}
           />
         </SpendableBalance>
