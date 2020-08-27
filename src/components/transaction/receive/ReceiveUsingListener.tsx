@@ -1,7 +1,10 @@
-import { Button, Intent } from "@blueprintjs/core";
+import React from "react";
+
+import { Button, Intent, Toaster, Position, Text } from "@blueprintjs/core";
 
 import { HorizontallyCenter } from "../../styled";
-import React from "react";
+
+import { useTranslation } from "react-i18next";
 
 type ReceiveUsingListenerProps = {
   slatepack_address: string;
@@ -15,6 +18,8 @@ export const ReceiveUsingListenerComponent = ({
   shortenHttpAddress,
   isWalletReachable,
 }: ReceiveUsingListenerProps) => {
+  const { t } = useTranslation();
+
   return (
     <div style={{ marginTop: "10px" }}>
       <HorizontallyCenter>
@@ -23,7 +28,13 @@ export const ReceiveUsingListenerComponent = ({
           intent={Intent.NONE}
           minimal={true}
           text={slatepack_address}
-          onClick={() => navigator.clipboard.writeText(slatepack_address)}
+          onClick={() => {
+            navigator.clipboard.writeText(slatepack_address);
+            Toaster.create({ position: Position.BOTTOM }).show({
+              message: <div style={{ color: "black" }}>{t("copied")}</div>,
+              intent: Intent.NONE,
+            });
+          }}
         />
       </HorizontallyCenter>
       <HorizontallyCenter>
@@ -38,7 +49,13 @@ export const ReceiveUsingListenerComponent = ({
           }
           minimal={true}
           text={shortenHttpAddress}
-          onClick={() => navigator.clipboard.writeText(httpAddress)}
+          onClick={() => {
+            navigator.clipboard.writeText(httpAddress);
+            Toaster.create({ position: Position.BOTTOM }).show({
+              message: <div style={{ color: "black" }}>{t("copied")}</div>,
+              intent: Intent.NONE,
+            });
+          }}
         />
       </HorizontallyCenter>
     </div>
