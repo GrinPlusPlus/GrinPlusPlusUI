@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Button, Intent, Toaster, Position, Text } from "@blueprintjs/core";
+import { Button, Intent, Toaster, Position } from "@blueprintjs/core";
 
 import { HorizontallyCenter } from "../../styled";
 
