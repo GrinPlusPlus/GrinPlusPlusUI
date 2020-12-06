@@ -20,6 +20,7 @@ export const LanguageMenuContainer = () => {
         | "fa"
         | "fr"
         | "it"
+        | "nl"      
         | "pl"
         | "pr"
         | "ru"
@@ -72,6 +73,11 @@ export const LanguageMenuContainer = () => {
             icon={language === "it" ? "tick" : undefined}
             text="Italiano"
             onClick={() => changeLanguage("it")}
+          />
+          <MenuItem
+            icon={language === "nl" ? "tick" : undefined}
+            text="Nederlands"
+            onClick={() => changeLanguage("nl")}
           />
           <MenuItem
             icon={language === "pl" ? "tick" : undefined}
