@@ -9,7 +9,7 @@ import { SendGrinContainer } from "./containers/SendGrins";
 import { SignInContainer } from "./containers/SignIn";
 import { SignUpContainer } from "./containers/SingUp";
 import { StatusContainer } from "./containers/Status";
-import { LogsContainer } from "./containers/Logs";
+import { HelpContainer } from "./containers/Help";
 import { StoreProvider } from "easy-peasy";
 import { WalletContainer } from "./containers/Wallet";
 import store from "./store";
@@ -84,8 +84,8 @@ const App: React.FC = () => {
           <Route path="/status">
             <StatusContainer />
           </Route>
-          <Route path="/logs">
-            <LogsContainer />
+          <Route path="/help">
+            <HelpContainer />
           </Route>
           <Route path="/">
             <InitializerContainer />

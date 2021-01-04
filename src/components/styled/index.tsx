@@ -54,11 +54,39 @@ export const LargeSlatesBox = styled.textarea`
   resize: none;
 `;
 
-export const LogsBox = styled.textarea`
+export const WalletLogsBox = styled.textarea`
   display: block;
   font-size: 13px;
   width: 100%;
-  height: 100%;
+  height: 100px;
+  background-color: #171920;
+  overflow-y: auto;
+  border-radius: 3px;
+  padding: 10px;
+  font-family: Courier New;
+  white-space: pre-line;
+  color: #ffffff;
+`;
+
+export const NodeLogsBox = styled.textarea`
+  display: block;
+  font-size: 13px;
+  width: 100%;
+  height: 100px;
+  background-color: #171920;
+  overflow-y: auto;
+  border-radius: 3px;
+  padding: 10px;
+  font-family: Courier New;
+  white-space: pre-line;
+  color: #ffffff;
+`;
+
+export const RendererLogsBox = styled.textarea`
+  display: block;
+  font-size: 13px;
+  width: 100%;
+  height: 100px;
   background-color: #171920;
   overflow-y: auto;
   border-radius: 3px;

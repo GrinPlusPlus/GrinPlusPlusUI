@@ -10,9 +10,9 @@ const NavigationBarContainer = React.lazy(() =>
   }))
 );
 
-const WalletLogsContainer = React.lazy(() =>
-  import("./wallet/Logs").then((module) => ({
-    default: module.WalletLogsContainer,
+const HelpComponent = React.lazy(() =>
+  import("../components/extras/Help").then((module) => ({
+    default: module.HelpComponent,
   }))
 );
 
@@ -24,15 +24,15 @@ const StatusBarContainer = React.lazy(() =>
 
 const renderLoader = () => <LoadingComponent />;
 
-export const LogsContainer = () => {
+export const HelpContainer = () => {
   const { t } = useTranslation();
 
   return (
     <Suspense fallback={renderLoader()}>
-      <NavigationBarContainer title={t("logs")} />
+      <NavigationBarContainer title={t("help")} />
       <div className="content">
         <HorizontallyCenter>
-          <WalletLogsContainer />
+          <HelpComponent />
         </HorizontallyCenter>
       </div>
       <div className="footer">

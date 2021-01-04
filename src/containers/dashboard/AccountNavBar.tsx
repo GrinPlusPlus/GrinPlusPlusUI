@@ -42,13 +42,8 @@ export const AccountNavBarContainer = () => {
       <NavbarGroup align={Alignment.RIGHT} className="bp3-dark">
         <Button
           minimal={true}
-          icon="ip-address"
-          onClick={() => history.push("/status")}
-        />
-        <Button
-          minimal={true}
           icon="console"
-          onClick={() => history.push("/logs")}
+          onClick={() => history.push("/status")}
         />
         <NavbarDivider />
         <LanguageMenuContainer />
@@ -77,6 +72,12 @@ export const AccountNavBarContainer = () => {
               );
             }
           }}
+        />
+        <NavbarDivider />
+        <Button
+          minimal={true}
+          icon="lifesaver"
+          onClick={() => history.push("/help")}
         />
       </NavbarGroup>
     </Navbar>
