@@ -29,7 +29,7 @@ export const StatusContainer = () => {
 
   return (
     <Suspense fallback={renderLoader()}>
-      <NavigationBarContainer title={t("connected_peers")} />
+      <NavigationBarContainer title={t("console")} />
       <div className="content">
         <HorizontallyCenter>
           <NodeCheckContainer />

@@ -32,7 +32,7 @@ export const WalletNavBarContainer = () => {
         <NavbarDivider />
         <Button
           minimal={true}
-          icon="ip-address"
+          icon="console"
           onClick={() => history.push("/status")}
         />
       </NavbarGroup>
@@ -52,6 +52,11 @@ export const WalletNavBarContainer = () => {
         />
         <NavbarDivider />
         <LanguageMenuContainer />
+        <Button
+          minimal={true}
+          icon="lifesaver"
+          onClick={() => history.push("/help")}
+        />
       </NavbarGroup>
     </Navbar>
   );

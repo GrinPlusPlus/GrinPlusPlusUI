@@ -1,15 +1,17 @@
 import React, { Suspense, useCallback } from "react";
-import { useStoreActions, useStoreState } from "../hooks";
+import { Toaster, Position, Intent, Alert } from "@blueprintjs/core";
 
+import { ISeed } from "../interfaces/ISeed";
 import { AlertComponent } from "../components/extras/Alert";
 import { LoadingComponent } from "../components/extras/Loading";
-import { Redirect } from "react-router-dom";
 import { PasswordPromptComponent } from "../components/wallet/open/PasswordPrompt";
-import { ISeed } from "../interfaces/ISeed";
-import { Toaster, Position, Intent, Alert } from "@blueprintjs/core";
 import { WalletSeedInputComponent } from "../components/shared/WalletSeedInput";
-import { useTranslation } from "react-i18next";
+
+import { useStoreActions, useStoreState } from "../hooks";
 import { useInterval } from "../helpers";
+
+import { Redirect } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Log from "electron-log";
 
 const AccountNavBarContainer = React.lazy(() =>

@@ -18,6 +18,7 @@
   "confirm_password_helper": "Upewnij się, że hasła pasują do siebie",
   "confirmations": "Confirmations",
   "connected_peers": "Połączony Peers",
+  "console": "Console",
   "continue": "Kontyntynuj",
   "copied": "Skopiowane",
   "create": "Stwórz",
@@ -112,5 +113,9 @@
   "not_online": "Portfel nieosiągalny ⛔️",
   "outputs": "Outputs",
   "kernels": "Kernels",
-  "slatepack": "Slatepack"
+  "slatepack": "Slatepack",
+  "node_logs": "Node Logs",
+  "rendeder_logs": "Renderer Logs",
+  "help": "Help",
+  "processes": "Processes"
 }

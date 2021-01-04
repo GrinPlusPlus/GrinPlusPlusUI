@@ -6,12 +6,14 @@ import { StoreModel } from ".";
 export interface WalletModel {
   isNodeInstalled: boolean;
   isNodeRunning: boolean;
+  isTorRunning: boolean;
   isWalletInitialized: boolean;
   message: string;
   logs: string;
   initializingError: boolean;
   setIsNodeInstalled: Action<WalletModel, boolean>;
   setIsNodeRunning: Action<WalletModel, boolean>;
+  setIsTorRunning: Action<WalletModel, boolean>;
   setWalletInitialized: Action<WalletModel, boolean>;
   setInitializingError: Action<WalletModel, boolean>;
   setMessage: Action<WalletModel, string>;
@@ -28,6 +30,7 @@ export interface WalletModel {
 const wallet: WalletModel = {
   isNodeInstalled: false,
   isNodeRunning: false,
+  isTorRunning: false,
   isWalletInitialized: false,
   nodeHealthCheck: false,
   initializingError: false,
@@ -38,6 +41,9 @@ const wallet: WalletModel = {
   }),
   setIsNodeRunning: action((state, isRunning) => {
     state.isNodeRunning = isRunning;
+  }),
+  setIsTorRunning: action((state, isRunning) => {
+    state.isTorRunning = isRunning;
   }),
   setInitializingError: action((state, error) => {
     state.initializingError = error;
@@ -179,6 +185,7 @@ const wallet: WalletModel = {
       { injections, getStoreState, getStoreActions }
     ): Promise<boolean> => {
       const { nodeService } = injections;
+      actions.setIsTorRunning(await nodeService.isTorRunning(1));
       if (!(await nodeService.isNodeRunning(10))) {
         actions.setInitializingError(true);
         actions.setWalletInitialized(false);

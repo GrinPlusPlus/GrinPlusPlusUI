@@ -17,6 +17,22 @@ export const getCommand = function(): string {
   return cmd;
 };
 
+export const getTorCommand = function(): string {
+  const cmd = (() => {
+    switch (require("electron").remote.process.platform) {
+      case "win32":
+        return "tor.exe";
+      case "darwin":
+        return "tor";
+      case "linux":
+        return "tor";
+      default:
+        throw new Error("Unknown Platform");
+    }
+  })();
+  return cmd;
+};
+
 export const getRustNodeProcess = function(): string {
   const cmd = (() => {
     switch (require("electron").remote.process.platform) {
@@ -155,6 +171,30 @@ export const isNodeRunning = async function(
 ): Promise<boolean> {
   const log = require("electron-log");
   const command = getCommand();
+  let isRunning: boolean | undefined = false;
+  try {
+    isRunning = await retry(
+      () => {
+        log.info(`Checking if ${command} is running...`);
+        if (isProcessRunning(command)) {
+          log.info(`${command} is running`);
+          return true;
+        }
+        throw new Error(`${command} not found...`);
+      },
+      { delay: 1000, maxTry: retries }
+    );
+  } catch (error) {
+    log.error(`${command} is not running: ${error.message}`);
+  }
+  return isRunning ? true : false;
+};
+
+export const isTorRunning = async function(
+  retries: number = 0
+): Promise<boolean> {
+  const log = require("electron-log");
+  const command = getTorCommand();
   let isRunning: boolean | undefined = false;
   try {
     isRunning = await retry(

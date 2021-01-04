@@ -18,6 +18,7 @@
   "confirm_password_helper": "Zorg ervoor dat de paswoorden overeenstemmen",
   "confirmations": "Bevestigingen",
   "connected_peers": "Verbonden nodes (Peers)",
+  "console": "Console",
   "continue": "Verder gaan",
   "copied": "Gekopieerd!",
   "create": "Aanmaken",
@@ -112,5 +113,9 @@
   "not_online": "Wallet is niet bereikbaar ⛔️",
   "outputs": "Outputs",
   "kernels": "Kernels",
-  "slatepack": "Slatepack"
+  "slatepack": "Slatepack",
+  "node_logs": "Node Logs",
+  "rendeder_logs": "Renderer Logs",
+  "help": "Help",
+  "processes": "Processes"
 }
