@@ -1,5 +1,5 @@
-import { HorizontallyCenter, Title, Flex } from "../../components/styled";
-import { Spinner, Text } from "@blueprintjs/core";
+import { Title, Flex } from "../../components/styled";
+import { Spinner } from "@blueprintjs/core";
 import React from "react";
 import { ReceiveUsingListenerComponent } from "../../components/transaction/receive/ReceiveUsingListener";
 import { useStoreState } from "../../hooks";
@@ -22,26 +22,11 @@ export const ReceiveUsingListenerContainer = () => {
           </div>
         ) : null}
       </Flex>
-      <div>
-        {address ? (
-          <ReceiveUsingListenerComponent
-            isWalletReachable={walletReachable}
-            slatepack_address={slatepack_address}
-            httpAddress={`http://${address}.grinplusplus.com/`}
-            shortenHttpAddress={`http://${address.replace(
-              address.substr(
-                address.length / 2 - address.length / 4,
-                (address.length / 4) * 2
-              ),
-              ".........."
-            )}.grinplusplus.com/`}
-          />
-        ) : (
-          <HorizontallyCenter>
-            <Spinner size={30} />
-            <Text>{t("trying_get_address")}</Text>
-          </HorizontallyCenter>
-        )}
+      <div style={{ marginTop: "10px" }}>
+        <ReceiveUsingListenerComponent
+          isWalletReachable={walletReachable}
+          slatepack_address={slatepack_address}
+        />
       </div>
     </div>
   );

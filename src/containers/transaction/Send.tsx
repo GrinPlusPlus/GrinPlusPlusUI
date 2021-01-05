@@ -1,8 +1,4 @@
-import {
-  Left,
-  SendGrinTopRow,
-  SendGrinsContent,
-} from "../../components/styled";
+import { Flex, SendGrinsContent } from "../../components/styled";
 import React, { Suspense, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useStoreActions, useStoreState } from "../../hooks";
@@ -26,12 +22,6 @@ const TransactionAmountContainer = React.lazy(() =>
   }))
 );
 
-const SaveTransactionFileContainer = React.lazy(() =>
-  import("./SaveTransactionFile").then((module) => ({
-    default: module.SaveTransactionFileContainer,
-  }))
-);
-
 const TransactionMessageContainer = React.lazy(() =>
   import("./TransactionMessage").then((module) => ({
     default: module.TransactionMessageContainer,
@@ -47,6 +37,12 @@ const TransactionAddressContainer = React.lazy(() =>
 const CoinControlContainer = React.lazy(() =>
   import("./CoinControl").then((module) => ({
     default: module.CoinControlContainer,
+  }))
+);
+
+const SendUsingAddressContainer = React.lazy(() =>
+  import("./SendUsingAddress").then((module) => ({
+    default: module.SendUsingAddressContainer,
   }))
 );
 
@@ -86,19 +82,15 @@ export const SendContainer = () => {
   return (
     <Suspense fallback={renderLoader()}>
       <SendGrinsContent>
-        <div style={{ float: "right" }}>
-          <SpendableContainer />
-        </div>
-        <SendGrinTopRow>
-          <Left>
-            <TransactionAmountContainer />
-          </Left>
-          <div style={{ textAlign: "right", paddingRight: "5px" }}>
-            <SaveTransactionFileContainer />
+        <SpendableContainer />
+        <Flex>
+          <TransactionAmountContainer />
+          <div style={{ marginLeft: "25px" }}>
+            <SendUsingAddressContainer />
           </div>
-        </SendGrinTopRow>
-        <TransactionMessageContainer />
+        </Flex>
         <TransactionAddressContainer />
+        <TransactionMessageContainer />
         <CoinControlContainer />
       </SendGrinsContent>
       {usernamePrompt ? (

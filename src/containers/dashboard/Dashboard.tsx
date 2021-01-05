@@ -1,10 +1,8 @@
 import { Button, Intent } from "@blueprintjs/core";
 import { Content, Flex } from "../../components/styled";
 
-import { FinalizeContainer } from "./Finalize";
 import { ReceiveUsingSlateContainer } from "./ReceiveUsingSlate";
 import React from "react";
-import { ReceiveUsingFileContainer } from "./ReceiveUsingFile";
 import { ReceiveUsingListenerContainer } from "./ReceiveUsingListener";
 import { WalletActivitiyContainer } from "./WalletActivity";
 import { WalletBalanceContainer } from "./WalletBalance";
@@ -19,7 +17,7 @@ export const DashboardContainer = () => {
 
   return (
     <Content>
-      <div style={{ width: "40%", margin: "5px" }}>
+      <div style={{ width: "48%", margin: "5px", marginTop: "10px" }}>
         <Flex>
           <WalletBalanceContainer />
           <div
@@ -37,7 +35,7 @@ export const DashboardContainer = () => {
                 marginTop: "15px",
               }}
               intent={Intent.PRIMARY}
-              text={`${t("send")} ツ`}
+              text={`${t("send")}`}
               onClick={() => history.push("/send")}
             />
           </div>
@@ -47,18 +45,12 @@ export const DashboardContainer = () => {
         </div>
         <div style={{ marginTop: "10px" }}>
           <ReceiveUsingListenerContainer />
-          <div style={{ marginTop: "10px" }}>
-            <ReceiveUsingFileContainer />
-          </div>
-        </div>
-        <div style={{ marginTop: "20px" }}>
-          <FinalizeContainer />
         </div>
         <div style={{ marginTop: "10px" }}>
           <ReceiveUsingSlateContainer />
         </div>
       </div>
-      <div style={{ width: "60%", marginLeft: "15px", marginTop: "5px" }}>
+      <div style={{ width: "52%", marginLeft: "15px", marginTop: "5px" }}>
         <WalletActivitiyContainer />
       </div>
     </Content>

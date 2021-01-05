@@ -17,7 +17,8 @@ export interface NodeSummaryModel {
     inbound: number;
   };
   userAgent: string;
-  updateInterval: number;
+  CheckStatusInterval: number;
+  HealthCheckInterval: number;
   waitingResponse: boolean;
   connectedPeers: IPeer[];
   updateStatus: Action<
@@ -54,7 +55,8 @@ const nodeSummary: NodeSummaryModel = {
   blocks: 0,
   network: { height: 0, outbound: 0, inbound: 0 },
   userAgent: "",
-  updateInterval: 1000,
+  CheckStatusInterval: 1000,
+  HealthCheckInterval : 10000,
   connectedPeers: [],
   waitingResponse: false,
   updateStatus: action((state, node) => {

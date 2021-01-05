@@ -1,5 +1,5 @@
 import { IWalletSettings } from "../../interfaces/IWalletSettings";
-import { retry } from "ts-retry";
+import { retryAsync } from "ts-retry";
 
 export const getCommand = function(): string {
   const cmd = (() => {
@@ -49,24 +49,30 @@ export const getRustNodeProcess = function(): string {
   return cmd;
 };
 
-const isProcessRunning = function(processName: string): boolean {
+const isProcessRunning = function(processName: string): Promise<boolean> {
   const cmd = (() => {
-    switch (require("electron").remote.process.platform) {
+    switch (require("os").platform()) {
       case "win32":
-        return `tasklist`;
+        return `wmic process where "name = '${processName}'" get commandline`;
       case "darwin":
-        return `ps -ax`;
+        return `ps -ax | grep ${processName}`;
       case "linux":
         return `ps -A`;
       default:
-        throw new Error("Unknown Platform");
+        return false;
     }
   })();
-  const results = require("child_process").execSync(cmd, {
-    windowsHide: true,
-    encoding: "utf-8",
+
+  return new Promise((resolve, reject) => {
+    require("child_process").exec(
+      cmd,
+      (err: Error, stdout: string, stderr: string) => {
+        if (err) reject(err);
+
+        resolve(stdout.toLowerCase().indexOf(processName.toLowerCase()) > -1);
+      }
+    );
   });
-  return results.toLowerCase().indexOf(processName.toLowerCase()) > -1;
 };
 
 const killProcess = function(processName: string): void {
@@ -146,6 +152,10 @@ export const runNode = function(
   const absolutePath = getAbsoluteNodePath(mode, nodePath);
   const command = getCommandPath(absolutePath);
 
+  require("electron-log").info(
+    "Current working directory: " + require("process").cwd()
+  );
+
   require("electron-log").info(`Trying to run Backend: ${command}`);
   let node = require("child_process").spawn(command, params, {
     windowsHide: true,
@@ -171,47 +181,47 @@ export const isNodeRunning = async function(
 ): Promise<boolean> {
   const log = require("electron-log");
   const command = getCommand();
-  let isRunning: boolean | undefined = false;
+  let isRunning: boolean = false;
   try {
-    isRunning = await retry(
-      () => {
+    isRunning = await retryAsync(
+      async () => {
         log.info(`Checking if ${command} is running...`);
-        if (isProcessRunning(command)) {
+        const running = await isProcessRunning(command);
+        if (running) {
           log.info(`${command} is running`);
-          return true;
         }
-        throw new Error(`${command} not found...`);
+        return running;
       },
       { delay: 1000, maxTry: retries }
     );
   } catch (error) {
     log.error(`${command} is not running: ${error.message}`);
   }
-  return isRunning ? true : false;
+  return isRunning;
 };
 
 export const isTorRunning = async function(
-  retries: number = 0
+  retries: number = 1
 ): Promise<boolean> {
   const log = require("electron-log");
   const command = getTorCommand();
-  let isRunning: boolean | undefined = false;
+  let isRunning: boolean = false;
   try {
-    isRunning = await retry(
-      () => {
+    isRunning = await retryAsync(
+      async () => {
         log.info(`Checking if ${command} is running...`);
-        if (isProcessRunning(command)) {
+        const running = await isProcessRunning(command);
+        if (running) {
           log.info(`${command} is running`);
-          return true;
         }
-        throw new Error(`${command} not found...`);
+        return running;
       },
       { delay: 1000, maxTry: retries }
     );
   } catch (error) {
     log.error(`${command} is not running: ${error.message}`);
   }
-  return isRunning ? true : false;
+  return isRunning;
 };
 
 export const stopNode = function(): void {
@@ -224,7 +234,7 @@ export const stopRustNode = function(): void {
   try {
     killProcess(getRustNodeProcess());
   } catch (e) {}
-}
+};
 
 export const getDefaultSettings = function(
   file: string = "defaults.json"

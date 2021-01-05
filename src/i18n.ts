@@ -13,7 +13,7 @@ const availableLanguages = [
   "fa",
   "fr",
   "it",
-  "nl",  
+  "nl",
   "pl",
   "pr",
   "ru",

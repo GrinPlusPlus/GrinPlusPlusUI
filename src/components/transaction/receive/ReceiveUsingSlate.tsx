@@ -1,4 +1,4 @@
-import { SlatesBox, Flex } from "../../styled";
+import { SlatesBox, Flex, Right } from "../../styled";
 
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -21,7 +21,7 @@ export const ReceiveUsingSlateComponent = ({
   const { t } = useTranslation();
 
   return (
-    <Flex>
+    <div>
       <SlatesBox
         data-testid="slatepack-box"
         onChange={(event: React.FormEvent<HTMLTextAreaElement>) => {
@@ -32,28 +32,29 @@ export const ReceiveUsingSlateComponent = ({
       >
         {slate}
       </SlatesBox>
-      <Flex>
-        <Button
-          minimal={true}
-          large={true}
-          disabled={validateSlatepack(slate) === false}
-          intent={Intent.SUCCESS}
-          text={t("receive")}
-          onClick={() => {
-            onReceiveSlatepackCb(slate);
-          }}
-        />
-        <Button
-          minimal={true}
-          large={true}
-          disabled={validateSlatepack(slate) === false}
-          intent={Intent.PRIMARY}
-          text={t("finalize")}
-          onClick={() => {
-            onFinalizeSlatepackCb(slate);
-          }}
-        />
-      </Flex>
-    </Flex>
+      <Right>
+        <Flex>
+          <Button
+            style={{ margin: "5px" }}
+            disabled={validateSlatepack(slate) === false}
+            intent={Intent.SUCCESS}
+            text={t("receive")}
+            onClick={() => {
+              onReceiveSlatepackCb(slate);
+            }}
+          />
+          <Button
+            minimal={true}
+            large={true}
+            disabled={validateSlatepack(slate) === false}
+            intent={Intent.PRIMARY}
+            text={t("finalize")}
+            onClick={() => {
+              onFinalizeSlatepackCb(slate);
+            }}
+          />
+        </Flex>
+      </Right>
+    </div>
   );
 };

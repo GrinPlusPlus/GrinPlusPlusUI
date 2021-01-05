@@ -27,8 +27,8 @@ export const Flex = styled.section`
 export const SlatesBox = styled.textarea`
   font-size: 13px;
   width: 100%;
-  min-height: 140px;
-  max-height: 140px;
+  min-height: 290px;
+  max-height: 290px;
   background-color: #171920;
   overflow-y: auto;
   border-radius: 3px;
@@ -97,8 +97,8 @@ export const RendererLogsBox = styled.textarea`
 `;
 
 export const Title = styled.section`
-  font-size: 24px;
-  color: #ffff14 !important;
+  font-size: 20px;
+  color: #a3a3a3 !important;
 `;
 
 export const Content = styled.section`
@@ -122,6 +122,7 @@ export const StatusBarContent = styled.section`
 
 export const SpendableBalance = styled.section`
   font-size: 30px;
+  color: #ffff00;
 `;
 
 export const BalanceSuffix = styled.section`
@@ -146,7 +147,10 @@ export const Dropper = styled.section`
 `;
 
 export const WalletUsername = styled.section`
-  font-size: 18px;
+  font-size: 21px;
+  vertical-align: middle;
+  text-transform: uppercase;
+  color: #ffff00;
 `;
 
 export const AccountListContent = styled.section`
@@ -174,24 +178,10 @@ export const SendGrinsContent = styled.section`
   padding: 20px;
 `;
 
-export const SendGrinTopRow = styled.section`
-  overflow: auto;
-  width: 100%;
-  padding-top: 10px;
-`;
-
 export const Left = styled.section`
-  display: block;
-  width: 50%;
-  margin: 0;
-  padding: 0;
   float: left;
 `;
 
 export const Right = styled.section`
-  display: block;
-  width: 50%;
-  margin: 0;
-  padding: 0;
   float: right;
 `;

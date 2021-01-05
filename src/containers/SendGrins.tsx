@@ -36,7 +36,7 @@ export const SendGrinContainer = () => {
     <Suspense fallback={renderLoader()}>
       {!isLoggedIn ? <Redirect to="/login" /> : null}
       <NavBarContainer
-        title={`${t("send_grins")} ツ`}
+        title={`${t("send_grins")}`}
         onExit={() => setInitialValues()}
       />
       <div className="content">

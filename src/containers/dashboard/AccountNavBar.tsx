@@ -11,7 +11,6 @@ import { useStoreActions, useStoreState } from "./../../hooks";
 import { LanguageMenuContainer } from "../common/LanguageMenu";
 import React from "react";
 import { WalletUsername } from "./../../components/styled";
-import { getResourcePath } from "../../helpers";
 import { useHistory } from "react-router-dom";
 
 export const AccountNavBarContainer = () => {
@@ -27,14 +26,6 @@ export const AccountNavBarContainer = () => {
   return (
     <Navbar>
       <NavbarGroup align={Alignment.LEFT}>
-        <img
-          src={getResourcePath("./statics/images/grinpp.png")}
-          alt=""
-          style={{
-            maxWidth: "35px",
-            height: "auto",
-          }}
-        />
         <NavbarHeading>
           <WalletUsername>{username}</WalletUsername>
         </NavbarHeading>

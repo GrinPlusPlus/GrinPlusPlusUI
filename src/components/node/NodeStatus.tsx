@@ -15,7 +15,7 @@ export const NodeStatusComponent = ({
   const { t } = useTranslation();
 
   return (
-    <table className="transactions" style={{ width: "500px" }}>
+    <table className="transactions">
       <tbody>
         <tr>
           <th>

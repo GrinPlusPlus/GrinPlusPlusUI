@@ -71,7 +71,7 @@ const wallet: WalletModel = {
       const { nodeService } = injections;
       const settings = getStoreState().settings.defaultSettings;
 
-      if (nodeService.isNodeRunning(0)) {
+      if (nodeService.isNodeRunning(1)) {
         try {
           new nodeService.REST(
             settings.floonet,
@@ -82,6 +82,7 @@ const wallet: WalletModel = {
           nodeService.stopNode();
         }
       }
+
       getStoreActions().session.clean();
     }
   ),
@@ -185,19 +186,17 @@ const wallet: WalletModel = {
       { injections, getStoreState, getStoreActions }
     ): Promise<boolean> => {
       const { nodeService } = injections;
+
       actions.setIsTorRunning(await nodeService.isTorRunning(1));
-      if (!(await nodeService.isNodeRunning(10))) {
-        actions.setInitializingError(true);
-        actions.setWalletInitialized(false);
-        actions.setNodeHealthCheck(false);
-        actions.setMessage("node_is_not_running");
-        return false;
-      }
-      actions.setInitializingError(false);
-      actions.setWalletInitialized(true);
-      actions.setNodeHealthCheck(true);
-      actions.setMessage("");
-      return true;
+ 
+      const isNodeRunning = await nodeService.isNodeRunning(1);
+      
+      actions.setInitializingError(!isNodeRunning);
+      actions.setWalletInitialized(isNodeRunning);
+      actions.setNodeHealthCheck(isNodeRunning);
+      actions.setMessage(isNodeRunning ? "" : "node_is_not_running");
+
+      return isNodeRunning;
     }
   ),
 };

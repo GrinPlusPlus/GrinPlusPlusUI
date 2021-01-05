@@ -25,13 +25,8 @@ export const SendUsingAddressComponent = ({
     <Button
       intent={Intent.PRIMARY}
       style={{ color: "black", width: "120px" }}
-      icon="globe"
       disabled={
-        fee <= 0 ||
-        amount <= 0 ||
-        spendable < amount + fee ||
-        !isAddressValid ||
-        !inputsSelected
+        fee <= 0 || amount <= 0 || spendable < amount + fee || !inputsSelected
       }
       onClick={onSendButtonClickedCb}
     >

@@ -10,17 +10,16 @@ type TransactionMessageProps = {
 
 export const TransactionMessageComponent = ({
   message,
-  setMessageCb
+  setMessageCb,
 }: TransactionMessageProps) => {
   const { t } = useTranslation();
 
   return (
-    <FormGroup helperText={t("message_helper")}>
+    <FormGroup label={`${t("message")}:`} inline={true}>
       <InputGroup
         value={message}
-        placeholder={t("message")}
         className="bp3-dark"
-        style={{ backgroundColor: "#21242D" }}
+        style={{ backgroundColor: "#21242D", width: "365px" }}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setMessageCb(e.target.value)
         }
