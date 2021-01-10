@@ -7,6 +7,7 @@ export class GrinChck {
         {
           url: address,
           form: { wallet: wallet },
+          timeout: 30000,
         },
         (error: any, response: any, body: string) => {
           resolve(!error && response.body === "reachable");

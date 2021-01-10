@@ -25,9 +25,7 @@ export const SendUsingAddressComponent = ({
     <Button
       intent={Intent.PRIMARY}
       style={{ color: "black", width: "120px" }}
-      disabled={
-        fee <= 0 || amount <= 0 || spendable < amount + fee || !inputsSelected
-      }
+      disabled={fee <= 0 || amount <= 0 || spendable <= 0 || !inputsSelected}
       onClick={onSendButtonClickedCb}
     >
       {t("send")}

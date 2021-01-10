@@ -27,8 +27,8 @@ export const Flex = styled.section`
 export const SlatesBox = styled.textarea`
   font-size: 13px;
   width: 100%;
-  min-height: 290px;
-  max-height: 290px;
+  min-height: 320px;
+  max-height: 320px;
   background-color: #171920;
   overflow-y: auto;
   border-radius: 3px;

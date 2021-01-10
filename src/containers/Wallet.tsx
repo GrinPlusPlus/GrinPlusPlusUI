@@ -91,28 +91,16 @@ export const WalletContainer = () => {
       if (token.length === 0) return;
       if (!address) return;
 
-      Log.info("Checking address: " + token);
-      let walletAddress = address;
-      if (walletAddress.length !== 56) {
-        try {
-          walletAddress = await getAddress(token);
-        } catch (error) {
-          Log.error(`Error trying to get Wallet address: ${error.message}`);
-        }
-      }
+      Log.info("Checking address: " + `http://${address}.onion/`);
 
-      if (walletAddress.length === 56) {
-        try {
-          await checkWalletAvailability(walletAddress);
-        } catch (error) {
-          Log.error(
-            `Error trying to get Wallet Availability: ${error.message}`
-          );
-        }
+      try {
+        await checkWalletAvailability(`http://${address}.onion/`);
+      } catch (error) {
+        Log.error(`Error trying to get Wallet Availability: ${error.message}`);
       }
     },
     30000,
-    [token]
+    [token, address]
   );
 
   const backupSeed = useCallback(async () => {

@@ -64,8 +64,8 @@
   "password": "Geslo",
   "password_for": "Geslo za",
   "password_helper": {
-     "1": "Geslo mora biti vsaj",
-     "2": "znakov dolgo"
+    "1": "Geslo mora biti vsaj",
+    "2": "znakov dolgo"
   },
   "process": "Postopek",
   "receive": "Prejmi",
@@ -117,5 +117,6 @@
   "node_logs": "Node Logs",
   "rendeder_logs": "Renderer Logs",
   "help": "Help",
-  "processes": "Processes"
+  "processes": "Processes",
+  "send_max": "Send Max"
 }

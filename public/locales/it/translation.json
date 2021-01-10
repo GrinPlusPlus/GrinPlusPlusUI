@@ -117,5 +117,6 @@
   "node_logs": "Node Logs",
   "rendeder_logs": "Renderer Logs",
   "help": "Help",
-  "processes": "Processes"
+  "processes": "Processes",
+  "send_max": "Send Max"
 }

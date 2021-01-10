@@ -17,8 +17,10 @@ export const ReceiveUsingListenerContainer = () => {
       <Flex>
         <Title>{t("address")}</Title>
         {address && walletReachable === undefined ? (
-          <div style={{ padding: "10px" }}>
-            <Spinner size={12} />
+          <div
+            style={{ paddingLeft: "10px", margin: "0px", paddingTop: "10px" }}
+          >
+            <Spinner size={8} />
           </div>
         ) : null}
       </Flex>

@@ -10,8 +10,6 @@ import {
   Intent,
   NumericInput,
   Slider,
-  Switch,
-  Text,
 } from "@blueprintjs/core";
 
 import React from "react";

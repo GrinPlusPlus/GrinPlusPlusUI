@@ -21,7 +21,13 @@ export const ReceiveUsingListenerComponent = ({
       <Button
         className="bp3-dark"
         rightIcon="duplicate"
-        intent={isWalletReachable ? Intent.SUCCESS : Intent.WARNING}
+        intent={
+          isWalletReachable === undefined
+            ? Intent.NONE
+            : isWalletReachable
+            ? Intent.SUCCESS
+            : Intent.WARNING
+        }
         minimal={true}
         text={slatepack_address}
         onClick={() => {

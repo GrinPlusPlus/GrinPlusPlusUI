@@ -71,7 +71,7 @@ export interface SendCoinsModel {
   estimateFee: Thunk<
     SendCoinsModel,
     {
-      amount: number;
+      amount: number | undefined;
       strategy: string;
       token: string;
       message: string;
@@ -339,76 +339,32 @@ const sendCoinsModel: SendCoinsModel = {
       const defaultSettings = getStoreState().settings.defaultSettings;
 
       let destinationAddress = payload.address.replace(/\/?$/, ""); //removing trailing /
-      const type = utilsService.validateAddress(destinationAddress); // check if the address is valid
-      if (type === false) {
-        return "invalid_destination_address";
-      } else if (type === "http") {
-        // Let's try to reach the wallet first
-        try {
-          if (!(await foreignService.RPC.check(destinationAddress))) {
-            return "not_online";
-          }
-        } catch (error) {
-          return "not_online";
-        }
-      }
 
       try {
-        if (type === "slatepack") {
-          const response = await new ownerService.RPC(
-            defaultSettings.floonet,
-            defaultSettings.protocol,
-            defaultSettings.ip
-          ).sendCoins(
-            payload.token,
-            payload.amount,
-            payload.message,
-            payload.strategy,
-            payload.inputs,
-            payload.method,
-            payload.grinJoinAddress,
-            destinationAddress
-          );
-          if (typeof response === "string") {
-            return response;
-          }
-          actions.setInitialValues(); // alles gut!
+        const response = await new ownerService.RPC(
+          defaultSettings.floonet,
+          defaultSettings.protocol,
+          defaultSettings.ip
+        ).sendCoins(
+          payload.token,
+          payload.amount,
+          payload.message,
+          payload.strategy,
+          payload.inputs,
+          payload.method,
+          payload.grinJoinAddress,
+          destinationAddress
+        );
+        if (typeof response === "string") {
+          return response;
+        }
 
-          if (response.status === "SENT") {
-            actions.setReturnedSlatepack(response.slatepack);
-            return "SENT";
-          } else {
-            return "FINALIZED";
-          }
-        } else if (type === "http") {
-          const send_response = await new ownerService.RPC(
-            defaultSettings.floonet,
-            defaultSettings.protocol,
-            defaultSettings.ip
-          ).sendCoins(
-            payload.token,
-            payload.amount,
-            payload.message,
-            payload.strategy,
-            payload.inputs,
-            payload.method,
-            payload.grinJoinAddress
-          );
-          if (typeof send_response === "string") {
-            return send_response;
-          }
-          const receivedSlate = await foreignService.RPC.receive(
-            destinationAddress,
-            send_response.slate
-          );
-          const finalized = await foreignService.RPC.finalize(
-            "http://localhost:" + getStoreState().session.listener_port,
-            receivedSlate
-          );
-          if (typeof finalized === "string") {
-            return finalized;
-          }
-          actions.setInitialValues(); // alles gut!
+        actions.setInitialValues(); // alles gut!
+
+        if (response.status === "SENT") {
+          actions.setReturnedSlatepack(response.slatepack);
+          return "SENT";
+        } else {
           return "FINALIZED";
         }
       } catch (error) {

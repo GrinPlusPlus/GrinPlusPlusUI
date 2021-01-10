@@ -98,7 +98,7 @@ export const CoinControlComponent = ({
         <Radio label={t("custom")} value="CUSTOM" />
       </RadioGroup>
       <br />
-      <div style={{ height: "calc(100vh - 430px)", overflowY: "auto" }}>
+      <div style={{ height: "calc(100vh - 400px)", overflowY: "auto" }}>
         <table className="transactions">
           <tbody>
             <tr>
