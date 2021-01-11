@@ -349,7 +349,7 @@ export class OwnerRPCApi extends BaseApi {
 
   public async estimateFee(
     token: string,
-    amount: number,
+    amount: number | undefined,
     strategy: string = "SMALLEST",
     inputs: string[] = [],
     message: string = ""
