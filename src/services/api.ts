@@ -88,7 +88,7 @@ export class BaseApi {
       | "node_status"
       | "resync_blockchain"
       | "connected_peers"
-      | "accounts"
+      | "list_wallets"
       | "receive"
       | "send"
       | "finalize"
@@ -99,7 +99,6 @@ export class BaseApi {
       | "create_wallet"
       | "restore_wallet"
       | "wallet_summary"
-      | "scan_outputs"
       | "estimate_fee"
       | "cancel_tx"
       | "repost_tx"
@@ -115,8 +114,8 @@ export class BaseApi {
         return `${this._getNodeURL()}/resync`;
       case "connected_peers":
         return `${this._getNodeURL()}/peers/connected`;
-      case "accounts":
-        return `${this._getOwnerURL()}/accounts`;
+      case "list_wallets":
+        return this._getOwnerRPCURL();
       case "shutdown":
         return `${this._getNodeURL()}/shutdown`;
       case "send":
@@ -149,8 +148,6 @@ export class BaseApi {
         return this._getOwnerRPCURL();
       case "repost_tx":
         return this._getOwnerRPCURL();
-      case "scan_outputs":
-        return `${this._getOwnerURL()}/update_wallet`;
       case "retrieve_outputs":
         return `${this._getOwnerURL()}/retrieve_outputs`;
       default:

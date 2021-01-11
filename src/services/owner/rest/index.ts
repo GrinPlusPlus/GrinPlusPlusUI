@@ -5,23 +5,6 @@ export class OwnerAPI extends BaseApi {
     return this.getURL("owner");
   }
 
-  public async getAccounts(): Promise<string[]> {
-    return await this.makeRESTRequest(
-      `${this.getRequestURL("accounts")}`,
-      "get"
-    )
-      .then(data => {
-        try {
-          return JSON.parse(data);
-        } catch (ex) {
-          return [];
-        }
-      })
-      .catch(error => {
-        throw new Error(error);
-      });
-  }
-
   public async getOutputs(
     token: string
   ): Promise<

@@ -408,4 +408,18 @@ export class OwnerRPCApi extends BaseApi {
       return response.result.status;
     });
   }
+
+  public async getAccounts(): Promise<string[]> {
+    return await this.makeRPCRequest(
+      `${this.getRequestURL("list_wallets")}`,
+      'list_wallets',
+      {}
+    ).then((response) => {
+      if (response.error) throw new Error(response.error.message);
+      return response.result.wallets;
+    })
+    .catch(error => {
+      throw new Error(error);
+    });
+  }
 }
