@@ -2,18 +2,17 @@ import React from "react";
 
 import { Button, Intent, Toaster, Position } from "@blueprintjs/core";
 
-import { HorizontallyCenter } from "../../styled";
-
 import { useTranslation } from "react-i18next";
+import { HorizontallyCenter } from "../styled";
 
-type ReceiveUsingListenerProps = {
+type WalletAddressComponentProps = {
   slatepack_address: string;
   isWalletReachable: boolean | undefined;
 };
-export const ReceiveUsingListenerComponent = ({
+export const WalletAddressComponent = ({
   slatepack_address,
   isWalletReachable,
-}: ReceiveUsingListenerProps) => {
+}: WalletAddressComponentProps) => {
   const { t } = useTranslation();
 
   return (

@@ -3,7 +3,7 @@ import { Content, Flex } from "../../components/styled";
 
 import { ReceiveUsingSlateContainer } from "./ReceiveUsingSlate";
 import React from "react";
-import { ReceiveUsingListenerContainer } from "./ReceiveUsingListener";
+import { WalletAddressContainer } from "./WalletAddressContainer";
 import { WalletActivitiyContainer } from "./WalletActivity";
 import { WalletBalanceContainer } from "./WalletBalance";
 import { WalletBalanceDetailsContainer } from "./WalletBalanceDetails";
@@ -17,7 +17,7 @@ export const DashboardContainer = () => {
 
   return (
     <Content>
-      <div style={{ width: "48%", margin: "5px", marginTop: "10px" }}>
+      <div style={{ width: "40%", margin: "5px", marginTop: "10px" }}>
         <Flex>
           <WalletBalanceContainer />
           <div
@@ -44,13 +44,13 @@ export const DashboardContainer = () => {
           <WalletBalanceDetailsContainer />
         </div>
         <div style={{ marginTop: "10px" }}>
-          <ReceiveUsingListenerContainer />
+          <WalletAddressContainer />
         </div>
         <div style={{ marginTop: "10px" }}>
           <ReceiveUsingSlateContainer />
         </div>
       </div>
-      <div style={{ width: "52%", marginLeft: "15px", marginTop: "5px" }}>
+      <div style={{ width: "60%", marginLeft: "15px", marginTop: "5px" }}>
         <WalletActivitiyContainer />
       </div>
     </Content>

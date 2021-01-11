@@ -1,11 +1,11 @@
 import { Title, Flex } from "../../components/styled";
 import { Spinner } from "@blueprintjs/core";
 import React from "react";
-import { ReceiveUsingListenerComponent } from "../../components/transaction/receive/ReceiveUsingListener";
+import { WalletAddressComponent } from "../../components/dashboard/WalletAddress";
 import { useStoreState } from "../../hooks";
 import { useTranslation } from "react-i18next";
 
-export const ReceiveUsingListenerContainer = () => {
+export const WalletAddressContainer = () => {
   const { t } = useTranslation();
   const { address, slatepack_address } = useStoreState(
     (state) => state.session
@@ -25,7 +25,7 @@ export const ReceiveUsingListenerContainer = () => {
         ) : null}
       </Flex>
       <div style={{ marginTop: "10px" }}>
-        <ReceiveUsingListenerComponent
+        <WalletAddressComponent
           isWalletReachable={walletReachable}
           slatepack_address={slatepack_address}
         />

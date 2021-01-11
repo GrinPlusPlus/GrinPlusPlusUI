@@ -100,13 +100,18 @@ const session: SessionModel = {
     getStoreActions().walletSummary.updateSummary(undefined);
     getStoreActions().walletSummary.setSelectedTx(-1);
     getStoreActions().wallet.replaceLogs("");
-    getStoreActions().finalizeModel.setResponseFile(undefined);
     getStoreActions().sendCoinsModel.setInitialValues();
     getStoreActions().createWallet.setInitialValues();
     getStoreActions().restoreWallet.setInitialValues();
     getStoreActions().signinModel.setAccounts(undefined);
     getStoreActions().ui.setAlert(undefined);
-    actions.updateSession({ username: "", token: "", address: "", listener_port: 0, slatepack_address: "" });
+    actions.updateSession({
+      username: "",
+      token: "",
+      address: "",
+      listener_port: 0,
+      slatepack_address: "",
+    });
   }),
 };
 

@@ -103,7 +103,7 @@ const wallet: WalletModel = {
       payload,
       { injections, getStoreActions }
     ): Promise<boolean> => {
-      const { nodeService, utilsService } = injections;
+      const { nodeService } = injections;
       const defaultSettings = nodeService.getDefaultSettings(); // Read defaults.json
 
       nodeService.stopRustNode();
@@ -165,9 +165,6 @@ const wallet: WalletModel = {
       settingsActions.setMininumPeers(defaultSettings.minimumPeers);
       settingsActions.setConfirmations(defaultSettings.minimumConfirmations);
 
-      getStoreActions().receiveCoinsModel.setResponsesDestination(
-        utilsService.getHomePath()
-      );
       actions.setInitializingError(false);
       actions.setWalletInitialized(true);
       actions.setNodeHealthCheck(true);
