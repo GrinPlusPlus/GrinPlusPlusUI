@@ -124,10 +124,10 @@ export class OwnerRPCApi extends BaseApi {
       message: message ? message : undefined,
       post_tx: postTx,
     };
-    if (address === "" || address == undefined) {
+    if (address === "" || address === undefined) {
       delete params["address"];
     }
-    if (message === "" || message == undefined) {
+    if (message === "" || message === undefined) {
       delete params["message"];
     }
 
