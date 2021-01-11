@@ -88,7 +88,7 @@ export class BaseApi {
       | "node_status"
       | "resync_blockchain"
       | "connected_peers"
-      | "accounts"
+      | "list_wallets"
       | "receive"
       | "send"
       | "finalize"
@@ -114,8 +114,8 @@ export class BaseApi {
         return `${this._getNodeURL()}/resync`;
       case "connected_peers":
         return `${this._getNodeURL()}/peers/connected`;
-      case "accounts":
-        return `${this._getOwnerURL()}/accounts`;
+      case "list_wallets":
+        return this._getOwnerRPCURL();
       case "shutdown":
         return `${this._getNodeURL()}/shutdown`;
       case "send":
