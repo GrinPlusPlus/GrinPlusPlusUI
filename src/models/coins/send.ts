@@ -80,22 +80,10 @@ export interface SendCoinsModel {
     Injections,
     StoreModel
   >;
-  sendViaFile: Thunk<
+  sendGrins: Thunk<
     SendCoinsModel,
     {
-      amount: number;
-      strategy: string;
-      inputs: string[];
-      message: string;
-      token: string;
-    },
-    Injections,
-    StoreModel
-  >;
-  sendUsingListener: Thunk<
-    SendCoinsModel,
-    {
-      amount: number;
+      amount: number | undefined;
       address: string;
       message: string;
       method: string;
@@ -293,43 +281,7 @@ const sendCoinsModel: SendCoinsModel = {
         });
     }
   ),
-  sendViaFile: thunk(
-    async (
-      actions,
-      payload,
-      { injections, getStoreState, getStoreActions }
-    ): Promise<boolean> => {
-      const apiSettings = getStoreState().settings.defaultSettings;
-      const { ownerService, utilsService } = injections;
-
-      const file = await utilsService.saveAs(utilsService.getHomePath());
-
-      if (file.canceled) return false;
-
-      return await new ownerService.RPC(
-        apiSettings.floonet,
-        apiSettings.protocol,
-        apiSettings.ip
-      )
-        .sendCoinsViaFile(
-          payload.token,
-          payload.amount,
-          payload.strategy,
-          payload.inputs,
-          payload.message,
-          file.filePath
-        )
-        .then((response) => {
-          utilsService.writeTextFile(file.filePath, JSON.stringify(response));
-          actions.setInitialValues(); // alles gut!
-          return true;
-        })
-        .catch((error) => {
-          throw new Error(error);
-        });
-    }
-  ),
-  sendUsingListener: thunk(
+  sendGrins: thunk(
     async (
       actions,
       payload,
