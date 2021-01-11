@@ -20,6 +20,7 @@ type WalletActivityProps = {
     transactionId: number,
     method: string
   ) => void;
+  onViewSlatepackMessageButtonClickedCb: (transactionId: number) => void;
   method: string;
   lastConfirmedHeight: number;
   confirmations: number;
@@ -36,6 +37,7 @@ export const WalletActivityComponent = ({
   openTransactionCb,
   onCancelTransactionButtonClickedCb,
   onRepostTransactionButtonClickedCb,
+  onViewSlatepackMessageButtonClickedCb,
   method,
   lastConfirmedHeight,
   confirmations,
@@ -68,6 +70,9 @@ export const WalletActivityComponent = ({
               onRepostTransactionButtonClickedCb={
                 onRepostTransactionButtonClickedCb
               }
+              onViewSlatepackMessageButtonClickedCb={
+                onViewSlatepackMessageButtonClickedCb
+              }
               method={method}
               lastConfirmedHeight={lastConfirmedHeight}
               confirmations={confirmations}
@@ -91,6 +96,9 @@ export const WalletActivityComponent = ({
               onRepostTransactionButtonClickedCb={
                 onRepostTransactionButtonClickedCb
               }
+              onViewSlatepackMessageButtonClickedCb={
+                onViewSlatepackMessageButtonClickedCb
+              }
               method={method}
               lastConfirmedHeight={lastConfirmedHeight}
               confirmations={confirmations}
@@ -112,6 +120,9 @@ export const WalletActivityComponent = ({
               }
               onRepostTransactionButtonClickedCb={
                 onRepostTransactionButtonClickedCb
+              }
+              onViewSlatepackMessageButtonClickedCb={
+                onViewSlatepackMessageButtonClickedCb
               }
               method={method}
               lastConfirmedHeight={lastConfirmedHeight}
@@ -135,6 +146,9 @@ export const WalletActivityComponent = ({
               onRepostTransactionButtonClickedCb={
                 onRepostTransactionButtonClickedCb
               }
+              onViewSlatepackMessageButtonClickedCb={
+                onViewSlatepackMessageButtonClickedCb
+              }
               method={method}
               lastConfirmedHeight={lastConfirmedHeight}
               confirmations={confirmations}
@@ -157,6 +171,9 @@ export const WalletActivityComponent = ({
               onRepostTransactionButtonClickedCb={
                 onRepostTransactionButtonClickedCb
               }
+              onViewSlatepackMessageButtonClickedCb={
+                onViewSlatepackMessageButtonClickedCb
+              }
               method={method}
               lastConfirmedHeight={lastConfirmedHeight}
               confirmations={confirmations}
@@ -178,6 +195,9 @@ export const WalletActivityComponent = ({
               }
               onRepostTransactionButtonClickedCb={
                 onRepostTransactionButtonClickedCb
+              }
+              onViewSlatepackMessageButtonClickedCb={
+                onViewSlatepackMessageButtonClickedCb
               }
               method={method}
               lastConfirmedHeight={lastConfirmedHeight}

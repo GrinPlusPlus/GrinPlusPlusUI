@@ -13,8 +13,10 @@ export interface WalletSummaryModel {
   locked: number;
   updateSummaryInterval: number;
   selectedTx: number;
+  selectedSlatepackMessage: string;
   transactions: ITransaction[] | undefined;
   setSelectedTx: Action<WalletSummaryModel, number>;
+  setSelectedSlatepackMessage: Action<WalletSummaryModel, string>;
   updateSummary: Action<
     WalletSummaryModel,
     | {
@@ -93,9 +95,13 @@ const walletSummary: WalletSummaryModel = {
   locked: 0,
   updateSummaryInterval: 5000,
   selectedTx: -1,
+  selectedSlatepackMessage: "",
   transactions: undefined,
   setSelectedTx: action((state, id) => {
     state.selectedTx = id;
+  }),
+  setSelectedSlatepackMessage: action((state, slatepack) => {
+    state.selectedSlatepackMessage = slatepack;
   }),
   updateSummary: action((state, payload) => {
     if (payload === undefined) {

@@ -18,6 +18,7 @@ export type TansactionDetailsProps = {
     transactionId: number,
     method: string
   ) => void;
+  onViewSlatepackMessageButtonClickedCb: (transactionId: number) => void;
   kernels?: string[];
   outputs?: {
     amount: number;
@@ -37,6 +38,7 @@ export const TansactionDetailsComponent = ({
   method,
   onCancelTransactionButtonClickedCb,
   onRepostTransactionButtonClickedCb,
+  onViewSlatepackMessageButtonClickedCb,
   kernels,
   outputs,
 }: TansactionDetailsProps) => {
@@ -175,12 +177,20 @@ export const TansactionDetailsComponent = ({
       </div>
       <div style={{ textAlign: "center" }}>
         {["sending_not_finalized", "receiving_unconfirmed"].includes(mType) ? (
-          <Button
-            text={t("cancel_transaction")}
-            minimal={true}
-            intent={Intent.WARNING}
-            onClick={() => onCancelTransactionButtonClickedCb(id)}
-          />
+          <span>
+            <Button
+              text={t("cancel_transaction")}
+              minimal={true}
+              intent={Intent.WARNING}
+              onClick={() => onCancelTransactionButtonClickedCb(id)}
+            />
+            <Button
+              text={t("view_slatepack")}
+              minimal={true}
+              intent={Intent.NONE}
+              onClick={() => onViewSlatepackMessageButtonClickedCb(id)}
+            />
+          </span>
         ) : mType === "sending_finalized" ? (
           <span>
             <Button

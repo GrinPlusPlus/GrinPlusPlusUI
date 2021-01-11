@@ -21,6 +21,7 @@ type TransactionsTableProps = {
     transactionId: number,
     method: string
   ) => void;
+  onViewSlatepackMessageButtonClickedCb: (transactionId: number) => void;
   method: string;
   lastConfirmedHeight: number;
   confirmations: number;
@@ -32,6 +33,7 @@ export const TransactionsTableComponent = ({
   openTransactionCb,
   onCancelTransactionButtonClickedCb,
   onRepostTransactionButtonClickedCb,
+  onViewSlatepackMessageButtonClickedCb,
   method,
   lastConfirmedHeight,
   confirmations,
@@ -141,6 +143,9 @@ export const TransactionsTableComponent = ({
                 }
                 onRepostTransactionButtonClickedCb={
                   onRepostTransactionButtonClickedCb
+                }
+                onViewSlatepackMessageButtonClickedCb={
+                  onViewSlatepackMessageButtonClickedCb
                 }
               />
             ) : null}

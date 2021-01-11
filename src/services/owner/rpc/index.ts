@@ -297,6 +297,7 @@ export class OwnerRPCApi extends BaseApi {
           fee: transaction.fee,
           slateId: transaction.slate_id,
           slateMessage: transaction.slate_message,
+          slatepackMessage: transaction.armored_slatepack,
           kernels: transaction.kernels?.map(
             (kernel: { commitment: string }) => kernel.commitment
           ),

@@ -1,6 +1,8 @@
-import { Alert, Intent, Position, Toaster } from "@blueprintjs/core";
+import { Alert, Intent, Position, Toaster, Dialog } from "@blueprintjs/core";
 import React, { useCallback } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
+
+import { SlatepackComponent } from "../../components/extras/Slatepack";
 
 import { WalletActivityComponent } from "../../components/dashboard/WalletActivity";
 import { useTranslation } from "react-i18next";
@@ -16,6 +18,7 @@ export const WalletActivitiyContainer = () => {
     getCancelledTransactions,
     getCoinbaseTransactions,
     selectedTx,
+    selectedSlatepackMessage,
   } = useStoreState((state) => state.walletSummary);
   const { token } = useStoreState((state) => state.session);
   const { transactionOpened } = useStoreState((state) => state.ui);
@@ -30,7 +33,19 @@ export const WalletActivitiyContainer = () => {
     cancelTransaction,
     repostTransaction,
     setSelectedTx,
+    setSelectedSlatepackMessage,
   } = useStoreActions((state) => state.walletSummary);
+
+  const onViewSlatepackMessageButtonClicked = useCallback(
+    (txId: number) => {
+      const transaction = getAllTransactions.find((t) => t.Id === txId);
+      require("electron-log").info(transaction);
+      if (transaction?.slatepackMessage !== undefined) {
+        setSelectedSlatepackMessage(transaction.slatepackMessage);
+      }
+    },
+    [token, getAllTransactions, setSelectedSlatepackMessage]
+  );
 
   const onCancelTransactionButtonClicked = useCallback(
     async (txId: number) => {
@@ -94,6 +109,9 @@ export const WalletActivitiyContainer = () => {
         openTransactionCb={openTransaction}
         onCancelTransactionButtonClickedCb={setSelectedTx}
         onRepostTransactionButtonClickedCb={onRepostTransactionButtonClicked}
+        onViewSlatepackMessageButtonClickedCb={
+          onViewSlatepackMessageButtonClicked
+        }
         method={useGrinJoin ? "JOIN" : "FLUFF"}
         lastConfirmedHeight={lastConfirmedHeight}
         confirmations={confirmations}
@@ -110,6 +128,16 @@ export const WalletActivitiyContainer = () => {
       >
         <p>{t("cancelation_confirmation")}</p>
       </Alert>
+      <Dialog
+        title="Slatepack"
+        className="bp3-dark"
+        isOpen={selectedSlatepackMessage.length > 0}
+        onClose={() => {
+          setSelectedSlatepackMessage("");
+        }}
+      >
+        <SlatepackComponent slatepack={selectedSlatepackMessage} />
+      </Dialog>
     </div>
   );
 };
