@@ -16,7 +16,7 @@ export const NodeCheckContainer = () => {
     (state) => state.nodeSummary
   );
 
-  const { isNodeInstalled, isTorRunning } = useStoreState(
+  const { isNodeRunning, isTorRunning } = useStoreState(
     (state) => state.wallet
   );
 
@@ -35,7 +35,7 @@ export const NodeCheckContainer = () => {
         <div style={{ width: "25%", marginTop: "10px", marginLeft: "10px" }}>
           <Title>{t("processes")}</Title>
           <br />
-          <Checkbox checked={isNodeInstalled} label="Node" disabled={true} />
+          <Checkbox checked={isNodeRunning} label="Node" disabled={true} />
           <Checkbox checked={isTorRunning} label="Tor" disabled={true} />
         </div>
       </Content>

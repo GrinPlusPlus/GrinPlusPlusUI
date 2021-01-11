@@ -1,7 +1,7 @@
 import { IWalletSettings } from "../../interfaces/IWalletSettings";
 import { retryAsync } from "ts-retry";
 
-export const getCommand = function (): string {
+export const getCommand = function(): string {
   const cmd = (() => {
     switch (require("electron").remote.process.platform) {
       case "win32":
@@ -17,7 +17,7 @@ export const getCommand = function (): string {
   return cmd;
 };
 
-export const getTorCommand = function (): string {
+export const getTorCommand = function(): string {
   const cmd = (() => {
     switch (require("electron").remote.process.platform) {
       case "win32":
@@ -33,7 +33,7 @@ export const getTorCommand = function (): string {
   return cmd;
 };
 
-export const getRustNodeProcess = function (): string {
+export const getRustNodeProcess = function(): string {
   const cmd = (() => {
     switch (require("electron").remote.process.platform) {
       case "win32":
@@ -49,7 +49,7 @@ export const getRustNodeProcess = function (): string {
   return cmd;
 };
 
-const isProcessRunning = function (processName: string): Promise<boolean> {
+const isProcessRunning = function(processName: string): Promise<boolean> {
   const cmd = (() => {
     switch (require("os").platform()) {
       case "win32":
@@ -68,14 +68,19 @@ const isProcessRunning = function (processName: string): Promise<boolean> {
       cmd,
       (err: Error, stdout: string, stderr: string) => {
         if (err) reject(err);
-
-        resolve(stdout.toLowerCase().indexOf(processName.toLowerCase()) > -1);
+        if (require("electron").remote.process.platform === "win32") {
+          resolve(
+            stdout.toLowerCase().indexOf("CommandLine".toLowerCase()) > -1
+          );
+        } else {
+          resolve(stdout.toLowerCase().indexOf(processName.toLowerCase()) > -1);
+        }
       }
     );
   });
 };
 
-const killProcess = function (processName: string): void {
+const killProcess = function(processName: string): void {
   require("electron-log").info("Calling killProcess");
   const cmd = (() => {
     switch (require("electron").remote.process.platform) {
@@ -94,17 +99,17 @@ const killProcess = function (processName: string): void {
     .execSync(cmd, { windowsHide: true, encoding: "utf-8" });
 };
 
-export const getNodeDataPath = function (floonet: boolean = false): string {
+export const getNodeDataPath = function(floonet: boolean = false): string {
   const { remote } = require("electron");
   const net = !floonet ? "MAINNET" : "FLOONET";
   return `${remote.app.getPath("home")}/.GrinPP/${net}`;
 };
 
-export const getConfigFilePath = function (floonet: boolean = false): string {
+export const getConfigFilePath = function(floonet: boolean = false): string {
   return `${getNodeDataPath(floonet)}/server_config.json`;
 };
 
-export const updateSettings = function (
+export const updateSettings = function(
   file: string,
   property: "MIN_PEERS" | "MAX_PEERS" | "MIN_CONFIRMATIONS" | undefined,
   value: number
@@ -122,7 +127,7 @@ export const updateSettings = function (
   fs.writeFileSync(file, JSON.stringify(settings));
 };
 
-export const getAbsoluteNodePath = function (
+export const getAbsoluteNodePath = function(
   mode: "DEV" | "TEST" | "PROD",
   nodePath: string
 ): string {
@@ -139,11 +144,11 @@ export const getAbsoluteNodePath = function (
   }
 };
 
-export const getCommandPath = function (nodePath: string): string {
+export const getCommandPath = function(nodePath: string): string {
   return require("path").join(nodePath, getCommand());
 };
 
-export const runNode = function (
+export const runNode = function(
   mode: "DEV" | "TEST" | "PROD",
   nodePath: string,
   isFloonet: boolean = false
@@ -165,10 +170,10 @@ export const runNode = function (
     cwd: absolutePath,
   });
   require("electron-log").info(`Backend spawned pid: ${node.pid}`);
-  node.stdout.on("data", function (data: any) {
+  node.stdout.on("data", function(data: any) {
     require("electron-log").info(data.toString());
   });
-  node.stderr.on("data", function (data: any) {
+  node.stderr.on("data", function(data: any) {
     require("electron-log").error(data.toString());
   });
   node.on("close", (code: number) => {
@@ -176,7 +181,7 @@ export const runNode = function (
   });
 };
 
-export const isNodeRunning = async function (
+export const isNodeRunning = async function(
   retries: number = 0
 ): Promise<boolean> {
   const log = require("electron-log");
@@ -189,6 +194,8 @@ export const isNodeRunning = async function (
         const running = await isProcessRunning(command);
         if (running) {
           log.info(`${command} is running`);
+        } else {
+          log.info(`${command} is NOT running`);
         }
         return running;
       },
@@ -200,7 +207,7 @@ export const isNodeRunning = async function (
   return isRunning;
 };
 
-export const isTorRunning = async function (
+export const isTorRunning = async function(
   retries: number = 1
 ): Promise<boolean> {
   const log = require("electron-log");
@@ -213,6 +220,8 @@ export const isTorRunning = async function (
         const running = await isProcessRunning(command);
         if (running) {
           log.info(`${command} is running`);
+        } else {
+          log.info(`${command} is NOT running`);
         }
         return running;
       },
@@ -224,19 +233,19 @@ export const isTorRunning = async function (
   return isRunning;
 };
 
-export const stopNode = function (): void {
+export const stopNode = function(): void {
   try {
     killProcess(getCommand());
   } catch (e) {}
 };
 
-export const stopRustNode = function (): void {
+export const stopRustNode = function(): void {
   try {
     killProcess(getRustNodeProcess());
   } catch (e) {}
 };
 
-export const getDefaultSettings = function (
+export const getDefaultSettings = function(
   file: string = "defaults.json"
 ): IWalletSettings {
   const filePath = require("path").join(
@@ -281,7 +290,7 @@ export const getDefaultSettings = function (
   };
 };
 
-export const verifyNodePath = function (
+export const verifyNodePath = function(
   mode: "DEV" | "TEST" | "PROD",
   defaultPath: string
 ): boolean {
