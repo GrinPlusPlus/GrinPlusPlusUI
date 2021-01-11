@@ -120,16 +120,17 @@ export class OwnerRPCApi extends BaseApi {
         strategy: strategy,
         inputs: strategy === "SMALLEST" ? [] : inputs,
       },
-      address: address,
-      message: message,
+      address: address ? address : undefined,
+      message: message ? message : undefined,
       post_tx: postTx,
     };
-    if (message === "") {
-      delete params["message"];
-    }
-    if (address === "") {
+    if (address === "" || address == undefined) {
       delete params["address"];
     }
+    if (message === "" || message == undefined) {
+      delete params["message"];
+    }
+
     require("electron-log").info(`${address}`);
     require("electron-log").info(params);
 
@@ -369,7 +370,7 @@ export class OwnerRPCApi extends BaseApi {
       "estimate_fee",
       {
         session_token: token,
-        amount: amount * Math.pow(10, 9),
+        amount: amount ? amount * Math.pow(10, 9) : undefined,
         fee_base: 1000000,
         selection_strategy: {
           strategy: strategy,
@@ -412,14 +413,15 @@ export class OwnerRPCApi extends BaseApi {
   public async getAccounts(): Promise<string[]> {
     return await this.makeRPCRequest(
       `${this.getRequestURL("list_wallets")}`,
-      'list_wallets',
+      "list_wallets",
       {}
-    ).then((response) => {
-      if (response.error) throw new Error(response.error.message);
-      return response.result.wallets;
-    })
-    .catch(error => {
-      throw new Error(error);
-    });
+    )
+      .then((response) => {
+        if (response.error) throw new Error(response.error.message);
+        return response.result.wallets;
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
   }
 }
