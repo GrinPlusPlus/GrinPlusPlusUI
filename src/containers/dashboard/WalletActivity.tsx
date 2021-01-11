@@ -44,7 +44,7 @@ export const WalletActivitiyContainer = () => {
         setSelectedSlatepackMessage(transaction.slatepackMessage);
       }
     },
-    [token, getAllTransactions, setSelectedSlatepackMessage]
+    [getAllTransactions, setSelectedSlatepackMessage]
   );
 
   const onCancelTransactionButtonClicked = useCallback(
