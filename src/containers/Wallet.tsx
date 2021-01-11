@@ -62,9 +62,6 @@ export const WalletContainer = () => {
     updateWalletBalance,
     checkWalletAvailability,
   } = useStoreActions((actions) => actions.walletSummary);
-  const { getAddress } = useStoreActions(
-    (actions) => actions.receiveCoinsModel
-  );
 
   useInterval(
     async () => {
@@ -91,7 +88,7 @@ export const WalletContainer = () => {
       if (token.length === 0) return;
       if (!address) return;
 
-      Log.info("Checking address: " + `http://${address}.onion/`);
+      Log.info(`Checking address: http://${address}.onion/`);
 
       try {
         await checkWalletAvailability(`http://${address}.onion/`);

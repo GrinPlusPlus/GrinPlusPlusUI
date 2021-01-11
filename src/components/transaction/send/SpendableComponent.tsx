@@ -26,7 +26,7 @@ export const SpendableComponent = ({
         style={{ marginLeft: "10px", marginRight: "10px" }}
       >{`${spendable.toFixed(9)} ツ`}</b>
       <Button
-        intent={Intent.PRIMARY}
+        className="bp3-dark"
         disabled={spendable > 0 ? false : true}
         style={{ color: "black" }}
         onClick={onSendMaxButtonClickedCb}

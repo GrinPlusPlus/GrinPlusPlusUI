@@ -287,7 +287,7 @@ const sendCoinsModel: SendCoinsModel = {
       payload,
       { injections, getStoreState, getStoreActions }
     ): Promise<string> => {
-      const { ownerService, utilsService, foreignService } = injections;
+      const { ownerService } = injections;
       const defaultSettings = getStoreState().settings.defaultSettings;
 
       let destinationAddress = payload.address.replace(/\/?$/, ""); //removing trailing /
@@ -322,8 +322,6 @@ const sendCoinsModel: SendCoinsModel = {
       } catch (error) {
         return error;
       }
-
-      return "unkown_error";
     }
   ),
   onStrategyChanged: thunkOn(

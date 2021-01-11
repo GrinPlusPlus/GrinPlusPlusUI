@@ -5,7 +5,7 @@ import { useStoreState, useStoreActions } from "../../hooks";
 
 export const SpendableContainer = () => {
   const { spendable } = useStoreState((state) => state.walletSummary);
-  const { amount, fee, message, strategy, inputs } = useStoreState(
+  const { message, strategy, inputs } = useStoreState(
     (state) => state.sendCoinsModel
   );
   const { token } = useStoreState((state) => state.session);
@@ -28,7 +28,7 @@ export const SpendableContainer = () => {
         icon: "warning-sign",
       });
     });
-  }, [strategy, message, token, inputs, estimateFee, setAmount]);
+  }, [strategy, message, token, inputs, estimateFee, setAmount, spendable]);
 
   return (
     <SpendableComponent

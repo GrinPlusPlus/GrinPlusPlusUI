@@ -139,7 +139,7 @@ const wallet: WalletModel = {
       }
 
       // Let's double check if the Node is running...
-      if (!(await nodeService.isNodeRunning(10))) {
+      if (!(await nodeService.isNodeRunning(30))) {
         actions.setInitializingError(true);
         actions.setWalletInitialized(false);
         actions.setNodeHealthCheck(false);
@@ -188,9 +188,9 @@ const wallet: WalletModel = {
       const { nodeService } = injections;
 
       actions.setIsTorRunning(await nodeService.isTorRunning(1));
- 
+
       const isNodeRunning = await nodeService.isNodeRunning(1);
-      
+
       actions.setInitializingError(!isNodeRunning);
       actions.setWalletInitialized(isNodeRunning);
       actions.setNodeHealthCheck(isNodeRunning);
