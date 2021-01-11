@@ -11,17 +11,20 @@ export const TransactionAmountContainer = () => {
     (state) => state.sendCoinsModel
   );
   const { token } = useStoreState((state) => state.session);
-  const { estimateFee, setAmount } = useStoreActions(
+  const { estimateFee, setAmount, setEstimatedFee } = useStoreActions(
     (actions) => actions.sendCoinsModel
   );
 
   const onAmountChange = useCallback(
     async (amount: string) => {
       if (amount === undefined || amount.slice(-1) === ".") return;
+      setAmount(amount);
       const _amount = Number(amount);
       if (countDecimalPlaces(_amount) > 9) return;
-      if (_amount < 0) return;
-      setAmount(amount);
+      if (_amount <= 0) {
+        setEstimatedFee(0.0);
+        return;
+      }
       await estimateFee({
         amount: _amount,
         strategy: strategy,
@@ -36,7 +39,7 @@ export const TransactionAmountContainer = () => {
         });
       });
     },
-    [strategy, message, token, inputs, estimateFee, setAmount]
+    [strategy, message, token, inputs, estimateFee, setAmount, setEstimatedFee]
   );
 
   return (
