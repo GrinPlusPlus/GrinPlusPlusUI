@@ -102,7 +102,7 @@ export class BaseApi {
       | "estimate_fee"
       | "cancel_tx"
       | "repost_tx"
-      | "retrieve_outputs"
+      | "list_outputs"
       | "get_seed"
       | "list_txs"
       | "delete_wallet"
@@ -148,8 +148,8 @@ export class BaseApi {
         return this._getOwnerRPCURL();
       case "repost_tx":
         return this._getOwnerRPCURL();
-      case "retrieve_outputs":
-        return `${this._getOwnerURL()}/retrieve_outputs`;
+      case "list_outputs":
+        return this._getOwnerRPCURL();
       default:
         return "";
     }

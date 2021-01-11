@@ -227,7 +227,7 @@ const sendCoinsModel: SendCoinsModel = {
     async (actions, token, { injections, getStoreActions, getStoreState }) => {
       const { ownerService } = injections;
       const apiSettings = getStoreState().settings.defaultSettings;
-      return await new ownerService.REST(
+      return await new ownerService.RPC(
         apiSettings.floonet,
         apiSettings.protocol,
         apiSettings.ip
