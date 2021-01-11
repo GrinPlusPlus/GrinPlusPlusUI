@@ -91,7 +91,7 @@ export class OwnerRPCApi extends BaseApi {
 
   public async sendCoins(
     token: string,
-    amount: number,
+    amount: number | undefined,
     message: string,
     strategy: string,
     inputs: string[],
@@ -114,7 +114,7 @@ export class OwnerRPCApi extends BaseApi {
     }
     let params = {
       session_token: token,
-      amount: amount * Math.pow(10, 9),
+      amount: amount ? amount * Math.pow(10, 9) : undefined,
       fee_base: 1000000,
       selection_strategy: {
         strategy: strategy,
