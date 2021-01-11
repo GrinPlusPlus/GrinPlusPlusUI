@@ -8,12 +8,12 @@ type ReceiveUsingFileProps = {
   onResponseFilesDroppedCb: (files: File[]) => void;
 };
 export const ReceiveUsingFileComponent = ({
-  onResponseFilesDroppedCb
+  onResponseFilesDroppedCb,
 }: ReceiveUsingFileProps) => {
   const { t } = useTranslation();
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop: onResponseFilesDroppedCb
+    onDrop: onResponseFilesDroppedCb,
   });
 
   return (

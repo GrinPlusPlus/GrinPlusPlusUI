@@ -73,7 +73,7 @@ const createWalletModel: CreateWalletModel = {
   }),
   setGeneratedSeed: action((state, seed) => {
     let position: number = 1;
-    let newSeed: ISeed[] = seed.map(function(word: string) {
+    let newSeed: ISeed[] = seed.map(function (word: string) {
       return {
         position: position++,
         text: word,
@@ -107,7 +107,7 @@ const createWalletModel: CreateWalletModel = {
             token: wallet.token,
             address: wallet.address,
             listener_port: wallet.listener_port,
-            slatepack_address: wallet.slatepack_address
+            slatepack_address: wallet.slatepack_address,
           });
 
           return wallet.token;

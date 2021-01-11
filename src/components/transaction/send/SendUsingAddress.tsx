@@ -8,7 +8,6 @@ type SendGrinsButtonsProps = {
   fee: number;
   spendable: number;
   inputsSelected: boolean;
-  isAddressValid: boolean;
   onSendButtonClickedCb: () => void;
 };
 
@@ -17,7 +16,6 @@ export const SendUsingAddressComponent = ({
   fee,
   spendable,
   inputsSelected,
-  isAddressValid,
   onSendButtonClickedCb,
 }: SendGrinsButtonsProps) => {
   const { t } = useTranslation();
@@ -25,7 +23,13 @@ export const SendUsingAddressComponent = ({
     <Button
       intent={Intent.PRIMARY}
       style={{ color: "black", width: "120px" }}
-      disabled={fee <= 0 || amount <= 0 || spendable <= 0 || !inputsSelected}
+      disabled={
+        fee <= 0 ||
+        amount <= 0 ||
+        spendable <= 0 ||
+        !inputsSelected ||
+        amount + fee > spendable
+      }
       onClick={onSendButtonClickedCb}
     >
       {t("send")}

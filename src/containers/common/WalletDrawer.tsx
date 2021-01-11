@@ -8,9 +8,9 @@ import { useTranslation } from "react-i18next";
 export const WalletDrawer = () => {
   const { t } = useTranslation();
 
-  const { isLoggedIn } = useStoreState(state => state.session);
-  const { showSettings } = useStoreState(state => state.ui);
-  const { toggleSettings } = useStoreActions(actions => actions.ui);
+  const { isLoggedIn } = useStoreState((state) => state.session);
+  const { showSettings } = useStoreState((state) => state.ui);
+  const { toggleSettings } = useStoreActions((actions) => actions.ui);
 
   return (
     <Drawer

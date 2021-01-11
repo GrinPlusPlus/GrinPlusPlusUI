@@ -12,7 +12,7 @@ export const LogoComponent = () => {
         style={{
           maxWidth: "60px",
           height: "auto",
-          marginTop: "4px"
+          marginTop: "4px",
         }}
       />
     </HorizontallyCenter>

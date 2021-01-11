@@ -20,7 +20,7 @@ export const LanguageMenuContainer = () => {
         | "fa"
         | "fr"
         | "it"
-        | "nl"      
+        | "nl"
         | "pl"
         | "pr"
         | "ru"

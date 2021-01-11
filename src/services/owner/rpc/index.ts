@@ -66,29 +66,6 @@ export class OwnerRPCApi extends BaseApi {
     });
   }
 
-  public async sendCoinsViaFile(
-    token: string,
-    amount: number,
-    strategy: string,
-    inputs: string[],
-    message: string,
-    file: string
-  ): Promise<string | {}> {
-    return await this.makeRPCRequest(this.getRequestURL("send"), "send", {
-      session_token: token,
-      amount: amount * Math.pow(10, 9),
-      fee_base: 1000000,
-      selection_strategy: {
-        strategy: strategy,
-        inputs: strategy === "SMALLEST" ? [] : inputs,
-      },
-      message: message,
-      file: file,
-    }).then((response) =>
-      response.error ? response.error.message : response.result.slate
-    );
-  }
-
   public async sendCoins(
     token: string,
     amount: number | undefined,
@@ -115,7 +92,7 @@ export class OwnerRPCApi extends BaseApi {
     let params = {
       session_token: token,
       amount: amount ? amount * Math.pow(10, 9) : undefined,
-      fee_base: 1000000,
+      fee_base: 500000,
       selection_strategy: {
         strategy: strategy,
         inputs: strategy === "SMALLEST" ? [] : inputs,
@@ -356,6 +333,7 @@ export class OwnerRPCApi extends BaseApi {
     message: string = ""
   ): Promise<{
     fee: number;
+    amount: number;
     inputs: {
       amount: number;
       block_height: number;
@@ -371,7 +349,7 @@ export class OwnerRPCApi extends BaseApi {
       {
         session_token: token,
         amount: amount ? amount * Math.pow(10, 9) : undefined,
-        fee_base: 1000000,
+        fee_base: 500000,
         selection_strategy: {
           strategy: strategy,
           inputs: strategy === "SMALLEST" ? [] : inputs,
@@ -439,9 +417,9 @@ export class OwnerRPCApi extends BaseApi {
   > {
     return await this.makeRPCRequest(
       `${this.getRequestURL("list_outputs")}`,
-      'list_outputs',
+      "list_outputs",
       { session_token: token }
-    ).then(response => {
+    ).then((response) => {
       if (response.error) throw new Error(response.error.message);
       return response.result.outputs;
     });

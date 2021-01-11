@@ -51,17 +51,19 @@ export const CreateWalletContainer = () => {
         username: username,
         password: password,
         seedLength: seedLength,
-      }).then(() => {
-        require("electron-log").info(
-          "User created... redirecting to Wallet..."
-        );
-      }).catch((error: { message: string }) => {
-        Toaster.create({ position: Position.BOTTOM }).show({
-          message: error.message,
-          intent: Intent.DANGER,
-          icon: "warning-sign",
+      })
+        .then(() => {
+          require("electron-log").info(
+            "User created... redirecting to Wallet..."
+          );
+        })
+        .catch((error: { message: string }) => {
+          Toaster.create({ position: Position.BOTTOM }).show({
+            message: error.message,
+            intent: Intent.DANGER,
+            icon: "warning-sign",
+          });
         });
-      });
     } catch (error) {}
   }, [username, password, create, seedLength]);
 

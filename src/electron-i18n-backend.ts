@@ -2,13 +2,13 @@ const getDefaults = () => {
   return {
     loadPath: "/locales/{{lng}}/{{ns}}.json",
     addPath: "/locales/{{lng}}/{{ns}}.missing.json",
-    parse: JSON.parse
+    parse: JSON.parse,
   };
 };
 
 const readFile = (filename: string, callback: Function) => {
   const fs = require("fs");
-  fs.readFile(filename, "utf8", function(err: any, data: string) {
+  fs.readFile(filename, "utf8", function (err: any, data: string) {
     if (err) {
       callback(err);
     } else {

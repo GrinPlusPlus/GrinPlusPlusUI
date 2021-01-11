@@ -13,7 +13,7 @@ type WalletSeedInputComponentTrops = {
 export const WalletSeedInputComponent = ({
   seed,
   onWordChangeCb,
-  length
+  length,
 }: WalletSeedInputComponentTrops) => {
   const walletSeedTable = useCallback(() => {
     let table = [];
@@ -21,7 +21,7 @@ export const WalletSeedInputComponent = ({
     for (let i = 0; i < length / 3; i++) {
       table.push(
         <Flex key={`group-${i}-w`}>
-          {seed.slice(i * 3, (i + 1) * 3).map(word => (
+          {seed.slice(i * 3, (i + 1) * 3).map((word) => (
             <FormGroup
               key={`word-${i}-${word.position}`}
               style={{ margin: "0px 2px 2px 2px" }}
@@ -29,7 +29,7 @@ export const WalletSeedInputComponent = ({
               <InputGroup
                 style={{
                   backgroundColor: word.valid ? "#21242D" : "#ff1919",
-                  color: "white"
+                  color: "white",
                 }}
                 id={`${word.position}`}
                 key={`word-${word.position}`}
@@ -45,7 +45,7 @@ export const WalletSeedInputComponent = ({
                     style={{
                       fontFamily: "Verdana",
                       fontSize: "11px",
-                      color: "gray"
+                      color: "gray",
                     }}
                   >
                     {`${word.position}`.padStart(2, "0")}

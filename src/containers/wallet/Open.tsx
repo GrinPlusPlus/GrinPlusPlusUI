@@ -37,7 +37,7 @@ export const OpenWalletContainer = () => {
   );
 
   useEffect(() => {
-    (async function() {
+    (async function () {
       if (accounts !== undefined) return;
       try {
         const _accounts = await getAccounts();

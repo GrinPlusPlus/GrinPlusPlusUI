@@ -3,8 +3,8 @@ import { fireEvent, render, waitForElement } from "@testing-library/react";
 
 import React from "react";
 
-jest.mock('react-i18next', () => ({
-  useTranslation: () => ({t: key => key})
+jest.mock("react-i18next", () => ({
+  useTranslation: () => ({ t: (key) => key }),
 }));
 
 function renderLogsComponent(props: Partial<AlertProps> = {}) {
@@ -13,7 +13,7 @@ function renderLogsComponent(props: Partial<AlertProps> = {}) {
   }
   const defaultProps: AlertProps = {
     message: "",
-    setMessage: (message: string | undefined) => changeMessage(message)
+    setMessage: (message: string | undefined) => changeMessage(message),
   };
   return render(<AlertComponent {...defaultProps} {...props} />);
 }

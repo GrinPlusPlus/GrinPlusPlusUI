@@ -24,7 +24,7 @@ export const ConnectedPeersComponent = ({ peers }: ConnectedPeersProps) => {
             <tr
               key={peer.address}
               style={{
-                cursor: "default"
+                cursor: "default",
               }}
             >
               <td>{peer.address}</td>

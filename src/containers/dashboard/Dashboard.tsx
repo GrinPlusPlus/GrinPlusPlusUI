@@ -17,7 +17,7 @@ export const DashboardContainer = () => {
 
   return (
     <Content>
-      <div style={{ width: "40%", margin: "5px", marginTop: "10px" }}>
+      <div style={{ width: "45%", margin: "5px", marginTop: "10px" }}>
         <Flex>
           <WalletBalanceContainer />
           <div
@@ -50,7 +50,7 @@ export const DashboardContainer = () => {
           <ReceiveUsingSlateContainer />
         </div>
       </div>
-      <div style={{ width: "60%", marginLeft: "15px", marginTop: "5px" }}>
+      <div style={{ width: "55%", marginLeft: "15px", marginTop: "5px" }}>
         <WalletActivitiyContainer />
       </div>
     </Content>

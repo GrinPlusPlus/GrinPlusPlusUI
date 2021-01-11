@@ -56,7 +56,7 @@ const nodeSummary: NodeSummaryModel = {
   network: { height: 0, outbound: 0, inbound: 0 },
   userAgent: "",
   CheckStatusInterval: 1000,
-  HealthCheckInterval : 10000,
+  HealthCheckInterval: 10000,
   connectedPeers: [],
   waitingResponse: false,
   updateStatus: action((state, node) => {

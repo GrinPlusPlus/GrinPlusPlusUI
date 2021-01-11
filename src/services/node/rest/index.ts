@@ -9,7 +9,7 @@ export class NodeAPI extends BaseApi {
 
   public async getStatus(): Promise<INodeStatus> {
     return await this.makeRESTRequest(this.getRequestURL("node_status"), "get")
-      .then(response => {
+      .then((response) => {
         const data = JSON.parse(response);
 
         return {
@@ -21,16 +21,16 @@ export class NodeAPI extends BaseApi {
           network: {
             height: data.network.height,
             outbound: data.network.num_outbound,
-            inbound: data.network.num_inbound
+            inbound: data.network.num_inbound,
           },
           state: {
             downloaded: data.state.downloaded,
             downloadSize: data.state.download_size,
-            processingStatus: data.state.processing_status
-          }
+            processingStatus: data.state.processing_status,
+          },
         };
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       });
   }
@@ -40,14 +40,14 @@ export class NodeAPI extends BaseApi {
       this.getRequestURL("resync_blockchain"),
       "post"
     )
-      .then(data => true)
-      .catch(error => false);
+      .then((data) => true)
+      .catch((error) => false);
   }
 
   public async shutdownNode(): Promise<boolean> {
     return await this.makeRESTRequest(this.getRequestURL("shutdown"), "post")
-      .then(data => true)
-      .catch(error => false);
+      .then((data) => true)
+      .catch((error) => false);
   }
 
   public async getConnectedPeers(): Promise<IPeer[]> {
@@ -55,7 +55,7 @@ export class NodeAPI extends BaseApi {
       this.getRequestURL("connected_peers"),
       "get"
     )
-      .then(response => {
+      .then((response) => {
         if (!response) return [];
         if (!JSON.parse(response)) return [];
         let peers: {
@@ -67,13 +67,13 @@ export class NodeAPI extends BaseApi {
             return {
               address: peer.addr,
               agent: peer.user_agent,
-              direction: peer.direction
+              direction: peer.direction,
             };
           }
         );
         return peers;
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       });
   }

@@ -21,7 +21,7 @@ const App: React.FC = () => {
       if (!store.getState().wallet.isWalletInitialized) {
         store.getActions().nodeSummary.updateStatus(undefined);
         return;
-      };
+      }
       try {
         store
           .getActions()
@@ -57,7 +57,6 @@ const App: React.FC = () => {
     store.getState().nodeSummary.HealthCheckInterval,
     []
   );
-
 
   useInterval(
     async () => {

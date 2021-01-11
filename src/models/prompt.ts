@@ -27,7 +27,7 @@ const prompt: PasswordPromptModel = {
   }),
   setWaitingResponse: action((state, waiting) => {
     state.waitingResponse = waiting;
-  })
+  }),
 };
 
 export default prompt;

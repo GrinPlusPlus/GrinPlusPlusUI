@@ -3,8 +3,8 @@ import { TansactionDetailsComponent, TansactionDetailsProps } from "../Details";
 import React from "react";
 import { render } from "@testing-library/react";
 
-jest.mock('react-i18next', () => ({
-  useTranslation: () => ({t: key => key})
+jest.mock("react-i18next", () => ({
+  useTranslation: () => ({ t: (key) => key }),
 }));
 
 function renderTxDetailsComponent(props: Partial<TansactionDetailsProps> = {}) {
@@ -18,7 +18,7 @@ function renderTxDetailsComponent(props: Partial<TansactionDetailsProps> = {}) {
     fee: "0.008000",
     date: "2020-01-01 00:00",
     onCancelTransactionButtonClickedCb: (transactionId: number) => {},
-    onRepostTransactionButtonClickedCb: (transactionId: number) => {}
+    onRepostTransactionButtonClickedCb: (transactionId: number) => {},
   };
   return render(<TansactionDetailsComponent {...defaultProps} {...props} />);
 }

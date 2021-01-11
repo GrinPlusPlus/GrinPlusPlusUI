@@ -4,7 +4,7 @@ import {
   Navbar,
   NavbarDivider,
   NavbarGroup,
-  NavbarHeading
+  NavbarHeading,
 } from "@blueprintjs/core";
 
 import React from "react";

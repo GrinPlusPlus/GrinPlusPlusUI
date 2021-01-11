@@ -14,7 +14,7 @@ const tryConnection = () =>
       startedElectron = true;
       const exec = require("child_process").exec;
       const electron = exec("npm run electron");
-      electron.stdout.on("data", function(data) {
+      electron.stdout.on("data", function (data) {
         console.log("stdout: " + data.toString());
       });
     }
@@ -22,7 +22,7 @@ const tryConnection = () =>
 
 tryConnection();
 
-client.on("error", error => {
+client.on("error", (error) => {
   console.log(error.message);
   setTimeout(tryConnection, 1000);
 });

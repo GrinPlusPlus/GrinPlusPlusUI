@@ -278,6 +278,9 @@ const sendCoinsModel: SendCoinsModel = {
           getStoreActions().sendCoinsModel.setEstimatedFee(
             utilsService.formatGrinAmount(response.fee)
           );
+          getStoreActions().sendCoinsModel.setAmount(
+            utilsService.formatGrinAmount(response.amount).toString()
+          );
         });
     }
   ),

@@ -10,7 +10,7 @@ export type NodeStatusProps = {
 export const NodeStatusComponent = ({
   headers,
   blocks,
-  network
+  network,
 }: NodeStatusProps) => {
   const { t } = useTranslation();
 

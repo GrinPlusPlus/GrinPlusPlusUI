@@ -39,6 +39,10 @@ export const SendUsingAddressContainer = () => {
 
   const { spendable } = useStoreState((state) => state.walletSummary);
 
+  const { waitingResponse, fee } = useStoreState(
+    (state) => state.sendCoinsModel
+  );
+
   const onSendButtonClicked = useCallback(async () => {
     if (amount === undefined || amount.slice(-1) === ".") return;
 
@@ -49,11 +53,12 @@ export const SendUsingAddressContainer = () => {
     setPasswordPrompt(undefined); // to clean prompt
     setWaitingResponse(true);
 
-    const _amount = Number(amount) === spendable ? undefined : Number(amount);
+    const _amount = Number(amount);
+    const sendingAmount = _amount + fee === spendable ? undefined : _amount;
 
     try {
       const sent = await sendGrins({
-        amount: _amount,
+        amount: sendingAmount,
         message: message,
         address: address,
         method: useGrinJoin ? "JOIN" : "FLUFF",
@@ -109,11 +114,9 @@ export const SendUsingAddressContainer = () => {
     setUsernamePrompt,
     setPasswordPrompt,
     spendable,
+    fee,
   ]);
 
-  const { waitingResponse, isAddressValid, fee } = useStoreState(
-    (state) => state.sendCoinsModel
-  );
   const { username } = useStoreState((state) => state.session);
 
   const classes = classNames("bp3-dark", Classes.CARD, Classes.ELEVATION_4);
@@ -124,7 +127,6 @@ export const SendUsingAddressContainer = () => {
         spendable={spendable}
         amount={amount ? Number(amount) : 0}
         inputsSelected={inputs.length !== 0}
-        isAddressValid={isAddressValid}
         onSendButtonClickedCb={() => {
           setUsernamePrompt(username);
           setCallbackPrompt(onSendButtonClicked);

@@ -2046,5 +2046,5 @@ export const wordlist = [
   "zebra",
   "zero",
   "zone",
-  "zoo"
+  "zoo",
 ];

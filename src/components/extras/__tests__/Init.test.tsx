@@ -6,7 +6,7 @@ import React from "react";
 function renderInitComponent(props: Partial<InitComponentProps> = {}) {
   const defaultProps: InitComponentProps = {
     error: false,
-    message: ""
+    message: "",
   };
   return render(<InitComponent {...defaultProps} {...props} />);
 }

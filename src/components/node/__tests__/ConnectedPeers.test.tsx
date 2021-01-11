@@ -1,20 +1,20 @@
 import {
   ConnectedPeersComponent,
-  ConnectedPeersProps
+  ConnectedPeersProps,
 } from "../ConnectedPeers";
 
 import React from "react";
 import { render } from "@testing-library/react";
 
-jest.mock('react-i18next', () => ({
-  useTranslation: () => ({t: key => key})
+jest.mock("react-i18next", () => ({
+  useTranslation: () => ({ t: (key) => key }),
 }));
 
 function renderConnectedPeersComponent(
   props: Partial<ConnectedPeersProps> = {}
 ) {
   const defaultProps: ConnectedPeersProps = {
-    peers: [{ address: "127.0.0.1", agent: "Grin++", direction: "outbound" }]
+    peers: [{ address: "127.0.0.1", agent: "Grin++", direction: "outbound" }],
   };
   return render(<ConnectedPeersComponent {...defaultProps} {...props} />);
 }

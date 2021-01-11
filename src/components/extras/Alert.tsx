@@ -25,9 +25,7 @@ export const AlertComponent = ({ message, setMessage }: AlertProps) => {
             timeout={5000}
           />
         </Toaster>
-      ) : (
-        undefined
-      )}
+      ) : undefined}
     </div>
   );
 };

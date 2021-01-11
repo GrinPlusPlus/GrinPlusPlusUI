@@ -4,7 +4,7 @@ import {
   InputGroup,
   Intent,
   Radio,
-  RadioGroup
+  RadioGroup,
 } from "@blueprintjs/core";
 import { HorizontallyCenter, SubmitButton } from "../../styled";
 
@@ -39,7 +39,7 @@ export const RecoverWalletComponent = ({
   setPasswordCb,
   setSeedLengthCb,
   onWordChangeCb,
-  onButtonClickedCb
+  onButtonClickedCb,
 }: RecoverWalletProps) => {
   const { t } = useTranslation();
 
