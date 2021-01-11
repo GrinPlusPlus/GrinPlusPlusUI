@@ -1,5 +1,22 @@
+export const readFileAsText = (file: File): Promise<string> => {
+  const reader = new FileReader();
+  return new Promise((resolve, reject) => {
+    reader.onabort = () => reject("Unknown error");
+    reader.onerror = () => reject(reader.error);
+    reader.onload = () => resolve(reader.result?.toString());
+    reader.readAsText(file, "utf-8");
+  });
+};
+
 export const formatGrinAmount = (amount: number): number => {
   return amount / Math.pow(10, 9);
+};
+
+export const getTextFileContent = async (file: File): Promise<string> => {
+  const content = await readFileAsText(file)
+    .then((content) => content)
+    .catch(() => "");
+  return content;
 };
 
 export const validateUrl = (url: string): boolean => {

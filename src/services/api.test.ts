@@ -2,12 +2,10 @@ import { getCommand, getConfigFilePath, getNodeDataPath } from "./node";
 
 import { BaseApi } from "./api";
 import { NodeAPI } from "./node/rest";
-import { OwnerAPI } from "./owner/rest";
 import { OwnerRPCApi } from "./owner/rpc";
 
 class TestBasiApi extends BaseApi {}
 class TestOwnerRPCApi extends OwnerRPCApi {}
-class TestOwnerAPI extends OwnerAPI {}
 class TestNodeAPI extends NodeAPI {}
 
 export const _getCommand = function(): string {
@@ -47,15 +45,6 @@ describe("APIs", () => {
 
     const nodeAPIprod = new TestNodeAPI(false, "http", "127.0.0.1", "PROD");
     expectedValue = "http://127.0.0.1:3413/v1";
-    expect(nodeAPIprod.url).toBe(expectedValue);
-  });
-  test("OwnerAPI", () => {
-    const nodeAPIdev = new TestOwnerAPI();
-    let expectedValue = "http://127.0.0.1:13420/v1/wallet/owner";
-    expect(nodeAPIdev.url).toBe(expectedValue);
-
-    const nodeAPIprod = new TestOwnerAPI(false, "http", "127.0.0.1", "PROD");
-    expectedValue = "http://127.0.0.1:3420/v1/wallet/owner";
     expect(nodeAPIprod.url).toBe(expectedValue);
   });
   test("OwnerRPCApi", () => {

@@ -424,4 +424,26 @@ export class OwnerRPCApi extends BaseApi {
         throw new Error(error);
       });
   }
+
+  public async getOutputs(
+    token: string
+  ): Promise<
+    {
+      amount: number;
+      block_height: number;
+      commitment: string;
+      keychain_path: string;
+      status: string;
+      transaction_id: number;
+    }[]
+  > {
+    return await this.makeRPCRequest(
+      `${this.getRequestURL("list_outputs")}`,
+      'list_outputs',
+      { session_token: token }
+    ).then(response => {
+      if (response.error) throw new Error(response.error.message);
+      return response.result.outputs;
+    });
+  }
 }
