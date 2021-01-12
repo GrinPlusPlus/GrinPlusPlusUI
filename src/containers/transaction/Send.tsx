@@ -110,16 +110,13 @@ export const SendContainer = () => {
         />
       ) : null}
       <Dialog
-        title="Slatepack Message"
+        title="Slatepack"
         icon="label"
         className="bp3-dark"
         isOpen={returnedSlatepack.length !== 0}
       >
         <div className={Classes.DIALOG_BODY}>
-          <p>
-            Share this Slatepack Message with the Receiver to start the
-            Transaction.
-          </p>
+          <p>{t("share_to_initiate_transaction")}</p>
           <br />
           <div>
             <SlatepackComponent slatepack={returnedSlatepack} />
