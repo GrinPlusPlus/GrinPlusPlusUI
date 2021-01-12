@@ -106,6 +106,7 @@ export class BaseApi {
       | "get_seed"
       | "list_txs"
       | "delete_wallet"
+      | "scan_for_outputs"
   ): string {
     switch (call) {
       case "node_status":
@@ -149,6 +150,8 @@ export class BaseApi {
       case "repost_tx":
         return this._getOwnerRPCURL();
       case "list_outputs":
+        return this._getOwnerRPCURL();
+      case "scan_for_outputs":
         return this._getOwnerRPCURL();
       default:
         return "";

@@ -425,4 +425,15 @@ export class OwnerRPCApi extends BaseApi {
       return response.result.outputs;
     });
   }
+
+  public async scanOutputs(token: string): Promise<string> {
+    return await this.makeRPCRequest(
+      `${this.getRequestURL("scan_for_outputs")}`,
+      "scan_for_outputs",
+      { session_token: token }
+    ).then((response) => {
+      if (response.error) throw new Error(response.error.message);
+      return response.result;
+    });
+  }
 }

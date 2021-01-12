@@ -20,6 +20,7 @@ export interface WalletModel {
   restartNode: Thunk<WalletModel, undefined, Injections, StoreModel>;
   checkNodeHealth: Thunk<WalletModel, undefined, Injections, StoreModel>;
   reSyncBlockchain: Thunk<WalletModel, undefined, Injections, StoreModel>;
+  scanForOutputs: Thunk<WalletModel, undefined, Injections, StoreModel>;
   initializeWallet: Thunk<WalletModel, undefined, Injections, StoreModel>;
   replaceLogs: Action<WalletModel, string>;
   updateLogs: Action<WalletModel, string>;
@@ -95,6 +96,17 @@ const wallet: WalletModel = {
         defaultSettings.protocol,
         defaultSettings.ip
       ).resyncNode();
+    }
+  ),
+  scanForOutputs: thunk(
+    async (actions, payload, { injections, getStoreState }) => {
+      const { ownerService } = injections;
+      const defaultSettings = getStoreState().settings.defaultSettings;
+      return await new ownerService.RPC(
+        defaultSettings.floonet,
+        defaultSettings.protocol,
+        defaultSettings.ip
+      ).scanOutputs(getStoreState().session.token);
     }
   ),
   initializeWallet: thunk(

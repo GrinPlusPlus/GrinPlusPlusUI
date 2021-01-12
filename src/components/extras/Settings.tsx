@@ -36,6 +36,7 @@ type SettingsProps = {
   toggleConfirmationDialogCb: () => void;
   confirmReSyncBlockchainCb: () => void;
   restartNodeCb: () => void;
+  scanForOutputsCb: () => void;
   backupButtonCb: () => void;
 };
 
@@ -60,6 +61,7 @@ export const SettingsComponent = ({
   toggleConfirmationDialogCb,
   confirmReSyncBlockchainCb,
   restartNodeCb,
+  scanForOutputsCb,
   backupButtonCb,
 }: SettingsProps) => {
   const { t } = useTranslation();
@@ -123,25 +125,35 @@ export const SettingsComponent = ({
             <Button
               text={t("restart")}
               onClick={() => restartNodeCb()}
-              style={{ width: isLoggedIn ? "40%" : "50%" }}
+              style={{ width: "50%" }}
               intent={Intent.DANGER}
             />
             <Button
               text={t("resync")}
-              style={{ width: isLoggedIn ? "40%" : "50%" }}
+              style={{ width: "50%" }}
               intent={Intent.WARNING}
               onClick={() => toggleConfirmationDialogCb()}
             />
-            {isLoggedIn ? (
+          </ControlGroup>
+        </FormGroup>
+        {isLoggedIn ? (
+          <FormGroup label={t("wallet_actions")}>
+            <ControlGroup>
               <Button
-                icon="key"
-                style={{ width: "20%" }}
+                text={t("scan_for_outputs")}
+                style={{ width: "50%" }}
+                intent={Intent.NONE}
+                onClick={() => scanForOutputsCb()}
+              />
+              <Button
+                text={t("export_seed")}
+                style={{ width: "50%" }}
                 intent={Intent.NONE}
                 onClick={() => backupButtonCb()}
               />
-            ) : null}
-          </ControlGroup>
-        </FormGroup>
+            </ControlGroup>
+          </FormGroup>
+        ) : null}
       </div>
       <br />
       <Callout>{t("restart_warning")}.</Callout>

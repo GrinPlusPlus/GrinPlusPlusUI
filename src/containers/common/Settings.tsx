@@ -30,7 +30,7 @@ export const SettingsContainer = () => {
     toggleConfirmationDialog,
     setGrinChckAddress,
   } = useStoreActions((actions) => actions.settings);
-  const { reSyncBlockchain, restartNode } = useStoreActions(
+  const { reSyncBlockchain, restartNode, scanForOutputs } = useStoreActions(
     (state) => state.wallet
   );
   const { toggleSettings } = useStoreActions((actions) => actions.ui);
@@ -74,8 +74,18 @@ export const SettingsContainer = () => {
       setMaximumPeersCb={setMaximumPeers}
       setConfirmationsCb={setConfirmations}
       toggleConfirmationDialogCb={toggleDialog}
-      confirmReSyncBlockchainCb={confirmReSyncBlockchain}
-      restartNodeCb={restartGrinNode}
+      confirmReSyncBlockchainCb={() => {
+        toggleSettings(false);
+        confirmReSyncBlockchain();
+      }}
+      restartNodeCb={() => {
+        toggleSettings(false);
+        restartGrinNode();
+      }}
+      scanForOutputsCb={() => {
+        toggleSettings(false);
+        scanForOutputs();
+      }}
       isLoggedIn={isLoggedIn}
       backupButtonCb={() => {
         toggleSettings(false);

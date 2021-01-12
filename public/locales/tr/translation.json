@@ -119,5 +119,7 @@
   "help": "Help",
   "processes": "Processes",
   "send_max": "Send Max",
-  "view_slatepack": "View Slatepack Message"
+  "view_slatepack": "View Slatepack Message",
+  "export_seed": "Export Seed",
+  "wallet_actions": "Wallet Actions"
 }
