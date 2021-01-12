@@ -24,10 +24,13 @@ export const ReceiveUsingSlateContainer = () => {
 
   const onReceiveSlatepack = useCallback(
     (slatepack: string) => {
+      require("electron-log").info("Receiving Slatepack...");
       receiveTxViaSlatepack(slatepack).then(
         (result: { error: string; slatepack: string }) => {
-          if (result.error.length === 0) {
+          require("electron-log").info(result);
+          if (result.slatepack.trim().length > 0) {
             updateLogs(t("finished_without_errors"));
+
             Toaster.create({ position: Position.BOTTOM }).show({
               message: t("finished_without_errors"),
               intent: Intent.SUCCESS,
@@ -36,7 +39,12 @@ export const ReceiveUsingSlateContainer = () => {
 
             setReturnedSlatepack(result.slatepack);
           } else {
-            updateLogs(t(result.error));
+            Toaster.create({ position: Position.BOTTOM }).show({
+              message: result.error,
+              intent: Intent.DANGER,
+              icon: "warning-sign",
+            });
+            updateLogs(result.error);
           }
         }
       );
