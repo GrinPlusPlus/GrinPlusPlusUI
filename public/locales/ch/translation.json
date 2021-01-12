@@ -121,5 +121,6 @@
   "send_max": "Send Max",
   "view_slatepack": "View Slatepack Message",
   "export_seed": "Export Seed",
-  "wallet_actions": "Wallet Actions"
+  "wallet_actions": "Wallet Actions",
+  "restore_wallet_warning": "Restore can not start until the Node has been fully synced."
 }
