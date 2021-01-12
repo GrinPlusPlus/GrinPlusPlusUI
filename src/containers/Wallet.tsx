@@ -56,12 +56,21 @@ export const WalletContainer = () => {
     (state) => state.passwordPrompt
   );
   const { setAlert } = useStoreActions((actions) => actions.ui);
-  const { getWalletSeed, setSeed } = useStoreActions((state) => state.session);
+  const { setSeed } = useStoreActions((state) => state.session);
   const {
     updateWalletSummary,
     updateWalletBalance,
     checkWalletAvailability,
   } = useStoreActions((actions) => actions.walletSummary);
+
+  const { action } = useStoreState((state) => state.wallet);
+  const {
+    setAction: setWalletAction,
+    getWalletSeed,
+    deleteWallet,
+  } = useStoreActions((state) => state.wallet);
+
+  const { clean } = useStoreActions((actions) => actions.session);
 
   useInterval(
     async () => {
@@ -128,6 +137,8 @@ export const WalletContainer = () => {
         icon: "warning-sign",
       });
     }
+
+    setWalletAction(undefined); // to close prompt
     setUsername(undefined); // to close prompt
     setWaitingResponse(false);
   }, [
@@ -137,6 +148,37 @@ export const WalletContainer = () => {
     setSeed,
     setWaitingResponse,
     setUsername,
+    setWalletAction,
+  ]);
+
+  const removeWallet = useCallback(async () => {
+    if (username === undefined || password === undefined) return;
+    setWaitingResponse(true);
+    try {
+      await deleteWallet({
+        username: username,
+        password: password,
+      });
+      clean();
+    } catch (error) {
+      Toaster.create({ position: Position.BOTTOM }).show({
+        message: error.message,
+        intent: Intent.DANGER,
+        icon: "warning-sign",
+      });
+    }
+
+    setWalletAction(undefined); // to close prompt
+    setUsername(undefined); // to close prompt
+    setWaitingResponse(false);
+  }, [
+    username,
+    password,
+    setWaitingResponse,
+    setUsername,
+    deleteWallet,
+    setWalletAction,
+    clean,
   ]);
 
   return (
@@ -153,16 +195,17 @@ export const WalletContainer = () => {
       <AlertComponent message={alert} setMessage={setAlert} />
       {isLoggedIn ? (
         <PasswordPromptComponent
-          isOpen={username && username.length > 0 ? true : false}
+          isOpen={action !== undefined && username !== undefined}
           username={username ? username : ""}
           password={password ? password : ""}
           passwordCb={(value: string) => setPassword(value)}
           onCloseCb={() => {
             setUsername(undefined);
             setPassword(undefined);
+            setWalletAction(undefined);
           }}
           waitingResponse={waitingResponse}
-          passwordButtonCb={backupSeed}
+          passwordButtonCb={action === "backup" ? backupSeed : removeWallet}
           connected={status.toLocaleLowerCase() !== "not connected"}
           buttonText={t("confirm_password")}
         />
@@ -176,11 +219,13 @@ export const WalletContainer = () => {
             setSeed(undefined);
             setUsername(undefined);
             setPassword(undefined);
+            setWalletAction(undefined);
           }}
           onCancel={() => {
             setSeed(undefined);
             setUsername(undefined);
             setPassword(undefined);
+            setWalletAction(undefined);
           }}
           isOpen={seed !== undefined}
           style={{ backgroundColor: "#050505" }}

@@ -122,5 +122,6 @@
   "view_slatepack": "View Slatepack Message",
   "export_seed": "Export Seed",
   "wallet_actions": "Wallet Actions",
-  "restore_wallet_warning": "Restore can not start until the Node has been fully synced."
+  "restore_wallet_warning": "Restore can not start until the Node has been fully synced.",
+  "delete_wallet": "Delete Wallet"
 }

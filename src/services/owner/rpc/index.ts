@@ -248,6 +248,23 @@ export class OwnerRPCApi extends BaseApi {
     });
   }
 
+  public async deleteWallet(
+    username: string,
+    password: string
+  ): Promise<boolean> {
+    return await this.makeRPCRequest(
+      this.getRequestURL("delete_wallet"),
+      "delete_wallet",
+      {
+        username: username,
+        password: password,
+      }
+    ).then((response) => {
+      if (response.error) throw new Error(response.error.message);
+      return response.result.status === "SUCCESS";
+    });
+  }
+
   public async getWalletBalance(
     token: string
   ): Promise<{

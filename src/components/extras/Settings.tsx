@@ -38,6 +38,7 @@ type SettingsProps = {
   restartNodeCb: () => void;
   scanForOutputsCb: () => void;
   backupButtonCb: () => void;
+  deleteWalletButtonCb: () => void;
 };
 
 export const SettingsComponent = ({
@@ -63,6 +64,7 @@ export const SettingsComponent = ({
   restartNodeCb,
   scanForOutputsCb,
   backupButtonCb,
+  deleteWalletButtonCb,
 }: SettingsProps) => {
   const { t } = useTranslation();
 
@@ -126,7 +128,7 @@ export const SettingsComponent = ({
               text={t("restart")}
               onClick={() => restartNodeCb()}
               style={{ width: "50%" }}
-              intent={Intent.DANGER}
+              intent={Intent.SUCCESS}
             />
             <Button
               text={t("resync")}
@@ -137,22 +139,31 @@ export const SettingsComponent = ({
           </ControlGroup>
         </FormGroup>
         {isLoggedIn ? (
-          <FormGroup label={t("wallet_actions")}>
-            <ControlGroup>
-              <Button
-                text={t("scan_for_outputs")}
-                style={{ width: "50%" }}
-                intent={Intent.NONE}
-                onClick={() => scanForOutputsCb()}
-              />
-              <Button
-                text={t("export_seed")}
-                style={{ width: "50%" }}
-                intent={Intent.NONE}
-                onClick={() => backupButtonCb()}
-              />
-            </ControlGroup>
-          </FormGroup>
+          <div>
+            <FormGroup label={t("wallet_actions")}>
+              <ControlGroup>
+                <Button
+                  text={t("scan_for_outputs")}
+                  style={{ width: "50%" }}
+                  intent={Intent.NONE}
+                  onClick={() => scanForOutputsCb()}
+                />
+                <Button
+                  text={t("export_seed")}
+                  style={{ width: "50%" }}
+                  intent={Intent.NONE}
+                  onClick={() => backupButtonCb()}
+                />
+              </ControlGroup>
+            </FormGroup>
+            <br />
+            <Button
+              fill={true}
+              text={t("delete_wallet")}
+              intent={Intent.DANGER}
+              onClick={() => deleteWalletButtonCb()}
+            />
+          </div>
         ) : null}
       </div>
       <br />

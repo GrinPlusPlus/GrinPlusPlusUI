@@ -19,9 +19,6 @@ export const AccountNavBarContainer = () => {
   const { username, token } = useStoreState((state) => state.session);
   const { toggleSettings } = useStoreActions((actions) => actions.ui);
   const { logout } = useStoreActions((actions) => actions.session);
-  const { clearWalletReachable } = useStoreActions(
-    (actions) => actions.walletSummary
-  );
 
   return (
     <Navbar>
@@ -54,13 +51,10 @@ export const AccountNavBarContainer = () => {
           onClick={async () => {
             try {
               require("electron-log").info(`Trying to logout`);
-              clearWalletReachable();
               await logout(token);
               require("electron-log").info("Logged out!");
             } catch (error) {
-              require("electron-log").info(
-                `Trying to ReSync Blockchain: ${error}`
-              );
+              require("electron-log").info(`Trying to Logout: ${error}`);
             }
           }}
         />

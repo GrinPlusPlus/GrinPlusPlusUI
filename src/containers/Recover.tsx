@@ -3,7 +3,6 @@ import React, { Suspense } from "react";
 
 import { Text } from "@blueprintjs/core";
 import { LoadingComponent } from "../components/extras/Loading";
-import { useHistory } from "react-router-dom";
 import { useStoreActions } from "../hooks";
 import { useTranslation } from "react-i18next";
 
@@ -39,8 +38,6 @@ export const RestoreContainer = () => {
   const { setInitialValues } = useStoreActions(
     (actions) => actions.restoreWallet
   );
-
-  let history = useHistory();
 
   return (
     <Suspense fallback={renderLoader()}>

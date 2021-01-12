@@ -11,6 +11,8 @@ export interface WalletModel {
   message: string;
   logs: string;
   initializingError: boolean;
+  action: "backup" | "delete" | undefined;
+  setAction: Action<WalletModel, "backup" | "delete" | undefined>;
   setIsNodeInstalled: Action<WalletModel, boolean>;
   setIsNodeRunning: Action<WalletModel, boolean>;
   setIsTorRunning: Action<WalletModel, boolean>;
@@ -22,6 +24,24 @@ export interface WalletModel {
   reSyncBlockchain: Thunk<WalletModel, undefined, Injections, StoreModel>;
   scanForOutputs: Thunk<WalletModel, undefined, Injections, StoreModel>;
   initializeWallet: Thunk<WalletModel, undefined, Injections, StoreModel>;
+  getWalletSeed: Thunk<
+    WalletModel,
+    {
+      username: string;
+      password: string;
+    },
+    Injections,
+    StoreModel
+  >;
+  deleteWallet: Thunk<
+    WalletModel,
+    {
+      username: string;
+      password: string;
+    },
+    Injections,
+    StoreModel
+  >;
   replaceLogs: Action<WalletModel, string>;
   updateLogs: Action<WalletModel, string>;
   nodeHealthCheck: boolean;
@@ -37,6 +57,10 @@ const wallet: WalletModel = {
   initializingError: false,
   message: "initializing_node",
   logs: "",
+  action: undefined,
+  setAction: action((state, payload) => {
+    state.action = payload;
+  }),
   setIsNodeInstalled: action((state, payload) => {
     state.isNodeInstalled = payload;
   }),
@@ -107,6 +131,44 @@ const wallet: WalletModel = {
         defaultSettings.protocol,
         defaultSettings.ip
       ).scanOutputs(getStoreState().session.token);
+    }
+  ),
+  getWalletSeed: thunk(
+    async (
+      actions,
+      payload,
+      { injections, getStoreState }
+    ): Promise<string[]> => {
+      const { ownerService } = injections;
+      const apiSettings = getStoreState().settings.defaultSettings;
+      return await new ownerService.RPC(
+        apiSettings.floonet,
+        apiSettings.protocol,
+        apiSettings.ip
+      )
+        .getSeed(payload.username, payload.password)
+        .then((response) => {
+          return response;
+        });
+    }
+  ),
+  deleteWallet: thunk(
+    async (
+      actions,
+      payload,
+      { injections, getStoreState }
+    ): Promise<boolean> => {
+      const { ownerService } = injections;
+      const apiSettings = getStoreState().settings.defaultSettings;
+      return await new ownerService.RPC(
+        apiSettings.floonet,
+        apiSettings.protocol,
+        apiSettings.ip
+      )
+        .deleteWallet(payload.username, payload.password)
+        .then((response) => {
+          return response;
+        });
     }
   ),
   initializeWallet: thunk(
