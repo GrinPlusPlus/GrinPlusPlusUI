@@ -32,8 +32,8 @@ export const WalletAddressComponent = ({
         onClick={() => {
           navigator.clipboard.writeText(slatepack_address);
           Toaster.create({ position: Position.BOTTOM }).show({
-            message: <div style={{ color: "black" }}>{t("copied")}</div>,
-            intent: Intent.NONE,
+            message: <div style={{ color: "white" }}>{t("copied")}</div>,
+            intent: Intent.SUCCESS,
           });
         }}
       />

@@ -1,5 +1,5 @@
 import { Title, Flex } from "../../components/styled";
-import { Spinner } from "@blueprintjs/core";
+import { Spinner, Text } from "@blueprintjs/core";
 import React from "react";
 import { WalletAddressComponent } from "../../components/dashboard/WalletAddress";
 import { useStoreState } from "../../hooks";
@@ -16,13 +16,21 @@ export const WalletAddressContainer = () => {
     <div>
       <Flex>
         <Title>{t("address")}</Title>
-        {address && walletReachable === undefined ? (
-          <div
-            style={{ paddingLeft: "10px", margin: "0px", paddingTop: "10px" }}
-          >
-            <Spinner size={8} />
-          </div>
-        ) : null}
+        <div style={{ marginLeft: "10px" }}>
+          {address && walletReachable === undefined ? (
+            <div style={{ marginTop: "10px" }}>
+              <Spinner size={10} />
+            </div>
+          ) : (
+            <div style={{ marginTop: "6px" }}>
+              <Text>
+                {walletReachable
+                  ? t("wallet_reachable")
+                  : t("wallet_not_reachable")}
+              </Text>
+            </div>
+          )}
+        </div>
       </Flex>
       <div style={{ marginTop: "10px" }}>
         <WalletAddressComponent

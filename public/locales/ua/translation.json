@@ -123,5 +123,7 @@
   "export_seed": "Export Seed",
   "wallet_actions": "Wallet Actions",
   "restore_wallet_warning": "Restore can not start until the Node has been fully synced.",
-  "delete_wallet": "Delete Wallet"
+  "delete_wallet": "Delete Wallet",
+  "wallet_not_reachable": "Wallet is not Reachable 😫",
+  "wallet_reachable": "Wallet is Reachable 😀"
 }
