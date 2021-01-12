@@ -18,6 +18,7 @@ export const WalletAddressComponent = ({
   return (
     <HorizontallyCenter>
       <Button
+        style={{ fontSize: "15px" }}
         className="bp3-dark"
         rightIcon="duplicate"
         intent={

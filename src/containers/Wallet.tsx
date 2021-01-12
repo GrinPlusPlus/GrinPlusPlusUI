@@ -104,6 +104,9 @@ export const WalletContainer = () => {
           `http://${address}.onion/`
         );
         if (!reachable) {
+          if (!address) return;
+          if (token.length === 0) return;
+
           Toaster.create({ position: Position.BOTTOM }).show({
             message: (
               <div style={{ color: "white" }}>{t("wallet_not_reachable")}</div>

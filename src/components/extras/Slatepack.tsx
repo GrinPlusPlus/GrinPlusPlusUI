@@ -1,10 +1,10 @@
 import React from "react";
-import { LargeSlatesBox } from "../styled";
+import { SlatesBox } from "../styled";
 
 export type SlatepackProps = {
   slatepack: string;
 };
 
 export const SlatepackComponent = ({ slatepack }: SlatepackProps) => {
-  return <LargeSlatesBox>{slatepack}</LargeSlatesBox>;
+  return <SlatesBox>{slatepack}</SlatesBox>;
 };

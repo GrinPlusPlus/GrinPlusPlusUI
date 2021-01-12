@@ -25,29 +25,14 @@ export const Flex = styled.section`
 `;
 
 export const SlatesBox = styled.textarea`
-  font-size: 13px;
+  font-size: 12.5px;
   width: 100%;
-  min-height: 320px;
-  max-height: 320px;
+  min-height: 325px;
+  max-height: 325px;
   background-color: #171920;
   overflow-y: auto;
   border-radius: 3px;
-  padding: 10px;
-  font-family: Courier New;
-  white-space: pre-line;
-  color: #ffffff;
-  resize: none;
-`;
-
-export const LargeSlatesBox = styled.textarea`
-  font-size: 13px;
-  width: 500px;
-  min-height: 300px;
-  max-height: 300px;
-  background-color: #171920;
-  overflow-y: auto;
-  border-radius: 3px;
-  padding: 10px;
+  padding: 8px;
   font-family: Courier New;
   white-space: pre-line;
   color: #ffffff;

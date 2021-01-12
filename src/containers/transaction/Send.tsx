@@ -3,7 +3,7 @@ import React, { Suspense, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useStoreActions, useStoreState } from "../../hooks";
 
-import { Dialog } from "@blueprintjs/core";
+import { Button, Classes, Dialog } from "@blueprintjs/core";
 
 import { LoadingComponent } from "../../components/extras/Loading";
 import { PasswordPromptComponent } from "../../components/wallet/open/PasswordPrompt";
@@ -110,16 +110,33 @@ export const SendContainer = () => {
         />
       ) : null}
       <Dialog
-        title="Slatepack"
+        title="Slatepack Message"
+        icon="label"
         className="bp3-dark"
         isOpen={returnedSlatepack.length !== 0}
-        onOpened={() => navigator.clipboard.writeText(returnedSlatepack)}
-        onClose={() => {
-          setReturnedSlatepack("");
-          history.push("/wallet");
-        }}
       >
-        <SlatepackComponent slatepack={returnedSlatepack} />
+        <div className={Classes.DIALOG_BODY}>
+          <p>
+            Share this Slatepack Message with the Receiver to start the
+            Transaction.
+          </p>
+          <br />
+          <div>
+            <SlatepackComponent slatepack={returnedSlatepack} />
+          </div>
+        </div>
+        <div className={Classes.DIALOG_FOOTER}>
+          <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+            <Button
+              onClick={() => {
+                setReturnedSlatepack("");
+                history.push("/wallet");
+              }}
+            >
+              {t("close")}
+            </Button>
+          </div>
+        </div>
       </Dialog>
     </Suspense>
   );
