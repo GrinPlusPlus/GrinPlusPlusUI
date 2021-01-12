@@ -79,7 +79,7 @@ export const WalletContainer = () => {
         }
       }
     },
-    5000,
+    2000,
     [token]
   );
 

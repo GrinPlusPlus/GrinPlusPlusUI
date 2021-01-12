@@ -118,5 +118,6 @@
   "rendeder_logs": "Renderer Logs",
   "help": "Help",
   "processes": "Processes",
-  "send_max": "Send Max"
+  "send_max": "Send Max",
+  "view_slatepack": "View Slatepack Message"
 }

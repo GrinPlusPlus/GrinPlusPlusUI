@@ -175,16 +175,26 @@ export const TansactionDetailsComponent = ({
           </div>
         </div>
       </div>
-      <div style={{ textAlign: "center" }}>
+      <div>
         {["sending_not_finalized", "receiving_unconfirmed"].includes(mType) ? (
           <span>
             <Button
+              style={{
+                marginTop: "5px",
+                marginLeft: "5px",
+                marginRight: "5px",
+              }}
               text={t("cancel_transaction")}
               minimal={true}
-              intent={Intent.WARNING}
+              intent={Intent.DANGER}
               onClick={() => onCancelTransactionButtonClickedCb(id)}
             />
             <Button
+              style={{
+                marginTop: "5px",
+                marginLeft: "5px",
+                marginRight: "5px",
+              }}
               text={t("view_slatepack")}
               minimal={true}
               intent={Intent.NONE}
@@ -194,12 +204,22 @@ export const TansactionDetailsComponent = ({
         ) : mType === "sending_finalized" ? (
           <span>
             <Button
+              style={{
+                marginTop: "5px",
+                marginLeft: "5px",
+                marginRight: "5px",
+              }}
               text={t("cancel_transaction")}
               minimal={true}
-              intent={Intent.WARNING}
+              intent={Intent.DANGER}
               onClick={() => onCancelTransactionButtonClickedCb(id)}
             />
             <Button
+              style={{
+                marginTop: "5px",
+                marginLeft: "5px",
+                marginRight: "5px",
+              }}
               text={t("repost_transaction")}
               minimal={true}
               intent={Intent.WARNING}
