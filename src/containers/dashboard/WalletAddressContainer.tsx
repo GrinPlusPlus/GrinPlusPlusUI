@@ -1,16 +1,33 @@
-import { Title, Flex } from "../../components/styled";
-import { Spinner, Text } from "@blueprintjs/core";
-import React from "react";
+import { Title, Flex, HorizontallyCenter } from "../../components/styled";
+import { Classes, Overlay, Spinner, Text } from "@blueprintjs/core";
+import React, { useCallback } from "react";
 import { WalletAddressComponent } from "../../components/dashboard/WalletAddress";
-import { useStoreState } from "../../hooks";
+import { useStoreActions, useStoreState } from "../../hooks";
 import { useTranslation } from "react-i18next";
+import { QRCodeComponent } from "../../components/extras/QRCode";
+import classNames from "classnames";
 
 export const WalletAddressContainer = () => {
   const { t } = useTranslation();
-  const { address, slatepack_address } = useStoreState(
+  const {
+    address,
+    slatepackAddress,
+    displayQRCode,
+    encodedAddress,
+  } = useStoreState((state) => state.session);
+  const { setDisplayQRCode, setEncodedAddress } = useStoreActions(
     (state) => state.session
   );
   const { walletReachable } = useStoreState((state) => state.walletSummary);
+
+  const onBarcodeButtonClicked = useCallback(async () => {
+    const QRCode = require("qrcode");
+    const data: string = await QRCode.toDataURL(slatepackAddress);
+    setEncodedAddress(data);
+    setDisplayQRCode(true);
+  }, [slatepackAddress, setEncodedAddress, setDisplayQRCode]);
+
+  const qrClasses = classNames("bp3-dark", Classes.CARD, Classes.ELEVATION_4);
 
   return (
     <div>
@@ -35,9 +52,34 @@ export const WalletAddressContainer = () => {
       <div style={{ marginTop: "10px" }}>
         <WalletAddressComponent
           isWalletReachable={walletReachable}
-          slatepack_address={slatepack_address}
+          slatepackAddress={slatepackAddress}
+          onBarcodeButtonClickedCb={onBarcodeButtonClicked}
         />
       </div>
+      <Overlay
+        isOpen={displayQRCode}
+        onClose={() => {
+          setDisplayQRCode(false);
+        }}
+      >
+        <div
+          className={qrClasses}
+          style={{
+            top: "50%",
+            left: "50%",
+            position: "fixed",
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "#060707",
+          }}
+        >
+          <HorizontallyCenter>
+            <QRCodeComponent
+              data={encodedAddress}
+              slatepackAddress={slatepackAddress}
+            />
+          </HorizontallyCenter>
+        </div>
+      </Overlay>
     </div>
   );
 };

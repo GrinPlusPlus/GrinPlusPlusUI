@@ -1,26 +1,31 @@
 import React from "react";
 
-import { Button, Intent, Toaster, Position } from "@blueprintjs/core";
+import {
+  Button,
+  Intent,
+  Toaster,
+  Position,
+  ControlGroup,
+} from "@blueprintjs/core";
 
 import { useTranslation } from "react-i18next";
-import { HorizontallyCenter } from "../styled";
 
 type WalletAddressComponentProps = {
-  slatepack_address: string;
+  slatepackAddress: string;
   isWalletReachable: boolean | undefined;
+  onBarcodeButtonClickedCb: () => void;
 };
 export const WalletAddressComponent = ({
-  slatepack_address,
+  slatepackAddress,
   isWalletReachable,
+  onBarcodeButtonClickedCb,
 }: WalletAddressComponentProps) => {
   const { t } = useTranslation();
 
   return (
-    <HorizontallyCenter>
+    <ControlGroup fill={false} vertical={false}>
       <Button
-        style={{ fontSize: "15px" }}
         className="bp3-dark"
-        rightIcon="duplicate"
         intent={
           isWalletReachable === undefined
             ? Intent.NONE
@@ -29,15 +34,28 @@ export const WalletAddressComponent = ({
             : Intent.WARNING
         }
         minimal={true}
-        text={slatepack_address}
+        text={slatepackAddress}
+      />
+      <Button
+        style={{ color: "black" }}
+        className="bp3-dark"
+        minimal={true}
+        icon="duplicate"
         onClick={() => {
-          navigator.clipboard.writeText(slatepack_address);
+          navigator.clipboard.writeText(slatepackAddress);
           Toaster.create({ position: Position.BOTTOM }).show({
             message: <div style={{ color: "white" }}>{t("copied")}</div>,
             intent: Intent.SUCCESS,
           });
         }}
       />
-    </HorizontallyCenter>
+      <Button
+        minimal={true}
+        className="bp3-dark"
+        style={{ color: "black" }}
+        icon="barcode"
+        onClick={onBarcodeButtonClickedCb}
+      />
+    </ControlGroup>
   );
 };

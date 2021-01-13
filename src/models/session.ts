@@ -9,8 +9,10 @@ export interface SessionModel {
   token: string;
   address: string;
   setAddress: Action<SessionModel, string>;
-  slatepack_address: string;
-  listener_port: number;
+  slatepackAddress: string;
+  listenerPort: number;
+  encodedAddress: string;
+  displayQRCode: boolean;
   updateSession: Action<
     SessionModel,
     {
@@ -26,14 +28,18 @@ export interface SessionModel {
   seed: ISeed[] | undefined;
   setSeed: Action<SessionModel, ISeed[] | undefined>;
   clean: Thunk<SessionModel, undefined, Injections, StoreModel>;
+  setEncodedAddress: Action<SessionModel, string>;
+  setDisplayQRCode: Action<SessionModel, boolean>;
 }
 
 const session: SessionModel = {
   username: "",
   token: "",
   address: "",
-  listener_port: 0,
-  slatepack_address: "",
+  listenerPort: 0,
+  slatepackAddress: "",
+  encodedAddress: "",
+  displayQRCode: false,
   setAddress: action((state, payload) => {
     state.address = payload;
   }),
@@ -41,8 +47,8 @@ const session: SessionModel = {
     state.username = payload.username;
     state.token = payload.token;
     state.address = payload.address;
-    state.listener_port = payload.listener_port;
-    state.slatepack_address = payload.slatepack_address;
+    state.listenerPort = payload.listener_port;
+    state.slatepackAddress = payload.slatepack_address;
   }),
   logout: thunk(
     async (actions, token, { injections, getStoreState, getStoreActions }) => {
@@ -86,6 +92,12 @@ const session: SessionModel = {
       listener_port: 0,
       slatepack_address: "",
     });
+  }),
+  setDisplayQRCode: action((state, payload) => {
+    state.displayQRCode = payload;
+  }),
+  setEncodedAddress: action((state, payload) => {
+    state.encodedAddress = payload;
   }),
 };
 
