@@ -6,6 +6,7 @@ import {
   Toaster,
   Position,
   ControlGroup,
+  InputGroup,
 } from "@blueprintjs/core";
 
 import { useTranslation } from "react-i18next";
@@ -23,9 +24,12 @@ export const WalletAddressComponent = ({
   const { t } = useTranslation();
 
   return (
-    <ControlGroup fill={false} vertical={false}>
-      <Button
+    <ControlGroup fill={true} vertical={false}>
+      <InputGroup
         className="bp3-dark"
+        readOnly={true}
+        style={{ textAlign: "center" }}
+        fill={true}
         intent={
           isWalletReachable === undefined
             ? Intent.NONE
@@ -33,8 +37,7 @@ export const WalletAddressComponent = ({
             ? Intent.SUCCESS
             : Intent.WARNING
         }
-        minimal={true}
-        text={slatepackAddress}
+        value={slatepackAddress}
       />
       <Button
         style={{ color: "black" }}
