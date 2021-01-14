@@ -6,7 +6,6 @@ import {
   Toaster,
   Position,
   ControlGroup,
-  InputGroup,
 } from "@blueprintjs/core";
 
 import { useTranslation } from "react-i18next";
@@ -29,7 +28,6 @@ export const WalletAddressComponent = ({
         rightIcon="duplicate"
         minimal={true}
         className="bp3-dark"
-        style={{ fontSize: "14px" }}
         fill={true}
         onClick={() => {
           navigator.clipboard.writeText(slatepackAddress);
