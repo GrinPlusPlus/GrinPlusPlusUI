@@ -111,9 +111,9 @@ export const SettingsComponent = ({
         <FormGroup label={t("confirmations")}>
           <Slider
             min={0}
-            max={500}
-            stepSize={10}
-            labelStepSize={100}
+            max={60}
+            stepSize={2}
+            labelStepSize={10}
             data-testid="confirmations-slider"
             value={confirmations}
             showTrackFill={false}
