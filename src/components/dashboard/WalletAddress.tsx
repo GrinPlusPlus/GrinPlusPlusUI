@@ -25,25 +25,12 @@ export const WalletAddressComponent = ({
 
   return (
     <ControlGroup fill={true} vertical={false}>
-      <InputGroup
-        className="bp3-dark"
-        readOnly={true}
-        style={{ textAlign: "center" }}
-        fill={true}
-        intent={
-          isWalletReachable === undefined
-            ? Intent.NONE
-            : isWalletReachable
-            ? Intent.SUCCESS
-            : Intent.WARNING
-        }
-        value={slatepackAddress}
-      />
       <Button
-        style={{ color: "black" }}
-        className="bp3-dark"
+        rightIcon="duplicate"
         minimal={true}
-        icon="duplicate"
+        className="bp3-dark"
+        style={{ fontSize: "14px" }}
+        fill={true}
         onClick={() => {
           navigator.clipboard.writeText(slatepackAddress);
           Toaster.create({ position: Position.BOTTOM }).show({
@@ -51,6 +38,14 @@ export const WalletAddressComponent = ({
             intent: Intent.SUCCESS,
           });
         }}
+        intent={
+          isWalletReachable === undefined
+            ? Intent.NONE
+            : isWalletReachable
+            ? Intent.SUCCESS
+            : Intent.WARNING
+        }
+        text={slatepackAddress}
       />
       <Button
         minimal={true}
