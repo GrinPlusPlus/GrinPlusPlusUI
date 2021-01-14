@@ -48,7 +48,7 @@ export const TransactionsTableComponent = ({
   ): string => {
     if (["sent", "received"].includes(status)) {
       if (txHeight + (confirms - 1) > lastHeight) {
-        return `${t(status)} (${lastHeight - txHeight}/${confirms} ${t(
+        return `${t(status)} (${lastHeight - txHeight + 1}/${confirms} ${t(
           "confirmations"
         )})`;
       }
