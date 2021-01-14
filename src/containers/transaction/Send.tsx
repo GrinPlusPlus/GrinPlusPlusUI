@@ -112,6 +112,10 @@ export const SendContainer = () => {
       <Dialog
         title="Slatepack"
         icon="label"
+        onClose={() => {
+          setReturnedSlatepack("");
+          history.push("/wallet");
+        }}
         className="bp3-dark"
         isOpen={returnedSlatepack.length !== 0}
       >
