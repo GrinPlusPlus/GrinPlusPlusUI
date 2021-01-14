@@ -56,7 +56,7 @@ export const WalletAddressComponent = ({
         minimal={true}
         className="bp3-dark"
         style={{ color: "black" }}
-        icon="barcode"
+        icon="zoom-to-fit"
         onClick={onBarcodeButtonClickedCb}
       />
     </ControlGroup>
