@@ -126,6 +126,7 @@
   "delete_wallet": "Delete Wallet",
   "wallet_not_reachable": "Wallet is not Reachable 😫",
   "wallet_reachable": "Wallet is Reachable 😀",
+  "scan_for_outpus": "Scan for Outputs",
   "share_to_initiate_transaction": "Share this Slatepack Message with the Receiver to initiate the Transaction.",
   "share_to_finalize_transaction": "Share this Slatepack Message with the Sender to finalize the Transaction."
 }
