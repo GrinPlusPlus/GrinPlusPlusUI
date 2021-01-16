@@ -1,5 +1,6 @@
 import { IWalletSettings } from "../../interfaces/IWalletSettings";
 import { retryAsync } from "ts-retry";
+import { getTextFileContent } from "../utils";
 
 export const getCommand = function(): string {
   const cmd = (() => {
@@ -101,12 +102,17 @@ const killProcess = function(processName: string): void {
 
 export const getNodeDataPath = function(floonet: boolean = false): string {
   const { remote } = require("electron");
+  const path = require("path");
   const net = !floonet ? "MAINNET" : "FLOONET";
-  return `${remote.app.getPath("home")}/.GrinPP/${net}`;
+  return path.join(remote.app.getPath("home"), ".GrinPP", net);
 };
 
 export const getConfigFilePath = function(floonet: boolean = false): string {
-  return `${getNodeDataPath(floonet)}/server_config.json`;
+  const path = require("path");
+  return path.join(
+    path.normalize(getNodeDataPath(floonet)),
+    "server_config.json"
+  );
 };
 
 export const updateSettings = function(
@@ -248,18 +254,32 @@ export const stopRustNode = function(): void {
 export const getDefaultSettings = function(
   file: string = "defaults.json"
 ): IWalletSettings {
-  const filePath = require("path").join(
-    require("electron").remote.app.getAppPath(),
-    file
-  );
-  const defaults = JSON.parse(require("fs").readFileSync(filePath, "utf8"));
+  const fs = require("fs");
+  const path = require("path");
 
-  let node: any = {};
-  if (require("fs").existsSync(getConfigFilePath())) {
-    const fs = require("fs");
-    const data = fs.readFileSync(getConfigFilePath(), "utf8");
-    node = JSON.parse(data);
+  const settingsFilePath = path.resolve(
+    path.normalize(
+      path.join(
+        path.normalize(require("electron").remote.app.getAppPath()),
+        file
+      )
+    )
+  );
+  const configFilePath = path.resolve(getConfigFilePath());
+
+  if (!fs.existsSync(settingsFilePath)) {
+    throw new Error(`Can't find settings file: ${settingsFilePath}`);
   }
+
+  if (!fs.existsSync(configFilePath)) {
+    throw new Error(`Can't find config file: ${configFilePath}`);
+  }
+
+  const settingsFileContent = getTextFileContent(settingsFilePath);
+  const defaults = JSON.parse(settingsFileContent);
+
+  const configFileContent = getTextFileContent(configFilePath);
+  const node = JSON.parse(configFileContent);
 
   return {
     ip: defaults.ip,
@@ -267,18 +287,9 @@ export const getDefaultSettings = function(
     mode: defaults.mode,
     binaryPath: defaults.binaryPath,
     floonet: defaults.floonet,
-    minimumPeers:
-      node["P2P"] && node["P2P"]["MIN_PEERS"]
-        ? node["P2P"]["MIN_PEERS"]
-        : defaults.minimumPeers,
-    maximumPeers:
-      node["P2P"] && node["P2P"]["MAX_PEERS"]
-        ? node["P2P"]["MAX_PEERS"]
-        : defaults.maximumPeers,
-    minimumConfirmations:
-      node["WALLET"] && node["WALLET"]["MIN_CONFIRMATIONS"]
-        ? node["WALLET"]["MIN_CONFIRMATIONS"]
-        : defaults.minimumConfirmations,
+    minimumPeers: node.P2P.MIN_PEERS,
+    maximumPeers: node.P2P.MAX_PEERS,
+    minimumConfirmations: node.WALLET.MIN_CONFIRMATIONS,
     ports: {
       node: defaults.ports.node,
       foreignRPC: defaults.ports.foreignRPC,

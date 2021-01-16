@@ -21,13 +21,6 @@ export const validateSlatepackAddress = (address: string): boolean => {
   return false;
 };
 
-export const validateSlatepack = (slate: string): boolean => {
-  return (
-    slate.toUpperCase().includes("BEGINSLATEPACK.") &&
-    slate.toUpperCase().includes("ENDSLATEPACK.")
-  );
-};
-
 export const validateAddress = (
   address: string
 ): "http" | "slatepack" | false => {
@@ -38,19 +31,9 @@ export const validateAddress = (
   return false;
 };
 
-export const writeTextFile = (path: string, text: string) => {
-  require("fs").writeFileSync(path, text);
-};
-
-export const getHomePath = (): string => {
-  return require("electron").remote.app.getPath("home");
-};
-
-export const getPathSeparator = (): string => {
-  switch (require("electron").remote.process.platform) {
-    case "win32":
-      return `\\`;
-    default:
-      return "/";
-  }
+export const validateSlatepack = (slate: string): boolean => {
+  return (
+    slate.toUpperCase().includes("BEGINSLATEPACK.") &&
+    slate.toUpperCase().includes("ENDSLATEPACK.")
+  );
 };
