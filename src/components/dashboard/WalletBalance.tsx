@@ -1,4 +1,4 @@
-import { Flex, SpendableBalance } from "../styled";
+import { Flex, SpendableBalance, Title } from "../styled";
 import { Text } from "@blueprintjs/core";
 
 import NumberFormat from "react-number-format";
@@ -13,7 +13,7 @@ export const WalletBalanceComponent = ({ spendable }: WalletBalanceProps) => {
 
   return (
     <div>
-      <Text>{t("spendable")} ツ</Text>
+      <Title>{t("spendable")} ツ</Title>
       <Flex>
         <SpendableBalance>
           <NumberFormat

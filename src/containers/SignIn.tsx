@@ -41,7 +41,9 @@ export const SignInContainer = () => {
       <WalletNavBarContainer />
       <div className="content">
         <HorizontallyCenter>
+          <br />
           <GrinPPBannerComponent />
+          <br />
         </HorizontallyCenter>
         <br />
         <HorizontallyCenter>

@@ -98,14 +98,14 @@ export const RendererLogsBox = styled.textarea`
 `;
 
 export const Title = styled.section`
-  font-size: 20px;
+  font-size: 21px;
   color: #a3a3a3 !important;
 `;
 
 export const Content = styled.section`
-  display: flex;
+  display: block;
   margin: 0 auto;
-  width: 100%;
+  width: 95%;
 `;
 
 export const StatusBarContent = styled.section`
@@ -122,7 +122,7 @@ export const StatusBarContent = styled.section`
 `;
 
 export const SpendableBalance = styled.section`
-  font-size: 30px;
+  font-size: 35px;
   color: #ffff00;
 `;
 

@@ -45,9 +45,7 @@ export const WalletActivityComponent = ({
   const { t } = useTranslation();
 
   return (
-    <div>
-      <Title>{t("transactions")}</Title>
-      <br />
+    <div style={{ marginTop: "10px" }}>
       <Tabs
         animate={false}
         id="WalletTabs"
@@ -55,13 +53,13 @@ export const WalletActivityComponent = ({
         vertical={false}
       >
         <Tab
-          id="all"
-          key="all"
-          title={t("all")}
-          style={{ fontSize: "16px" }}
+          id="in_progress"
+          key="in_progress"
+          title={t("in_progress")}
+          style={{ fontSize: "17px" }}
           panel={
             <TransactionsTableComponent
-              transactions={all}
+              transactions={notFinalized}
               transactionOpened={transactionOpened}
               openTransactionCb={openTransactionCb}
               onCancelTransactionButtonClickedCb={
@@ -84,7 +82,7 @@ export const WalletActivityComponent = ({
           id="received"
           key="received"
           title={t("received")}
-          style={{ fontSize: "16px" }}
+          style={{ fontSize: "17px" }}
           panel={
             <TransactionsTableComponent
               transactions={received}
@@ -109,7 +107,7 @@ export const WalletActivityComponent = ({
           id="sent"
           key="sent"
           title={t("sent")}
-          style={{ fontSize: "16px" }}
+          style={{ fontSize: "17px" }}
           panel={
             <TransactionsTableComponent
               transactions={sent}
@@ -131,35 +129,10 @@ export const WalletActivityComponent = ({
           }
         />
         <Tab
-          id="in_progress"
-          key="in_progress"
-          title={t("in_progress")}
-          style={{ fontSize: "16px" }}
-          panel={
-            <TransactionsTableComponent
-              transactions={notFinalized}
-              transactionOpened={transactionOpened}
-              openTransactionCb={openTransactionCb}
-              onCancelTransactionButtonClickedCb={
-                onCancelTransactionButtonClickedCb
-              }
-              onRepostTransactionButtonClickedCb={
-                onRepostTransactionButtonClickedCb
-              }
-              onViewSlatepackMessageButtonClickedCb={
-                onViewSlatepackMessageButtonClickedCb
-              }
-              method={method}
-              lastConfirmedHeight={lastConfirmedHeight}
-              confirmations={confirmations}
-            />
-          }
-        />
-        <Tab
           id="cancelled"
           key="cancelled"
           title={t("canceled")}
-          style={{ fontSize: "16px" }}
+          style={{ fontSize: "17px" }}
           panel={
             <TransactionsTableComponent
               transactions={canceled}
@@ -184,10 +157,35 @@ export const WalletActivityComponent = ({
           id="coinbase"
           key="coinbase"
           title={t("coinbase")}
-          style={{ fontSize: "16px" }}
+          style={{ fontSize: "17px" }}
           panel={
             <TransactionsTableComponent
               transactions={coinbase}
+              transactionOpened={transactionOpened}
+              openTransactionCb={openTransactionCb}
+              onCancelTransactionButtonClickedCb={
+                onCancelTransactionButtonClickedCb
+              }
+              onRepostTransactionButtonClickedCb={
+                onRepostTransactionButtonClickedCb
+              }
+              onViewSlatepackMessageButtonClickedCb={
+                onViewSlatepackMessageButtonClickedCb
+              }
+              method={method}
+              lastConfirmedHeight={lastConfirmedHeight}
+              confirmations={confirmations}
+            />
+          }
+        />
+        <Tab
+          id="all"
+          key="all"
+          title={t("all")}
+          style={{ fontSize: "17px" }}
+          panel={
+            <TransactionsTableComponent
+              transactions={all}
               transactionOpened={transactionOpened}
               openTransactionCb={openTransactionCb}
               onCancelTransactionButtonClickedCb={

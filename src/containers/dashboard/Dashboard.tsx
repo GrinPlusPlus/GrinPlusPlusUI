@@ -1,5 +1,5 @@
 import { Button, Intent } from "@blueprintjs/core";
-import { Content, Flex } from "../../components/styled";
+import { Content, Flex, HorizontallyCenter } from "../../components/styled";
 
 import { ReceiveUsingSlateContainer } from "./ReceiveUsingSlate";
 import React from "react";
@@ -17,41 +17,21 @@ export const DashboardContainer = () => {
 
   return (
     <Content>
-      <div style={{ width: "45%", margin: "5px", marginTop: "10px" }}>
+      <div style={{ margin: "15px" }}>
         <Flex>
-          <WalletBalanceContainer />
-          <div
-            style={{
-              width: "100%",
-              textAlign: "right",
-            }}
-          >
-            <Button
-              className="bp3-dark"
-              large={true}
-              style={{
-                color: "black",
-                height: "40px",
-                marginTop: "15px",
-              }}
-              intent={Intent.PRIMARY}
-              text={`${t("send")}`}
-              onClick={() => history.push("/send")}
-            />
+          <div>
+            <WalletBalanceContainer />
+            <div style={{ marginTop: "10px" }}>
+              <WalletBalanceDetailsContainer />
+            </div>
+          </div>
+          <div style={{ marginLeft: "30px", width: "100%" }}>
+            <WalletAddressContainer />
           </div>
         </Flex>
-        <div style={{ marginTop: "10px" }}>
-          <WalletBalanceDetailsContainer />
+        <div style={{ marginTop: "20px" }}>
+          <WalletActivitiyContainer />
         </div>
-        <div style={{ marginTop: "10px" }}>
-          <WalletAddressContainer />
-        </div>
-        <div style={{ marginTop: "10px" }}>
-          <ReceiveUsingSlateContainer />
-        </div>
-      </div>
-      <div style={{ width: "55%", marginLeft: "15px", marginTop: "5px" }}>
-        <WalletActivitiyContainer />
       </div>
     </Content>
   );

@@ -8,5 +8,5 @@ export const QRCodeComponent = ({
   data,
   slatepackAddress,
 }: QRCodeComponentProps) => {
-  return <img src={data} alt={slatepackAddress} />;
+  return <img src={data} alt={slatepackAddress} style={{ margin: "5px" }} />;
 };

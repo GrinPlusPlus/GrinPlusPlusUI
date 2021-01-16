@@ -11,6 +11,7 @@ import { ITransaction } from "../../interfaces/ITransaction";
 import React from "react";
 import { TansactionDetailsComponent } from "../transaction/Details";
 import { useTranslation } from "react-i18next";
+import { HorizontallyCenter, Title } from "../styled";
 
 type TransactionsTableProps = {
   transactions: ITransaction[];
@@ -85,9 +86,7 @@ export const TransactionsTableComponent = ({
             ).toFixed(9)}
           </td>
           <td style={{ width: "40%", paddingLeft: "10px" }}>
-            {transaction.address === undefined
-              ? ""
-              : cutAddress(transaction.address)}
+            {transaction.address === undefined ? "" : transaction.address}
           </td>
           <td style={{ width: "25%", paddingLeft: "10px" }}>
             {date === undefined ? "" : date}
@@ -157,9 +156,19 @@ export const TransactionsTableComponent = ({
   };
 
   return (
-    <div style={{ height: "calc(100vh - 235px)", overflowY: "auto" }}>
+    <div
+      style={{
+        height: "calc(100vh - 390px)",
+        overflowY: "auto",
+        marginTop: "5px",
+      }}
+    >
       {transactions.length === 0 ? (
-        <Text>{t("no_transactions")}.</Text>
+        <HorizontallyCenter>
+          <p style={{ color: "#a3a3a3", fontSize: "15px", marginTop: "50px" }}>
+            {t("no_transactions")}.
+          </p>
+        </HorizontallyCenter>
       ) : (
         <table className="transactions">
           <tbody>

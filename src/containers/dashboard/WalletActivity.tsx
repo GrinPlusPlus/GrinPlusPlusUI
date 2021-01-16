@@ -6,6 +6,7 @@ import { SlatepackComponent } from "../../components/extras/Slatepack";
 
 import { WalletActivityComponent } from "../../components/dashboard/WalletActivity";
 import { useTranslation } from "react-i18next";
+import { Title } from "../../components/styled";
 
 export const WalletActivitiyContainer = () => {
   const { t } = useTranslation();
@@ -98,6 +99,7 @@ export const WalletActivitiyContainer = () => {
 
   return (
     <div>
+      <Title>{t("transactions")}</Title>
       <WalletActivityComponent
         all={getAllTransactions}
         received={getTransactionsReceived}
