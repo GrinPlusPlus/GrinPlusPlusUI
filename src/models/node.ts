@@ -46,6 +46,8 @@ export interface NodeSummaryModel {
   setConnectedPeers: Action<NodeSummaryModel, IPeer[]>;
   setWaitingResponse: Action<NodeSummaryModel, boolean>;
   updatedAt: number;
+  readNodeLogs: Thunk<NodeSummaryModel, undefined, Injections, StoreModel>;
+  readWalletLogs: Thunk<NodeSummaryModel, undefined, Injections, StoreModel>;
 }
 
 const nodeSummary: NodeSummaryModel = {
@@ -127,6 +129,26 @@ const nodeSummary: NodeSummaryModel = {
     state.waitingResponse = waiting;
   }),
   updatedAt: 0,
+  readNodeLogs: thunk(
+    (actions, payload, { injections, getStoreState }): string => {
+      const { utilsService } = injections;
+      const settings = getStoreState().settings;
+      const sep = require("path").sep;
+      return utilsService.getTextFileContent(
+        `${settings.nodeDataPath}${sep}LOGS${sep}Node.log`
+      );
+    }
+  ),
+  readWalletLogs: thunk(
+    (actions, payload, { injections, getStoreState }): string => {
+      const { utilsService } = injections;
+      const settings = getStoreState().settings;
+      const sep = require("path").sep;
+      return utilsService.getTextFileContent(
+        `${settings.nodeDataPath}${sep}LOGS${sep}Wallet.log`
+      );
+    }
+  ),
 };
 
 export default nodeSummary;

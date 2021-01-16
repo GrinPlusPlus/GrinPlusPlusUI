@@ -39,6 +39,22 @@ export const SlatesBox = styled.textarea`
   resize: none;
 `;
 
+export const TextFileBox = styled.textarea`
+  margin: 10px;
+  font-size: 12.5px;
+  width: 1120px;
+  min-height: 600px;
+  max-height: 600px;
+  background-color: #171920;
+  overflow-y: auto;
+  border-radius: 3px;
+  padding: 10px;
+  font-family: Courier New;
+  white-space: pre-line;
+  color: #ffffff;
+  resize: none;
+`;
+
 export const WalletLogsBox = styled.textarea`
   display: block;
   font-size: 13px;

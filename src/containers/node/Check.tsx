@@ -1,16 +1,21 @@
 import React from "react";
 
-import { Spinner, Checkbox } from "@blueprintjs/core";
+import { Spinner, Checkbox, Button, Intent } from "@blueprintjs/core";
 import { useTranslation } from "react-i18next";
 
 import { ConnectedPeersComponent } from "../../components/node/ConnectedPeers";
 import { NodeStatusComponent } from "../../components/node/NodeStatus";
-import { Content, Title } from "../../components/styled";
+import { Content, Flex, Title } from "../../components/styled";
+import { useHistory } from "react-router-dom";
 
 import { useStoreState } from "../../hooks";
 
 export const NodeCheckContainer = () => {
   const { t } = useTranslation();
+
+  let history = useHistory();
+
+  const { isLoggedIn } = useStoreState((state) => state.session);
 
   const { headers, blocks, network, connectedPeers } = useStoreState(
     (state) => state.nodeSummary
@@ -41,10 +46,32 @@ export const NodeCheckContainer = () => {
       </Content>
       <div>
         <br />
+        <Title>{t("logs")}</Title>
+        <br />
+        <Flex>
+          <Button
+            onClick={() => history.push("/nodeLogs")}
+            className="bp3-dark"
+            style={{ color: "black" }}
+            intent={Intent.PRIMARY}
+          >
+            {t("node_logs")}
+          </Button>
+          {isLoggedIn ? (
+            <Button
+              onClick={() => history.push("/walletLogs")}
+              className="bp3-dark"
+              intent={Intent.WARNING}
+              style={{ marginLeft: "5px" }}
+            >
+              {t("wallet_logs")}
+            </Button>
+          ) : null}
+        </Flex>
         <br />
         <Title>{t("connected_peers")}</Title>
         <br />
-        <div style={{ height: "450px", maxHeight: "450px", overflowY: "auto" }}>
+        <div style={{ height: "390px", maxHeight: "390px", overflowY: "auto" }}>
           {connectedPeers.length === 0 ? (
             <Spinner />
           ) : (
