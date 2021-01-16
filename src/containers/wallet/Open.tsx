@@ -37,7 +37,7 @@ export const OpenWalletContainer = () => {
   );
 
   useEffect(() => {
-    (async function () {
+    (async function() {
       if (accounts !== undefined) return;
       try {
         const _accounts = await getAccounts();
@@ -102,7 +102,42 @@ export const OpenWalletContainer = () => {
     },
     [setUsername]
   );
+
   const { isLoggedIn } = useStoreState((state) => state.session);
+
+  const { clean } = useStoreActions((actions) => actions.session);
+
+  const { setAction: setWalletAction, deleteWallet } = useStoreActions(
+    (state) => state.wallet
+  );
+
+  const removeWallet = useCallback(async () => {
+    if (username === undefined || password === undefined) return;
+    setWaitingResponse(true);
+    try {
+      await deleteWallet({
+        username: username,
+        password: password,
+      });
+      clean();
+    } catch (error) {
+      Toaster.create({ position: Position.BOTTOM }).show({
+        message: error.message,
+        intent: Intent.DANGER,
+        icon: "warning-sign",
+      });
+    }
+
+    setWalletAction(undefined); // to close prompt
+    setWaitingResponse(false);
+  }, [
+    username,
+    password,
+    setWaitingResponse,
+    deleteWallet,
+    setWalletAction,
+    clean,
+  ]);
 
   return (
     <Suspense fallback={renderLoader()}>
@@ -121,6 +156,7 @@ export const OpenWalletContainer = () => {
             setUsername("");
             setPassword("");
           }}
+          deleteWalletButtonCb={removeWallet}
           waitingResponse={waitingResponse}
           passwordButtonCb={onOpenWalletButtonClicked}
           connected={status.toLocaleLowerCase() !== "not connected"}

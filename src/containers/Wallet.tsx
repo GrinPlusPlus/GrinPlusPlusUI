@@ -64,13 +64,9 @@ export const WalletContainer = () => {
   } = useStoreActions((actions) => actions.walletSummary);
 
   const { action } = useStoreState((state) => state.wallet);
-  const {
-    setAction: setWalletAction,
-    getWalletSeed,
-    deleteWallet,
-  } = useStoreActions((state) => state.wallet);
-
-  const { clean } = useStoreActions((actions) => actions.session);
+  const { setAction: setWalletAction, getWalletSeed } = useStoreActions(
+    (state) => state.wallet
+  );
 
   useInterval(
     async () => {
@@ -164,36 +160,6 @@ export const WalletContainer = () => {
     setWalletAction,
   ]);
 
-  const removeWallet = useCallback(async () => {
-    if (username === undefined || password === undefined) return;
-    setWaitingResponse(true);
-    try {
-      await deleteWallet({
-        username: username,
-        password: password,
-      });
-      clean();
-    } catch (error) {
-      Toaster.create({ position: Position.BOTTOM }).show({
-        message: error.message,
-        intent: Intent.DANGER,
-        icon: "warning-sign",
-      });
-    }
-
-    setWalletAction(undefined); // to close prompt
-    setUsername(undefined); // to close prompt
-    setWaitingResponse(false);
-  }, [
-    username,
-    password,
-    setWaitingResponse,
-    setUsername,
-    deleteWallet,
-    setWalletAction,
-    clean,
-  ]);
-
   return (
     <Suspense fallback={renderLoader()}>
       {!isLoggedIn ? <Redirect to="/login" /> : null}
@@ -218,7 +184,7 @@ export const WalletContainer = () => {
             setWalletAction(undefined);
           }}
           waitingResponse={waitingResponse}
-          passwordButtonCb={action === "backup" ? backupSeed : removeWallet}
+          passwordButtonCb={action === "backup" ? backupSeed : undefined}
           connected={status.toLocaleLowerCase() !== "not connected"}
           buttonText={t("confirm_password")}
         />

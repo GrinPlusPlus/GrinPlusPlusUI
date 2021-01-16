@@ -11,6 +11,7 @@ import { InputPasswordComponent } from "../../custom/InputPassword";
 import React from "react";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
+import { Flex, HorizontallyCenter } from "../../styled";
 
 type PasswordPromptProps = {
   username: string;
@@ -18,6 +19,7 @@ type PasswordPromptProps = {
   passwordCb: (password: string) => void;
   onCloseCb: () => void;
   passwordButtonCb?: () => Promise<void>;
+  deleteWalletButtonCb?: () => Promise<void>;
   waitingResponse: boolean;
   connected: boolean;
   buttonText: string;
@@ -30,6 +32,7 @@ export const PasswordPromptComponent = ({
   passwordCb,
   onCloseCb,
   passwordButtonCb,
+  deleteWalletButtonCb,
   waitingResponse,
   connected,
   buttonText,
@@ -71,22 +74,35 @@ export const PasswordPromptComponent = ({
             waitingResponse={waitingResponse}
           />
         </div>
-        <div style={{ textAlign: "center" }}>
-          <Button
-            data-testid="open-wallet-button"
-            intent={Intent.PRIMARY}
-            style={{ color: "black", marginTop: "10px" }}
-            text={
-              waitingResponse ? (
-                <Spinner size={Spinner.SIZE_SMALL} />
-              ) : (
-                buttonText
-              )
-            }
-            onClick={passwordButtonCb}
-            disabled={password?.length === 0 || waitingResponse || !connected}
-          />
-        </div>
+        <HorizontallyCenter>
+          <Flex>
+            <Button
+              data-testid="open-wallet-button"
+              intent={Intent.PRIMARY}
+              style={{ color: "black", marginTop: "10px" }}
+              text={
+                waitingResponse ? (
+                  <Spinner size={Spinner.SIZE_SMALL} />
+                ) : (
+                  buttonText
+                )
+              }
+              onClick={passwordButtonCb}
+              disabled={password?.length === 0 || waitingResponse || !connected}
+            />
+            {deleteWalletButtonCb !== undefined ? (
+              <Button
+                style={{ marginLeft: "5px", marginTop: "10px" }}
+                text={t("delete_wallet")}
+                intent={Intent.DANGER}
+                onClick={() => deleteWalletButtonCb()}
+                disabled={
+                  password?.length === 0 || waitingResponse || !connected
+                }
+              />
+            ) : null}
+          </Flex>
+        </HorizontallyCenter>
       </div>
     </Overlay>
   );

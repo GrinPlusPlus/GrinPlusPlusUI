@@ -38,7 +38,6 @@ type SettingsProps = {
   restartNodeCb: () => void;
   scanForOutputsCb: () => void;
   backupButtonCb: () => void;
-  deleteWalletButtonCb: () => void;
 };
 
 export const SettingsComponent = ({
@@ -64,7 +63,6 @@ export const SettingsComponent = ({
   restartNodeCb,
   scanForOutputsCb,
   backupButtonCb,
-  deleteWalletButtonCb,
 }: SettingsProps) => {
   const { t } = useTranslation();
 
@@ -156,13 +154,6 @@ export const SettingsComponent = ({
                 />
               </ControlGroup>
             </FormGroup>
-            <br />
-            <Button
-              fill={true}
-              text={t("delete_wallet")}
-              intent={Intent.DANGER}
-              onClick={() => deleteWalletButtonCb()}
-            />
           </div>
         ) : null}
       </div>

@@ -99,11 +99,6 @@ export const SettingsContainer = () => {
         setPasswordPromptUsername(sessionUsername);
         setWalletAction("backup");
       }}
-      deleteWalletButtonCb={() => {
-        toggleSettings(false);
-        setPasswordPromptUsername(sessionUsername);
-        setWalletAction("delete");
-      }}
     />
   );
 };
