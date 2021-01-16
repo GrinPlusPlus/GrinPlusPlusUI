@@ -8,7 +8,7 @@ class TestBasiApi extends BaseApi {}
 class TestOwnerRPCApi extends OwnerRPCApi {}
 class TestNodeAPI extends NodeAPI {}
 
-export const _getCommand = function (): string {
+export const _getCommand = function(): string {
   const { remote } = require("electron");
   const cmd = (() => {
     switch (remote.process.platform) {
@@ -57,12 +57,28 @@ describe("APIs", () => {
     expect(nodeAPIprod.url).toBe(expectedValue);
   });
   test("getNodeDataPath()", () => {
-    expect(getNodeDataPath()).toBe("/.GrinPP/MAINNET");
-    expect(getNodeDataPath(true)).toBe("/.GrinPP/FLOONET");
+    const path = require("path");
+
+    expect(getNodeDataPath()).toBe(
+      path.normalize(require("path").join(".GrinPP", "MAINNET"))
+    );
+    expect(getNodeDataPath(true)).toBe(
+      path.normalize(require("path").join(".GrinPP", "FLOONET"))
+    );
   });
-  test("getNodeDataPath()", () => {
-    expect(getConfigFilePath()).toBe("/.GrinPP/MAINNET/server_config.json");
-    expect(getConfigFilePath(true)).toBe("/.GrinPP/FLOONET/server_config.json");
+  test("getConfigFilePath()", () => {
+    const path = require("path");
+
+    expect(getConfigFilePath()).toBe(
+      path.normalize(
+        require("path").join(".GrinPP", "MAINNET", "server_config.json")
+      )
+    );
+    expect(getConfigFilePath(true)).toBe(
+      path.normalize(
+        require("path").join(".GrinPP", "FLOONET", "server_config.json")
+      )
+    );
   });
   test("getCommand()", () => {
     expect(getCommand()).toBe(_getCommand());

@@ -104,14 +104,13 @@ export const getNodeDataPath = function(floonet: boolean = false): string {
   const { remote } = require("electron");
   const path = require("path");
   const net = !floonet ? "MAINNET" : "FLOONET";
-  return path.join(remote.app.getPath("home"), ".GrinPP", net);
+  return path.normalize(path.join(remote.app.getPath("home"), ".GrinPP", net));
 };
 
 export const getConfigFilePath = function(floonet: boolean = false): string {
   const path = require("path");
-  return path.join(
-    path.normalize(getNodeDataPath(floonet)),
-    "server_config.json"
+  return path.normalize(
+    path.join(getNodeDataPath(floonet), "server_config.json")
   );
 };
 
@@ -137,21 +136,27 @@ export const getAbsoluteNodePath = function(
   mode: "DEV" | "TEST" | "PROD",
   nodePath: string
 ): string {
+  const path = require("path");
   if (mode === "PROD") {
-    return require("path").join(
-      process.resourcesPath,
-      "./app.asar.unpacked/" + nodePath
+    return path.resolve(
+      path.normalize(
+        path.join(process.resourcesPath, "./app.asar.unpacked/" + nodePath)
+      )
     );
   } else {
-    return require("path").join(
-      require("electron").remote.app.getAppPath(),
-      nodePath
+    return path.resolve(
+      path.normalize(
+        path.join(require("electron").remote.app.getAppPath(), nodePath)
+      )
     );
   }
 };
 
 export const getCommandPath = function(nodePath: string): string {
-  return require("path").join(nodePath, getCommand());
+  const path = require("path");
+  return path.resolve(
+    path.normalize(require("path").join(nodePath, getCommand()))
+  );
 };
 
 export const runNode = function(
