@@ -104,8 +104,6 @@ export const OpenWalletContainer = () => {
     [setUsername]
   );
 
-  const { clean } = useStoreActions((actions) => actions.session);
-
   const { setAction: setWalletAction, deleteWallet } = useStoreActions(
     (state) => state.wallet
   );
