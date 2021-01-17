@@ -137,8 +137,6 @@ export const OpenWalletContainer = () => {
     setWaitingResponse,
     deleteWallet,
     setWalletAction,
-    clean,
-    setUsername,
     setPassword,
     getAccounts,
     setAccounts,
