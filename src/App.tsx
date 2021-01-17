@@ -13,6 +13,7 @@ import { StatusContainer } from "./containers/Status";
 import { HelpContainer } from "./containers/Help";
 import { NodeLogsContainer } from "./containers/node/Logs";
 import { WalletLogsContainer } from "./containers/wallet/Logs";
+import { UILogsContainer } from "./containers/ui/Logs";
 import { StoreProvider } from "easy-peasy";
 import { WalletContainer } from "./containers/Wallet";
 import store from "./store";
@@ -114,6 +115,9 @@ const App: React.FC = () => {
           </Route>
           <Route path="/walletLogs">
             <WalletLogsContainer />
+          </Route>
+          <Route path="/UILogs">
+            <UILogsContainer />
           </Route>
           <Route path="/">
             <InitializerContainer />

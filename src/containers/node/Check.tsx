@@ -1,6 +1,12 @@
 import React from "react";
 
-import { Spinner, Checkbox, Button, Intent } from "@blueprintjs/core";
+import {
+  Spinner,
+  Checkbox,
+  Button,
+  Intent,
+  ButtonGroup,
+} from "@blueprintjs/core";
 import { useTranslation } from "react-i18next";
 
 import { ConnectedPeersComponent } from "../../components/node/ConnectedPeers";
@@ -26,9 +32,9 @@ export const NodeCheckContainer = () => {
   );
 
   return (
-    <div>
-      <Content>
-        <div style={{ width: "75%", marginTop: "10px" }}>
+    <Content>
+      <Flex>
+        <div style={{ width: "70%", marginTop: "10px" }}>
           <Title>{t("node")}</Title>
           <br />
           <NodeStatusComponent
@@ -43,17 +49,16 @@ export const NodeCheckContainer = () => {
           <Checkbox checked={isNodeRunning} label="Node" disabled={true} />
           <Checkbox checked={isTorRunning} label="Tor" disabled={true} />
         </div>
-      </Content>
+      </Flex>
       <div>
         <br />
         <Title>{t("logs")}</Title>
         <br />
-        <Flex>
+        <ButtonGroup minimal={true}>
           <Button
             onClick={() => history.push("/nodeLogs")}
             className="bp3-dark"
-            style={{ color: "black" }}
-            intent={Intent.PRIMARY}
+            intent={Intent.NONE}
           >
             {t("node_logs")}
           </Button>
@@ -67,7 +72,15 @@ export const NodeCheckContainer = () => {
               {t("wallet_logs")}
             </Button>
           ) : null}
-        </Flex>
+          <Button
+            onClick={() => history.push("/UILogs")}
+            className="bp3-dark"
+            intent={Intent.NONE}
+          >
+            {t("ui_logs")}
+          </Button>
+        </ButtonGroup>
+        <br />
         <br />
         <Title>{t("connected_peers")}</Title>
         <br />
@@ -79,6 +92,6 @@ export const NodeCheckContainer = () => {
           )}
         </div>
       </div>
-    </div>
+    </Content>
   );
 };
