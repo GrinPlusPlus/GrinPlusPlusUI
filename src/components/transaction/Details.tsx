@@ -1,4 +1,4 @@
-import { Button, Intent } from "@blueprintjs/core";
+import { Button, ButtonGroup, Intent } from "@blueprintjs/core";
 
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -124,12 +124,6 @@ export const TansactionDetailsComponent = ({
       <div className="divTable">
         <div className="divTableBody">
           <div className="divTableRow">
-            <div className="divTableCell">{t("id")}</div>
-            <div className="divTableCell">
-              <b data-testid="id">{id}</b>
-            </div>
-          </div>
-          <div className="divTableRow">
             <div className="divTableCell">{t("address")}</div>
             <div className="divTableCell">
               <b data-testid="address">{address}</b>
@@ -178,28 +172,32 @@ export const TansactionDetailsComponent = ({
       <div>
         {["sending_not_finalized", "receiving_unconfirmed"].includes(mType) ? (
           <span>
-            <Button
-              style={{
-                marginTop: "5px",
-                marginLeft: "5px",
-                marginRight: "5px",
-              }}
-              text={t("cancel_transaction")}
-              minimal={true}
-              intent={Intent.DANGER}
-              onClick={() => onCancelTransactionButtonClickedCb(id)}
-            />
-            <Button
-              style={{
-                marginTop: "5px",
-                marginLeft: "5px",
-                marginRight: "5px",
-              }}
-              text={t("view_slatepack")}
-              minimal={true}
-              intent={Intent.NONE}
-              onClick={() => onViewSlatepackMessageButtonClickedCb(id)}
-            />
+            <ButtonGroup minimal={true}>
+              <Button
+                style={{
+                  marginTop: "5px",
+                  marginLeft: "5px",
+                  marginRight: "5px",
+                }}
+                icon="cross"
+                text={t("cancel_transaction")}
+                minimal={true}
+                intent={Intent.DANGER}
+                onClick={() => onCancelTransactionButtonClickedCb(id)}
+              />
+              <Button
+                icon="document"
+                style={{
+                  marginTop: "5px",
+                  marginLeft: "5px",
+                  marginRight: "5px",
+                }}
+                text={t("view_slatepack")}
+                minimal={true}
+                intent={Intent.NONE}
+                onClick={() => onViewSlatepackMessageButtonClickedCb(id)}
+              />
+            </ButtonGroup>
           </span>
         ) : mType === "sending_finalized" ? (
           <span>

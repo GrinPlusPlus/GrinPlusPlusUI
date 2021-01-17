@@ -6,6 +6,7 @@ import { InitializerContainer } from "./containers/Initializer";
 import React from "react";
 import { RestoreContainer } from "./containers/Recover";
 import { SendGrinContainer } from "./containers/SendGrins";
+import { ReceiveGrinContainer } from "./containers/ReceiveGrins";
 import { SignInContainer } from "./containers/SignIn";
 import { SignUpContainer } from "./containers/SingUp";
 import { StatusContainer } from "./containers/Status";
@@ -89,6 +90,9 @@ const App: React.FC = () => {
           </Route>
           <Route path="/send">
             <SendGrinContainer />
+          </Route>
+          <Route path="/receive">
+            <ReceiveGrinContainer />
           </Route>
           <Route path="/create">
             <SignUpContainer />

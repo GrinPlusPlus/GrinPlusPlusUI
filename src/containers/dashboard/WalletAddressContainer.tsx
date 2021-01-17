@@ -88,6 +88,7 @@ export const WalletAddressContainer = () => {
                     }}
                     intent={Intent.SUCCESS}
                     text={t("receive")}
+                    onClick={() => history.push("/receive")}
                   />
                 </Flex>
               </div>

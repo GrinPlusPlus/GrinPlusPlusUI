@@ -2,7 +2,6 @@ import { Tab, Tabs } from "@blueprintjs/core";
 
 import { ITransaction } from "../../interfaces/ITransaction";
 import React from "react";
-import { Title } from "../styled";
 import { TransactionsTableComponent } from "../shared/TransactionsTable";
 import { useTranslation } from "react-i18next";
 
@@ -16,6 +15,7 @@ type WalletActivityProps = {
   transactionOpened: number;
   openTransactionCb: (transactionId: number) => void;
   onCancelTransactionButtonClickedCb: (transactionId: number) => void;
+  onFinalizeTransactionButtonClickedCb: (transactionId: number) => void;
   onRepostTransactionButtonClickedCb: (
     transactionId: number,
     method: string
@@ -36,6 +36,7 @@ export const WalletActivityComponent = ({
   transactionOpened,
   openTransactionCb,
   onCancelTransactionButtonClickedCb,
+  onFinalizeTransactionButtonClickedCb,
   onRepostTransactionButtonClickedCb,
   onViewSlatepackMessageButtonClickedCb,
   method,
@@ -65,6 +66,9 @@ export const WalletActivityComponent = ({
               onCancelTransactionButtonClickedCb={
                 onCancelTransactionButtonClickedCb
               }
+              onFinalizeTransactionButtonClickedCb={
+                onFinalizeTransactionButtonClickedCb
+              }
               onRepostTransactionButtonClickedCb={
                 onRepostTransactionButtonClickedCb
               }
@@ -77,7 +81,6 @@ export const WalletActivityComponent = ({
             />
           }
         />
-        <Tabs.Expander />
         <Tab
           id="received"
           key="received"
@@ -90,6 +93,9 @@ export const WalletActivityComponent = ({
               openTransactionCb={openTransactionCb}
               onCancelTransactionButtonClickedCb={
                 onCancelTransactionButtonClickedCb
+              }
+              onFinalizeTransactionButtonClickedCb={
+                onFinalizeTransactionButtonClickedCb
               }
               onRepostTransactionButtonClickedCb={
                 onRepostTransactionButtonClickedCb
@@ -116,6 +122,9 @@ export const WalletActivityComponent = ({
               onCancelTransactionButtonClickedCb={
                 onCancelTransactionButtonClickedCb
               }
+              onFinalizeTransactionButtonClickedCb={
+                onFinalizeTransactionButtonClickedCb
+              }
               onRepostTransactionButtonClickedCb={
                 onRepostTransactionButtonClickedCb
               }
@@ -140,6 +149,9 @@ export const WalletActivityComponent = ({
               openTransactionCb={openTransactionCb}
               onCancelTransactionButtonClickedCb={
                 onCancelTransactionButtonClickedCb
+              }
+              onFinalizeTransactionButtonClickedCb={
+                onFinalizeTransactionButtonClickedCb
               }
               onRepostTransactionButtonClickedCb={
                 onRepostTransactionButtonClickedCb
@@ -166,6 +178,9 @@ export const WalletActivityComponent = ({
               onCancelTransactionButtonClickedCb={
                 onCancelTransactionButtonClickedCb
               }
+              onFinalizeTransactionButtonClickedCb={
+                onFinalizeTransactionButtonClickedCb
+              }
               onRepostTransactionButtonClickedCb={
                 onRepostTransactionButtonClickedCb
               }
@@ -190,6 +205,9 @@ export const WalletActivityComponent = ({
               openTransactionCb={openTransactionCb}
               onCancelTransactionButtonClickedCb={
                 onCancelTransactionButtonClickedCb
+              }
+              onFinalizeTransactionButtonClickedCb={
+                onFinalizeTransactionButtonClickedCb
               }
               onRepostTransactionButtonClickedCb={
                 onRepostTransactionButtonClickedCb

@@ -1,20 +1,12 @@
-import { Button, Intent } from "@blueprintjs/core";
-import { Content, Flex, HorizontallyCenter } from "../../components/styled";
+import { Content, Flex } from "../../components/styled";
 
-import { ReceiveUsingSlateContainer } from "./ReceiveUsingSlate";
 import React from "react";
 import { WalletAddressContainer } from "./WalletAddressContainer";
 import { WalletActivitiyContainer } from "./WalletActivity";
 import { WalletBalanceContainer } from "./WalletBalance";
 import { WalletBalanceDetailsContainer } from "./WalletBalanceDetails";
-import { useHistory } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 
 export const DashboardContainer = () => {
-  const { t } = useTranslation();
-
-  let history = useHistory();
-
   return (
     <Content>
       <div style={{ margin: "15px" }}>

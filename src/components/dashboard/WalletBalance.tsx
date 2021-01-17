@@ -1,5 +1,4 @@
 import { Flex, SpendableBalance, Title } from "../styled";
-import { Text } from "@blueprintjs/core";
 
 import NumberFormat from "react-number-format";
 import React from "react";

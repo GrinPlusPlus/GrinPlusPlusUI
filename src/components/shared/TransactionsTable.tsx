@@ -1,7 +1,6 @@
-import { Icon, Text } from "@blueprintjs/core";
+import { Button, ButtonGroup, Icon, Intent } from "@blueprintjs/core";
 import {
   cleanTxType,
-  cutAddress,
   getDateAsString,
   getTxIcon,
   getTxIntent,
@@ -11,13 +10,14 @@ import { ITransaction } from "../../interfaces/ITransaction";
 import React from "react";
 import { TansactionDetailsComponent } from "../transaction/Details";
 import { useTranslation } from "react-i18next";
-import { HorizontallyCenter, Title } from "../styled";
+import { HorizontallyCenter } from "../styled";
 
 type TransactionsTableProps = {
   transactions: ITransaction[];
   transactionOpened: number;
   openTransactionCb: (transactionId: number) => void;
   onCancelTransactionButtonClickedCb: (transactionId: number) => void;
+  onFinalizeTransactionButtonClickedCb: (transactionId: number) => void;
   onRepostTransactionButtonClickedCb: (
     transactionId: number,
     method: string
@@ -33,6 +33,7 @@ export const TransactionsTableComponent = ({
   transactionOpened,
   openTransactionCb,
   onCancelTransactionButtonClickedCb,
+  onFinalizeTransactionButtonClickedCb,
   onRepostTransactionButtonClickedCb,
   onViewSlatepackMessageButtonClickedCb,
   method,
@@ -78,7 +79,9 @@ export const TransactionsTableComponent = ({
           onClick={() => openTransactionCb(transaction.Id)}
         >
           <td style={{ width: "5%", paddingLeft: "10px" }}>
-            <Icon icon={getTxIcon(mType)} intent={getTxIntent(mType)} />
+            <HorizontallyCenter>
+              <Icon icon={getTxIcon(mType)} intent={getTxIntent(mType)} />
+            </HorizontallyCenter>
           </td>
           <td style={{ width: "10%", paddingLeft: "10px" }}>
             {Math.abs(
@@ -90,6 +93,24 @@ export const TransactionsTableComponent = ({
           </td>
           <td style={{ width: "25%", paddingLeft: "10px" }}>
             {date === undefined ? "" : date}
+          </td>
+
+          <td>
+            {mType === "sending_not_finalized" ? (
+              <HorizontallyCenter>
+                <ButtonGroup minimal={true}>
+                  <Button
+                    intent={Intent.PRIMARY}
+                    icon="tick"
+                    onClick={() =>
+                      onFinalizeTransactionButtonClickedCb(transaction.Id)
+                    }
+                  >
+                    {t("finalize")}
+                  </Button>
+                </ButtonGroup>
+              </HorizontallyCenter>
+            ) : null}
           </td>
         </tr>
       );
@@ -158,9 +179,8 @@ export const TransactionsTableComponent = ({
   return (
     <div
       style={{
-        height: "calc(100vh - 390px)",
+        height: "calc(100vh - 380px)",
         overflowY: "auto",
-        marginTop: "5px",
       }}
     >
       {transactions.length === 0 ? (
@@ -177,6 +197,7 @@ export const TransactionsTableComponent = ({
               <th style={{ paddingLeft: "10px" }}>{t("amount")} ツ</th>
               <th style={{ paddingLeft: "10px" }}>{t("address")}</th>
               <th style={{ paddingLeft: "10px" }}>{t("date")}</th>
+              <th style={{ paddingLeft: "10px" }}></th>
             </tr>
             {listTransactions(transactions)}
           </tbody>
