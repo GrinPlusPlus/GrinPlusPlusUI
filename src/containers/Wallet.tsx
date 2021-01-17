@@ -90,18 +90,13 @@ export const WalletContainer = () => {
 
   useInterval(
     async () => {
-      if (token.length === 0) return;
-      if (!address) return;
+      if (!isLoggedIn) return;
 
       Log.info(`Checking address: http://${address}.onion/`);
 
       try {
-        const reachable = await checkWalletAvailability(
-          `http://${address}.onion/`
-        );
-        if (!reachable) {
-          if (!address) return;
-          if (token.length === 0) return;
+        if (!(await checkWalletAvailability(`http://${address}.onion/`))) {
+          if (!isLoggedIn) return;
 
           Toaster.create({ position: Position.BOTTOM }).show({
             message: (
@@ -115,7 +110,7 @@ export const WalletContainer = () => {
       }
     },
     30000,
-    [token, address]
+    [isLoggedIn]
   );
 
   const backupSeed = useCallback(async () => {

@@ -20,7 +20,7 @@ export const InitializerContainer = () => {
   const { initializeWallet } = useStoreActions((state) => state.wallet);
 
   useEffect(() => {
-    (async function () {
+    (async function() {
       const log = require("electron-log");
       log.info("Initializing Backend.");
       log.info(`Setting "${language}" as language...`);

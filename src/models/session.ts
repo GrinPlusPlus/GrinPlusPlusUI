@@ -58,11 +58,8 @@ const session: SessionModel = {
         apiSettings.floonet,
         apiSettings.protocol,
         apiSettings.ip
-      )
-        .logout(token)
-        .then((response) => {
-          actions.clean();
-        });
+      ).logout(token);
+      actions.clean();
     }
   ),
   isLoggedIn: computed((state) => {
