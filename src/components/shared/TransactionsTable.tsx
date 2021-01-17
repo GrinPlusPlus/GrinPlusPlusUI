@@ -74,24 +74,33 @@ export const TransactionsTableComponent = ({
       let mType = cleanTxType(transaction.type);
 
       table.push(
-        <tr
-          key={`i-${transaction.Id}`}
-          onClick={() => openTransactionCb(transaction.Id)}
-        >
-          <td style={{ width: "5%", paddingLeft: "10px" }}>
+        <tr key={`i-${transaction.Id}`}>
+          <td
+            style={{ width: "5%", paddingLeft: "10px" }}
+            onClick={() => openTransactionCb(transaction.Id)}
+          >
             <HorizontallyCenter>
               <Icon icon={getTxIcon(mType)} intent={getTxIntent(mType)} />
             </HorizontallyCenter>
           </td>
-          <td style={{ width: "10%", paddingLeft: "10px" }}>
+          <td
+            style={{ width: "10%", paddingLeft: "10px" }}
+            onClick={() => openTransactionCb(transaction.Id)}
+          >
             {Math.abs(
               transaction.amountCredited - transaction.amountDebited
             ).toFixed(9)}
           </td>
-          <td style={{ width: "40%", paddingLeft: "10px" }}>
+          <td
+            style={{ width: "40%", paddingLeft: "10px" }}
+            onClick={() => openTransactionCb(transaction.Id)}
+          >
             {transaction.address === undefined ? "" : transaction.address}
           </td>
-          <td style={{ width: "25%", paddingLeft: "10px" }}>
+          <td
+            style={{ width: "25%", paddingLeft: "10px" }}
+            onClick={() => openTransactionCb(transaction.Id)}
+          >
             {date === undefined ? "" : date}
           </td>
 
@@ -102,9 +111,10 @@ export const TransactionsTableComponent = ({
                   <Button
                     intent={Intent.PRIMARY}
                     icon="tick"
-                    onClick={() =>
-                      onFinalizeTransactionButtonClickedCb(transaction.Id)
-                    }
+                    onClick={(event: React.MouseEvent<HTMLElement>) => {
+                      event.preventDefault();
+                      onFinalizeTransactionButtonClickedCb(transaction.Id);
+                    }}
                   >
                     {t("finalize")}
                   </Button>
