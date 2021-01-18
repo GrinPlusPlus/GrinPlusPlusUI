@@ -1,7 +1,6 @@
-import { Icon, Text } from "@blueprintjs/core";
+import { Button, ButtonGroup, Icon, Intent } from "@blueprintjs/core";
 import {
   cleanTxType,
-  cutAddress,
   getDateAsString,
   getTxIcon,
   getTxIntent,
@@ -11,12 +10,14 @@ import { ITransaction } from "../../interfaces/ITransaction";
 import React from "react";
 import { TansactionDetailsComponent } from "../transaction/Details";
 import { useTranslation } from "react-i18next";
+import { HorizontallyCenter } from "../styled";
 
 type TransactionsTableProps = {
   transactions: ITransaction[];
   transactionOpened: number;
   openTransactionCb: (transactionId: number) => void;
   onCancelTransactionButtonClickedCb: (transactionId: number) => void;
+  onFinalizeTransactionButtonClickedCb: (transactionId: number) => void;
   onRepostTransactionButtonClickedCb: (
     transactionId: number,
     method: string
@@ -32,6 +33,7 @@ export const TransactionsTableComponent = ({
   transactionOpened,
   openTransactionCb,
   onCancelTransactionButtonClickedCb,
+  onFinalizeTransactionButtonClickedCb,
   onRepostTransactionButtonClickedCb,
   onViewSlatepackMessageButtonClickedCb,
   method,
@@ -72,25 +74,53 @@ export const TransactionsTableComponent = ({
       let mType = cleanTxType(transaction.type);
 
       table.push(
-        <tr
-          key={`i-${transaction.Id}`}
-          onClick={() => openTransactionCb(transaction.Id)}
-        >
-          <td style={{ width: "5%", paddingLeft: "10px" }}>
-            <Icon icon={getTxIcon(mType)} intent={getTxIntent(mType)} />
+        <tr key={`i-${transaction.Id}`}>
+          <td
+            style={{ width: "5%", paddingLeft: "10px" }}
+            onClick={() => openTransactionCb(transaction.Id)}
+          >
+            <HorizontallyCenter>
+              <Icon icon={getTxIcon(mType)} intent={getTxIntent(mType)} />
+            </HorizontallyCenter>
           </td>
-          <td style={{ width: "10%", paddingLeft: "10px" }}>
+          <td
+            style={{ width: "10%", paddingLeft: "10px" }}
+            onClick={() => openTransactionCb(transaction.Id)}
+          >
             {Math.abs(
               transaction.amountCredited - transaction.amountDebited
             ).toFixed(9)}
           </td>
-          <td style={{ width: "40%", paddingLeft: "10px" }}>
-            {transaction.address === undefined
-              ? ""
-              : cutAddress(transaction.address)}
+          <td
+            style={{ width: "40%", paddingLeft: "10px" }}
+            onClick={() => openTransactionCb(transaction.Id)}
+          >
+            {transaction.address === undefined ? "" : transaction.address}
           </td>
-          <td style={{ width: "25%", paddingLeft: "10px" }}>
+          <td
+            style={{ width: "25%", paddingLeft: "10px" }}
+            onClick={() => openTransactionCb(transaction.Id)}
+          >
             {date === undefined ? "" : date}
+          </td>
+
+          <td>
+            {mType === "sending_not_finalized" ? (
+              <HorizontallyCenter>
+                <ButtonGroup minimal={true}>
+                  <Button
+                    intent={Intent.PRIMARY}
+                    icon="tick"
+                    onClick={(event: React.MouseEvent<HTMLElement>) => {
+                      event.preventDefault();
+                      onFinalizeTransactionButtonClickedCb(transaction.Id);
+                    }}
+                  >
+                    {t("finalize")}
+                  </Button>
+                </ButtonGroup>
+              </HorizontallyCenter>
+            ) : null}
           </td>
         </tr>
       );
@@ -157,9 +187,18 @@ export const TransactionsTableComponent = ({
   };
 
   return (
-    <div style={{ height: "calc(100vh - 235px)", overflowY: "auto" }}>
+    <div
+      style={{
+        height: "calc(100vh - 380px)",
+        overflowY: "auto",
+      }}
+    >
       {transactions.length === 0 ? (
-        <Text>{t("no_transactions")}.</Text>
+        <HorizontallyCenter>
+          <p style={{ color: "#a3a3a3", fontSize: "15px", marginTop: "50px" }}>
+            {t("no_transactions")}.
+          </p>
+        </HorizontallyCenter>
       ) : (
         <table className="transactions">
           <tbody>
@@ -168,6 +207,7 @@ export const TransactionsTableComponent = ({
               <th style={{ paddingLeft: "10px" }}>{t("amount")} ツ</th>
               <th style={{ paddingLeft: "10px" }}>{t("address")}</th>
               <th style={{ paddingLeft: "10px" }}>{t("date")}</th>
+              <th style={{ paddingLeft: "10px" }}></th>
             </tr>
             {listTransactions(transactions)}
           </tbody>

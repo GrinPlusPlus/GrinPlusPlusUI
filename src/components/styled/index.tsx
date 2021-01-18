@@ -25,18 +25,20 @@ export const Flex = styled.section`
 `;
 
 export const SlatesBox = styled.textarea`
-  font-size: 12.5px;
-  width: 100%;
-  min-height: 325px;
-  max-height: 325px;
+  font-size: 12px;
+  width: 98%;
+  min-height: 400px;
+  max-height: 400px;
   background-color: #171920;
   overflow-y: auto;
   border-radius: 3px;
-  padding: 8px;
+  padding: 10px;
   font-family: Courier New;
   white-space: pre-line;
   color: #ffffff;
   resize: none;
+  display: block;
+  margin: 0 auto;
 `;
 
 export const TextFileBox = styled.textarea`
@@ -98,14 +100,14 @@ export const RendererLogsBox = styled.textarea`
 `;
 
 export const Title = styled.section`
-  font-size: 20px;
+  font-size: 21px;
   color: #a3a3a3 !important;
 `;
 
 export const Content = styled.section`
-  display: flex;
+  display: block;
   margin: 0 auto;
-  width: 100%;
+  width: 95%;
 `;
 
 export const StatusBarContent = styled.section`

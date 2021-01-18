@@ -3,12 +3,7 @@ import { useStoreActions, useStoreState } from "../hooks";
 
 import { Redirect } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-
-const InitComponent = React.lazy(() =>
-  import("./../components/extras/Init").then((module) => ({
-    default: module.InitComponent,
-  }))
-);
+import { InitComponent } from "../components/extras/Init";
 
 export const InitializerContainer = () => {
   const { t, i18n } = useTranslation();
@@ -20,7 +15,7 @@ export const InitializerContainer = () => {
   const { initializeWallet } = useStoreActions((state) => state.wallet);
 
   useEffect(() => {
-    (async function () {
+    (async function() {
       const log = require("electron-log");
       log.info("Initializing Backend.");
       log.info(`Setting "${language}" as language...`);

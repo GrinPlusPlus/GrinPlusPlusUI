@@ -6,5 +6,5 @@ type TextFileComponentProps = {
 };
 
 export const TextFileComponent = ({ content }: TextFileComponentProps) => {
-  return <TextFileBox>{content}</TextFileBox>;
+  return <TextFileBox defaultValue={content}></TextFileBox>;
 };

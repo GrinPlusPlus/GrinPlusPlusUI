@@ -92,7 +92,10 @@ export const PasswordPromptComponent = ({
             />
             {deleteWalletButtonCb !== undefined ? (
               <Button
-                style={{ marginLeft: "5px", marginTop: "10px" }}
+                style={{
+                  marginLeft: "5px",
+                  marginTop: "10px",
+                }}
                 text={t("delete_wallet")}
                 intent={Intent.DANGER}
                 onClick={() => deleteWalletButtonCb()}

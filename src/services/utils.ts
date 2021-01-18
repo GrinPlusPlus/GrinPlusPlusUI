@@ -37,3 +37,30 @@ export const validateSlatepack = (slate: string): boolean => {
     slate.toUpperCase().includes("ENDSLATEPACK.")
   );
 };
+
+export const getUiLogsLocation = function(): string {
+  const path = require("path");
+  /*
+  By default, it writes logs to the following locations:
+    on Linux: ~/.config/Grin++/logs/renderer.log
+    on macOS: ~/Library/Logs/Grin++/renderer.log
+    on Windows: %USERPROFILE%\AppData\Roaming\Grin++\logs\renderer.log
+  */
+  const appName = "Grin++";
+  const home = require("os").homedir();
+
+  const location = (() => {
+    switch (require("electron").remote.process.platform) {
+      case "linux":
+        return `${home}${path.sep}.config${path.sep}${appName}${path.sep}logs${path.sep}renderer.log`;
+      case "darwin":
+        return `${home}${path.sep}Library${path.sep}Logs${path.sep}${appName}${path.sep}renderer.log`;
+      case "win32":
+        return `${home}${path.sep}AppData${path.sep}Roaming${path.sep}${appName}${path.sep}logs${path.sep}renderer.log`;
+
+      default:
+        throw new Error("Unknown Platform");
+    }
+  })();
+  return path.normalize(location);
+};

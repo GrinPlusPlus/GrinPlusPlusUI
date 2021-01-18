@@ -3,6 +3,7 @@ import React, { Suspense, useCallback, useEffect } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
 
 import { LoadingComponent } from "../../components/extras/Loading";
+
 import { Redirect } from "react-router-dom";
 
 const NoAccountsComponent = React.lazy(() =>
@@ -103,10 +104,6 @@ export const OpenWalletContainer = () => {
     [setUsername]
   );
 
-  const { isLoggedIn } = useStoreState((state) => state.session);
-
-  const { clean } = useStoreActions((actions) => actions.session);
-
   const { setAction: setWalletAction, deleteWallet } = useStoreActions(
     (state) => state.wallet
   );
@@ -119,7 +116,8 @@ export const OpenWalletContainer = () => {
         username: username,
         password: password,
       });
-      clean();
+      setUsername("");
+      setPassword("");
     } catch (error) {
       Toaster.create({ position: Position.BOTTOM }).show({
         message: error.message,
@@ -128,16 +126,23 @@ export const OpenWalletContainer = () => {
       });
     }
 
+    setAccounts(undefined);
+    setAccounts(await getAccounts());
     setWalletAction(undefined); // to close prompt
     setWaitingResponse(false);
   }, [
     username,
     password,
+    setUsername,
     setWaitingResponse,
     deleteWallet,
     setWalletAction,
-    clean,
+    setPassword,
+    getAccounts,
+    setAccounts,
   ]);
+
+  const { isLoggedIn } = useStoreState((state) => state.session);
 
   return (
     <Suspense fallback={renderLoader()}>

@@ -138,25 +138,19 @@ export const getAbsoluteNodePath = function(
 ): string {
   const path = require("path");
   if (mode === "PROD") {
-    return path.resolve(
-      path.normalize(
-        path.join(process.resourcesPath, "./app.asar.unpacked/" + nodePath)
-      )
+    return path.normalize(
+      path.join(process.resourcesPath, "./app.asar.unpacked/" + nodePath)
     );
   } else {
-    return path.resolve(
-      path.normalize(
-        path.join(require("electron").remote.app.getAppPath(), nodePath)
-      )
+    return path.normalize(
+      path.join(require("electron").remote.app.getAppPath(), nodePath)
     );
   }
 };
 
 export const getCommandPath = function(nodePath: string): string {
   const path = require("path");
-  return path.resolve(
-    path.normalize(require("path").join(nodePath, getCommand()))
-  );
+  return path.normalize(path.join(nodePath, getCommand()));
 };
 
 export const runNode = function(
@@ -262,15 +256,10 @@ export const getDefaultSettings = function(
   const fs = require("fs");
   const path = require("path");
 
-  const settingsFilePath = path.resolve(
-    path.normalize(
-      path.join(
-        path.normalize(require("electron").remote.app.getAppPath()),
-        file
-      )
-    )
+  const settingsFilePath = path.normalize(
+    path.join(path.normalize(require("electron").remote.app.getAppPath()), file)
   );
-  const configFilePath = path.resolve(getConfigFilePath());
+  const configFilePath = getConfigFilePath();
 
   if (!fs.existsSync(settingsFilePath)) {
     throw new Error(`Can't find settings file: ${settingsFilePath}`);

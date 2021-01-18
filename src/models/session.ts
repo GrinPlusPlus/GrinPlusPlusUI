@@ -58,11 +58,8 @@ const session: SessionModel = {
         apiSettings.floonet,
         apiSettings.protocol,
         apiSettings.ip
-      )
-        .logout(token)
-        .then((response) => {
-          actions.clean();
-        });
+      ).logout(token);
+      actions.clean();
     }
   ),
   isLoggedIn: computed((state) => {
@@ -77,7 +74,9 @@ const session: SessionModel = {
     getStoreActions().walletSummary.updateBalance(undefined);
     getStoreActions().walletSummary.updateSummary(undefined);
     getStoreActions().walletSummary.clearWalletReachable(undefined);
-    getStoreActions().walletSummary.setSelectedTx(-1);
+    getStoreActions().walletSummary.setSelectedTxToCancel(-1);
+    getStoreActions().walletSummary.setSelectedTxToFinalize(-1);
+    getStoreActions().walletSummary.setSelectedTxToRepost(-1);
     getStoreActions().wallet.setAction(undefined);
     getStoreActions().wallet.replaceLogs("");
     getStoreActions().sendCoinsModel.setInitialValues();

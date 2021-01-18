@@ -1,5 +1,5 @@
 import React from "react";
-import { H3 } from "@blueprintjs/core";
+import { Button, H3 } from "@blueprintjs/core";
 
 export const HelpComponent = () => {
   return (
@@ -26,8 +26,18 @@ export const HelpComponent = () => {
         and then run <code>dir GrinNode.exe</code>. Now we just type{" "}
         <code>GrinNode.exe</code> and hit the Enter key. If the previous step
         fails, we should see a message with more information about the issue,
-        feel free to Join the Grin++ Telegram Channel and ask for help from
-        there, some others users may have faced the same issue as you.
+        feel free to{" "}
+        <Button
+          icon="help"
+          minimal={true}
+          onClick={() => {
+            require("electron").shell.openExternal("https://t.me/GrinPP");
+          }}
+        >
+          Join the Grin++ Support Channel on Telegram
+        </Button>{" "}
+        and ask for help from there, some others users may have faced the same
+        issue as you.
       </p>
       <br />
       <H3>

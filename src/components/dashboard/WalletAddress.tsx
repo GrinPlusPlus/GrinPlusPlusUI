@@ -13,22 +13,22 @@ import { useTranslation } from "react-i18next";
 type WalletAddressComponentProps = {
   slatepackAddress: string;
   isWalletReachable: boolean | undefined;
-  onBarcodeButtonClickedCb: () => void;
 };
 export const WalletAddressComponent = ({
   slatepackAddress,
   isWalletReachable,
-  onBarcodeButtonClickedCb,
 }: WalletAddressComponentProps) => {
   const { t } = useTranslation();
 
   return (
-    <ControlGroup fill={true} vertical={false}>
+    <ControlGroup vertical={false}>
       <Button
-        rightIcon="duplicate"
+        style={{
+          textTransform: "lowercase",
+          fontSize: "18px",
+        }}
         minimal={true}
         className="bp3-dark"
-        fill={true}
         onClick={() => {
           navigator.clipboard.writeText(slatepackAddress);
           Toaster.create({ position: Position.BOTTOM }).show({
@@ -49,8 +49,14 @@ export const WalletAddressComponent = ({
         minimal={true}
         className="bp3-dark"
         style={{ color: "black" }}
-        icon="zoom-to-fit"
-        onClick={onBarcodeButtonClickedCb}
+        icon="duplicate"
+        onClick={() => {
+          navigator.clipboard.writeText(slatepackAddress);
+          Toaster.create({ position: Position.BOTTOM }).show({
+            message: <div style={{ color: "white" }}>{t("copied")}</div>,
+            intent: Intent.SUCCESS,
+          });
+        }}
       />
     </ControlGroup>
   );

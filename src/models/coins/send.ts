@@ -32,6 +32,8 @@ export interface SendCoinsModel {
   error: string;
   waitingResponse: boolean;
   returnedSlatepack: string;
+  slatepackMessageToFinalize: string;
+  setSlatepackMessageToFinalize: Action<SendCoinsModel, string>;
   setReturnedSlatepack: Action<SendCoinsModel, string>;
   setError: Action<SendCoinsModel, string>;
   setStrategy: Action<SendCoinsModel, string>;
@@ -112,6 +114,10 @@ const sendCoinsModel: SendCoinsModel = {
   error: "",
   waitingResponse: false,
   returnedSlatepack: "",
+  slatepackMessageToFinalize: "",
+  setSlatepackMessageToFinalize: action((state, slatepack) => {
+    state.slatepackMessageToFinalize = slatepack;
+  }),
   setReturnedSlatepack: action((state, slatepack) => {
     state.returnedSlatepack = slatepack;
   }),

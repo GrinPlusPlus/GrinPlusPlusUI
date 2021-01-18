@@ -49,7 +49,7 @@ const receiveCoinsModel: ReceiveCoinsModel = {
         apiSettings.floonet,
         apiSettings.protocol,
         apiSettings.ip
-      ).receiveTx(getStoreState().session.token, slatepack, "");
+      ).receiveTx(getStoreState().session.token, slatepack.trim(), "");
 
       // Let's make sure there is no error...
       if (response == null) {

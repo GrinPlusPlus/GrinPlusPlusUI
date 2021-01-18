@@ -6,5 +6,5 @@ export type SlatepackProps = {
 };
 
 export const SlatepackComponent = ({ slatepack }: SlatepackProps) => {
-  return <SlatesBox>{slatepack}</SlatesBox>;
+  return <SlatesBox readOnly={true} value={slatepack}></SlatesBox>;
 };

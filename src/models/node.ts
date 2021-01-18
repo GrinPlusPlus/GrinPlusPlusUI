@@ -48,6 +48,7 @@ export interface NodeSummaryModel {
   updatedAt: number;
   readNodeLogs: Thunk<NodeSummaryModel, undefined, Injections, StoreModel>;
   readWalletLogs: Thunk<NodeSummaryModel, undefined, Injections, StoreModel>;
+  readUILogs: Thunk<NodeSummaryModel, undefined, Injections, StoreModel>;
 }
 
 const nodeSummary: NodeSummaryModel = {
@@ -147,6 +148,12 @@ const nodeSummary: NodeSummaryModel = {
       return utilsService.getTextFileContent(
         `${settings.nodeDataPath}${sep}LOGS${sep}Wallet.log`
       );
+    }
+  ),
+  readUILogs: thunk(
+    (actions, payload, { injections, getStoreState }): string => {
+      const { utilsService } = injections;
+      return utilsService.getTextFileContent(utilsService.getUiLogsLocation());
     }
   ),
 };
