@@ -17,12 +17,6 @@ const TextFileComponent = React.lazy(() =>
   }))
 );
 
-const StatusBarContainer = React.lazy(() =>
-  import("../common/StatusBar").then((module) => ({
-    default: module.StatusBarContainer,
-  }))
-);
-
 const renderLoader = () => <LoadingComponent />;
 
 export const UILogsContainer = () => {
@@ -36,9 +30,6 @@ export const UILogsContainer = () => {
         <HorizontallyCenter>
           <TextFileComponent content={readUILogs()} />
         </HorizontallyCenter>
-      </div>
-      <div className="footer">
-        <StatusBarContainer />
       </div>
     </Suspense>
   );

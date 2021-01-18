@@ -62,5 +62,5 @@ export const getUiLogsLocation = function(): string {
         throw new Error("Unknown Platform");
     }
   })();
-  return path.resolve(path.normalize(location));
+  return path.normalize(location);
 };

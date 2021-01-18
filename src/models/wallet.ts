@@ -180,15 +180,22 @@ const wallet: WalletModel = {
       const { nodeService } = injections;
       const defaultSettings = nodeService.getDefaultSettings(); // Read defaults.json
 
+      const path = require("path");
+
       nodeService.stopRustNode();
 
       // Check if we can find the node...
-      if (
-        !nodeService.verifyNodePath(
-          defaultSettings.mode,
-          defaultSettings.binaryPath
-        )
-      ) {
+      try {
+        if (
+          !nodeService.verifyNodePath(
+            defaultSettings.mode,
+            defaultSettings.binaryPath
+          )
+        ) {
+          throw new Error(`Can't find path: ${defaultSettings.binaryPath}`);
+        }
+      } catch (error) {
+        require("electron-log").error(`Error running Node: ${error.message}`);
         actions.setInitializingError(true);
         actions.setWalletInitialized(false);
         actions.setNodeHealthCheck(false);
@@ -205,11 +212,17 @@ const wallet: WalletModel = {
         require("electron-log").info("Running Node...");
         nodeService.runNode(
           defaultSettings.mode,
-          defaultSettings.binaryPath,
+          path.normalize(defaultSettings.binaryPath),
           defaultSettings.floonet
         );
       } catch (error) {
         require("electron-log").error(`Error running Node: ${error.message}`);
+
+        actions.setInitializingError(true);
+        actions.setWalletInitialized(false);
+        actions.setNodeHealthCheck(false);
+        actions.setMessage("node_is_not_running");
+        return false;
       }
 
       // Let's double check if the Node is running...
@@ -223,6 +236,10 @@ const wallet: WalletModel = {
 
       actions.setIsNodeInstalled(true);
       actions.setIsNodeRunning(true);
+      actions.setInitializingError(false);
+      actions.setWalletInitialized(true);
+      actions.setNodeHealthCheck(true);
+      actions.setMessage("");
 
       const settingsActions = getStoreActions().settings;
       settingsActions.setDefaultSettings(defaultSettings); // Update state
@@ -239,6 +256,8 @@ const wallet: WalletModel = {
       settingsActions.setMininumPeers(defaultSettings.minimumPeers);
       settingsActions.setConfirmations(defaultSettings.minimumConfirmations);
 
+      actions.setIsNodeInstalled(true);
+      actions.setIsNodeRunning(true);
       actions.setInitializingError(false);
       actions.setWalletInitialized(true);
       actions.setNodeHealthCheck(true);
