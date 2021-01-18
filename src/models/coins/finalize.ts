@@ -24,7 +24,7 @@ const finalizeModel: FinalizeModel = {
         apiSettings.ip
       ).finalizeTx(
         getStoreState().session.token,
-        slatepack,
+        slatepack.trim(),
         null,
         "FLUFF",
         "",
