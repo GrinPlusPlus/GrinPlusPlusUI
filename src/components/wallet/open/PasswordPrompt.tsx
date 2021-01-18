@@ -90,20 +90,6 @@ export const PasswordPromptComponent = ({
               onClick={passwordButtonCb}
               disabled={password?.length === 0 || waitingResponse || !connected}
             />
-            {deleteWalletButtonCb !== undefined ? (
-              <Button
-                style={{
-                  marginLeft: "5px",
-                  marginTop: "10px",
-                }}
-                text={t("delete_wallet")}
-                intent={Intent.DANGER}
-                onClick={() => deleteWalletButtonCb()}
-                disabled={
-                  password?.length === 0 || waitingResponse || !connected
-                }
-              />
-            ) : null}
           </Flex>
         </HorizontallyCenter>
       </div>
