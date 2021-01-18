@@ -54,6 +54,34 @@ export const WalletActivityComponent = ({
         vertical={false}
       >
         <Tab
+          id="all"
+          key="all"
+          title={t("all")}
+          style={{ fontSize: "17px" }}
+          panel={
+            <TransactionsTableComponent
+              transactions={all}
+              transactionOpened={transactionOpened}
+              openTransactionCb={openTransactionCb}
+              onCancelTransactionButtonClickedCb={
+                onCancelTransactionButtonClickedCb
+              }
+              onFinalizeTransactionButtonClickedCb={
+                onFinalizeTransactionButtonClickedCb
+              }
+              onRepostTransactionButtonClickedCb={
+                onRepostTransactionButtonClickedCb
+              }
+              onViewSlatepackMessageButtonClickedCb={
+                onViewSlatepackMessageButtonClickedCb
+              }
+              method={method}
+              lastConfirmedHeight={lastConfirmedHeight}
+              confirmations={confirmations}
+            />
+          }
+        />
+        <Tab
           id="in_progress"
           key="in_progress"
           title={t("in_progress")}
@@ -173,34 +201,6 @@ export const WalletActivityComponent = ({
           panel={
             <TransactionsTableComponent
               transactions={coinbase}
-              transactionOpened={transactionOpened}
-              openTransactionCb={openTransactionCb}
-              onCancelTransactionButtonClickedCb={
-                onCancelTransactionButtonClickedCb
-              }
-              onFinalizeTransactionButtonClickedCb={
-                onFinalizeTransactionButtonClickedCb
-              }
-              onRepostTransactionButtonClickedCb={
-                onRepostTransactionButtonClickedCb
-              }
-              onViewSlatepackMessageButtonClickedCb={
-                onViewSlatepackMessageButtonClickedCb
-              }
-              method={method}
-              lastConfirmedHeight={lastConfirmedHeight}
-              confirmations={confirmations}
-            />
-          }
-        />
-        <Tab
-          id="all"
-          key="all"
-          title={t("all")}
-          style={{ fontSize: "17px" }}
-          panel={
-            <TransactionsTableComponent
-              transactions={all}
               transactionOpened={transactionOpened}
               openTransactionCb={openTransactionCb}
               onCancelTransactionButtonClickedCb={
