@@ -262,8 +262,6 @@ const wallet: WalletModel = {
 
       const isNodeRunning = await nodeService.isNodeRunning(1);
 
-      actions.setInitializingError(!isNodeRunning);
-      actions.setWalletInitialized(isNodeRunning);
       actions.setNodeHealthCheck(isNodeRunning);
       actions.setMessage(isNodeRunning ? "" : "node_is_not_running");
 
