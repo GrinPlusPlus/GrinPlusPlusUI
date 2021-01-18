@@ -97,13 +97,7 @@ export const WalletContainer = () => {
       try {
         if (!(await checkWalletAvailability(`http://${address}.onion/`))) {
           if (!isLoggedIn) return;
-
-          Toaster.create({ position: Position.BOTTOM }).show({
-            message: (
-              <div style={{ color: "white" }}>{t("wallet_not_reachable")}</div>
-            ),
-            intent: Intent.WARNING,
-          });
+          Log.error("Wallet is not Reachable");
         }
       } catch (error) {
         Log.error(`Error trying to get Wallet Availability: ${error.message}`);
