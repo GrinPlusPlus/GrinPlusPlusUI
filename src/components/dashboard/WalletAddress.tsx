@@ -24,8 +24,8 @@ export const WalletAddressComponent = ({
     <ControlGroup vertical={false}>
       <Button
         style={{
-          textTransform: "uppercase",
-          fontSize: "16px",
+          textTransform: "lowercase",
+          fontSize: "18px",
         }}
         minimal={true}
         className="bp3-dark"
