@@ -116,9 +116,8 @@ export const OpenWalletContainer = () => {
         username: username,
         password: password,
       });
+      setUsername("");
       setPassword("");
-      setAccounts(undefined);
-      setAccounts(await getAccounts());
     } catch (error) {
       Toaster.create({ position: Position.BOTTOM }).show({
         message: error.message,
@@ -127,11 +126,14 @@ export const OpenWalletContainer = () => {
       });
     }
 
+    setAccounts(undefined);
+    setAccounts(await getAccounts());
     setWalletAction(undefined); // to close prompt
     setWaitingResponse(false);
   }, [
     username,
     password,
+    setUsername,
     setWaitingResponse,
     deleteWallet,
     setWalletAction,
