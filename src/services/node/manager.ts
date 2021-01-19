@@ -272,8 +272,28 @@ export const getDefaultSettings = function(
   const settingsFileContent = getTextFileContent(settingsFilePath);
   const defaults = JSON.parse(settingsFileContent);
 
-  const configFileContent = getTextFileContent(configFilePath);
-  const node = JSON.parse(configFileContent);
+  let minimumPeers = 10;
+  let maximumPeers = 25;
+  let minimumConfirmations = 10;
+
+  let configFileContent = getTextFileContent(configFilePath);
+  let node = undefined;
+
+  try {
+    node = JSON.parse(configFileContent);
+    minimumPeers = node.P2P.MIN_PEERS;
+    maximumPeers = node.P2P.MAX_PEERS;
+    minimumConfirmations = node.WALLET.MIN_CONFIRMATIONS;
+  } catch (e) {
+    // Let's create a default config file.
+    configFileContent = `{"P2P":{"MAX_PEERS":${maximumPeers},"MIN_PEERS":${minimumPeers}},"WALLET":{"DATABASE":"SQLITE","MIN_CONFIRMATIONS":${minimumConfirmations}}}`;
+    require("fs").writeFileSync(configFilePath, configFileContent);
+
+    node = JSON.parse(getTextFileContent(configFilePath));
+    minimumPeers = node.P2P.MIN_PEERS;
+    maximumPeers = node.P2P.MAX_PEERS;
+    minimumConfirmations = node.WALLET.MIN_CONFIRMATIONS;
+  }
 
   return {
     ip: defaults.ip,
@@ -281,9 +301,9 @@ export const getDefaultSettings = function(
     mode: defaults.mode,
     binaryPath: defaults.binaryPath,
     floonet: defaults.floonet,
-    minimumPeers: node.P2P.MIN_PEERS,
-    maximumPeers: node.P2P.MAX_PEERS,
-    minimumConfirmations: node.WALLET.MIN_CONFIRMATIONS,
+    minimumPeers: minimumPeers,
+    maximumPeers: maximumPeers,
+    minimumConfirmations: minimumConfirmations,
     ports: {
       node: defaults.ports.node,
       foreignRPC: defaults.ports.foreignRPC,
