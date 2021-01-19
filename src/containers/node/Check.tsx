@@ -66,7 +66,7 @@ export const NodeCheckContainer = () => {
             <Button
               onClick={() => history.push("/walletLogs")}
               className="bp3-dark"
-              intent={Intent.WARNING}
+              intent={Intent.NONE}
               style={{ marginLeft: "5px" }}
             >
               {t("wallet_logs")}
