@@ -152,7 +152,6 @@ export const Dropper = styled.section`
 export const WalletUsername = styled.section`
   font-size: 21px;
   vertical-align: middle;
-  text-transform: uppercase;
   color: #ffff00;
 `;
 
