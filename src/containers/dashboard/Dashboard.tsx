@@ -9,19 +9,21 @@ import { WalletBalanceDetailsContainer } from "./WalletBalanceDetails";
 export const DashboardContainer = () => {
   return (
     <Content>
-      <div style={{ margin: "15px" }}>
-        <Flex>
-          <div>
-            <WalletBalanceContainer />
-            <div style={{ marginTop: "10px" }}>
-              <WalletBalanceDetailsContainer />
+      <div style={{ padding: "15px", width: "100%" }}>
+        <div style={{ width: "100%" }}>
+          <Flex>
+            <div style={{ width: "23%" }}>
+              <WalletBalanceContainer />
+              <div style={{ paddingTop: "10px" }}>
+                <WalletBalanceDetailsContainer />
+              </div>
             </div>
-          </div>
-          <div style={{ marginLeft: "30px", width: "100%" }}>
-            <WalletAddressContainer />
-          </div>
-        </Flex>
-        <div style={{ marginTop: "20px" }}>
+            <div style={{ width: "77%", paddingLeft: "30px" }}>
+              <WalletAddressContainer />
+            </div>
+          </Flex>
+        </div>
+        <div style={{ width: "100%", paddingTop: "20px" }}>
           <WalletActivitiyContainer />
         </div>
       </div>
