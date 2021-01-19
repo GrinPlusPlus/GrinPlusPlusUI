@@ -107,8 +107,9 @@ export const TransactionsTableComponent = ({
           <td style={{ width: "18%", paddingLeft: "10px" }}>
             {mType === "sending_not_finalized" ? (
               <Button
-                style={{ margin: "0px", padding: "1px" }}
+                style={{ margin: "0px", padding: "1px", height: "10px" }}
                 minimal={true}
+                small={true}
                 intent={Intent.PRIMARY}
                 icon="tick"
                 onClick={(event: React.MouseEvent<HTMLElement>) => {
