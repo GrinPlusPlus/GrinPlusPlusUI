@@ -1,4 +1,4 @@
-import { Button, FormGroup, Icon, Intent } from "@blueprintjs/core";
+import { Button, Icon, Intent, Text } from "@blueprintjs/core";
 import {
   cleanTxType,
   getDateAsString,
@@ -74,7 +74,7 @@ export const TransactionsTableComponent = ({
       let mType = cleanTxType(transaction.type);
 
       table.push(
-        <tr key={`i-${transaction.Id}`} style={{ height: "40px" }}>
+        <tr key={`i-${transaction.Id}`} style={{ height: "30px" }}>
           <td
             style={{ width: "5%", paddingLeft: "10px" }}
             onClick={() => openTransactionCb(transaction.Id)}
@@ -84,7 +84,7 @@ export const TransactionsTableComponent = ({
             </HorizontallyCenter>
           </td>
           <td
-            style={{ width: "11%", paddingLeft: "10px" }}
+            style={{ width: "12%", paddingLeft: "10px" }}
             onClick={() => openTransactionCb(transaction.Id)}
           >
             {Math.abs(
@@ -92,40 +92,42 @@ export const TransactionsTableComponent = ({
             ).toFixed(9)}
           </td>
           <td
-            style={{ width: "45%", paddingLeft: "10px" }}
+            style={{ width: "50%", paddingLeft: "10px" }}
             onClick={() => openTransactionCb(transaction.Id)}
           >
             {transaction.address === undefined ? "" : transaction.address}
           </td>
           <td
-            style={{ width: "14%", paddingLeft: "10px" }}
+            style={{ width: "15%", paddingLeft: "10px" }}
             onClick={() => openTransactionCb(transaction.Id)}
           >
             {date === undefined ? "" : date}
           </td>
 
-          <td style={{ width: "25%" }}>
+          <td style={{ width: "18%", paddingLeft: "10px" }}>
             {mType === "sending_not_finalized" ? (
-              <HorizontallyCenter>
-                <FormGroup
-                  inline={true}
-                  label={transaction.type}
-                  style={{ margin: "0", padding: "0" }}
-                >
-                  <Button
-                    minimal={true}
-                    intent={Intent.PRIMARY}
-                    icon="tick"
-                    onClick={(event: React.MouseEvent<HTMLElement>) => {
-                      event.preventDefault();
-                      onFinalizeTransactionButtonClickedCb(transaction.Id);
-                    }}
-                  >
-                    {t("finalize")}
-                  </Button>
-                </FormGroup>
-              </HorizontallyCenter>
-            ) : null}
+              <Button
+                style={{ padding: "1px" }}
+                minimal={true}
+                intent={Intent.PRIMARY}
+                icon="tick"
+                onClick={(event: React.MouseEvent<HTMLElement>) => {
+                  event.preventDefault();
+                  onFinalizeTransactionButtonClickedCb(transaction.Id);
+                }}
+              >
+                {t("finalize")}
+              </Button>
+            ) : (
+              <Text>
+                {getStatus(
+                  mType,
+                  transaction.confirmedHeight,
+                  lastConfirmedHeight,
+                  confirmations
+                )}
+              </Text>
+            )}
           </td>
         </tr>
       );
