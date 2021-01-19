@@ -33,9 +33,9 @@ export const WalletLogsContainer = () => {
     <Suspense fallback={renderLoader()}>
       <NavigationBarContainer title={t("wallet_logs")} />
       <div className="content">
-        <HorizontallyCenter>
+        <div style={{ width: "100%", height: "calc(100vh - 130px)" }}>
           <TextFileComponent content={readWalletLogs()} />
-        </HorizontallyCenter>
+        </div>
       </div>
       <div className="footer">
         <StatusBarContainer />

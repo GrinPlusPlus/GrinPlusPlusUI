@@ -44,9 +44,9 @@ export const SlatesBox = styled.textarea`
 export const TextFileBox = styled.textarea`
   margin: 10px;
   font-size: 12.5px;
-  width: 1120px;
-  min-height: 600px;
-  max-height: 600px;
+  width: 100%;
+  min-height: 100%;
+  max-height: 100%;
   background-color: #171920;
   overflow-y: auto;
   border-radius: 3px;
