@@ -11,7 +11,7 @@ export const WalletBalanceComponent = ({ spendable }: WalletBalanceProps) => {
   const { t } = useTranslation();
 
   return (
-    <div style={{ marginRight: "10px" }}>
+    <div style={{ marginRight: "20px" }}>
       <Title>{t("spendable")} ツ</Title>
       <Flex>
         <SpendableBalance>

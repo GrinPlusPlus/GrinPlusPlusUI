@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Icon, Intent } from "@blueprintjs/core";
+import { Button, FormGroup, Icon, Intent } from "@blueprintjs/core";
 import {
   cleanTxType,
   getDateAsString,
@@ -74,7 +74,7 @@ export const TransactionsTableComponent = ({
       let mType = cleanTxType(transaction.type);
 
       table.push(
-        <tr key={`i-${transaction.Id}`}>
+        <tr key={`i-${transaction.Id}`} style={{ height: "40px" }}>
           <td
             style={{ width: "5%", paddingLeft: "10px" }}
             onClick={() => openTransactionCb(transaction.Id)}
@@ -84,7 +84,7 @@ export const TransactionsTableComponent = ({
             </HorizontallyCenter>
           </td>
           <td
-            style={{ width: "10%", paddingLeft: "10px" }}
+            style={{ width: "11%", paddingLeft: "10px" }}
             onClick={() => openTransactionCb(transaction.Id)}
           >
             {Math.abs(
@@ -92,23 +92,28 @@ export const TransactionsTableComponent = ({
             ).toFixed(9)}
           </td>
           <td
-            style={{ width: "40%", paddingLeft: "10px" }}
+            style={{ width: "45%", paddingLeft: "10px" }}
             onClick={() => openTransactionCb(transaction.Id)}
           >
             {transaction.address === undefined ? "" : transaction.address}
           </td>
           <td
-            style={{ width: "25%", paddingLeft: "10px" }}
+            style={{ width: "14%", paddingLeft: "10px" }}
             onClick={() => openTransactionCb(transaction.Id)}
           >
             {date === undefined ? "" : date}
           </td>
 
-          <td>
+          <td style={{ width: "25%" }}>
             {mType === "sending_not_finalized" ? (
               <HorizontallyCenter>
-                <ButtonGroup minimal={true}>
+                <FormGroup
+                  inline={true}
+                  label={transaction.type}
+                  style={{ margin: "0", padding: "0" }}
+                >
                   <Button
+                    minimal={true}
                     intent={Intent.PRIMARY}
                     icon="tick"
                     onClick={(event: React.MouseEvent<HTMLElement>) => {
@@ -118,7 +123,7 @@ export const TransactionsTableComponent = ({
                   >
                     {t("finalize")}
                   </Button>
-                </ButtonGroup>
+                </FormGroup>
               </HorizontallyCenter>
             ) : null}
           </td>
