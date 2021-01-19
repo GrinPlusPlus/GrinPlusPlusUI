@@ -2,7 +2,6 @@ import React, { Suspense } from "react";
 import { useStoreActions } from "../../hooks";
 
 import { useTranslation } from "react-i18next";
-import { HorizontallyCenter } from "../../components/styled";
 import { LoadingComponent } from "../../components/extras/Loading";
 
 const NavigationBarContainer = React.lazy(() =>
