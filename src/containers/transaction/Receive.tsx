@@ -93,7 +93,7 @@ export const ReceiveContainer = () => {
               <p
                 style={{ color: "#a3a3a3", fontSize: "13px", marginTop: "5px" }}
               >
-                {t("share_to_initiate_transaction")}
+                {t("share_to_finalize_transaction")}
               </p>
             </HorizontallyCenter>
           </div>
