@@ -295,7 +295,6 @@ export const getNodeSettings = async function(): Promise<{
   let minimumConfirmations = 10;
 
   const node = await RPC.config();
-
   if (node !== null) {
     minimumPeers = node.min_peers;
     maximumPeers = node.max_peers;

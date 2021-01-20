@@ -119,7 +119,7 @@ export class RPC {
       }),
     };
 
-    require("electron-log").info(`Callling ${method}...`);
+    require("electron-log").info(`Calling ${method}...`);
     return new Promise((resolve, reject) => {
       request(options, (error: any, response: any, body: string) => {
         try {
