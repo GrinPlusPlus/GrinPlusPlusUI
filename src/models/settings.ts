@@ -39,6 +39,14 @@ export interface SettingsModel {
   toggleConfirmationDialog: Action<SettingsModel>;
   onSettingsChanged: ThunkOn<SettingsModel, Injections, StoreModel>;
   getNodeSettings: Thunk<SettingsModel, undefined, Injections, StoreModel>;
+  setNodeSettings: Action<
+    SettingsModel,
+    {
+      mininumPeers: number;
+      maximumPeers: number;
+      minimumConfirmations: number;
+    }
+  >;
 }
 
 const settings: SettingsModel = {
@@ -131,13 +139,21 @@ const settings: SettingsModel = {
       const { nodeService } = injections;
 
       const settings = await nodeService.getNodeSettings();
-      actions.setConfirmations(settings.minimumConfirmations);
-      actions.setMininumPeers(settings.minimumPeers);
-      actions.setMaximumPeers(settings.maximumPeers);
+
+      actions.setNodeSettings({
+        mininumPeers: settings.minimumPeers,
+        maximumPeers: settings.minimumPeers,
+        minimumConfirmations: settings.minimumConfirmations,
+      });
 
       return true;
     }
   ),
+  setNodeSettings: action((state, settings) => {
+    state.mininumPeers = settings.mininumPeers;
+    state.mininumPeers = settings.maximumPeers;
+    state.mininumPeers = settings.minimumConfirmations;
+  }),
 };
 
 export default settings;
