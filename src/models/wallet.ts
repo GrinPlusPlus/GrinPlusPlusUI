@@ -247,10 +247,7 @@ const wallet: WalletModel = {
       );
       settingsActions.setGrinJoinAddress(defaultSettings.grinJoinAddress);
       settingsActions.setGrinChckAddress(defaultSettings.grinChckAddress);
-      settingsActions.setMaximumPeers(defaultSettings.maximumPeers);
-      settingsActions.setMininumPeers(defaultSettings.minimumPeers);
-      settingsActions.setConfirmations(defaultSettings.minimumConfirmations);
-
+      
       actions.setIsNodeInstalled(true);
       actions.setIsNodeRunning(true);
       actions.setWalletInitialized(true);

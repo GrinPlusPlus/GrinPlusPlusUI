@@ -128,7 +128,9 @@ const settings: SettingsModel = {
       payload,
       { injections, getStoreActions }
     ): Promise<boolean> => {
-      const settings = getStoreActions().settings.getNodeSettings();
+      const { nodeService } = injections;
+
+      const settings = await nodeService.getNodeSettings();
       actions.setConfirmations(settings.minimumConfirmations);
       actions.setMininumPeers(settings.minimumPeers);
       actions.setMaximumPeers(settings.maximumPeers);

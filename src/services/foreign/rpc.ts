@@ -118,10 +118,9 @@ export class RPC {
         params: params,
       }),
     };
-    require("electron-log").info(`Calling ${method} configuration...`);
+
     return new Promise((resolve, reject) => {
       request(options, (error: any, response: any, body: string) => {
-        require("electron-log").info("Foreign receive response: \n" + body);
         try {
           if (error) reject(error);
           if (response === null || response === undefined)
