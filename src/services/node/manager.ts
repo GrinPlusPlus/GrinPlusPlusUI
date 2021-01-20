@@ -124,7 +124,7 @@ export const updateSettings = async function(
     case "min_peers":
       return await RPC.config({ min_peers: value });
     case "max_peers":
-      return await RPC.config({ min_confirmations: value });
+      return await RPC.config({ max_peers: value });
     case "min_confirmations":
       return await RPC.config({ min_confirmations: value });
   }
