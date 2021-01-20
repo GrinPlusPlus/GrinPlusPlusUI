@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useStoreActions, useStoreState } from "../hooks";
 
-import { Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { InitComponent } from "../components/extras/Init";
 
@@ -10,7 +10,8 @@ export const InitializerContainer = () => {
 
   const { message, initializingError } = useStoreState((state) => state.wallet);
   const { language } = useStoreState((state) => state.idiom);
-  const { status } = useStoreState((state) => state.nodeSummary);
+
+  let history = useHistory();
 
   const { initializeWallet } = useStoreActions((state) => state.wallet);
 
@@ -21,22 +22,19 @@ export const InitializerContainer = () => {
       log.info(`Setting "${language}" as language...`);
       i18n.changeLanguage(language);
       try {
-        if (await initializeWallet()) {
-          log.info("Backend initialized.");
-        } else {
+        if (!(await initializeWallet())) {
           log.info("Backend is not Running.");
+        } else {
+          history.push("/login"); // Redirect to Login
         }
       } catch (error) {
         log.error(`Error trying to Initialize the Backend: ${error}`);
       }
     })();
-  }, [language, initializeWallet, i18n]);
+  }, [language, initializeWallet, i18n, history]);
 
   return (
     <div>
-      {status.toLowerCase() !== "not connected" ? (
-        <Redirect to="/login" />
-      ) : null}
       <InitComponent error={initializingError} message={t(`${message}`)} />
     </div>
   );

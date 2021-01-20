@@ -2,6 +2,8 @@ import { IWalletSettings } from "../../interfaces/IWalletSettings";
 import { retryAsync } from "ts-retry";
 import { getTextFileContent } from "../utils";
 
+import { RPC } from "../foreign/rpc";
+
 export const getCommand = function(): string {
   const cmd = (() => {
     switch (require("electron").remote.process.platform) {
@@ -114,22 +116,18 @@ export const getConfigFilePath = function(floonet: boolean = false): string {
   );
 };
 
-export const updateSettings = function(
-  file: string,
-  property: "MIN_PEERS" | "MAX_PEERS" | "MIN_CONFIRMATIONS" | undefined,
+export const updateSettings = async function(
+  property: "min_peers" | "max_peers" | "min_confirmations",
   value: number
-): void {
-  if (!property) return;
-  const fs = require("fs");
-  const data = fs.readFileSync(file, "utf8");
-  let settings = JSON.parse(data);
-  if (["MIN_PEERS", "MAX_PEERS"].includes(property)) {
-    if (!settings["P2P"]) settings["P2P"] = {};
-    settings["P2P"][property] = value;
-  } else if (property === "MIN_CONFIRMATIONS") {
-    settings["WALLET"]["MIN_CONFIRMATIONS"] = value;
+): Promise<{} | null> {
+  switch (property) {
+    case "min_peers":
+      return await RPC.config({ min_peers: value });
+    case "max_peers":
+      return await RPC.config({ min_confirmations: value });
+    case "min_confirmations":
+      return await RPC.config({ min_confirmations: value });
   }
-  fs.writeFileSync(file, JSON.stringify(settings));
 };
 
 export const getAbsoluteNodePath = function(
@@ -250,50 +248,22 @@ export const stopRustNode = function(): void {
   } catch (e) {}
 };
 
-export const getDefaultSettings = function(
-  file: string = "defaults.json"
-): IWalletSettings {
+export const getDefaultSettings = async function(
+  file: string = "defaults.json",
+): Promise<IWalletSettings> {
   const fs = require("fs");
   const path = require("path");
 
   const settingsFilePath = path.normalize(
     path.join(path.normalize(require("electron").remote.app.getAppPath()), file)
   );
-  const configFilePath = getConfigFilePath();
 
   if (!fs.existsSync(settingsFilePath)) {
     throw new Error(`Can't find settings file: ${settingsFilePath}`);
   }
 
-  if (!fs.existsSync(configFilePath)) {
-    throw new Error(`Can't find config file: ${configFilePath}`);
-  }
-
   const settingsFileContent = getTextFileContent(settingsFilePath);
   const defaults = JSON.parse(settingsFileContent);
-
-  let minimumPeers = 10;
-  let maximumPeers = 25;
-  let minimumConfirmations = 10;
-
-  let configFileContent = getTextFileContent(configFilePath);
-  let node = undefined;
-
-  try {
-    node = JSON.parse(configFileContent);
-    minimumPeers = node.P2P.MIN_PEERS;
-    maximumPeers = node.P2P.MAX_PEERS;
-    minimumConfirmations = node.WALLET.MIN_CONFIRMATIONS;
-  } catch (e) {
-    // Let's create a default config file.
-    configFileContent = `{"P2P":{"MAX_PEERS":${maximumPeers},"MIN_PEERS":${minimumPeers}},"WALLET":{"DATABASE":"SQLITE","MIN_CONFIRMATIONS":${minimumConfirmations}}}`;
-    require("fs").writeFileSync(configFilePath, configFileContent);
-
-    node = JSON.parse(getTextFileContent(configFilePath));
-    minimumPeers = node.P2P.MIN_PEERS;
-    maximumPeers = node.P2P.MAX_PEERS;
-    minimumConfirmations = node.WALLET.MIN_CONFIRMATIONS;
-  }
 
   return {
     ip: defaults.ip,
@@ -301,9 +271,9 @@ export const getDefaultSettings = function(
     mode: defaults.mode,
     binaryPath: defaults.binaryPath,
     floonet: defaults.floonet,
-    minimumPeers: minimumPeers,
-    maximumPeers: maximumPeers,
-    minimumConfirmations: minimumConfirmations,
+    minimumPeers: 10, // default value
+    maximumPeers: 35, // default value
+    minimumConfirmations: 10, // default value
     ports: {
       node: defaults.ports.node,
       foreignRPC: defaults.ports.foreignRPC,
@@ -312,6 +282,30 @@ export const getDefaultSettings = function(
     },
     grinJoinAddress: defaults.grinJoinAddress,
     grinChckAddress: defaults.grinChckAddress,
+  };
+};
+
+export const getNodeSettings = async function(): Promise<{
+  minimumPeers: number;
+  maximumPeers: number;
+  minimumConfirmations: number;
+}> {
+  let minimumPeers = 10;
+  let maximumPeers = 35;
+  let minimumConfirmations = 10;
+
+  const node = await RPC.config();
+
+  if (node !== null) {
+    minimumPeers = node.min_peers;
+    maximumPeers = node.max_peers;
+    minimumConfirmations = node.min_confirmations;
+  }
+
+  return {
+    minimumPeers: minimumPeers,
+    maximumPeers: maximumPeers,
+    minimumConfirmations: minimumConfirmations,
   };
 };
 

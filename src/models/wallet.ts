@@ -171,6 +171,7 @@ const wallet: WalletModel = {
         });
     }
   ),
+
   initializeWallet: thunk(
     async (
       actions,
@@ -178,9 +179,8 @@ const wallet: WalletModel = {
       { injections, getStoreActions }
     ): Promise<boolean> => {
       const { nodeService } = injections;
-      const defaultSettings = nodeService.getDefaultSettings(); // Read defaults.json
 
-      const path = require("path");
+      let defaultSettings = await nodeService.getDefaultSettings();
 
       nodeService.stopRustNode();
 
@@ -196,6 +196,7 @@ const wallet: WalletModel = {
         }
       } catch (error) {
         require("electron-log").error(`Error running Node: ${error.message}`);
+        actions.setIsNodeInstalled(false);
         actions.setInitializingError(true);
         actions.setWalletInitialized(false);
         actions.setNodeHealthCheck(false);
@@ -212,12 +213,13 @@ const wallet: WalletModel = {
         require("electron-log").info("Running Node...");
         nodeService.runNode(
           defaultSettings.mode,
-          path.normalize(defaultSettings.binaryPath),
+          require("path").normalize(defaultSettings.binaryPath),
           defaultSettings.floonet
         );
       } catch (error) {
         require("electron-log").error(`Error running Node: ${error.message}`);
 
+        actions.setIsNodeInstalled(false);
         actions.setInitializingError(true);
         actions.setWalletInitialized(false);
         actions.setNodeHealthCheck(false);
@@ -227,19 +229,13 @@ const wallet: WalletModel = {
 
       // Let's double check if the Node is running...
       if (!(await nodeService.isNodeRunning(30))) {
+        actions.setIsNodeInstalled(false);
         actions.setInitializingError(true);
         actions.setWalletInitialized(false);
         actions.setNodeHealthCheck(false);
         actions.setMessage("node_is_not_running");
         return false;
       }
-
-      actions.setIsNodeInstalled(true);
-      actions.setIsNodeRunning(true);
-      actions.setInitializingError(false);
-      actions.setWalletInitialized(true);
-      actions.setNodeHealthCheck(true);
-      actions.setMessage("");
 
       const settingsActions = getStoreActions().settings;
       settingsActions.setDefaultSettings(defaultSettings); // Update state
@@ -251,16 +247,15 @@ const wallet: WalletModel = {
       );
       settingsActions.setGrinJoinAddress(defaultSettings.grinJoinAddress);
       settingsActions.setGrinChckAddress(defaultSettings.grinChckAddress);
-      // Updating store with server_config.json
       settingsActions.setMaximumPeers(defaultSettings.maximumPeers);
       settingsActions.setMininumPeers(defaultSettings.minimumPeers);
       settingsActions.setConfirmations(defaultSettings.minimumConfirmations);
 
       actions.setIsNodeInstalled(true);
       actions.setIsNodeRunning(true);
-      actions.setInitializingError(false);
       actions.setWalletInitialized(true);
       actions.setNodeHealthCheck(true);
+      actions.setInitializingError(false);
       actions.setMessage("");
 
       return true;
