@@ -151,8 +151,8 @@ const settings: SettingsModel = {
   ),
   setNodeSettings: action((state, settings) => {
     state.mininumPeers = settings.mininumPeers;
-    state.mininumPeers = settings.maximumPeers;
-    state.mininumPeers = settings.minimumConfirmations;
+    state.maximumPeers = settings.maximumPeers;
+    state.confirmations = settings.minimumConfirmations;
   }),
 };
 
