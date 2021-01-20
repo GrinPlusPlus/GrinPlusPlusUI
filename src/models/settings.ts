@@ -142,7 +142,7 @@ const settings: SettingsModel = {
 
       actions.setNodeSettings({
         mininumPeers: settings.minimumPeers,
-        maximumPeers: settings.minimumPeers,
+        maximumPeers: settings.maximumPeers,
         minimumConfirmations: settings.minimumConfirmations,
       });
 
