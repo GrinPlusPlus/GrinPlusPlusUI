@@ -17,13 +17,17 @@
     <div id="root"></div>
     <script>
       const customTitlebar = require("custom-electron-titlebar");
-      document.title = `Grin++ v${require('electron').remote.app.getVersion()}`;
+      document.title = `Grin++ v${require("electron").remote.app.getVersion()}`;
       new customTitlebar.Titlebar({
         backgroundColor: customTitlebar.Color.fromHex("#010101"),
         maximizable: true,
+        minimizable: true,
+        hideWhenClickingClose: false,
         menu: null,
-        titleHorizontalAlignment: require('os').platform() === 'darwin' ? 'center' : 'left',
-        icon: 'icon.png'
+        closeable: true,
+        titleHorizontalAlignment:
+          require("os").platform() === "darwin" ? "center" : "left",
+        icon: "icon.png",
       });
     </script>
   </body>
