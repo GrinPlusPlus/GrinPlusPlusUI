@@ -56,7 +56,7 @@ const isProcessRunning = function(processName: string): Promise<boolean> {
   const cmd = (() => {
     switch (require("os").platform()) {
       case "win32":
-        return `wmic process where "name = '${processName}'" get commandline`;
+        return `tasklist`;
       case "darwin":
         return `ps -ax | grep ${processName}`;
       case "linux":
@@ -71,13 +71,9 @@ const isProcessRunning = function(processName: string): Promise<boolean> {
       cmd,
       (err: Error, stdout: string, stderr: string) => {
         if (err) reject(err);
-        if (require("electron").remote.process.platform === "win32") {
-          resolve(
-            stdout.toLowerCase().indexOf("CommandLine".toLowerCase()) > -1
-          );
-        } else {
-          resolve(stdout.toLowerCase().indexOf(processName.toLowerCase()) > -1);
-        }
+        resolve(
+          stdout.match(new RegExp("\\b" + processName + "\\b", "g")) !== null
+        );
       }
     );
   });
@@ -249,7 +245,7 @@ export const stopRustNode = function(): void {
 };
 
 export const getDefaultSettings = async function(
-  file: string = "defaults.json",
+  file: string = "defaults.json"
 ): Promise<IWalletSettings> {
   const fs = require("fs");
   const path = require("path");
