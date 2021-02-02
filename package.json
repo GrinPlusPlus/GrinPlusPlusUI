@@ -17,7 +17,7 @@
   "private": true,
   "dependencies": {
     "@babel/runtime": "^7.12.5",
-    "@blueprintjs/core": "^3.38.1",
+    "@blueprintjs/core": "^3.38.2",
     "@craco/craco": "^5.9.0",
     "@types/classnames": "^2.2.11",
     "@types/jest": "^25.2.3",
@@ -33,7 +33,7 @@
     "electron-log": "^4.3.1",
     "electron-store": "^5.2.0",
     "electron-updater": "^4.3.5",
-    "i18next": "^19.8.5",
+    "i18next": "^19.8.7",
     "i18next-browser-languagedetector": "^4.3.1",
     "immutability-helper": "^3.1.1",
     "node-fetch": "^2.6.1",
@@ -51,7 +51,7 @@
     "styled-components": "^5.2.1",
     "tor-request": "^3.1.0",
     "ts-retry": "1.4.1",
-    "typed-rest-client": "^1.8.0",
+    "typed-rest-client": "^1.8.1",
     "typescript": "^3.9.7",
     "uninstall": "0.0.0",
     "uuid": "^7.0.3"
