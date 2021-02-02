@@ -178,6 +178,7 @@ function createWindow() {
     title: "Grin++ v" + app.getVersion(),
     webPreferences: {
       nodeIntegration: true,
+      enableRemoteModule: true,
     },
     icon: path.join(__dirname, "/../assets/icons/512x512.png"),
   });
