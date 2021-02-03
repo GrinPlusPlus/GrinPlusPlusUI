@@ -71,9 +71,13 @@ const isProcessRunning = function(processName: string): Promise<boolean> {
       cmd,
       (err: Error, stdout: string, stderr: string) => {
         if (err) reject(err);
-        resolve(
-          stdout.match(new RegExp("\\b" + processName + "\\b", "g")) !== null
-        );
+        if (require("electron").remote.process.platform === "win32") {
+          resolve(
+            stdout.match(new RegExp("\\b" + processName + "\\b", "g")) !== null
+          );
+        } else {
+          resolve(stdout.toLowerCase().indexOf(processName.toLowerCase()) > -1);
+        }
       }
     );
   });
