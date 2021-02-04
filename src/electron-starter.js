@@ -180,7 +180,9 @@ function createWindow() {
       nodeIntegration: true,
       enableRemoteModule: true,
     },
-    icon: path.join(__dirname, "/../assets/icons/512x512.png"),
+    icon: electron.nativeImage.createFromPath(
+      path.join(__dirname, "/../assets/icons/512x512.png")
+    ),
   });
 
   // and load the index.html of the app.
