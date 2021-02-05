@@ -14,7 +14,7 @@ export type InitComponentProps = {
 export const InitComponent = ({ error, message }: InitComponentProps) => {
   const { t } = useTranslation();
 
-  let history = useHistory();
+  const history = useHistory();
 
   return (
     <div>

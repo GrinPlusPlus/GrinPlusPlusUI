@@ -15,7 +15,7 @@ export const WalletDrawer = () => {
   const { getNodeSettings } = useStoreActions((actions) => actions.settings);
 
   useEffect(() => {
-    (async function() {
+    (async function () {
       const log = require("electron-log");
       log.info("Getting node settings...");
 

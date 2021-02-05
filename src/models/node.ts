@@ -150,12 +150,10 @@ const nodeSummary: NodeSummaryModel = {
       );
     }
   ),
-  readUILogs: thunk(
-    (actions, payload, { injections, getStoreState }): string => {
-      const { utilsService } = injections;
-      return utilsService.getTextFileContent(utilsService.getUiLogsLocation());
-    }
-  ),
+  readUILogs: thunk((actions, payload, { injections }): string => {
+    const { utilsService } = injections;
+    return utilsService.getTextFileContent(utilsService.getUiLogsLocation());
+  }),
 };
 
 export default nodeSummary;

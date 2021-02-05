@@ -49,7 +49,7 @@ const SendUsingAddressContainer = React.lazy(() =>
 const renderLoader = () => <LoadingComponent />;
 
 export const SendContainer = () => {
-  let history = useHistory();
+  const history = useHistory();
 
   const { t } = useTranslation();
 

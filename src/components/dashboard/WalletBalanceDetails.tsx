@@ -3,13 +3,11 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 export type WalletBalanceProps = {
-  total: number;
   immature: number;
   unconfirmed: number;
   locked: number;
 };
 export const WalletBalanceDetailsComponent = ({
-  total,
   immature,
   unconfirmed,
   locked,

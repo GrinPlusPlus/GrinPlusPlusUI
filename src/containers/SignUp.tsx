@@ -40,7 +40,7 @@ export const SignUpContainer = () => {
     (actions) => actions.createWallet
   );
 
-  let history = useHistory();
+  const history = useHistory();
 
   return (
     <Suspense fallback={renderLoader()}>

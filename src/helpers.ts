@@ -110,10 +110,10 @@ export const hideSeedWords = function (payload: {
   seed: ISeed[];
   words: number;
 }): ISeed[] {
-  let newSeed: ISeed[] = [...payload.seed];
-  let selectedWords: string[] = [];
+  const newSeed: ISeed[] = [...payload.seed];
+  const selectedWords: string[] = [];
   do {
-    let word = { ...newSeed[Math.floor(Math.random() * newSeed.length)] };
+    const word = { ...newSeed[Math.floor(Math.random() * newSeed.length)] };
     if (word.text === "") continue;
     if (selectedWords.find((selected) => selected === word.text)) break;
     selectedWords.push(word.text);
@@ -184,10 +184,9 @@ export const useInterval = function (
     }
     if (delay !== null) {
       tick(); // Call once first, so no delay
-      let id = setInterval(tick, delay);
+      const id = setInterval(tick, delay);
       return () => clearInterval(id);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [...deps, delay]);
 };
 

@@ -180,7 +180,7 @@ const wallet: WalletModel = {
     ): Promise<boolean> => {
       const { nodeService } = injections;
 
-      let defaultSettings = await nodeService.getDefaultSettings();
+      const defaultSettings = await nodeService.getDefaultSettings();
 
       nodeService.stopRustNode();
 
@@ -247,7 +247,7 @@ const wallet: WalletModel = {
       );
       settingsActions.setGrinJoinAddress(defaultSettings.grinJoinAddress);
       settingsActions.setGrinChckAddress(defaultSettings.grinChckAddress);
-      
+
       actions.setIsNodeInstalled(true);
       actions.setIsNodeRunning(true);
       actions.setWalletInitialized(true);
@@ -262,11 +262,7 @@ const wallet: WalletModel = {
     state.nodeHealthCheck = check;
   }),
   checkNodeHealth: thunk(
-    async (
-      actions,
-      payload,
-      { injections, getStoreState, getStoreActions }
-    ): Promise<boolean> => {
+    async (actions, payload, { injections }): Promise<boolean> => {
       const { nodeService } = injections;
 
       actions.setIsTorRunning(await nodeService.isTorRunning(1));

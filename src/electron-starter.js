@@ -75,9 +75,7 @@ function isRunning(win, mac, linux) {
   if (cmd === "" || proc === "") {
     throw new Error("Unknown platform");
   }
-  var stdout = require("child_process")
-    .execSync(cmd)
-    .toString();
+  var stdout = require("child_process").execSync(cmd).toString();
   return stdout.toLowerCase().indexOf(proc.toLowerCase()) > -1;
 }
 
@@ -203,7 +201,7 @@ function createWindow() {
   }
 
   // Emitted when the window is closed.
-  mainWindow.on("closed", function() {
+  mainWindow.on("closed", function () {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
@@ -245,7 +243,7 @@ app.on("before-quit", async (event) => {
 // Some APIs can only be used after this event occurs.
 app.on("ready", createWindow);
 
-app.on("activate", function() {
+app.on("activate", function () {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) {

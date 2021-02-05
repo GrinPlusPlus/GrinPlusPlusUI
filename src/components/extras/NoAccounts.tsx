@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 
 export const NoAccountsComponent = () => {
   const { t } = useTranslation();
-  let history = useHistory();
+  const history = useHistory();
 
   return (
     <div style={{ width: "100%" }}>

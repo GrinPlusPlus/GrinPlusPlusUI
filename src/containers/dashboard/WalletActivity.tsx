@@ -167,7 +167,6 @@ export const WalletActivitiyContainer = () => {
         onViewSlatepackMessageButtonClickedCb={
           onViewSlatepackMessageButtonClicked
         }
-        method={useGrinJoin ? "JOIN" : "FLUFF"}
         lastConfirmedHeight={lastConfirmedHeight}
         confirmations={confirmations}
       />
@@ -206,7 +205,7 @@ export const WalletActivitiyContainer = () => {
           data-testid="slatepack-box"
           defaultValue={slatepackMessageToFinalize}
           onChange={(event: React.FormEvent<HTMLTextAreaElement>) => {
-            let target = event.target as HTMLTextAreaElement;
+            const target: HTMLTextAreaElement = event.target;
             setSlatepackMessageToFinalize(target.value);
           }}
         ></SlatesBox>

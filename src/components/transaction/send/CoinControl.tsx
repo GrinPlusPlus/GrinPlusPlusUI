@@ -37,7 +37,7 @@ export const CoinControlComponent = ({
       transaction_id: number;
     }[]
   ) => {
-    let table: JSX.Element[] = inputsList.map((input) => {
+    const table: JSX.Element[] = inputsList.map((input) => {
       return (
         <tr
           id={input.commitment}
@@ -47,9 +47,10 @@ export const CoinControlComponent = ({
             event: React.MouseEvent<HTMLTableRowElement, MouseEvent>
           ) => {
             if (strategy === "SMALLEST") return;
-            let target = event.target as HTMLTableRowElement;
-            if (target.parentElement?.id)
+            const target: HTMLTableRowElement = event.target;
+            if (target.parentElement?.id) {
               updateInputsCb(target.parentElement.id);
+            }
           }}
         >
           <td>
@@ -66,7 +67,7 @@ export const CoinControlComponent = ({
                 checked={inputs.includes(input.commitment)}
                 disabled={strategy === "SMALLEST"}
                 onChange={(event: React.FormEvent<HTMLInputElement>) => {
-                  let target = event.target as HTMLInputElement;
+                  const target: HTMLInputElement = event.target;
                   updateInputsCb(target.id);
                 }}
               />
@@ -90,7 +91,7 @@ export const CoinControlComponent = ({
         name="strategy"
         selectedValue={strategy}
         onChange={(event: React.FormEvent<HTMLInputElement>) => {
-          let target = event.target as HTMLInputElement;
+          const target: HTMLInputElement = event.target;
           setStrategyCb(target.value);
         }}
       >

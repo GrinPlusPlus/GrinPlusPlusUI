@@ -74,7 +74,7 @@ export const RecoverWalletComponent = ({
           name="seedLength"
           selectedValue={seedLength}
           onChange={(event: React.FormEvent<HTMLInputElement>) => {
-            let target = event.target as HTMLInputElement;
+            const target: HTMLInputElement = event.target;
             setSeedLengthCb(target.value);
           }}
         >

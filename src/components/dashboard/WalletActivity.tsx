@@ -21,7 +21,6 @@ type WalletActivityProps = {
     method: string
   ) => void;
   onViewSlatepackMessageButtonClickedCb: (transactionId: number) => void;
-  method: string;
   lastConfirmedHeight: number;
   confirmations: number;
 };
@@ -39,7 +38,6 @@ export const WalletActivityComponent = ({
   onFinalizeTransactionButtonClickedCb,
   onRepostTransactionButtonClickedCb,
   onViewSlatepackMessageButtonClickedCb,
-  method,
   lastConfirmedHeight,
   confirmations,
 }: WalletActivityProps) => {
@@ -75,7 +73,6 @@ export const WalletActivityComponent = ({
               onViewSlatepackMessageButtonClickedCb={
                 onViewSlatepackMessageButtonClickedCb
               }
-              method={method}
               lastConfirmedHeight={lastConfirmedHeight}
               confirmations={confirmations}
             />
@@ -103,7 +100,6 @@ export const WalletActivityComponent = ({
               onViewSlatepackMessageButtonClickedCb={
                 onViewSlatepackMessageButtonClickedCb
               }
-              method={method}
               lastConfirmedHeight={lastConfirmedHeight}
               confirmations={confirmations}
             />
@@ -131,7 +127,6 @@ export const WalletActivityComponent = ({
               onViewSlatepackMessageButtonClickedCb={
                 onViewSlatepackMessageButtonClickedCb
               }
-              method={method}
               lastConfirmedHeight={lastConfirmedHeight}
               confirmations={confirmations}
             />
@@ -159,7 +154,6 @@ export const WalletActivityComponent = ({
               onViewSlatepackMessageButtonClickedCb={
                 onViewSlatepackMessageButtonClickedCb
               }
-              method={method}
               lastConfirmedHeight={lastConfirmedHeight}
               confirmations={confirmations}
             />
@@ -187,7 +181,6 @@ export const WalletActivityComponent = ({
               onViewSlatepackMessageButtonClickedCb={
                 onViewSlatepackMessageButtonClickedCb
               }
-              method={method}
               lastConfirmedHeight={lastConfirmedHeight}
               confirmations={confirmations}
             />
@@ -215,7 +208,6 @@ export const WalletActivityComponent = ({
               onViewSlatepackMessageButtonClickedCb={
                 onViewSlatepackMessageButtonClickedCb
               }
-              method={method}
               lastConfirmedHeight={lastConfirmedHeight}
               confirmations={confirmations}
             />

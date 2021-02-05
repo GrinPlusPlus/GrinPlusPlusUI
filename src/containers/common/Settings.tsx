@@ -8,14 +8,10 @@ export const SettingsContainer = () => {
     mininumPeers,
     maximumPeers,
     confirmations,
-    nodeDataPath,
-    nodeBinaryPath,
-    useGrinJoin,
-    grinJoinAddress,
     grinChckAddress,
     isConfirmationDialogOpen,
   } = useStoreState((state) => state.settings);
-  const { floonet } = useStoreState((state) => state.settings.defaultSettings);
+
   const { isLoggedIn, username: sessionUsername } = useStoreState(
     (state) => state.session
   );
@@ -27,8 +23,6 @@ export const SettingsContainer = () => {
     setMininumPeers,
     setMaximumPeers,
     setConfirmations,
-    setGrinJoinUse,
-    setGrinJoinAddress,
     toggleConfirmationDialog,
     setGrinChckAddress,
   } = useStoreActions((actions) => actions.settings);
@@ -64,18 +58,11 @@ export const SettingsContainer = () => {
 
   return (
     <SettingsComponent
-      floonet={floonet}
-      useGrinJoin={useGrinJoin}
-      grinJoinAddress={grinJoinAddress}
       grinChckAddress={grinChckAddress}
       mininumPeers={mininumPeers}
       maximumPeers={maximumPeers}
       confirmations={confirmations}
-      nodeDataPath={nodeDataPath}
-      nodeBinaryPath={nodeBinaryPath}
       isConfirmationDialogOpen={isConfirmationDialogOpen}
-      setGrinJoinUseCb={setGrinJoinUse}
-      setGrinJoinAddressCb={setGrinJoinAddress}
       setGrinChckAddressCb={setGrinChckAddress}
       setMininumPeersCb={setMininumPeers}
       setMaximumPeersCb={setMaximumPeers}

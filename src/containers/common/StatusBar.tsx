@@ -15,7 +15,7 @@ const renderLoader = () => null;
 
 export const StatusBarContainer = () => {
   const { t } = useTranslation();
-  let history = useHistory();
+  const history = useHistory();
 
   const { intent, status, network } = useStoreState(
     (state) => state.nodeSummary

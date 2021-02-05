@@ -2,9 +2,9 @@ import { IWalletSettings } from "../../interfaces/IWalletSettings";
 import { retryAsync } from "ts-retry";
 import { getTextFileContent } from "../utils";
 
-import { RPC } from "../foreign/rpc";
+import { ConfigNode } from "../foreign/rpc";
 
-export const getCommand = function(): string {
+export const getCommand = function (): string {
   const cmd = (() => {
     switch (require("electron").remote.process.platform) {
       case "win32":
@@ -20,7 +20,7 @@ export const getCommand = function(): string {
   return cmd;
 };
 
-export const getTorCommand = function(): string {
+export const getTorCommand = function (): string {
   const cmd = (() => {
     switch (require("electron").remote.process.platform) {
       case "win32":
@@ -36,7 +36,7 @@ export const getTorCommand = function(): string {
   return cmd;
 };
 
-export const getRustNodeProcess = function(): string {
+export const getRustNodeProcess = function (): string {
   const cmd = (() => {
     switch (require("electron").remote.process.platform) {
       case "win32":
@@ -52,7 +52,7 @@ export const getRustNodeProcess = function(): string {
   return cmd;
 };
 
-const isProcessRunning = function(processName: string): Promise<boolean> {
+const isProcessRunning = function (processName: string): Promise<boolean> {
   const cmd = (() => {
     switch (require("os").platform()) {
       case "win32":
@@ -83,7 +83,7 @@ const isProcessRunning = function(processName: string): Promise<boolean> {
   });
 };
 
-const killProcess = function(processName: string): void {
+const killProcess = function (processName: string): void {
   require("electron-log").info("Calling killProcess");
   const cmd = (() => {
     switch (require("electron").remote.process.platform) {
@@ -102,35 +102,35 @@ const killProcess = function(processName: string): void {
     .execSync(cmd, { windowsHide: true, encoding: "utf-8" });
 };
 
-export const getNodeDataPath = function(floonet: boolean = false): string {
+export const getNodeDataPath = function (floonet: boolean = false): string {
   const { remote } = require("electron");
   const path = require("path");
   const net = !floonet ? "MAINNET" : "FLOONET";
   return path.normalize(path.join(remote.app.getPath("home"), ".GrinPP", net));
 };
 
-export const getConfigFilePath = function(floonet: boolean = false): string {
+export const getConfigFilePath = function (floonet: boolean = false): string {
   const path = require("path");
   return path.normalize(
     path.join(getNodeDataPath(floonet), "server_config.json")
   );
 };
 
-export const updateSettings = async function(
+export const updateSettings = async function (
   property: "min_peers" | "max_peers" | "min_confirmations",
   value: number
 ): Promise<{} | null> {
   switch (property) {
     case "min_peers":
-      return await RPC.config({ min_peers: value });
+      return await ConfigNode("127.0.0.1", { min_peers: value });
     case "max_peers":
-      return await RPC.config({ max_peers: value });
+      return await ConfigNode("127.0.0.1", { max_peers: value });
     case "min_confirmations":
-      return await RPC.config({ min_confirmations: value });
+      return await ConfigNode("127.0.0.1", { min_confirmations: value });
   }
 };
 
-export const getAbsoluteNodePath = function(
+export const getAbsoluteNodePath = function (
   mode: "DEV" | "TEST" | "PROD",
   nodePath: string
 ): string {
@@ -146,12 +146,12 @@ export const getAbsoluteNodePath = function(
   }
 };
 
-export const getCommandPath = function(nodePath: string): string {
+export const getCommandPath = function (nodePath: string): string {
   const path = require("path");
   return path.normalize(path.join(nodePath, getCommand()));
 };
 
-export const runNode = function(
+export const runNode = function (
   mode: "DEV" | "TEST" | "PROD",
   nodePath: string,
   isFloonet: boolean = false
@@ -173,10 +173,10 @@ export const runNode = function(
     cwd: absolutePath,
   });
   require("electron-log").info(`Backend spawned pid: ${node.pid}`);
-  node.stdout.on("data", function(data: any) {
+  node.stdout.on("data", function (data: any) {
     require("electron-log").info(data.toString());
   });
-  node.stderr.on("data", function(data: any) {
+  node.stderr.on("data", function (data: any) {
     require("electron-log").error(data.toString());
   });
   node.on("close", (code: number) => {
@@ -184,7 +184,7 @@ export const runNode = function(
   });
 };
 
-export const isNodeRunning = async function(
+export const isNodeRunning = async function (
   retries: number = 0
 ): Promise<boolean> {
   const log = require("electron-log");
@@ -210,7 +210,7 @@ export const isNodeRunning = async function(
   return isRunning;
 };
 
-export const isTorRunning = async function(
+export const isTorRunning = async function (
   retries: number = 1
 ): Promise<boolean> {
   const log = require("electron-log");
@@ -236,19 +236,23 @@ export const isTorRunning = async function(
   return isRunning;
 };
 
-export const stopNode = function(): void {
+export const stopNode = function (): void {
   try {
     killProcess(getCommand());
-  } catch (e) {}
+  } catch (e) {
+    require("electron-log").info(`${e.message}`);
+  }
 };
 
-export const stopRustNode = function(): void {
+export const stopRustNode = function (): void {
   try {
     killProcess(getRustNodeProcess());
-  } catch (e) {}
+  } catch (e) {
+    require("electron-log").info(`${e.message}`);
+  }
 };
 
-export const getDefaultSettings = async function(
+export const getDefaultSettings = async function (
   file: string = "defaults.json"
 ): Promise<IWalletSettings> {
   const fs = require("fs");
@@ -285,7 +289,7 @@ export const getDefaultSettings = async function(
   };
 };
 
-export const getNodeSettings = async function(): Promise<{
+export const getNodeSettings = async function (): Promise<{
   minimumPeers: number;
   maximumPeers: number;
   minimumConfirmations: number;
@@ -294,7 +298,7 @@ export const getNodeSettings = async function(): Promise<{
   let maximumPeers = 35;
   let minimumConfirmations = 10;
 
-  const node = await RPC.config();
+  const node = await ConfigNode("127.0.0.1");
   if (node !== null) {
     minimumPeers = node.min_peers;
     maximumPeers = node.max_peers;
@@ -308,7 +312,7 @@ export const getNodeSettings = async function(): Promise<{
   };
 };
 
-export const verifyNodePath = function(
+export const verifyNodePath = function (
   mode: "DEV" | "TEST" | "PROD",
   defaultPath: string
 ): boolean {

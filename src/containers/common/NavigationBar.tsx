@@ -16,7 +16,7 @@ type NavBarProps = {
 };
 
 export const NavigationBarContainer = ({ title, onExit }: NavBarProps) => {
-  let history = useHistory();
+  const history = useHistory();
   return (
     <Navbar>
       <NavbarGroup align={Alignment.LEFT}>

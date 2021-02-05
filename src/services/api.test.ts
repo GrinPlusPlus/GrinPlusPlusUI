@@ -8,7 +8,7 @@ class TestBasiApi extends BaseApi {}
 class TestOwnerRPCApi extends OwnerRPCApi {}
 class TestNodeAPI extends NodeAPI {}
 
-export const _getCommand = function(): string {
+export const _getCommand = function (): string {
   const { remote } = require("electron");
   const cmd = (() => {
     switch (remote.process.platform) {

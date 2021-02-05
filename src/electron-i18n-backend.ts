@@ -41,7 +41,7 @@ class Backend {
   }
 
   read(language: string, namespace: string, callback: Function) {
-    let filename = this.services.interpolator.interpolate(
+    const filename = this.services.interpolator.interpolate(
       this.options.loadPath,
       { lng: language, ns: namespace }
     );

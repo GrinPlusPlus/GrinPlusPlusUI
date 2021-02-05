@@ -22,7 +22,7 @@ const WalletSeedConfirmation = React.lazy(() =>
 const renderLoader = () => null;
 
 export const CreateWalletContainer = () => {
-  let history = useHistory();
+  const history = useHistory();
   const {
     username,
     password,

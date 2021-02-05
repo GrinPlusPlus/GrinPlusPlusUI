@@ -19,7 +19,7 @@ import { useStoreState } from "../../hooks";
 export const NodeCheckContainer = () => {
   const { t } = useTranslation();
 
-  let history = useHistory();
+  const history = useHistory();
 
   const { isLoggedIn } = useStoreState((state) => state.session);
 

@@ -17,7 +17,7 @@ import { useTranslation } from "react-i18next";
 
 export const SendUsingAddressContainer = () => {
   const { t } = useTranslation();
-  let history = useHistory();
+  const history = useHistory();
 
   const { token } = useStoreState((state) => state.session);
   const { amount, message, strategy, inputs, address } = useStoreState(

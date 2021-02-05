@@ -8,7 +8,7 @@ import { RestoreContainer } from "./containers/Recover";
 import { SendGrinContainer } from "./containers/SendGrins";
 import { ReceiveGrinContainer } from "./containers/ReceiveGrins";
 import { SignInContainer } from "./containers/SignIn";
-import { SignUpContainer } from "./containers/SingUp";
+import { SignUpContainer } from "./containers/SignUp";
 import { StatusContainer } from "./containers/Status";
 import { HelpContainer } from "./containers/Help";
 import { NodeLogsContainer } from "./containers/node/Logs";

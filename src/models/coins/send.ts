@@ -182,14 +182,7 @@ const sendCoinsModel: SendCoinsModel = {
     }[] = [];
 
     for (let index = 0; index < inputs.length; index++) {
-      const element = inputs[index] as {
-        amount: number;
-        block_height: number;
-        commitment: string;
-        keychain_path: string;
-        status: string;
-        transaction_id: number;
-      };
+      const element = inputs[index];
       if (element.status.toLowerCase() === "spendable") {
         table.push(element);
       }
@@ -202,14 +195,7 @@ const sendCoinsModel: SendCoinsModel = {
     let table: string[] = [];
 
     for (let index = 0; index < inputs.length; index++) {
-      const element = inputs[index] as {
-        amount: number;
-        block_height: number;
-        commitment: string;
-        keychain_path: string;
-        status: string;
-        transaction_id: number;
-      };
+      const element = inputs[index];
       table.push(element.commitment);
     }
 

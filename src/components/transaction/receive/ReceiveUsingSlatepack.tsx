@@ -28,7 +28,7 @@ export const ReceiveUsingSlatepackComponent = ({
           data-testid="slatepack-box"
           defaultValue={slate}
           onChange={(event: React.FormEvent<HTMLTextAreaElement>) => {
-            let target = event.target as HTMLTextAreaElement;
+            const target: HTMLTextAreaElement = event.target;
             setSlatepackTextCb(target.value);
           }}
         ></SlatesBox>

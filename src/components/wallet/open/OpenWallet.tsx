@@ -10,7 +10,6 @@ type OpenWalletProps = {
   passwordCb: (password: string) => void;
   onCloseCb: () => void;
   passwordButtonCb: () => Promise<void>;
-  deleteWalletButtonCb: () => Promise<void>;
   waitingResponse: boolean;
   connected: boolean;
 };
@@ -22,7 +21,6 @@ export const OpenWalletComponent = ({
   passwordCb,
   onCloseCb,
   passwordButtonCb,
-  deleteWalletButtonCb,
   waitingResponse,
   connected,
 }: OpenWalletProps) => {
@@ -38,7 +36,6 @@ export const OpenWalletComponent = ({
         onCloseCb={onCloseCb}
         waitingResponse={waitingResponse}
         passwordButtonCb={passwordButtonCb}
-        deleteWalletButtonCb={deleteWalletButtonCb}
         connected={connected}
         buttonText={t("open_wallet")}
       />

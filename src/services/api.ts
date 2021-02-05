@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
 
 export class BaseApi {
-  private _protocol: string;
-  private _ip: string;
-  private _floonet: boolean;
-  private _ports: {
+  protocol: string = "http";
+  ip: string = "127.0.0.1";
+  floonet: boolean = false;
+  ports: {
     node: number;
     foreignRPC: number;
     owner: number;
@@ -16,29 +16,16 @@ export class BaseApi {
     protocol: string = "http",
     ip: string = "127.0.0.1"
   ) {
-    this._protocol = protocol;
-    this._ip = ip;
-    this._floonet = floonet;
+    this.protocol = protocol;
+    this.ip = ip;
+    this.floonet = floonet;
   }
 
-  public get protocol() {
-    return this._protocol;
-  }
-  public get ip() {
-    return this._ip;
-  }
-  public get floonet() {
-    return this._floonet;
-  }
-  public get ports() {
-    return this._ports;
+  isMainnet(): boolean {
+    return !this.floonet;
   }
 
-  public isMainnet(): boolean {
-    return !this._floonet;
-  }
-
-  private _getPort(port: number): number {
+  private getPort(port: number): number {
     return this.isMainnet() ? port : 10000 + port;
   }
 
@@ -47,38 +34,30 @@ export class BaseApi {
     let version = "";
     switch (api) {
       case "node":
-        port = this._getPort(this._ports.node);
+        port = this.getPort(this.ports.node);
         version = "v1";
         break;
       case "foreignRPC":
-        port = this._getPort(this._ports.foreignRPC);
+        port = this.getPort(this.ports.foreignRPC);
         version = "v1/wallet/foreign";
         break;
       case "owner":
-        port = this._getPort(this._ports.owner);
+        port = this.getPort(this.ports.owner);
         version = "v1/wallet/owner";
         break;
       case "ownerRPC":
-        port = this._ports.ownerRPC;
+        port = this.ports.ownerRPC;
         version = "v2";
         break;
     }
-    return `${this._protocol}://${this._ip}:${port}/${version}`;
+    return `${this.protocol}://${this.ip}:${port}/${version}`;
   }
 
-  private _getNodeURL(): string {
+  private getNodeURL(): string {
     return this.getURL("node");
   }
 
-  private _getForeignRPCURL(): string {
-    return this.getURL("foreignRPC");
-  }
-
-  private _getOwnerURL(): string {
-    return this.getURL("owner");
-  }
-
-  private _getOwnerRPCURL(): string {
+  private getOwnerRPCURL(): string {
     return this.getURL("ownerRPC");
   }
 
@@ -110,49 +89,49 @@ export class BaseApi {
   ): string {
     switch (call) {
       case "node_status":
-        return `${this._getNodeURL()}/status`;
+        return `${this.getNodeURL()}/status`;
       case "resync_blockchain":
-        return `${this._getNodeURL()}/resync`;
+        return `${this.getNodeURL()}/resync`;
       case "connected_peers":
-        return `${this._getNodeURL()}/peers/connected`;
+        return `${this.getNodeURL()}/peers/connected`;
       case "list_wallets":
-        return this._getOwnerRPCURL();
+        return this.getOwnerRPCURL();
       case "shutdown":
-        return `${this._getNodeURL()}/shutdown`;
+        return `${this.getNodeURL()}/shutdown`;
       case "send":
-        return this._getOwnerRPCURL();
+        return this.getOwnerRPCURL();
       case "finalize":
-        return this._getOwnerRPCURL();
+        return this.getOwnerRPCURL();
       case "receive":
-        return this._getOwnerRPCURL();
+        return this.getOwnerRPCURL();
       case "get_address":
-        return this._getOwnerRPCURL();
+        return this.getOwnerRPCURL();
       case "login":
-        return this._getOwnerRPCURL();
+        return this.getOwnerRPCURL();
       case "get_seed":
-        return this._getOwnerRPCURL();
+        return this.getOwnerRPCURL();
       case "list_txs":
-        return this._getOwnerRPCURL();
+        return this.getOwnerRPCURL();
       case "logout":
-        return this._getOwnerRPCURL();
+        return this.getOwnerRPCURL();
       case "get_balance":
-        return this._getOwnerRPCURL();
+        return this.getOwnerRPCURL();
       case "create_wallet":
-        return this._getOwnerRPCURL();
+        return this.getOwnerRPCURL();
       case "restore_wallet":
-        return this._getOwnerRPCURL();
+        return this.getOwnerRPCURL();
       case "delete_wallet":
-        return this._getOwnerRPCURL();
+        return this.getOwnerRPCURL();
       case "estimate_fee":
-        return this._getOwnerRPCURL();
+        return this.getOwnerRPCURL();
       case "cancel_tx":
-        return this._getOwnerRPCURL();
+        return this.getOwnerRPCURL();
       case "repost_tx":
-        return this._getOwnerRPCURL();
+        return this.getOwnerRPCURL();
       case "list_outputs":
-        return this._getOwnerRPCURL();
+        return this.getOwnerRPCURL();
       case "scan_for_outputs":
-        return this._getOwnerRPCURL();
+        return this.getOwnerRPCURL();
       default:
         return "";
     }

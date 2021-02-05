@@ -2,11 +2,7 @@ import { BaseApi } from "../../api";
 import { ITransaction } from "../../../interfaces/ITransaction";
 
 export class OwnerRPCApi extends BaseApi {
-  public get url(): string {
-    return this.getURL("ownerRPC");
-  }
-
-  public async createWallet(
+  async createWallet(
     username: string,
     password: string,
     seedLength: string
@@ -35,7 +31,7 @@ export class OwnerRPCApi extends BaseApi {
     });
   }
 
-  public async restoreWallet(
+  async restoreWallet(
     username: string,
     password: string,
     seed: string
@@ -66,7 +62,7 @@ export class OwnerRPCApi extends BaseApi {
     });
   }
 
-  public async sendCoins(
+  async sendCoins(
     token: string,
     amount: number | undefined,
     message: string,
@@ -89,7 +85,7 @@ export class OwnerRPCApi extends BaseApi {
         method: method,
       };
     }
-    let params = {
+    const params = {
       session_token: token,
       amount: amount ? amount * Math.pow(10, 9) : undefined,
       fee_base: 500000,
@@ -126,7 +122,7 @@ export class OwnerRPCApi extends BaseApi {
     );
   }
 
-  public async receiveTx(
+  async receiveTx(
     token: string,
     slatepack: string,
     file: string
@@ -145,7 +141,7 @@ export class OwnerRPCApi extends BaseApi {
     );
   }
 
-  public async finalizeTx(
+  async finalizeTx(
     token: string,
     slatepack: string | null,
     slate: string | null,
@@ -165,7 +161,7 @@ export class OwnerRPCApi extends BaseApi {
       };
     }
 
-    var payload: any = {
+    const payload: any = {
       session_token: token,
       post_tx: postTx,
     };
@@ -193,7 +189,7 @@ export class OwnerRPCApi extends BaseApi {
     );
   }
 
-  public async getWalletAddress(token: string): Promise<string> {
+  async getWalletAddress(token: string): Promise<string> {
     require("electron-log").info(`Trying to get wallet Address...`);
     return await this.makeRPCRequest(
       this.getRequestURL("get_address"),
@@ -209,7 +205,7 @@ export class OwnerRPCApi extends BaseApi {
     });
   }
 
-  public async login(
+  async login(
     username: string,
     password: string
   ): Promise<{
@@ -234,7 +230,7 @@ export class OwnerRPCApi extends BaseApi {
     });
   }
 
-  public async getSeed(username: string, password: string): Promise<string[]> {
+  async getSeed(username: string, password: string): Promise<string[]> {
     return await this.makeRPCRequest(
       this.getRequestURL("get_seed"),
       "get_wallet_seed",
@@ -248,10 +244,7 @@ export class OwnerRPCApi extends BaseApi {
     });
   }
 
-  public async deleteWallet(
-    username: string,
-    password: string
-  ): Promise<boolean> {
+  async deleteWallet(username: string, password: string): Promise<boolean> {
     return await this.makeRPCRequest(
       this.getRequestURL("delete_wallet"),
       "delete_wallet",
@@ -265,7 +258,7 @@ export class OwnerRPCApi extends BaseApi {
     });
   }
 
-  public async getWalletBalance(
+  async getWalletBalance(
     token: string
   ): Promise<{
     spendable: number;
@@ -292,7 +285,7 @@ export class OwnerRPCApi extends BaseApi {
     });
   }
 
-  public async getTransactionsList(token: string): Promise<ITransaction[]> {
+  async getTransactionsList(token: string): Promise<ITransaction[]> {
     return await this.makeRPCRequest(
       this.getRequestURL("list_txs"),
       "list_txs",
@@ -337,13 +330,13 @@ export class OwnerRPCApi extends BaseApi {
     });
   }
 
-  public async logout(token: string): Promise<boolean> {
+  async logout(token: string): Promise<boolean> {
     return await this.makeRPCRequest(this.getRequestURL("logout"), "logout", {
       session_token: token,
     }).then((response) => (response.error ? false : true));
   }
 
-  public async estimateFee(
+  async estimateFee(
     token: string,
     amount: number | undefined,
     strategy: string = "SMALLEST",
@@ -380,7 +373,7 @@ export class OwnerRPCApi extends BaseApi {
     });
   }
 
-  public async cancelTx(token: string, txId: number): Promise<string> {
+  async cancelTx(token: string, txId: number): Promise<string> {
     return await this.makeRPCRequest(
       `${this.getRequestURL("cancel_tx")}`,
       "cancel_tx",
@@ -391,11 +384,7 @@ export class OwnerRPCApi extends BaseApi {
     });
   }
 
-  public async repostTx(
-    token: string,
-    txId: number,
-    method: string
-  ): Promise<string> {
+  async repostTx(token: string, txId: number, method: string): Promise<string> {
     return await this.makeRPCRequest(
       `${this.getRequestURL("repost_tx")}`,
       "repost_tx",
@@ -406,7 +395,7 @@ export class OwnerRPCApi extends BaseApi {
     });
   }
 
-  public async getAccounts(): Promise<string[]> {
+  async getAccounts(): Promise<string[]> {
     return await this.makeRPCRequest(
       `${this.getRequestURL("list_wallets")}`,
       "list_wallets",
@@ -421,7 +410,7 @@ export class OwnerRPCApi extends BaseApi {
       });
   }
 
-  public async getOutputs(
+  async getOutputs(
     token: string
   ): Promise<
     {
@@ -443,7 +432,7 @@ export class OwnerRPCApi extends BaseApi {
     });
   }
 
-  public async scanOutputs(token: string): Promise<string> {
+  async scanOutputs(token: string): Promise<string> {
     return await this.makeRPCRequest(
       `${this.getRequestURL("scan_for_outputs")}`,
       "scan_for_outputs",

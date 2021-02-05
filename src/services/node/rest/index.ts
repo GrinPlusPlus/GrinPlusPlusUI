@@ -3,11 +3,7 @@ import { INodeStatus } from "../../../interfaces/INodeStatus";
 import { IPeer } from "../../../interfaces/IPeer";
 
 export class NodeAPI extends BaseApi {
-  public get url(): string {
-    return this.getURL("node");
-  }
-
-  public async getStatus(): Promise<INodeStatus> {
+  async getStatus(): Promise<INodeStatus> {
     return await this.makeRESTRequest(this.getRequestURL("node_status"), "get")
       .then((response) => {
         const data = JSON.parse(response);
@@ -35,7 +31,7 @@ export class NodeAPI extends BaseApi {
       });
   }
 
-  public async resyncNode(): Promise<boolean> {
+  async resyncNode(): Promise<boolean> {
     return await this.makeRESTRequest(
       this.getRequestURL("resync_blockchain"),
       "post"
@@ -44,13 +40,13 @@ export class NodeAPI extends BaseApi {
       .catch((error) => false);
   }
 
-  public async shutdownNode(): Promise<boolean> {
+  async shutdownNode(): Promise<boolean> {
     return await this.makeRESTRequest(this.getRequestURL("shutdown"), "post")
       .then((data) => true)
       .catch((error) => false);
   }
 
-  public async getConnectedPeers(): Promise<IPeer[]> {
+  async getConnectedPeers(): Promise<IPeer[]> {
     return await this.makeRESTRequest(
       this.getRequestURL("connected_peers"),
       "get"

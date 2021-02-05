@@ -7,16 +7,13 @@ import { useTranslation } from "react-i18next";
 
 export const TransactionAddressContainer = () => {
   const { t } = useTranslation();
-  const { spendable } = useStoreState((state) => state.walletSummary);
-  const { fee, address } = useStoreState((state) => state.sendCoinsModel);
+  const { address } = useStoreState((state) => state.sendCoinsModel);
   const { setAddress } = useStoreActions((actions) => actions.sendCoinsModel);
 
   return (
     <FormGroup label={`${t("address")}:`} inline={true}>
       <ControlGroup fill={true}>
         <TransactionAddressComponent
-          fee={fee}
-          spendable={spendable}
           address={address}
           setAddressCb={setAddress}
         />

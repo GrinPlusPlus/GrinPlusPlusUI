@@ -18,7 +18,7 @@ export const WalletAddressContainer = () => {
   );
   const { walletReachable } = useStoreState((state) => state.walletSummary);
 
-  let history = useHistory();
+  const history = useHistory();
 
   useLayoutEffect(() => {
     const drawQRCode = async () => {
