@@ -134,7 +134,7 @@ const settings: SettingsModel = {
     async (
       actions,
       payload,
-      { injections, getStoreActions }
+      { injections }
     ): Promise<boolean> => {
       const { nodeService } = injections;
 

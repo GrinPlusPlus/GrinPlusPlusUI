@@ -54,7 +54,7 @@ export const AccountNavBarContainer = () => {
               await logout(token);
               require("electron-log").info("Logged out!");
             } catch (error) {
-              require("electron-log").info(`Trying to Logout: ${error}`);
+              require("electron-log").info(`Trying to Logout: ${error.message}`);
             }
           }}
         />

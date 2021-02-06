@@ -55,7 +55,7 @@ const App: React.FC = () => {
           );
         }
       } catch (error) {
-        require("electron-log").error(`HealthCheck failed: ${error}`);
+        require("electron-log").error(`HealthCheck failed: ${error.message}`);
       }
     },
     store.getState().nodeSummary.HealthCheckInterval,

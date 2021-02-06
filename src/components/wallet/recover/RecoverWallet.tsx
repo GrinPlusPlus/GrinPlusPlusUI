@@ -74,8 +74,7 @@ export const RecoverWalletComponent = ({
           name="seedLength"
           selectedValue={seedLength}
           onChange={(event: React.FormEvent<HTMLInputElement>) => {
-            const target: HTMLInputElement = event.target;
-            setSeedLengthCb(target.value);
+            setSeedLengthCb(event.currentTarget.value);
           }}
         >
           <Radio label="12" value="12" />

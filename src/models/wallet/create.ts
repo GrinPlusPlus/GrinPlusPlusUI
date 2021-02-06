@@ -122,11 +122,10 @@ const createWalletModel: CreateWalletModel = {
     state.hiddenSeed[index].disabled = true;
   }),
   setHiddenSeedWord: thunk(
-    (actions, payload, { injections, getStoreState }) => {
+    (actions, payload, { getStoreState }) => {
       const index = payload.position - 1;
       const word = { ...getStoreState().createWallet.hiddenSeed[index] };
       word.text = payload.word;
-      // word.valid = isValidSeedWord(payload.word);
       if (
         getStoreState().createWallet.generatedSeed[index].text === word.text
       ) {

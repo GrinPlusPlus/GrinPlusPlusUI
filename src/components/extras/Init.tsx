@@ -33,7 +33,7 @@ export const InitComponent = ({ error, message }: InitComponentProps) => {
             <HorizontallyCenter>
               <Icon
                 data-testid="init-icon"
-                intent={"error" ? Intent.DANGER : Intent.SUCCESS}
+                intent={error ? Intent.DANGER : Intent.SUCCESS}
                 iconSize={28}
                 icon={error ? "error" : "tick-circle"}
               />

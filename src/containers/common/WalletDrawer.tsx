@@ -23,7 +23,7 @@ export const WalletDrawer = () => {
         await getNodeSettings();
       } catch (error) {
         log.error(
-          `Error trying to get Node Settings from the Backend: ${error}`
+          `Error trying to get Node Settings from the Backend: ${error.message}`
         );
       }
     })();

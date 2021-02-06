@@ -25,11 +25,7 @@ export class BaseApi {
     return !this.floonet;
   }
 
-  private getPort(port: number): number {
-    return this.isMainnet() ? port : 10000 + port;
-  }
-
-  protected getURL(api: "node" | "foreignRPC" | "owner" | "ownerRPC"): string {
+  getURL(api: "node" | "foreignRPC" | "owner" | "ownerRPC"): string {
     let port = -1;
     let version = "";
     switch (api) {
@@ -53,15 +49,19 @@ export class BaseApi {
     return `${this.protocol}://${this.ip}:${port}/${version}`;
   }
 
-  private getNodeURL(): string {
+  getPort(port: number): number {
+    return this.isMainnet() ? port : 10000 + port;
+  }
+
+  getNodeURL(): string {
     return this.getURL("node");
   }
 
-  private getOwnerRPCURL(): string {
+  getOwnerRPCURL(): string {
     return this.getURL("ownerRPC");
   }
 
-  protected getRequestURL(
+  getRequestURL(
     call:
       | "shutdown"
       | "node_status"
@@ -137,14 +137,14 @@ export class BaseApi {
     }
   }
 
-  protected async makeRESTRequest(
+  async makeRESTRequest(
     url: string,
     method: string,
     headers?: {},
     body?: {}
   ): Promise<string> {
     const _url = new URL(url);
-    let options = {
+    const options = {
       hostname: _url.hostname,
       port: _url.port,
       path: _url.pathname,
@@ -182,13 +182,13 @@ export class BaseApi {
     }
   }
 
-  protected async makeRPCRequest(
+  async makeRPCRequest(
     url: string,
     method: string,
     params: {} | []
   ): Promise<any> {
     const request = window.require("request");
-    let options = {
+    const options = {
       timeout: 180000,
       url: url,
       agent: false,

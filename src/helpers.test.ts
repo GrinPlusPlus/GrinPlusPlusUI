@@ -18,9 +18,9 @@ describe("Helpers", () => {
     ).toBe("word1 word2 word3");
   });
   test("hideSeedWords", () => {
-    let seed: ISeed[] = [];
+    const seed: ISeed[] = [];
     for (let i = 1; i <= 24; i++) {
-      let word =
+      const word =
         Math.random().toString(20).substring(2, 15) +
         Math.random().toString(20).substring(2, 15);
       seed.push({ text: word, position: i, disabled: true });

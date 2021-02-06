@@ -51,7 +51,7 @@ const session: SessionModel = {
     state.slatepackAddress = payload.slatepack_address;
   }),
   logout: thunk(
-    async (actions, token, { injections, getStoreState, getStoreActions }) => {
+    async (actions, token, { injections, getStoreState }) => {
       const { ownerService } = injections;
       const apiSettings = getStoreState().settings.defaultSettings;
       await new ownerService.RPC(
@@ -69,7 +69,7 @@ const session: SessionModel = {
   setSeed: action((state, seed) => {
     state.seed = seed;
   }),
-  clean: thunk((actions, payload, { injections, getStoreActions }): void => {
+  clean: thunk((actions, payload, { getStoreActions }): void => {
     getStoreActions().ui.toggleSettings(false);
     getStoreActions().walletSummary.updateBalance(undefined);
     getStoreActions().walletSummary.updateSummary(undefined);

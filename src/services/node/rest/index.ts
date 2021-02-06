@@ -36,14 +36,14 @@ export class NodeAPI extends BaseApi {
       this.getRequestURL("resync_blockchain"),
       "post"
     )
-      .then((data) => true)
-      .catch((error) => false);
+      .then(() => true)
+      .catch(() => false);
   }
 
   async shutdownNode(): Promise<boolean> {
     return await this.makeRESTRequest(this.getRequestURL("shutdown"), "post")
-      .then((data) => true)
-      .catch((error) => false);
+      .then(() => true)
+      .catch(() => false);
   }
 
   async getConnectedPeers(): Promise<IPeer[]> {
@@ -54,7 +54,7 @@ export class NodeAPI extends BaseApi {
       .then((response) => {
         if (!response) return [];
         if (!JSON.parse(response)) return [];
-        let peers: {
+        const peers: {
           address: string;
           agent: string;
           direction: string;

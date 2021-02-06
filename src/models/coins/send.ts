@@ -128,7 +128,7 @@ const sendCoinsModel: SendCoinsModel = {
     state.strategy = strategy;
   }),
   setInitialValues: thunk(
-    (actions, payload, { injections, getStoreActions, getStoreState }) => {
+    (actions, payload, { getStoreActions, getStoreState }) => {
       getStoreState().sendCoinsModel.amount = undefined;
       getStoreState().sendCoinsModel.fee = 0;
       getStoreState().sendCoinsModel.strategy = "SMALLEST";
@@ -151,12 +151,12 @@ const sendCoinsModel: SendCoinsModel = {
         return;
       }
     }
-    let newInputs = [...state.inputs];
+    const newInputs = [...state.inputs];
     newInputs.push(commitment);
     state.inputs = newInputs;
   }),
   removeCustomInput: action((state, commitment) => {
-    let newInputs = [...state.inputs];
+    const newInputs = [...state.inputs];
     const index = newInputs.indexOf(commitment);
     if (index > -1) {
       newInputs.splice(index, 1);
@@ -172,7 +172,7 @@ const sendCoinsModel: SendCoinsModel = {
   }),
   setInputsTable: action((state, inputs) => {
     if (inputs.length === 0) return;
-    let table: {
+    const table: {
       amount: number;
       block_height: number;
       commitment: string;
@@ -192,7 +192,7 @@ const sendCoinsModel: SendCoinsModel = {
   }),
   setInputs: action((state, inputs) => {
     if (inputs.length === 0) return;
-    let table: string[] = [];
+    const table: string[] = [];
 
     for (let index = 0; index < inputs.length; index++) {
       const element = inputs[index];
@@ -216,7 +216,7 @@ const sendCoinsModel: SendCoinsModel = {
     state.outputs = outputs;
   }),
   getOutputs: thunk(
-    async (actions, token, { injections, getStoreActions, getStoreState }) => {
+    async (actions, token, { injections, getStoreState }) => {
       const { ownerService } = injections;
       const apiSettings = getStoreState().settings.defaultSettings;
       return await new ownerService.RPC(
@@ -230,7 +230,7 @@ const sendCoinsModel: SendCoinsModel = {
             throw new Error(response);
           }
           actions.setInputsTable(response);
-          let commitments: string[] = [];
+          const commitments: string[] = [];
           response.forEach((input) => {
             if (input.status.toLowerCase() === "spendable") {
               commitments.push(input.commitment);
@@ -262,7 +262,7 @@ const sendCoinsModel: SendCoinsModel = {
           payload.message
         )
         .then((response) => {
-          let commitments: string[] = [];
+          const commitments: string[] = [];
           response.inputs.forEach((input) => {
             commitments.push(input.commitment);
           });
@@ -280,12 +280,12 @@ const sendCoinsModel: SendCoinsModel = {
     async (
       actions,
       payload,
-      { injections, getStoreState, getStoreActions }
+      { injections, getStoreState}
     ): Promise<string> => {
       const { ownerService } = injections;
       const defaultSettings = getStoreState().settings.defaultSettings;
 
-      let destinationAddress = payload.address.replace(/\/?$/, ""); //removing trailing /
+      const destinationAddress = payload.address.replace(/\/?$/, ""); //removing trailing /
 
       try {
         const response = await new ownerService.RPC(
@@ -321,7 +321,7 @@ const sendCoinsModel: SendCoinsModel = {
   ),
   onStrategyChanged: thunkOn(
     (actions, storeActions) => [storeActions.sendCoinsModel.setStrategy],
-    async (actions, target, { injections, getStoreState }) => {
+    async (actions, target, { getStoreState }) => {
       await actions
         .estimateFee({
           amount: Number(getStoreState().sendCoinsModel.amount),
@@ -340,7 +340,7 @@ const sendCoinsModel: SendCoinsModel = {
       storeActions.sendCoinsModel.addCustomInput,
       storeActions.sendCoinsModel.removeCustomInput,
     ],
-    async (actions, target, { injections, getStoreState }) => {
+    async (actions, target, { getStoreState }) => {
       await actions
         .estimateFee({
           amount: Number(getStoreState().sendCoinsModel.amount),

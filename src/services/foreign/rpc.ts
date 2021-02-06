@@ -12,7 +12,6 @@ export const ConfigNode = (
   min_confirmations: number;
   min_peers: number;
 } | null> => {
-  const tr = window.require("tor-request");
   const request = window.require("request");
   const method: string = values === undefined ? "get_config" : "update_config";
   const params = values === undefined ? [] : values;

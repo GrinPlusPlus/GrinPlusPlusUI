@@ -89,10 +89,10 @@ export const SendUsingAddressContainer = () => {
       if (sent === "FINALIZED") history.push("/wallet");
     } catch (error) {
       setWaitingResponse(false);
-      require("electron-log").error(`Error sending: ${error}`);
+      require("electron-log").error(`Error sending: ${error.message}`);
       updateLogs(error);
       Toaster.create({ position: Position.BOTTOM }).show({
-        message: error,
+        message: error.message,
         intent: Intent.DANGER,
         icon: "warning-sign",
       });

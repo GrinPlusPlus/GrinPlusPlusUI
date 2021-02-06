@@ -69,7 +69,7 @@ const isProcessRunning = function (processName: string): Promise<boolean> {
   return new Promise((resolve, reject) => {
     require("child_process").exec(
       cmd,
-      (err: Error, stdout: string, stderr: string) => {
+      (err: Error, stdout: string) => {
         if (err) reject(err);
         if (require("electron").remote.process.platform === "win32") {
           resolve(
@@ -165,7 +165,7 @@ export const runNode = function (
   );
 
   require("electron-log").info(`Trying to run Backend: ${command}`);
-  let node = require("child_process").spawn(command, params, {
+  const node = require("child_process").spawn(command, params, {
     windowsHide: true,
     encoding: "utf-8",
     detached: true,

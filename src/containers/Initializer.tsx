@@ -27,7 +27,7 @@ export const InitializerContainer = () => {
           log.info("Backend is not Running.");
         }
       } catch (error) {
-        log.error(`Error trying to Initialize the Backend: ${error}`);
+        log.error(`Error trying to Initialize the Backend: ${error.message}`);
       }
     })();
   }, [language, initializeWallet, i18n]);
