@@ -3,11 +3,7 @@ import { INodeStatus } from "../../../interfaces/INodeStatus";
 import { IPeer } from "../../../interfaces/IPeer";
 
 export class NodeAPI extends BaseApi {
-  public get url(): string {
-    return this.getURL("node");
-  }
-
-  public async getStatus(): Promise<INodeStatus> {
+  async getStatus(): Promise<INodeStatus> {
     return await this.makeRESTRequest(this.getRequestURL("node_status"), "get")
       .then((response) => {
         const data = JSON.parse(response);
@@ -35,22 +31,26 @@ export class NodeAPI extends BaseApi {
       });
   }
 
-  public async resyncNode(): Promise<boolean> {
+  url(): string {
+    return this.getURL("node");
+  }
+
+  async resyncNode(): Promise<boolean> {
     return await this.makeRESTRequest(
       this.getRequestURL("resync_blockchain"),
       "post"
     )
-      .then((data) => true)
-      .catch((error) => false);
+      .then(() => true)
+      .catch(() => false);
   }
 
-  public async shutdownNode(): Promise<boolean> {
+  async shutdownNode(): Promise<boolean> {
     return await this.makeRESTRequest(this.getRequestURL("shutdown"), "post")
-      .then((data) => true)
-      .catch((error) => false);
+      .then(() => true)
+      .catch(() => false);
   }
 
-  public async getConnectedPeers(): Promise<IPeer[]> {
+  async getConnectedPeers(): Promise<IPeer[]> {
     return await this.makeRESTRequest(
       this.getRequestURL("connected_peers"),
       "get"
@@ -58,7 +58,7 @@ export class NodeAPI extends BaseApi {
       .then((response) => {
         if (!response) return [];
         if (!JSON.parse(response)) return [];
-        let peers: {
+        const peers: {
           address: string;
           agent: string;
           direction: string;

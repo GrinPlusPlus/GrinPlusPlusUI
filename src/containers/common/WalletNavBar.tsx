@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 export const WalletNavBarContainer = () => {
   const { t } = useTranslation();
 
-  let history = useHistory();
+  const history = useHistory();
 
   const { toggleSettings } = useStoreActions((actions) => actions.ui);
 

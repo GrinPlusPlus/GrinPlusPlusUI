@@ -3,15 +3,11 @@ import { Button, InputGroup } from "@blueprintjs/core";
 import React from "react";
 
 type TransactionAddressProps = {
-  fee: number;
-  spendable: number;
   address: string;
   setAddressCb: (address: string) => void;
 };
 
 export const TransactionAddressComponent = ({
-  fee,
-  spendable,
   address,
   setAddressCb,
 }: TransactionAddressProps) => {

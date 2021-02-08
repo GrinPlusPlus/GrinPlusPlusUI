@@ -14,7 +14,7 @@ import { WalletUsername } from "./../../components/styled";
 import { useHistory } from "react-router-dom";
 
 export const AccountNavBarContainer = () => {
-  let history = useHistory();
+  const history = useHistory();
 
   const { username, token } = useStoreState((state) => state.session);
   const { toggleSettings } = useStoreActions((actions) => actions.ui);
@@ -54,7 +54,7 @@ export const AccountNavBarContainer = () => {
               await logout(token);
               require("electron-log").info("Logged out!");
             } catch (error) {
-              require("electron-log").info(`Trying to Logout: ${error}`);
+              require("electron-log").info(`Trying to Logout: ${error.message}`);
             }
           }}
         />

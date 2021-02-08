@@ -105,8 +105,7 @@ export const CreateWalletComponent = ({
           name="seedLength"
           selectedValue={seedLength}
           onChange={(event: React.FormEvent<HTMLInputElement>) => {
-            let target = event.target as HTMLInputElement;
-            setSeedLengthCb(target.value);
+            setSeedLengthCb(event.currentTarget.value);
           }}
         >
           <Radio label="12" value="12" />

@@ -16,19 +16,12 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 type SettingsProps = {
-  floonet: boolean;
-  useGrinJoin: boolean;
-  grinJoinAddress: string;
   grinChckAddress: string;
   mininumPeers: number;
   maximumPeers: number;
   confirmations: number;
-  nodeDataPath: string;
-  nodeBinaryPath: string;
   isConfirmationDialogOpen: boolean;
   isLoggedIn: boolean;
-  setGrinJoinUseCb: (active: boolean) => void;
-  setGrinJoinAddressCb: (address: string) => void;
   setGrinChckAddressCb: (address: string) => void;
   setMininumPeersCb: (peers: number) => void;
   setMaximumPeersCb: (peers: number) => void;
@@ -41,19 +34,12 @@ type SettingsProps = {
 };
 
 export const SettingsComponent = ({
-  floonet,
-  useGrinJoin,
-  grinJoinAddress,
   grinChckAddress,
   mininumPeers,
   maximumPeers,
   confirmations,
-  nodeDataPath,
-  nodeBinaryPath,
   isConfirmationDialogOpen,
   isLoggedIn,
-  setGrinJoinUseCb,
-  setGrinJoinAddressCb,
   setGrinChckAddressCb,
   setMininumPeersCb,
   setMaximumPeersCb,

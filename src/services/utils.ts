@@ -38,7 +38,7 @@ export const validateSlatepack = (slate: string): boolean => {
   );
 };
 
-export const getUiLogsLocation = function(): string {
+export const getUiLogsLocation = function (): string {
   const path = require("path");
   /*
   By default, it writes logs to the following locations:

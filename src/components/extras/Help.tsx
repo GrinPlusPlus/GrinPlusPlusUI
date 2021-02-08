@@ -5,7 +5,7 @@ export const HelpComponent = () => {
   return (
     <div>
       <br />
-      <H3>Node isn't installed</H3>
+      <H3>Node isn&apos;t installed</H3>
       <p>
         This can be easly fixed by making sure our Antivirus is not deleting
         neither putting into quarantine the Backend: GrinNode.exe. In order to
@@ -16,7 +16,7 @@ export const HelpComponent = () => {
         </code>
       </p>
       <br />
-      <H3>Node isn't running</H3>
+      <H3>Node isn&apos;t running</H3>
       <p>
         This is really uncommon, but it could happen. The first thing we’re
         gonna do is to open a Command Prompt and cd into the{" "}
@@ -50,11 +50,11 @@ export const HelpComponent = () => {
         Telegram Channel.
       </p>
       <br />
-      <H3>Stuck on "Waiting for Peers"</H3>
+      <H3>Stuck on &quot;Waiting for Peers&quot;</H3>
       <p>
         Sometimes this could happen after upgrading Grin++, you could get stuck
-        on "Waiting for Peers". In order to fix this, you could try 2 things.
-        The first thing you could try is to <b>(Re)Sync</b> the chain by
+        on &quot;Waiting for Peers&quot;. In order to fix this, you could try 2
+        things. The first thing you could try is to <b>(Re)Sync</b> the chain by
         clicking on Settings and the on Resync below <b>Node Actions</b>. If the
         solution above doesn’t work you can try this. Close Grin++, go to{" "}
         <code>C:\Users\[USERNAME]\.GrinPP\MAINNET</code>, delete the folder

@@ -23,7 +23,6 @@ type TransactionsTableProps = {
     method: string
   ) => void;
   onViewSlatepackMessageButtonClickedCb: (transactionId: number) => void;
-  method: string;
   lastConfirmedHeight: number;
   confirmations: number;
 };
@@ -36,7 +35,6 @@ export const TransactionsTableComponent = ({
   onFinalizeTransactionButtonClickedCb,
   onRepostTransactionButtonClickedCb,
   onViewSlatepackMessageButtonClickedCb,
-  method,
   lastConfirmedHeight,
   confirmations,
 }: TransactionsTableProps) => {
@@ -63,15 +61,15 @@ export const TransactionsTableComponent = ({
   };
 
   const listTransactions = (rows: ITransaction[]) => {
-    let table: JSX.Element[] = [];
+    const table: JSX.Element[] = [];
     if (rows.length === 0) return table;
     rows.forEach((transaction) => {
-      let date =
+      const date =
         transaction.creationDate === undefined
           ? ""
           : getDateAsString(new Date(+transaction.creationDate * 1000));
 
-      let mType = cleanTxType(transaction.type);
+      const mType = cleanTxType(transaction.type);
 
       table.push(
         <tr key={`i-${transaction.Id}`} style={{ height: "30px" }}>
@@ -175,7 +173,6 @@ export const TransactionsTableComponent = ({
                 }
                 kernels={transaction.kernels}
                 outputs={transaction.outputs}
-                method={method}
                 onCancelTransactionButtonClickedCb={
                   onCancelTransactionButtonClickedCb
                 }

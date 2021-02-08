@@ -35,9 +35,9 @@ const receiveCoinsModel: ReceiveCoinsModel = {
     async (
       actions,
       slatepack,
-      { injections, getStoreState, getStoreActions }
+      { injections, getStoreState }
     ): Promise<{ error: string; slatepack: string }> => {
-      var error: string = "";
+      let error: string = "";
       let received_slatepack: string = "";
 
       const { ownerService } = injections;

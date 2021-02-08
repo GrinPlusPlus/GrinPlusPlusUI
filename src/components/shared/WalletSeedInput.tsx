@@ -16,7 +16,7 @@ export const WalletSeedInputComponent = ({
   length,
 }: WalletSeedInputComponentTrops) => {
   const walletSeedTable = useCallback(() => {
-    let table = [];
+    const table = [];
 
     for (let i = 0; i < length / 3; i++) {
       table.push(

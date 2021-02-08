@@ -15,7 +15,7 @@ export const InitializerContainer = () => {
   const { initializeWallet } = useStoreActions((state) => state.wallet);
 
   useEffect(() => {
-    (async function() {
+    (async function () {
       const log = require("electron-log");
       log.info("Initializing Backend.");
       log.info(`Setting "${language}" as language...`);
@@ -27,7 +27,7 @@ export const InitializerContainer = () => {
           log.info("Backend is not Running.");
         }
       } catch (error) {
-        log.error(`Error trying to Initialize the Backend: ${error}`);
+        log.error(`Error trying to Initialize the Backend: ${error.message}`);
       }
     })();
   }, [language, initializeWallet, i18n]);

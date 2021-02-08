@@ -150,7 +150,7 @@ const walletSummary: WalletSummaryModel = {
     state.locked = balance.formatCb(balance.locked);
   }),
   updateWalletSummary: thunk(
-    async (actions, token, { injections, getStoreActions, getStoreState }) => {
+    async (actions, token, { injections, getStoreState }) => {
       if (getStoreState().walletSummary.waitingResponse) return;
       actions.setWaitingResponse(true);
       const { ownerService, utilsService } = injections;
@@ -177,7 +177,7 @@ const walletSummary: WalletSummaryModel = {
     }
   ),
   updateWalletBalance: thunk(
-    async (actions, token, { injections, getStoreActions, getStoreState }) => {
+    async (actions, token, { injections, getStoreState }) => {
       const { ownerService, utilsService } = injections;
       const apiSettings = getStoreState().settings.defaultSettings;
 
@@ -268,7 +268,7 @@ const walletSummary: WalletSummaryModel = {
     async (actions, wallet, { injections, getStoreState }) => {
       const { foreignService } = injections;
       try {
-        const reachable = await foreignService.GrinChck.reach(
+        const reachable = await foreignService.GrinChck(
           getStoreState().settings.grinChckAddress,
           wallet
         );

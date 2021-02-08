@@ -37,19 +37,15 @@ export const CoinControlComponent = ({
       transaction_id: number;
     }[]
   ) => {
-    let table: JSX.Element[] = inputsList.map((input) => {
+    const table: JSX.Element[] = inputsList.map((input) => {
       return (
         <tr
           id={input.commitment}
           key={input.commitment}
           style={{ fontFamily: "Courier New" }}
-          onClick={(
-            event: React.MouseEvent<HTMLTableRowElement, MouseEvent>
-          ) => {
+          onClick={() => {
             if (strategy === "SMALLEST") return;
-            let target = event.target as HTMLTableRowElement;
-            if (target.parentElement?.id)
-              updateInputsCb(target.parentElement.id);
+            updateInputsCb(input.commitment);
           }}
         >
           <td>
@@ -65,9 +61,8 @@ export const CoinControlComponent = ({
                 key={input.commitment}
                 checked={inputs.includes(input.commitment)}
                 disabled={strategy === "SMALLEST"}
-                onChange={(event: React.FormEvent<HTMLInputElement>) => {
-                  let target = event.target as HTMLInputElement;
-                  updateInputsCb(target.id);
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  updateInputsCb(event.target.id);
                 }}
               />
             </div>
@@ -90,8 +85,7 @@ export const CoinControlComponent = ({
         name="strategy"
         selectedValue={strategy}
         onChange={(event: React.FormEvent<HTMLInputElement>) => {
-          let target = event.target as HTMLInputElement;
-          setStrategyCb(target.value);
+          setStrategyCb(event.currentTarget.value);
         }}
       >
         <Radio label={t("default")} value="SMALLEST" />

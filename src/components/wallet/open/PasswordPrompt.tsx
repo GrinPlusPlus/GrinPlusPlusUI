@@ -19,7 +19,6 @@ type PasswordPromptProps = {
   passwordCb: (password: string) => void;
   onCloseCb: () => void;
   passwordButtonCb?: () => Promise<void>;
-  deleteWalletButtonCb?: () => Promise<void>;
   waitingResponse: boolean;
   connected: boolean;
   buttonText: string;
@@ -32,7 +31,6 @@ export const PasswordPromptComponent = ({
   passwordCb,
   onCloseCb,
   passwordButtonCb,
-  deleteWalletButtonCb,
   waitingResponse,
   connected,
   buttonText,

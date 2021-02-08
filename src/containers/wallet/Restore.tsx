@@ -7,7 +7,7 @@ import { RecoverWalletComponent } from "./../../components/wallet/recover/Recove
 import { useHistory } from "react-router-dom";
 
 export const RestoreWalletContainer = () => {
-  let history = useHistory();
+  const history = useHistory();
 
   const {
     username,

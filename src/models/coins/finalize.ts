@@ -12,7 +12,7 @@ const finalizeModel: FinalizeModel = {
     async (
       actions,
       slatepack,
-      { injections, getStoreState, getStoreActions }
+      { injections, getStoreState }
     ): Promise<{ error: string | null }> => {
       const { ownerService } = injections;
 

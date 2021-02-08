@@ -73,7 +73,7 @@ const createWalletModel: CreateWalletModel = {
   }),
   setGeneratedSeed: action((state, seed) => {
     let position: number = 1;
-    let newSeed: ISeed[] = seed.map(function (word: string) {
+    const newSeed: ISeed[] = seed.map(function (word: string) {
       return {
         position: position++,
         text: word,
@@ -122,17 +122,16 @@ const createWalletModel: CreateWalletModel = {
     state.hiddenSeed[index].disabled = true;
   }),
   setHiddenSeedWord: thunk(
-    (actions, payload, { injections, getStoreState }) => {
+    (actions, payload, { getStoreState }) => {
       const index = payload.position - 1;
-      let word = { ...getStoreState().createWallet.hiddenSeed[index] };
+      const word = { ...getStoreState().createWallet.hiddenSeed[index] };
       word.text = payload.word;
-      // word.valid = isValidSeedWord(payload.word);
       if (
         getStoreState().createWallet.generatedSeed[index].text === word.text
       ) {
         word.disabled = true;
       }
-      let newSeed: ISeed[] = [];
+      const newSeed: ISeed[] = [];
       [...getStoreState().createWallet.hiddenSeed].forEach((element) => {
         let item = element;
         if (element.position === word.position) {

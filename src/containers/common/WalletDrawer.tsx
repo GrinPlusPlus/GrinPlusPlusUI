@@ -15,7 +15,7 @@ export const WalletDrawer = () => {
   const { getNodeSettings } = useStoreActions((actions) => actions.settings);
 
   useEffect(() => {
-    (async function() {
+    (async function () {
       const log = require("electron-log");
       log.info("Getting node settings...");
 
@@ -23,7 +23,7 @@ export const WalletDrawer = () => {
         await getNodeSettings();
       } catch (error) {
         log.error(
-          `Error trying to get Node Settings from the Backend: ${error}`
+          `Error trying to get Node Settings from the Backend: ${error.message}`
         );
       }
     })();

@@ -14,7 +14,7 @@ export type InitComponentProps = {
 export const InitComponent = ({ error, message }: InitComponentProps) => {
   const { t } = useTranslation();
 
-  let history = useHistory();
+  const history = useHistory();
 
   return (
     <div>
@@ -33,7 +33,7 @@ export const InitComponent = ({ error, message }: InitComponentProps) => {
             <HorizontallyCenter>
               <Icon
                 data-testid="init-icon"
-                intent={"error" ? Intent.DANGER : Intent.SUCCESS}
+                intent={error ? Intent.DANGER : Intent.SUCCESS}
                 iconSize={28}
                 icon={error ? "error" : "tick-circle"}
               />

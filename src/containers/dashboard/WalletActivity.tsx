@@ -33,7 +33,6 @@ export const WalletActivitiyContainer = () => {
 
   const { token } = useStoreState((state) => state.session);
   const { transactionOpened } = useStoreState((state) => state.ui);
-  const { useGrinJoin } = useStoreState((state) => state.settings);
   const { blocks: lastConfirmedHeight } = useStoreState(
     (state) => state.nodeSummary
   );
@@ -83,7 +82,7 @@ export const WalletActivitiyContainer = () => {
         });
         require("electron-log").info("Canceled!");
       } catch (error) {
-        require("electron-log").error(`Error trying to Cancel Tx: ${error}`);
+        require("electron-log").error(`Error trying to Cancel Tx: ${error.message}`);
       }
     },
     [token, cancelTransaction, setSelectedTxToCancel]
@@ -115,7 +114,7 @@ export const WalletActivitiyContainer = () => {
         });
         require("electron-log").info("Reposted!");
       } catch (error) {
-        require("electron-log").error(`Error trying to Repost Tx: ${error}`);
+        require("electron-log").error(`Error trying to Repost Tx: ${error.message}`);
       }
     },
     [token, repostTransaction, setSelectedTxToRepost, t]
@@ -167,7 +166,6 @@ export const WalletActivitiyContainer = () => {
         onViewSlatepackMessageButtonClickedCb={
           onViewSlatepackMessageButtonClicked
         }
-        method={useGrinJoin ? "JOIN" : "FLUFF"}
         lastConfirmedHeight={lastConfirmedHeight}
         confirmations={confirmations}
       />
@@ -205,9 +203,8 @@ export const WalletActivitiyContainer = () => {
         <SlatesBox
           data-testid="slatepack-box"
           defaultValue={slatepackMessageToFinalize}
-          onChange={(event: React.FormEvent<HTMLTextAreaElement>) => {
-            let target = event.target as HTMLTextAreaElement;
-            setSlatepackMessageToFinalize(target.value);
+          onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
+            setSlatepackMessageToFinalize(event.target.value);
           }}
         ></SlatesBox>
         <div style={{ marginTop: "5px" }}>

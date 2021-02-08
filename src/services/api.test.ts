@@ -8,7 +8,7 @@ class TestBasiApi extends BaseApi {}
 class TestOwnerRPCApi extends OwnerRPCApi {}
 class TestNodeAPI extends NodeAPI {}
 
-export const _getCommand = function(): string {
+export const _getCommand = function (): string {
   const { remote } = require("electron");
   const cmd = (() => {
     switch (remote.process.platform) {
@@ -41,20 +41,20 @@ describe("APIs", () => {
   test("NodeAPI", () => {
     const nodeAPIdev = new TestNodeAPI();
     let expectedValue = "http://127.0.0.1:13413/v1";
-    expect(nodeAPIdev.url).toBe(expectedValue);
+    expect(nodeAPIdev.url()).toBe(expectedValue);
 
-    const nodeAPIprod = new TestNodeAPI(false, "http", "127.0.0.1", "PROD");
+    const nodeAPIprod = new TestNodeAPI(false, "http", "127.0.0.1");
     expectedValue = "http://127.0.0.1:3413/v1";
-    expect(nodeAPIprod.url).toBe(expectedValue);
+    expect(nodeAPIprod.url()).toBe(expectedValue);
   });
   test("OwnerRPCApi", () => {
     const nodeAPIdev = new TestOwnerRPCApi();
     let expectedValue = "http://127.0.0.1:3421/v2";
-    expect(nodeAPIdev.url).toBe(expectedValue);
+    expect(nodeAPIdev.url()).toBe(expectedValue);
 
-    const nodeAPIprod = new TestOwnerRPCApi(false, "http", "127.0.0.1", "PROD");
+    const nodeAPIprod = new TestOwnerRPCApi(false, "http", "127.0.0.1");
     expectedValue = "http://127.0.0.1:3421/v2";
-    expect(nodeAPIprod.url).toBe(expectedValue);
+    expect(nodeAPIprod.url()).toBe(expectedValue);
   });
   test("getNodeDataPath()", () => {
     const path = require("path");

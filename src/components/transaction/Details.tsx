@@ -12,7 +12,6 @@ export type TansactionDetailsProps = {
   message: string;
   fee: string;
   date: string;
-  method: string;
   onCancelTransactionButtonClickedCb: (transactionId: number) => void;
   onRepostTransactionButtonClickedCb: (
     transactionId: number,
@@ -35,7 +34,6 @@ export const TansactionDetailsComponent = ({
   message,
   fee,
   date,
-  method,
   onCancelTransactionButtonClickedCb,
   onRepostTransactionButtonClickedCb,
   onViewSlatepackMessageButtonClickedCb,

@@ -1,6 +1,5 @@
 const electron = require("electron");
 const path = require("path");
-const url = require("url");
 const log = require("electron-log");
 const { dialog } = require("electron");
 const { autoUpdater } = require("electron-updater");
@@ -186,13 +185,16 @@ function createWindow() {
   });
 
   // and load the index.html of the app.
-  const startUrl =
-    process.env.ELECTRON_START_URL ||
-    url.format({
-      pathname: path.join(__dirname, "/../build/index.html"),
-      protocol: "file:",
-      slashes: true,
-    });
+  let startUrl = "";
+  if (isDevMode) {
+    startUrl = process.env.ELECTRON_START_URL;
+  } else {
+    startUrl = `file://${__dirname}/../build/index.html`;
+  }
+
+  console.log("++++++++++++");
+  console.log(startUrl);
+  console.log("++++++++++++");
   mainWindow.loadURL(startUrl);
 
   if (isDevMode) {

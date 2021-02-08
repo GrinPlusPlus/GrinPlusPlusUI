@@ -22,7 +22,7 @@ const WalletSeedConfirmation = React.lazy(() =>
 const renderLoader = () => null;
 
 export const CreateWalletContainer = () => {
-  let history = useHistory();
+  const history = useHistory();
   const {
     username,
     password,
@@ -64,7 +64,9 @@ export const CreateWalletContainer = () => {
             icon: "warning-sign",
           });
         });
-    } catch (error) {}
+    } catch (error) {
+      require("electron-log").error(`Error Creating Wallet: ${error.message}`);
+    }
   }, [username, password, create, seedLength]);
 
   const onContinueButtonClicked = useCallback(async () => {
