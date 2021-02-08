@@ -31,6 +31,10 @@ export class NodeAPI extends BaseApi {
       });
   }
 
+  url(): string {
+    return this.getURL("node");
+  }
+
   async resyncNode(): Promise<boolean> {
     return await this.makeRESTRequest(
       this.getRequestURL("resync_blockchain"),

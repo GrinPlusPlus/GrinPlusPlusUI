@@ -31,6 +31,10 @@ export class OwnerRPCApi extends BaseApi {
     });
   }
 
+  url(): string {
+    return this.getURL("ownerRPC");
+  }
+
   async restoreWallet(
     username: string,
     password: string,
