@@ -172,7 +172,7 @@ export const cleanTxType = function (type: string): string {
 export const useInterval = function (
   callback: any,
   delay: number,
-  deps: any[]
+  ...deps: any[]
 ) {
   const savedCallback = useRef(callback);
   savedCallback.current = callback;
@@ -187,7 +187,7 @@ export const useInterval = function (
       const id = setInterval(tick, delay);
       return () => clearInterval(id);
     }
-  }, [...deps, delay]);
+  }, [deps, delay]);
 };
 
 export const cutAddress = (address: string): string => {
