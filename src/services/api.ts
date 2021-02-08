@@ -185,7 +185,7 @@ export class BaseApi {
   async makeRPCRequest(
     url: string,
     method: string,
-    params: {} | []
+    params: {} | any[]
   ): Promise<any> {
     const request = window.require("request");
     const options = {
