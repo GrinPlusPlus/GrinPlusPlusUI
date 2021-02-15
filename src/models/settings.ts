@@ -63,8 +63,7 @@ const settings: SettingsModel = {
   nodeBinaryPath: "./bin/",
   useGrinJoin: false,
   grinJoinAddress: "grinjoin5pzzisnne3naxx4w2knwxsyamqmzfnzywnzdk7ra766u7vid",
-  grinChckAddress:
-    "http://grinchck.ahcbagldgzdpa74g2mh74fvk5zjzpfjbvgqin6g3mfuu66tynv2gkiid.onion/check/",
+  grinChckAddress: "http://74.208.28.172:8443/check/",
   isConfirmationDialogOpen: false,
   setDefaultSettings: action((state, settings) => {
     state.defaultSettings = {
@@ -131,11 +130,7 @@ const settings: SettingsModel = {
     }
   ),
   getNodeSettings: thunk(
-    async (
-      actions,
-      payload,
-      { injections }
-    ): Promise<boolean> => {
+    async (actions, payload, { injections }): Promise<boolean> => {
       const { nodeService } = injections;
 
       const settings = await nodeService.getNodeSettings();
