@@ -27,6 +27,7 @@ export const LanguageMenuContainer = () => {
         | "tr"
         | "ua"
         | "sl"
+        | "gr"
     ) => {
       i18n.changeLanguage(lng);
       setLanguage(lng);
@@ -108,6 +109,11 @@ export const LanguageMenuContainer = () => {
             icon={language === "sl" ? "tick" : undefined}
             text="Slovenščina"
             onClick={() => changeLanguage("sl")}
+          />
+          <MenuItem
+            icon={language === "gr" ? "tick" : undefined}
+            text="Greek"
+            onClick={() => changeLanguage("gr")}
           />
         </Menu>
       }

@@ -20,6 +20,7 @@ const availableLanguages = [
   "tr",
   "ua",
   "sl",
+  "gr",
 ];
 
 const options = {

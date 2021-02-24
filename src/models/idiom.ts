@@ -16,6 +16,7 @@ export interface IdiomModel {
     | "ru"
     | "tr"
     | "ua"
+    | "gr"
     | "sl";
   setLanguage: Action<
     IdiomModel,
@@ -25,6 +26,7 @@ export interface IdiomModel {
     | "es"
     | "fa"
     | "fr"
+    | "ua"
     | "it"
     | "nl"
     | "pl"
@@ -33,6 +35,7 @@ export interface IdiomModel {
     | "tr"
     | "ua"
     | "sl"
+    | "gr"
   >;
 }
 
