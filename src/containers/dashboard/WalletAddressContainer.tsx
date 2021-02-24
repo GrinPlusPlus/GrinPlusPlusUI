@@ -45,21 +45,6 @@ export const WalletAddressContainer = () => {
       <div>
         <Flex>
           <Title>{t("address")}</Title>
-          <div style={{ marginLeft: "10px" }}>
-            {address && walletReachable === undefined ? (
-              <div style={{ marginTop: "10px" }}>
-                <Spinner size={10} />
-              </div>
-            ) : (
-              <div style={{ marginTop: "7px" }}>
-                <Text>
-                  {walletReachable
-                    ? t("wallet_reachable")
-                    : t("wallet_not_reachable")}
-                </Text>
-              </div>
-            )}
-          </div>
         </Flex>
         <div style={{ marginTop: "10px" }}>
           <Flex>
