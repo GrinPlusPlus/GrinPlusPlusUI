@@ -20,67 +20,55 @@ import store from "./store";
 import { useInterval } from "./helpers";
 
 const App: React.FC = () => {
-  useInterval(
-    async () => {
-      if (!store.getState().wallet.isWalletInitialized) {
-        store.getActions().nodeSummary.updateStatus(undefined);
-        return;
-      }
-      try {
-        store
-          .getActions()
-          .nodeSummary.updateStatus(
-            await store.getActions().nodeSummary.checkStatus()
-          );
-      } catch (error) {
-        require("electron-log").error(
-          `Error trying to get Node Status: ${error.message}`
+  useInterval(async () => {
+    if (!store.getState().wallet.isWalletInitialized) {
+      store.getActions().nodeSummary.updateStatus(undefined);
+      return;
+    }
+    try {
+      store
+        .getActions()
+        .nodeSummary.updateStatus(
+          await store.getActions().nodeSummary.checkStatus()
         );
-        store.getActions().nodeSummary.updateStatus(undefined);
-      }
-    },
-    store.getState().nodeSummary.CheckStatusInterval,
-    []
-  );
+    } catch (error) {
+      require("electron-log").error(
+        `Error trying to get Node Status: ${error.message}`
+      );
+      store.getActions().nodeSummary.updateStatus(undefined);
+    }
+  }, store.getState().nodeSummary.CheckStatusInterval);
 
-  useInterval(
-    async () => {
-      try {
-        require("electron-log").info("Performing HealthCheck...");
-        if (await store.getActions().wallet.checkNodeHealth()) {
-          require("electron-log").info("HealthCheck passed, all good!");
-        } else {
-          require("electron-log").info(
-            "HealthCheck failed: Backend is not Running"
-          );
-        }
-      } catch (error) {
-        require("electron-log").error(`HealthCheck failed: ${error.message}`);
-      }
-    },
-    store.getState().nodeSummary.HealthCheckInterval,
-    []
-  );
-
-  useInterval(
-    async () => {
-      if (store.getState().nodeSummary.status.toLowerCase() === "not connected")
-        return;
-      try {
-        store
-          .getActions()
-          .nodeSummary.setConnectedPeers(
-            await store.getActions().nodeSummary.getConnectedPeers()
-          );
-      } catch (error) {
-        require("electron-log").error(
-          `Error trying to get Connected Peers: ${error.message}`
+  useInterval(async () => {
+    try {
+      require("electron-log").info("Performing HealthCheck...");
+      if (await store.getActions().wallet.checkNodeHealth()) {
+        require("electron-log").info("HealthCheck passed, all good!");
+      } else {
+        require("electron-log").info(
+          "HealthCheck failed: Backend is not Running"
         );
       }
-    },
-    5000,
-    []
-  );
+    } catch (error) {
+      require("electron-log").error(`HealthCheck failed: ${error.message}`);
+    }
+  }, store.getState().nodeSummary.HealthCheckInterval);
+
+  useInterval(async () => {
+    if (store.getState().nodeSummary.status.toLowerCase() === "not connected")
+      return;
+    try {
+      store
+        .getActions()
+        .nodeSummary.setConnectedPeers(
+          await store.getActions().nodeSummary.getConnectedPeers()
+        );
+    } catch (error) {
+      require("electron-log").error(
+        `Error trying to get Connected Peers: ${error.message}`
+      );
+    }
+  }, 5000);
 
   return (
     <StoreProvider store={store}>

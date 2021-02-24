@@ -11,7 +11,6 @@ export interface SessionModel {
   setAddress: Action<SessionModel, string>;
   slatepackAddress: string;
   listenerPort: number;
-  sessionChangedAt: undefined | Date;
   encodedAddress: string;
   displayQRCode: boolean;
   updateSession: Action<
@@ -41,7 +40,6 @@ const session: SessionModel = {
   slatepackAddress: "",
   encodedAddress: "",
   displayQRCode: false,
-  sessionChangedAt: undefined,
   setAddress: action((state, payload) => {
     state.address = payload;
   }),
@@ -51,7 +49,6 @@ const session: SessionModel = {
     state.address = payload.address;
     state.listenerPort = payload.listener_port;
     state.slatepackAddress = payload.slatepack_address;
-    state.sessionChangedAt = new Date();
   }),
   logout: thunk(async (actions, token, { injections, getStoreState }) => {
     const { ownerService } = injections;

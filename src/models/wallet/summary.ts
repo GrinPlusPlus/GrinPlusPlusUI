@@ -272,7 +272,6 @@ const walletSummary: WalletSummaryModel = {
           getStoreState().settings.grinChckAddress,
           wallet
         );
-        actions.setWalletReachable(reachable);
         return reachable;
       } catch (error) {
         throw new Error(error);

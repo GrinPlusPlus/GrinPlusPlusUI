@@ -43,7 +43,7 @@ const renderLoader = () => <LoadingComponent />;
 export const WalletContainer = () => {
   const { t } = useTranslation();
 
-  const { isLoggedIn, seed, token, address, sessionChangedAt } = useStoreState(
+  const { isLoggedIn, seed, token, address } = useStoreState(
     (state) => state.session
   );
   const { alert } = useStoreState((state) => state.ui);
@@ -60,6 +60,7 @@ export const WalletContainer = () => {
   const {
     updateWalletSummary,
     updateWalletBalance,
+    setWalletReachable,
     checkWalletAvailability,
   } = useStoreActions((actions) => actions.walletSummary);
 
@@ -68,50 +69,38 @@ export const WalletContainer = () => {
     (state) => state.wallet
   );
 
-  useInterval(
-    async () => {
-      if (token !== undefined && token.length > 0) {
-        if (token.length === 0) return;
-        try {
-          await updateWalletSummary(token);
-        } catch (error) {
-          Log.error(`Error trying to get Wallet Summary: ${error.message}`);
-        }
-        try {
-          await updateWalletBalance(token);
-        } catch (error) {
-          Log.error(`Error trying to get Wallet Balance: ${error.message}`);
-        }
-      }
-    },
-    2000,
-    [token]
-  );
-
-  useInterval(
-    async () => {
-      if (!isLoggedIn) return;
-      if (!sessionChangedAt) return;
-      let seconds = Math.abs(
-        (new Date().getTime() - sessionChangedAt?.getTime()) / 1000
-      );
-      if (seconds <= 10) {
-        return;
-      }
-      Log.info(`Checking address: http://${address}.onion/`);
-
+  useInterval(async () => {
+    if (token !== undefined && token.length > 0) {
+      if (token.length === 0) return;
       try {
-        if (!(await checkWalletAvailability(`http://${address}.onion/`))) {
-          if (!isLoggedIn) return;
-          Log.error("Wallet is not Reachable");
-        }
+        await updateWalletSummary(token);
       } catch (error) {
-        Log.error(`Error trying to get Wallet Availability: ${error.message}`);
+        Log.error(`Error trying to get Wallet Summary: ${error.message}`);
       }
-    },
-    30000,
-    [isLoggedIn, sessionChangedAt]
-  );
+      try {
+        await updateWalletBalance(token);
+      } catch (error) {
+        Log.error(`Error trying to get Wallet Balance: ${error.message}`);
+      }
+    }
+  }, 2000);
+
+  useInterval(async () => {
+    if (!isLoggedIn) return;
+    Log.info(`Checking address: http://${address}.onion/`);
+
+    try {
+      if (!(await checkWalletAvailability(`http://${address}.onion/`))) {
+        if (!isLoggedIn) return;
+        Log.error("Wallet is not Reachable");
+        setWalletReachable(false);
+      } else {
+        setWalletReachable(true);
+      }
+    } catch (error) {
+      Log.error(`Error trying to get Wallet Availability: ${error.message}`);
+    }
+  }, 30000);
 
   const backupSeed = useCallback(async () => {
     if (username === undefined || password === undefined) return;
