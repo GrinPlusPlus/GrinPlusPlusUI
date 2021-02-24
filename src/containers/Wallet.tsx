@@ -43,7 +43,7 @@ const renderLoader = () => <LoadingComponent />;
 export const WalletContainer = () => {
   const { t } = useTranslation();
 
-  const { isLoggedIn, seed, token, address } = useStoreState(
+  const { isLoggedIn, seed, token, address, sessionChangedAt } = useStoreState(
     (state) => state.session
   );
   const { alert } = useStoreState((state) => state.ui);
@@ -91,7 +91,13 @@ export const WalletContainer = () => {
   useInterval(
     async () => {
       if (!isLoggedIn) return;
-
+      if (!sessionChangedAt) return;
+      let seconds = Math.abs(
+        (new Date().getTime() - sessionChangedAt?.getTime()) / 1000
+      );
+      if (seconds <= 10) {
+        return;
+      }
       Log.info(`Checking address: http://${address}.onion/`);
 
       try {
@@ -104,7 +110,7 @@ export const WalletContainer = () => {
       }
     },
     30000,
-    [isLoggedIn]
+    [isLoggedIn, sessionChangedAt]
   );
 
   const backupSeed = useCallback(async () => {
