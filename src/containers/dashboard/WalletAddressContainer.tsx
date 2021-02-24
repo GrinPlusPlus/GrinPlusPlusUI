@@ -1,5 +1,5 @@
 import { Title, Flex, HorizontallyCenter } from "../../components/styled";
-import { Button, Intent, Spinner, Text } from "@blueprintjs/core";
+import { Button, Intent } from "@blueprintjs/core";
 import React, { useLayoutEffect } from "react";
 import { WalletAddressComponent } from "../../components/dashboard/WalletAddress";
 import { useStoreActions, useStoreState } from "../../hooks";
@@ -10,7 +10,7 @@ import { useHistory } from "react-router-dom";
 
 export const WalletAddressContainer = () => {
   const { t } = useTranslation();
-  const { address, slatepackAddress, encodedAddress } = useStoreState(
+  const { slatepackAddress, encodedAddress } = useStoreState(
     (state) => state.session
   );
   const { setDisplayQRCode, setEncodedAddress } = useStoreActions(

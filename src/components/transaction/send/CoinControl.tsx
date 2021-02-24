@@ -62,7 +62,9 @@ export const CoinControlComponent = ({
                 checked={inputs.includes(input.commitment)}
                 disabled={strategy === "SMALLEST"}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  if (strategy === "SMALLEST") return;
                   updateInputsCb(event.target.id);
+                  event.preventDefault();
                 }}
               />
             </div>

@@ -215,32 +215,30 @@ const sendCoinsModel: SendCoinsModel = {
     state.outputs = [];
     state.outputs = outputs;
   }),
-  getOutputs: thunk(
-    async (actions, token, { injections, getStoreState }) => {
-      const { ownerService } = injections;
-      const apiSettings = getStoreState().settings.defaultSettings;
-      return await new ownerService.RPC(
-        apiSettings.floonet,
-        apiSettings.protocol,
-        apiSettings.ip
-      )
-        .getOutputs(token)
-        .then((response) => {
-          if (typeof response === "string") {
-            throw new Error(response);
+  getOutputs: thunk(async (actions, token, { injections, getStoreState }) => {
+    const { ownerService } = injections;
+    const apiSettings = getStoreState().settings.defaultSettings;
+    return await new ownerService.RPC(
+      apiSettings.floonet,
+      apiSettings.protocol,
+      apiSettings.ip
+    )
+      .getOutputs(token)
+      .then((response) => {
+        if (typeof response === "string") {
+          throw new Error(response);
+        }
+        actions.setInputsTable(response);
+        const commitments: string[] = [];
+        response.forEach((input) => {
+          if (input.status.toLowerCase() === "spendable") {
+            commitments.push(input.commitment);
           }
-          actions.setInputsTable(response);
-          const commitments: string[] = [];
-          response.forEach((input) => {
-            if (input.status.toLowerCase() === "spendable") {
-              commitments.push(input.commitment);
-            }
-          });
-          actions.fillInputs(commitments);
-          actions.fillOutputs(commitments);
         });
-    }
-  ),
+        actions.fillInputs(commitments);
+        actions.fillOutputs(commitments);
+      });
+  }),
   estimateFee: thunk(
     async (
       actions,
@@ -280,7 +278,7 @@ const sendCoinsModel: SendCoinsModel = {
     async (
       actions,
       payload,
-      { injections, getStoreState}
+      { injections, getStoreState }
     ): Promise<string> => {
       const { ownerService } = injections;
       const defaultSettings = getStoreState().settings.defaultSettings;
@@ -322,17 +320,19 @@ const sendCoinsModel: SendCoinsModel = {
   onStrategyChanged: thunkOn(
     (actions, storeActions) => [storeActions.sendCoinsModel.setStrategy],
     async (actions, target, { getStoreState }) => {
-      await actions
-        .estimateFee({
-          amount: Number(getStoreState().sendCoinsModel.amount),
-          strategy: getStoreState().sendCoinsModel.strategy,
-          message: getStoreState().sendCoinsModel.message,
-          token: getStoreState().session.token,
-          inputs: getStoreState().sendCoinsModel.inputs,
-        })
-        .catch((error: { message: string }) => {
-          actions.setError(error.message);
-        });
+      if (getStoreState().sendCoinsModel.amount) {
+        await actions
+          .estimateFee({
+            amount: Number(getStoreState().sendCoinsModel.amount),
+            strategy: getStoreState().sendCoinsModel.strategy,
+            message: getStoreState().sendCoinsModel.message,
+            token: getStoreState().session.token,
+            inputs: getStoreState().sendCoinsModel.inputs,
+          })
+          .catch((error: { message: string }) => {
+            actions.setError(error.message);
+          });
+      }
     }
   ),
   onCustomInputsChanged: thunkOn(
@@ -341,17 +341,19 @@ const sendCoinsModel: SendCoinsModel = {
       storeActions.sendCoinsModel.removeCustomInput,
     ],
     async (actions, target, { getStoreState }) => {
-      await actions
-        .estimateFee({
-          amount: Number(getStoreState().sendCoinsModel.amount),
-          strategy: getStoreState().sendCoinsModel.strategy,
-          message: getStoreState().sendCoinsModel.message,
-          token: getStoreState().session.token,
-          inputs: getStoreState().sendCoinsModel.inputs,
-        })
-        .catch((error: { message: string }) => {
-          actions.setError(error.message);
-        });
+      if (getStoreState().sendCoinsModel.amount) {
+        await actions
+          .estimateFee({
+            amount: Number(getStoreState().sendCoinsModel.amount),
+            strategy: getStoreState().sendCoinsModel.strategy,
+            message: getStoreState().sendCoinsModel.message,
+            token: getStoreState().session.token,
+            inputs: getStoreState().sendCoinsModel.inputs,
+          })
+          .catch((error: { message: string }) => {
+            actions.setError(error.message);
+          });
+      }
     }
   ),
   isAddressValid: computed((state) => {
