@@ -22,12 +22,6 @@ const TransactionAmountContainer = React.lazy(() =>
   }))
 );
 
-const TransactionMessageContainer = React.lazy(() =>
-  import("./TransactionMessage").then((module) => ({
-    default: module.TransactionMessageContainer,
-  }))
-);
-
 const TransactionAddressContainer = React.lazy(() =>
   import("./TransactionAddress").then((module) => ({
     default: module.TransactionAddressContainer,
@@ -90,7 +84,6 @@ export const SendContainer = () => {
           </div>
         </Flex>
         <TransactionAddressContainer />
-        <TransactionMessageContainer />
         <CoinControlContainer />
       </SendGrinsContent>
       {usernamePrompt ? (
