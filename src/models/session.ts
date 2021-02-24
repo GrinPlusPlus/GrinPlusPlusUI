@@ -13,6 +13,7 @@ export interface SessionModel {
   listenerPort: number;
   encodedAddress: string;
   displayQRCode: boolean;
+  updatedSessionAt: undefined | Date;
   updateSession: Action<
     SessionModel,
     {
@@ -43,12 +44,14 @@ const session: SessionModel = {
   setAddress: action((state, payload) => {
     state.address = payload;
   }),
+  updatedSessionAt: undefined,
   updateSession: action((state, payload) => {
     state.username = payload.username;
     state.token = payload.token;
     state.address = payload.address;
     state.listenerPort = payload.listener_port;
     state.slatepackAddress = payload.slatepack_address;
+    state.updatedSessionAt = payload.token.length > 0 ? new Date() : undefined;
   }),
   logout: thunk(async (actions, token, { injections, getStoreState }) => {
     const { ownerService } = injections;
