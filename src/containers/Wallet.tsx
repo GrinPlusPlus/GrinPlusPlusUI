@@ -73,11 +73,6 @@ export const WalletContainer = () => {
     if (token !== undefined && token.length > 0) {
       if (token.length === 0) return;
       try {
-        await updateWalletSummary(token);
-      } catch (error) {
-        Log.error(`Error trying to get Wallet Summary: ${error.message}`);
-      }
-      try {
         await updateWalletBalance(token);
       } catch (error) {
         Log.error(`Error trying to get Wallet Balance: ${error.message}`);
@@ -86,13 +81,24 @@ export const WalletContainer = () => {
   }, 2000);
 
   useInterval(async () => {
+    if (token !== undefined && token.length > 0) {
+      if (token.length === 0) return;
+      try {
+        await updateWalletSummary(token);
+      } catch (error) {
+        Log.error(`Error trying to get Wallet Summary: ${error.message}`);
+      }
+    }
+  }, 2000);
+
+  useInterval(async () => {
     if (!isLoggedIn) return;
-    if (
+    /*if (
       updatedSessionAt !== undefined &&
       Math.abs((new Date().getTime() - updatedSessionAt.getTime()) / 1000) <= 20
     ) {
       return;
-    }
+    }*/
     Log.info(`Checking address: http://${address}.onion/`);
 
     try {

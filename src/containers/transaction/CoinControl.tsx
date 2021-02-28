@@ -4,7 +4,7 @@ import { useStoreActions, useStoreState } from "../../hooks";
 import { CoinControlComponent } from "../../components/transaction/send/CoinControl";
 
 export const CoinControlContainer = () => {
-  const { strategy, inputsTable, inputs } = useStoreState(
+  const { strategy, inputsTable, inputs, amount } = useStoreState(
     (state) => state.sendCoinsModel
   );
 
@@ -26,6 +26,7 @@ export const CoinControlContainer = () => {
   return (
     <CoinControlComponent
       strategy={strategy}
+      amountSet={amount}
       inputsTable={inputsTable}
       setStrategyCb={(s: string) => {
         setStrategy(s);

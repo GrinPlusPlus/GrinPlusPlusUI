@@ -8,14 +8,15 @@ import { InitComponent } from "../components/extras/Init";
 export const InitializerContainer = () => {
   const { t, i18n } = useTranslation();
 
-  const { message, initializingError } = useStoreState((state) => state.wallet);
+  const { message, initializingError, isWalletInitialized } = useStoreState(
+    (state) => state.wallet
+  );
   const { language } = useStoreState((state) => state.idiom);
-  const { status } = useStoreState((state) => state.nodeSummary);
 
   const { initializeWallet } = useStoreActions((state) => state.wallet);
 
   useEffect(() => {
-    (async function () {
+    (async function() {
       const log = require("electron-log");
       log.info("Initializing Backend.");
       log.info(`Setting "${language}" as language...`);
@@ -34,9 +35,7 @@ export const InitializerContainer = () => {
 
   return (
     <div>
-      {status.toLowerCase() !== "not connected" ? (
-        <Redirect to="/login" />
-      ) : null}
+      {isWalletInitialized ? <Redirect to="/login" /> : null}
       <InitComponent error={initializingError} message={t(`${message}`)} />
     </div>
   );

@@ -84,6 +84,10 @@ const openWallet: SigninModel = {
           });
           actions.setUsername("");
           actions.setPassword("");
+
+          getStoreActions().walletSummary.updateWalletSummary(response.token);
+          getStoreActions().walletSummary.updateWalletBalance(response.token);
+
           return response;
         })
         .finally(() => {

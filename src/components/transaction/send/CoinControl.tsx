@@ -14,6 +14,7 @@ type CoinControlProps = {
     transaction_id: number;
   }[];
   inputs: string[];
+  amountSet: string | undefined;
   setStrategyCb: (strategy: string) => void;
   updateInputsCb: (commitment: string) => void;
 };
@@ -22,6 +23,7 @@ export const CoinControlComponent = ({
   strategy,
   inputsTable,
   inputs,
+  amountSet,
   setStrategyCb,
   updateInputsCb,
 }: CoinControlProps) => {
@@ -42,32 +44,25 @@ export const CoinControlComponent = ({
         <tr
           id={input.commitment}
           key={input.commitment}
-          style={{ fontFamily: "Courier New" }}
-          onClick={() => {
-            if (strategy === "SMALLEST") return;
-            updateInputsCb(input.commitment);
-          }}
+          style={{ fontFamily: "Courier New", cursor: "default" }}
         >
-          <td>
-            <div>
-              <Checkbox
-                style={{
-                  margin: "0 auto",
-                  verticalAlign: "bottom",
-                  bottom: "0",
-                  right: "0",
-                }}
-                id={input.commitment}
-                key={input.commitment}
-                checked={inputs.includes(input.commitment)}
-                disabled={strategy === "SMALLEST"}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  if (strategy === "SMALLEST") return;
-                  updateInputsCb(event.target.id);
-                  event.preventDefault();
-                }}
-              />
-            </div>
+          <td style={{ textAlign: "center", verticalAlign: "center" }}>
+            <Checkbox
+              style={{
+                margin: "0 auto",
+                verticalAlign: "bottom",
+                bottom: "0",
+                right: "0",
+              }}
+              id={input.commitment}
+              key={input.commitment}
+              checked={inputs.includes(input.commitment)}
+              disabled={strategy === "SMALLEST"}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                if (strategy === "SMALLEST") return;
+                updateInputsCb(event.target.id);
+              }}
+            />
           </td>
           <td>{input.block_height}</td>
           <td>{input.commitment}</td>
@@ -83,6 +78,7 @@ export const CoinControlComponent = ({
       <RadioGroup
         className="bp3-dark"
         inline={true}
+        disabled={!amountSet}
         label={t("strategy")}
         name="strategy"
         selectedValue={strategy}
@@ -93,8 +89,7 @@ export const CoinControlComponent = ({
         <Radio label={t("default")} value="SMALLEST" />
         <Radio label={t("custom")} value="CUSTOM" />
       </RadioGroup>
-      <br />
-      <div style={{ height: "calc(100vh - 400px)", overflowY: "auto" }}>
+      <div style={{ height: "calc(100vh - 340px)", overflowY: "auto" }}>
         <table className="transactions">
           <tbody>
             <tr>
