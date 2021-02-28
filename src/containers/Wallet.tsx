@@ -43,7 +43,7 @@ const renderLoader = () => <LoadingComponent />;
 export const WalletContainer = () => {
   const { t } = useTranslation();
 
-  const { isLoggedIn, seed, token, address, updatedSessionAt } = useStoreState(
+  const { isLoggedIn, seed, token, address } = useStoreState(
     (state) => state.session
   );
   const { alert } = useStoreState((state) => state.ui);
@@ -93,12 +93,6 @@ export const WalletContainer = () => {
 
   useInterval(async () => {
     if (!isLoggedIn) return;
-    /*if (
-      updatedSessionAt !== undefined &&
-      Math.abs((new Date().getTime() - updatedSessionAt.getTime()) / 1000) <= 20
-    ) {
-      return;
-    }*/
     Log.info(`Checking address: http://${address}.onion/`);
 
     try {
