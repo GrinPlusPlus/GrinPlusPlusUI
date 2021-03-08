@@ -106,7 +106,7 @@ export const WalletContainer = () => {
     } catch (error) {
       Log.error(`Error trying to get Wallet Availability: ${error.message}`);
     }
-  }, 30000);
+  }, 15000);
 
   const backupSeed = useCallback(async () => {
     if (username === undefined || password === undefined) return;
