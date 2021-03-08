@@ -104,57 +104,6 @@ export const ReceiveContainer = () => {
             </HorizontallyCenter>
           </div>
         </Flex>
-        <div>
-          <Title>{t("address")}</Title>
-          <br />
-          <Button
-            onClick={() => {
-              navigator.clipboard.writeText(slatepackAddress);
-              Toaster.create({ position: Position.BOTTOM }).show({
-                message: <div style={{ color: "white" }}>{t("copied")}</div>,
-                intent: Intent.SUCCESS,
-              });
-            }}
-            style={{
-              margin: "5px",
-            }}
-            minimal={true}
-            className="bp3-dark"
-            intent={
-              walletReachable === undefined
-                ? Intent.NONE
-                : walletReachable
-                ? Intent.SUCCESS
-                : Intent.WARNING
-            }
-            text={slatepackAddress}
-          />
-          <br />
-          <Button
-            onClick={() => {
-              navigator.clipboard.writeText(
-                `http://${onionAddress}.grinplusplus.com/`
-              );
-              Toaster.create({ position: Position.BOTTOM }).show({
-                message: <div style={{ color: "white" }}>{t("copied")}</div>,
-                intent: Intent.SUCCESS,
-              });
-            }}
-            style={{
-              margin: "5px",
-            }}
-            minimal={true}
-            className="bp3-dark"
-            intent={
-              walletReachable === undefined
-                ? Intent.NONE
-                : walletReachable
-                ? Intent.SUCCESS
-                : Intent.WARNING
-            }
-            text={`http://${onionAddress}.grinplusplus.com/`}
-          />
-        </div>
       </div>
     </Content>
   );
