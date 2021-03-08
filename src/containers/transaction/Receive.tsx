@@ -21,17 +21,12 @@ export const ReceiveContainer = () => {
   const { slatepack, returnedSlatepack } = useStoreState(
     (actions) => actions.receiveCoinsModel
   );
-  const { walletReachable } = useStoreState((actions) => actions.walletSummary);
 
   const {
     setSlatepack,
     receiveTxViaSlatepack,
     setReturnedSlatepack,
   } = useStoreActions((actions) => actions.receiveCoinsModel);
-
-  const { address: onionAddress, slatepackAddress } = useStoreState(
-    (state) => state.session
-  );
 
   const onReceiveSlatepack = useCallback(
     (slatepack: string) => {
