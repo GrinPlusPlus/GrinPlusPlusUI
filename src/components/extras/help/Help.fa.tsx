@@ -5,28 +5,31 @@ export const HelpComponent = () => {
   return (
     <div>
       <br />
-      <H3>Node isn&apos;t installed</H3>
+      <H3>نود نصب نشده است</H3>
       <p>
-        This can be easly fixed by making sure our Antivirus is not deleting
-        neither putting into quarantine the Backend: GrinNode.exe. In order to
-        confirm that, we need to make sure that the file named as GrinNode.exe
-        is located inside the bin folder at{" "}
+        GrinNode.exe این خطا به سادگی با اطمینان حاصل کردن از اینکه آنتی ویروس فایل اجرایی
+        را پاک نمی کند یا در قرنطینه نمی گذارد قابل رفع است.
+        برای تاییدآن باید اطمینان حاصل کنیم که این فایل در فولدر bin
+        و در این مسیر قرار دارد {" "}
         <code>
           C:\Users\[USERNAME]\AppData\Local\Programs\GrinPlusPlus\resources\app.asar.unpacked\
         </code>
       </p>
       <br />
-      <H3>Node isn&apos;t running</H3>
+      <H3>نود اجرا نمی شود</H3>
       <p>
-        This is really uncommon, but it could happen. The first thing we’re
-        gonna do is to open a Command Prompt and cd into the{" "}
+        این خطا متداول نیست اما قابل حل است. اولین کاری که باید انجام دهیم
+        باز کردن برنامه خط فرمان یا cmd
+        و اجرای دستور cd برای رفتن به این مسیر است
+        {" "}
         <code>
           C:\Users\[USERNAME]\AppData\Local\Programs\GrinPlusPlus\resources\app.asar.unpacked\bin\
         </code>{" "}
-        and then run <code>dir GrinNode.exe</code>. Now we just type{" "}
-        <code>GrinNode.exe</code> and hit the Enter key. If the previous step
-        fails, we should see a message with more information about the issue,
-        feel free to{" "}
+        سپس باید دستور <code>dir GrinNode.exe</code> اجرا شود
+        هم اکنون باید دستور {" "}
+        <code>GrinNode.exe</code> را تایپ کرده و کلید اینتر را فشار دهیم.
+        اگر مرحله قبلی با خطا مواجه شو، باید پیامی با اطلاعات بیشتر درباره آن مشاهده کنیم
+        در صورت مواجه با مشکل{" "}
         <Button
           icon="help"
           minimal={true}
@@ -34,49 +37,52 @@ export const HelpComponent = () => {
             require("electron").shell.openExternal("https://t.me/GrinPP");
           }}
         >
-          Join the Grin++ Support Channel on Telegram
+          به گروه پشتیبانی گرین پلاس پلاس در تلگرام ملحق شوید
         </Button>{" "}
-        and ask for help from there, some others users may have faced the same
-        issue as you.
+        و برای مشکل خود درخواست کمک کنید. ممکن است سایر کاربران نیز با مشکل شما مواجه شده باشند.
       </p>
       <br />
       <H3>
-        The Node process is not running. This is unusual, but don’t worry, you
-        just need to restart the wallet
+        پردازش های نود شروع نمی شود. این مشکل متداول نیست اما نگران نباشید
+        تنها نیاز به راه اندازی مجدد کیف پول است
       </H3>
       <p>
-        Wow! this should have never happened, it means the Backend suddenly
-        stopped, please let us know opening an issue or joining the Grin++
-        Telegram Channel.
+        عجیب است! این اتفاق نباید هرگز می افتاد. این پیام به این معناست که
+        کدهای بک اند به طور ناگهانی از کار افتاده است.
+        لطفا ما را با مطلع ساختن در تلگرام گرین پلاس پلاس یا ایجاد issue در گیت هاب باخبر کنید.
       </p>
       <br />
-      <H3>Stuck on &quot;Waiting for Peers&quot;</H3>
+      <H3>بر روی &quotدر انتظار برای اتصال به نودها&quot گیر کرده است</H3>
       <p>
-        Sometimes this could happen after upgrading Grin++, you could get stuck
-        on &quot;Waiting for Peers&quot;. In order to fix this, you could try 2
-        things. The first thing you could try is to <b>(Re)Sync</b> the chain by
-        clicking on Settings and the on Resync below <b>Node Actions</b>. If the
-        solution above doesn’t work you can try this. Close Grin++, go to{" "}
-        <code>C:\Users\[USERNAME]\.GrinPP\MAINNET</code>, delete the folder
-        called <code>NODE</code>.
+        گاهی اوقات این اتفاق با بروزرسانی گرین پلاس پلاس رخ می دهد
+        که در مرحله &quot در انتظار برای اتصال به نودها&quot گیر می کنید
+        جهت رفع این خطا شما می توانید دو کار کنید. اولین کار تلاش برای <b>همگام سازی مجدد</b>
+        زنجیره است که با کلیک بر روی تنظیمات و کلیک بر روی همگام سازی مجدد از <b>اقدامات نود</b> قابل انجام است
+        اگر این راهکار موثر واقع نشد می توانید روش دوم را امتحان کنید.
+        کیف پول گرین پلاس پلاس را ببندید و به مسیر {" "}
+        <code>C:\Users\[USERNAME]\.GrinPP\MAINNET</code> بروید.
+        در آنجا فولدری با نام <code>NODE</code> را پاک کنید.
       </p>
       <br />
-      <H3>The Grin Slatepack address is not being displayed</H3>
+      <H3>آدرس اسلیت پک گرین نمایش داده نمی شود</H3>
       <p>
-        This is a pretty annoying issue, I know, but at the same time it’s
-        pretty easy to solve. Some people like to run{" "}
-        <code>Niffler Wallet</code> or <code>grin-wallet</code> at the same time
-        as Grin++, without going deep into this, We will recommend not to do it,
-        at least for now, make sure no other grin wallet is running before
-        running Grin++. If you are still facing the issue, please, make sure{" "}
-        <code>tor.exe</code> is running.
+        این خطا آزاردهنده است اما در عین حال رفع آن کار آسانی است.
+        بسیاری از افراد علاقه مند به اجرای همزمان {" "}
+        <code>Niffler Wallet</code> یا <code>grin-wallet</code> با
+        کیف پول گرین پلاس پلاس هستند. بدون اینکه وارد وارد چرایی آن شویم
+        توصیه می کنیم که این کار را حداقل الان انجام ندهید
+        از در حال اجرا نبودن سایر کیف پول ها پیش از اجرای گرین پلاس پلاس اطمینان حاصل کنید
+        اگر همچنان با این مشکل مواجه هستید از در حال اجرا بودن {" "}
+        <code>tor.exe</code> اطمینان حاصل کنید.
       </p>
       <br />
-      <H3>The Address is not green! :(</H3>
+      <H3>آدرس غیر فعال بوده و سبز نیست</H3>
       <p>
-        This issue happens when <b>Tor</b> is not able to establish connection,
-        the first thing you should do is to check if your Firewall is not
-        blocking tor connections; after this, your address should be green.
+        این مشکل زمانی به وجود می آید که <b>Tor</b> قادر به برقراری اتصال نباشد
+        اولین چیزی که باید بررسی کنید فایروال شماست که آیا مانع اتصال تور شده است یا نه.
+        همچنین در صورتی که تور در کشور شما با مشکل اتصال مواجه باشد با این پیام روبرو می شوید.
+        برای رفع این مشکل می توانید از پروکسی یا وی پی انی که کل اپلیکیشن های سیستم عامل را تونل می کند استفاده کنید
+        بعد از این آدرس شما سبز و قابل استفاده می شود
       </p>
       <br />
     </div>
