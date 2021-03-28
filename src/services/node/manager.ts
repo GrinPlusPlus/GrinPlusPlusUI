@@ -165,7 +165,7 @@ export const runNode = function (
   );
 
   require("electron-log").info(`Trying to run Backend: ${command}`);
-  const node = require("child_process").spawn(command, params, {
+  const node = require("child_process").execFile(command, params, {
     windowsHide: true,
     encoding: "utf-8",
     detached: true,
