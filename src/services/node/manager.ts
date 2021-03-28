@@ -244,6 +244,18 @@ export const stopNode = function (): void {
   }
 };
 
+export const deleteData = function (): void {
+  try {
+    const fs = require('fs');
+    const path = require("path");
+    const homedir = require('os').homedir();
+    const nodeDir = path.join(path.normalize(homedir), path.normalize("./.GrinPP/MAINNET/NODE"));
+    fs.rmdirSync(nodeDir, { recursive: true });
+  } catch (e) {
+    require("electron-log").error(`${e.message}`);
+  }
+};
+
 export const stopRustNode = function (): void {
   try {
     killProcess(getRustNodeProcess());

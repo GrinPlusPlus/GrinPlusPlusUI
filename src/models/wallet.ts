@@ -112,14 +112,12 @@ const wallet: WalletModel = {
     }
   ),
   reSyncBlockchain: thunk(
-    async (actions, payload, { injections, getStoreState }) => {
+    async (actions, payload, { injections, getStoreState, getStoreActions }) => {
       const { nodeService } = injections;
-      const defaultSettings = getStoreState().settings.defaultSettings;
-      return await new nodeService.REST(
-        defaultSettings.floonet,
-        defaultSettings.protocol,
-        defaultSettings.ip
-      ).resyncNode();
+      getStoreActions().session.clean();
+      nodeService.stopNode();
+      nodeService.deleteData();
+      getStoreActions().wallet.initializeWallet();
     }
   ),
   scanForOutputs: thunk(
