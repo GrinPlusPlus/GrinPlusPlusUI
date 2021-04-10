@@ -31,11 +31,13 @@ export const WalletSeedInputComponent = ({
                   backgroundColor: word.valid ? "#21242D" : "#ff1919",
                   color: "white",
                   fontFamily: "Verdana",
-                  fontSize: "14px",
+                  fontSize: "15px",
+                  letterSpacing: "1px"
                 }}
                 id={`${word.position}`}
                 key={`word-${word.position}`}
                 value={word.text}
+                height={24}
                 disabled={word.disabled}
                 className="bp3-dark"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
