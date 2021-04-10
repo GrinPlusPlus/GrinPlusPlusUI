@@ -30,6 +30,8 @@ export const WalletSeedInputComponent = ({
                 style={{
                   backgroundColor: word.valid ? "#21242D" : "#ff1919",
                   color: "white",
+                  fontFamily: "Verdana",
+                  fontSize: "14px",
                 }}
                 id={`${word.position}`}
                 key={`word-${word.position}`}
@@ -45,7 +47,7 @@ export const WalletSeedInputComponent = ({
                     style={{
                       fontFamily: "Verdana",
                       fontSize: "11px",
-                      color: "gray",
+                      color: "black",
                     }}
                   >
                     {`${word.position}`.padStart(2, "0")}
