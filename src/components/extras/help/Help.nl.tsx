@@ -5,28 +5,29 @@ export const HelpComponent = () => {
   return (
     <div>
       <br />
-      <H3>Node isn&apos;t installed</H3>
+      <H3>De Node is niet beschikbaar</H3>
       <p>
-        This can be easly fixed by making sure our Antivirus is not deleting
-        neither putting into quarantine the Backend: GrinNode.exe. In order to
-        confirm that, we need to make sure that the file named as GrinNode.exe
-        is located inside the bin folder at{" "}
+        Dit kan eenvoudig opgelost worden door ervoor te zorgen dat de
+        antivirussoftware GrinNode.exe niet wist of in quarantaine plaatst.
+        Om dit te bevestigen moet u zeker zijn dat GrinNode.exe in de bin       
+        map staat in {" "}
         <code>
           C:\Users\[USERNAME]\AppData\Local\Programs\GrinPlusPlus\resources\app.asar.unpacked\
         </code>
       </p>
       <br />
-      <H3>Node isn&apos;t running</H3>
+      <H3>De Node werkt niet</H3>
       <p>
-        This is really uncommon, but it could happen. The first thing we’re
-        gonna do is to open a Command Prompt and cd into the{" "}
+        Dit is ongewoon, maar kan soms voorkomen. Het eerste wat u doet is de
+        opdrachtprompt openen, en typ <code>cd</code> in map {" "}
         <code>
           C:\Users\[USERNAME]\AppData\Local\Programs\GrinPlusPlus\resources\app.asar.unpacked\bin\
         </code>{" "}
-        and then run <code>dir GrinNode.exe</code>. Now we just type{" "}
-        <code>GrinNode.exe</code> and hit the Enter key. If the previous step
-        fails, we should see a message with more information about the issue,
-        feel free to{" "}
+        en typ dan <code>dir GrinNode.exe</code>. Type daarna {" "}
+        <code>GrinNode.exe</code> en de 'Enter' toets. Indien de vorige stap
+        faalt, zou u meer informatie moeten zien over het probleem. Indien
+        u wenst kan u een (Engelstalig) bericht sturen over het probleem
+        naar {" "}
         <Button
           icon="help"
           minimal={true}
@@ -36,47 +37,46 @@ export const HelpComponent = () => {
         >
           Join the Grin++ Support Channel on Telegram
         </Button>{" "}
-        and ask for help from there, some others users may have faced the same
-        issue as you.
+        en hier om hulp vragen. Andere Grin++ gebruikers hebben mogelijk hetzelfde
+        probleem ondervonden als u.
       </p>
       <br />
       <H3>
-        The Node process is not running. This is unusual, but don’t worry, you
-        just need to restart the wallet
+        Het Node process werkt niet. Dit is ongewoon, maar geen zorgen, u dient enkel opnieuw
+        Grin++ te starten.
       </H3>
       <p>
-        Wow! this should have never happened, it means the Backend suddenly
-        stopped, please let us know opening an issue or joining the Grin++
-        Telegram Channel.
+        Wouw! dit zou nooit mogen gebeuren. Dit betekent dat GrinNode.exe
+        plots gestopt is met werken. U kan een 'Issue' aanmaken op Github.com
+        of dit laten weten in de het Grin++ Telegram Channel.
       </p>
       <br />
-      <H3>Stuck on &quot;Waiting for Peers&quot;</H3>
+      <H3>Blijft hangen op &quot;"STATUS: Waiting for Peers"&quot;</H3>
       <p>
-        Sometimes this could happen after upgrading Grin++, you could get stuck
-        on &quot;Waiting for Peers&quot;. In order to fix this, you could try 2
-        things. The first thing you could try is to <b>(Re)Sync</b> the chain by
-        clicking on Settings and the on Resync below <b>Node Actions</b>. If the
-        solution above doesn’t work you can try this. Close Grin++, go to{" "}
-        <code>C:\Users\[USERNAME]\.GrinPP\MAINNET</code>, delete the folder
-        called <code>NODE</code>.
+        Dit kan soms gebeuren na het upgraden van Grin++. Dat je blijft hangen
+        op &quot;"STATUS: Waiting for Peers"&quot;. Om dit op te lossen kan u twee
+        dingen doen. Het eerste wat u kan doen is een blockchain <b>(Her)Synchronisatie</b>
+        door te klikken op de instellingen en op '...Synchronyseren" onderaan bij de <b>Node Acties</b>.
+        Als dit niet lukt kan je hetvolgende doen: Sluit Grin++, ga naar map {" "}
+        <code>C:\Users\[USERNAME]\.GrinPP\MAINNET</code>, en wis de
+        <code>NODE</code> map. En daarna Grin++ terug starten.
       </p>
       <br />
-      <H3>The Grin Slatepack address is not being displayed</H3>
+      <H3>Het Grin Slatepack addres wordt niet getoond</H3>
       <p>
-        This is a pretty annoying issue, I know, but at the same time it’s
-        pretty easy to solve. Some people like to run{" "}
-        <code>Niffler Wallet</code> or <code>grin-wallet</code> at the same time
-        as Grin++, without going deep into this, We will recommend not to do it,
-        at least for now, make sure no other grin wallet is running before
-        running Grin++. If you are still facing the issue, please, make sure{" "}
-        <code>tor.exe</code> is running.
+        Dit is een vervelende situatie die gemakkelijk kan opgelost worden.
+        Sommige mensen gebruiken soms <code>Niffler Wallet</code>
+        of <code>grin-wallet</code> tegelijkertijd met Grin++. Wij raden aan
+        om dit niet te doen, althans voorlopig niet. Zorg ervoor dat geen enkele
+        andere grin wallet actief is voordat u Grin++ start. Indien u nog steeds problemen
+        zou ondervinden, vergewis u er dan van of {" "} <code>tor.exe</code> actief is.
       </p>
       <br />
-      <H3>The Address is not green! :(</H3>
+      <H3>Het addres is niet groen! :(</H3>
       <p>
-        This issue happens when <b>Tor</b> is not able to establish connection,
-        the first thing you should do is to check if your Firewall is not
-        blocking tor connections; after this, your address should be green.
+        Dit gebeurt als <b>Tor</b> niet in staat is om een verbinding te maken.
+        Het eerste wat u moet doen is controleren of de firewall de tor verbindingen
+        niet blokkeert. Daarna zou uw adres groen (en dus bereikbaar) moeten zijn.
       </p>
       <br />
     </div>
