@@ -133,5 +133,6 @@
   "ui_logs": "Логи интерфейса",
   "receive_grins": "Получить GRIN",
   "response": "Ответ",
-  "copy_to_clipboard": "В буфер обмена"
+  "copy_to_clipboard": "В буфер обмена",
+  "paste_from_clipboard": "Paste from Clipboard"
 }

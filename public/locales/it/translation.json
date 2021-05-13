@@ -133,5 +133,6 @@
   "ui_logs": "Registro dell'interfaccia utente",
   "receive_grins": "Ricevi Grins",
   "response": "Risposta",
-  "copy_to_clipboard": "Copia nella Clipboard"
+  "copy_to_clipboard": "Copia nella Clipboard",
+  "paste_from_clipboard": "Paste from Clipboard"
 }

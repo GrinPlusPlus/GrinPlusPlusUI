@@ -133,5 +133,6 @@
   "ui_logs": "UI Logs",
   "receive_grins": "Λάβετε Grins",
   "response": "Ανταπόκριση",
-  "copy_to_clipboard": "Αντιγραφή στο Πρόχειρο"
+  "copy_to_clipboard": "Αντιγραφή στο Πρόχειρο",
+  "paste_from_clipboard": "Paste from Clipboard"
 }

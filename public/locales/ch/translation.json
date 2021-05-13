@@ -133,5 +133,7 @@
   "ui_logs": "UI 日志",
   "receive_grins": "Receive Grins",
   "response": "回复",
-  "copy_to_clipboard": "复制到剪贴板"
+  "copy_to_clipboard": "复制到剪贴板",
+  "paste_from_clipboard": "Paste from Clipboard"
+
 }

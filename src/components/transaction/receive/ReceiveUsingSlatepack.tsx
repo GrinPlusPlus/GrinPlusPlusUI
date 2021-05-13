@@ -1,4 +1,10 @@
-import { SlatesBox, Flex, Title, HorizontallyCenter } from "../../styled";
+import {
+  SlatesBox,
+  Flex,
+  Title,
+  HorizontallyCenter,
+  Right,
+} from "../../styled";
 
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -22,11 +28,25 @@ export const ReceiveUsingSlatepackComponent = ({
     <div>
       <Flex>
         <Title>{t("slatepack")}</Title>
+        <Right>
+          <Button
+            disabled={
+              validateSlatepack(require("electron").clipboard.readText()) ===
+              false
+            }
+            intent={Intent.PRIMARY}
+            minimal={true}
+            text={t("paste_from_clipboard")}
+            onClick={() => {
+              setSlatepackTextCb(require("electron").clipboard.readText());
+            }}
+          />
+        </Right>
       </Flex>
       <div style={{ marginTop: "5px", marginBottom: "5px" }}>
         <SlatesBox
           data-testid="slatepack-box"
-          defaultValue={slate}
+          value={slate}
           onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
             setSlatepackTextCb(event.target.value);
           }}
@@ -34,7 +54,11 @@ export const ReceiveUsingSlatepackComponent = ({
       </div>
       <HorizontallyCenter>
         <Button
-          disabled={validateSlatepack(slate) === false}
+          disabled={
+            slate === undefined ||
+            slate === "" ||
+            validateSlatepack(slate) === false
+          }
           intent={Intent.SUCCESS}
           text={t("receive")}
           onClick={() => {
