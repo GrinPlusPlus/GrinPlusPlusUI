@@ -100,8 +100,6 @@ export const SendContainer = () => {
   const onSendButtonClicked = useCallback(async () => {
     if (amount === undefined || amount.slice(-1) === ".") return;
 
-    require("electron-log").info(passwordPrompt);
-
     if (usernamePrompt === undefined) return;
     if (passwordPrompt === undefined) return;
 
