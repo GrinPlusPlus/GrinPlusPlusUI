@@ -1,123 +1,24 @@
-import {
-  Classes,
-  Intent,
-  Overlay,
-  Position,
-  Spinner,
-  Text,
-  Toaster,
-} from "@blueprintjs/core";
-import React, { useCallback } from "react";
+import { Classes, Overlay, Spinner, Text } from "@blueprintjs/core";
+import React from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
 
 import { SendUsingAddressComponent } from "../../components/transaction/send/SendUsingAddress";
 import classNames from "classnames";
-import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 export const SendUsingAddressContainer = () => {
   const { t } = useTranslation();
-  const history = useHistory();
-
-  const { token } = useStoreState((state) => state.session);
-  const { amount, message, strategy, inputs, address } = useStoreState(
-    (state) => state.sendCoinsModel
-  );
-  const { useGrinJoin, grinJoinAddress } = useStoreState(
-    (state) => state.settings
-  );
-
-  const {
-    setUsername: setUsernamePrompt,
-    setPassword: setPasswordPrompt,
-    setCallback: setCallbackPrompt,
-  } = useStoreActions((state) => state.passwordPrompt);
-  const { sendGrins, setWaitingResponse } = useStoreActions(
-    (actions) => actions.sendCoinsModel
-  );
-  const { updateLogs } = useStoreActions((actions) => actions.wallet);
-
+  const { username } = useStoreState((state) => state.session);
+  const { amount, inputs } = useStoreState((state) => state.sendCoinsModel);
   const { spendable } = useStoreState((state) => state.walletSummary);
+
+  const { setUsername: setUsernamePrompt } = useStoreActions(
+    (state) => state.passwordPrompt
+  );
 
   const { waitingResponse, fee } = useStoreState(
     (state) => state.sendCoinsModel
   );
-
-  const onSendButtonClicked = useCallback(async () => {
-    if (amount === undefined || amount.slice(-1) === ".") return;
-
-    require("electron-log").info(`Trying to Send ${amount} to ${address}...`);
-    updateLogs(`${t("sending")} ${amount} ツ...`);
-
-    setUsernamePrompt(undefined); // to close prompt
-    setPasswordPrompt(undefined); // to clean prompt
-    setWaitingResponse(true);
-
-    const _amount = Number(amount);
-    const sendingAmount = _amount + fee === spendable ? undefined : _amount;
-
-    try {
-      const sent = await sendGrins({
-        amount: sendingAmount,
-        message: message,
-        address: address,
-        method: useGrinJoin ? "JOIN" : "FLUFF",
-        grinJoinAddress: grinJoinAddress,
-        inputs: inputs,
-        token: token,
-        strategy: strategy,
-      });
-
-      const v3 = "[a-z2-7]{56}";
-      const alert = new RegExp(`${v3}`).test(address)
-        ? t("transaction_sent")
-        : t("transaction_started");
-
-      const toast = sent === "FINALIZED" ? alert : t(sent);
-
-      if (sent !== "SENT") {
-        Toaster.create({ position: Position.BOTTOM }).show({
-          message: toast,
-          intent: sent === "FINALIZED" ? Intent.SUCCESS : Intent.DANGER,
-          icon: sent === "FINALIZED" ? "tick-circle" : "warning-sign",
-        });
-      }
-      setWaitingResponse(false);
-      updateLogs(toast);
-      require("electron-log").info(toast);
-
-      if (sent === "FINALIZED") history.push("/wallet");
-    } catch (error) {
-      setWaitingResponse(false);
-      require("electron-log").error(`Error sending: ${error.message}`);
-      updateLogs(error);
-      Toaster.create({ position: Position.BOTTOM }).show({
-        message: error.message,
-        intent: Intent.DANGER,
-        icon: "warning-sign",
-      });
-    }
-  }, [
-    sendGrins,
-    amount,
-    message,
-    address,
-    inputs,
-    token,
-    useGrinJoin,
-    grinJoinAddress,
-    strategy,
-    history,
-    setWaitingResponse,
-    t,
-    updateLogs,
-    setUsernamePrompt,
-    setPasswordPrompt,
-    spendable,
-    fee,
-  ]);
-
-  const { username } = useStoreState((state) => state.session);
 
   const classes = classNames("bp3-dark", Classes.CARD, Classes.ELEVATION_4);
 
@@ -129,7 +30,6 @@ export const SendUsingAddressContainer = () => {
         inputsSelected={inputs.length !== 0}
         onSendButtonClickedCb={() => {
           setUsernamePrompt(username);
-          setCallbackPrompt(onSendButtonClicked);
         }}
         fee={fee}
       />

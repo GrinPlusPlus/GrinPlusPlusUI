@@ -1,9 +1,16 @@
 import { Flex, SendGrinsContent } from "../../components/styled";
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense, useEffect, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { useStoreActions, useStoreState } from "../../hooks";
 
-import { Button, Classes, Dialog } from "@blueprintjs/core";
+import {
+  Button,
+  Classes,
+  Dialog,
+  Toaster,
+  Position,
+  Intent,
+} from "@blueprintjs/core";
 
 import { LoadingComponent } from "../../components/extras/Loading";
 import { PasswordPromptComponent } from "../../components/wallet/open/PasswordPrompt";
@@ -52,11 +59,19 @@ export const SendContainer = () => {
   const {
     username: usernamePrompt,
     password: passwordPrompt,
-    callback: promptCallback,
     waitingResponse: waitingForPassword,
   } = useStoreState((state) => state.passwordPrompt);
 
-  const { returnedSlatepack } = useStoreState((state) => state.sendCoinsModel);
+  const { spendable } = useStoreState((state) => state.walletSummary);
+
+  const {
+    amount,
+    fee,
+    returnedSlatepack,
+    address,
+    strategy,
+    inputs,
+  } = useStoreState((state) => state.sendCoinsModel);
   const { getOutputs, setReturnedSlatepack } = useStoreActions(
     (actions) => actions.sendCoinsModel
   );
@@ -64,7 +79,16 @@ export const SendContainer = () => {
   const {
     setUsername: setUsernamePrompt,
     setPassword: setPasswordPrompt,
+    setWaitingResponse: setWaitingResponsePrompt,
   } = useStoreActions((state) => state.passwordPrompt);
+
+  const { getWalletSeed } = useStoreActions((state) => state.wallet);
+
+  const { updateLogs } = useStoreActions((actions) => actions.wallet);
+
+  const { sendGrins, setWaitingResponse } = useStoreActions(
+    (actions) => actions.sendCoinsModel
+  );
 
   useEffect(() => {
     async function init(t: string) {
@@ -72,6 +96,94 @@ export const SendContainer = () => {
     }
     init(token);
   }, [getOutputs, token]);
+
+  const onSendButtonClicked = useCallback(async () => {
+    if (amount === undefined || amount.slice(-1) === ".") return;
+
+    require("electron-log").info(passwordPrompt);
+
+    if (usernamePrompt === undefined) return;
+    if (passwordPrompt === undefined) return;
+
+    try {
+      setWaitingResponsePrompt(true);
+      await getWalletSeed({
+        username: usernamePrompt,
+        password: passwordPrompt,
+      });
+      setWaitingResponsePrompt(false);
+
+      require("electron-log").info(`Trying to Send ${amount} to ${address}...`);
+      updateLogs(`${t("sending")} ${amount} ツ...`);
+
+      setUsernamePrompt(undefined); // to close prompt
+      setPasswordPrompt(undefined); // to clean prompt
+      setWaitingResponse(true);
+
+      const _amount = Number(amount);
+      const sendingAmount = _amount + fee === spendable ? undefined : _amount;
+
+      const sent = await sendGrins({
+        amount: sendingAmount,
+        message: "",
+        address: address,
+        method: "FLUFF",
+        grinJoinAddress: "",
+        inputs: inputs,
+        token: token,
+        strategy: strategy,
+      });
+
+      const v3 = "[a-z2-7]{56}";
+      const alert = new RegExp(`${v3}`).test(address)
+        ? t("transaction_sent")
+        : t("transaction_started");
+
+      const toast = sent === "FINALIZED" ? alert : t(sent);
+
+      if (sent !== "SENT") {
+        Toaster.create({ position: Position.BOTTOM }).show({
+          message: toast,
+          intent: sent === "FINALIZED" ? Intent.SUCCESS : Intent.DANGER,
+          icon: sent === "FINALIZED" ? "tick-circle" : "warning-sign",
+        });
+      }
+      setWaitingResponse(false);
+      updateLogs(toast);
+      require("electron-log").info(toast);
+
+      if (sent === "FINALIZED") history.push("/wallet");
+    } catch (error) {
+      setWaitingResponse(false);
+      setWaitingResponsePrompt(false);
+      require("electron-log").error(`Error sending: ${error.message}`);
+      updateLogs(error);
+      Toaster.create({ position: Position.BOTTOM }).show({
+        message: error.message,
+        intent: Intent.DANGER,
+        icon: "warning-sign",
+      });
+    }
+  }, [
+    sendGrins,
+    amount,
+    address,
+    inputs,
+    token,
+    strategy,
+    history,
+    setWaitingResponse,
+    t,
+    updateLogs,
+    setUsernamePrompt,
+    setPasswordPrompt,
+    spendable,
+    fee,
+    usernamePrompt,
+    getWalletSeed,
+    passwordPrompt,
+    setWaitingResponsePrompt,
+  ]);
 
   return (
     <Suspense fallback={renderLoader()}>
@@ -91,13 +203,15 @@ export const SendContainer = () => {
           isOpen={usernamePrompt && usernamePrompt.length > 0 ? true : false}
           username={usernamePrompt ? usernamePrompt : ""}
           password={passwordPrompt ? passwordPrompt : ""}
-          passwordCb={(value: string) => setPasswordPrompt(value)}
+          passwordCb={(value: string) => {
+            setPasswordPrompt(value);
+          }}
           onCloseCb={() => {
             setUsernamePrompt(undefined);
             setPasswordPrompt(undefined);
           }}
           waitingResponse={waitingForPassword}
-          passwordButtonCb={promptCallback}
+          passwordButtonCb={onSendButtonClicked}
           connected={status.toLocaleLowerCase() !== "not connected"}
           buttonText={t("confirm_password")}
         />
