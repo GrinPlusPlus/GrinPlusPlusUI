@@ -3,7 +3,7 @@ import React from "react";
 import {
   Button,
   Intent,
-  Toaster,
+  OverlayToaster,
   Position,
   ControlGroup,
 } from "@blueprintjs/core";
@@ -28,10 +28,10 @@ export const WalletAddressComponent = ({
           fontSize: "18px",
         }}
         minimal={true}
-        className="bp3-dark"
+        className="bp4-dark"
         onClick={() => {
           navigator.clipboard.writeText(slatepackAddress);
-          Toaster.create({ position: Position.BOTTOM }).show({
+          OverlayToaster.create({ position: Position.BOTTOM }).show({
             message: <div style={{ color: "white" }}>{t("copied")}</div>,
             intent: Intent.SUCCESS,
           });
@@ -47,12 +47,12 @@ export const WalletAddressComponent = ({
       />
       <Button
         minimal={true}
-        className="bp3-dark"
+        className="bp4-dark"
         style={{ color: "black" }}
         icon="duplicate"
         onClick={() => {
           navigator.clipboard.writeText(slatepackAddress);
-          Toaster.create({ position: Position.BOTTOM }).show({
+          OverlayToaster.create({ position: Position.BOTTOM }).show({
             message: <div style={{ color: "white" }}>{t("copied")}</div>,
             intent: Intent.SUCCESS,
           });

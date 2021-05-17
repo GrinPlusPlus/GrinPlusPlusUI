@@ -31,7 +31,7 @@ export const WalletDrawer = () => {
 
   return (
     <Drawer
-      className="bp3-dark"
+      className="bp4-dark"
       transitionDuration={0}
       position={isLoggedIn ? "right" : "left"}
       icon="cog"

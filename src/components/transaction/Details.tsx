@@ -49,7 +49,7 @@ export const TansactionDetailsComponent = ({
         return (
           <p key={kernel}>
             <Button
-              className="bp3-dark"
+              className="bp4-dark"
               intent={Intent.NONE}
               minimal={true}
               rightIcon="duplicate"
@@ -88,7 +88,7 @@ export const TansactionDetailsComponent = ({
               <p>
                 {t("commitment")}:{" "}
                 <Button
-                  className="bp3-dark"
+                  className="bp4-dark"
                   intent={Intent.NONE}
                   minimal={true}
                   rightIcon="duplicate"

@@ -8,7 +8,7 @@ import {
 import React, { useCallback } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
 
-import { Intent, Position, Toaster, Button } from "@blueprintjs/core";
+import { Intent, Position, OverlayToaster, Button } from "@blueprintjs/core";
 
 import { useTranslation } from "react-i18next";
 import { ReceiveUsingSlatepackComponent } from "../../components/transaction/receive/ReceiveUsingSlatepack";
@@ -35,7 +35,7 @@ export const ReceiveContainer = () => {
         (result: { error: string; slatepack: string }) => {
           require("electron-log").info(result);
           if (result.slatepack.trim().length > 0) {
-            Toaster.create({ position: Position.BOTTOM }).show({
+            OverlayToaster.create({ position: Position.BOTTOM }).show({
               message: t("received"),
               intent: Intent.SUCCESS,
               icon: "tick-circle",
@@ -43,7 +43,7 @@ export const ReceiveContainer = () => {
 
             setReturnedSlatepack(result.slatepack);
           } else {
-            Toaster.create({ position: Position.BOTTOM }).show({
+            OverlayToaster.create({ position: Position.BOTTOM }).show({
               message: result.error,
               intent: Intent.DANGER,
               icon: "warning-sign",
@@ -77,7 +77,7 @@ export const ReceiveContainer = () => {
                   text={t("copy_to_clipboard")}
                   onClick={() => {
                     navigator.clipboard.writeText(returnedSlatepack);
-                    Toaster.create({ position: Position.BOTTOM }).show({
+                    OverlayToaster.create({ position: Position.BOTTOM }).show({
                       message: (
                         <div style={{ color: "white" }}>{t("copied")}</div>
                       ),

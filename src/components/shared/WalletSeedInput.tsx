@@ -39,13 +39,13 @@ export const WalletSeedInputComponent = ({
                 value={word.text}
                 height={24}
                 disabled={word.disabled}
-                className="bp3-dark"
+                className="bp4-dark"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   onWordChangeCb(e.target.value, +e.target.id)
                 }
                 rightElement={
                   <Tag
-                    className="bp3-dark"
+                    className="bp4-dark"
                     style={{
                       fontFamily: "Verdana",
                       fontSize: "11px",
@@ -64,5 +64,5 @@ export const WalletSeedInputComponent = ({
     return table;
   }, [seed, onWordChangeCb, length]);
 
-  return <div className="bp3-dark">{walletSeedTable()}</div>;
+  return <div className="bp4-dark">{walletSeedTable()}</div>;
 };

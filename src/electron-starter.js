@@ -192,9 +192,6 @@ function createWindow() {
     startUrl = `file://${__dirname}/../build/index.html`;
   }
 
-  console.log("++++++++++++");
-  console.log(startUrl);
-  console.log("++++++++++++");
   mainWindow.loadURL(startUrl);
 
   if (isDevMode) {

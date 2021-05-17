@@ -1,4 +1,4 @@
-import { Position, Toaster } from "@blueprintjs/core";
+import { Position, OverlayToaster } from "@blueprintjs/core";
 import React, { useCallback } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
 
@@ -33,7 +33,7 @@ export const RestoreWalletContainer = () => {
       require("electron-log").info("Wallet Restored.");
       history.push("/wallet");
     } catch (error) {
-      Toaster.create({ position: Position.BOTTOM }).show({
+      OverlayToaster.create({ position: Position.BOTTOM }).show({
         message: error.message,
         intent: Intent.DANGER,
         icon: "warning-sign",

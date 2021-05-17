@@ -17,7 +17,7 @@
   "private": true,
   "dependencies": {
     "@babel/runtime": "^7.14.0",
-    "@blueprintjs/core": "^3.44.2",
+    "@blueprintjs/core": "^4.0.0-alpha.0",
     "@craco/craco": "^5.9.0",
     "@types/classnames": "^2.3.1",
     "@types/jest": "^25.2.3",

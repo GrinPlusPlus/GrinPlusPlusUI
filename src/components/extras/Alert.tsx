@@ -1,4 +1,4 @@
-import { Intent, Toast, Toaster } from "@blueprintjs/core";
+import { Intent, Toast, OverlayToaster } from "@blueprintjs/core";
 
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -14,7 +14,7 @@ export const AlertComponent = ({ message, setMessage }: AlertProps) => {
   return (
     <div>
       {message ? (
-        <Toaster position="bottom">
+        <OverlayToaster position="bottom">
           <Toast
             icon="tick-circle"
             message={t(message)}
@@ -24,7 +24,7 @@ export const AlertComponent = ({ message, setMessage }: AlertProps) => {
             }}
             timeout={5000}
           />
-        </Toaster>
+        </OverlayToaster>
       ) : undefined}
     </div>
   );

@@ -25,7 +25,7 @@ export const StatusBarContainer = () => {
   return (
     <Suspense fallback={renderLoader()}>
       <Alert
-        className="bp3-dark"
+        className="bp4-dark"
         confirmButtonText={t("restart_wallet")}
         isOpen={!nodeHealthCheck}
         intent={Intent.WARNING}

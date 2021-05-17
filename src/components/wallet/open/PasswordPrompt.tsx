@@ -37,7 +37,7 @@ export const PasswordPromptComponent = ({
   isOpen,
 }: PasswordPromptProps) => {
   const { t } = useTranslation();
-  const classes = classNames("bp3-dark", Classes.CARD, Classes.ELEVATION_4);
+  const classes = classNames("bp4-dark", Classes.CARD, Classes.ELEVATION_4);
 
   return (
     <Overlay

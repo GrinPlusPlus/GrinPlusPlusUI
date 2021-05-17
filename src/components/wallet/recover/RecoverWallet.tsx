@@ -47,7 +47,7 @@ export const RecoverWalletComponent = ({
     <div data-testid="restore-wallet">
       <FormGroup label={t("username")}>
         <InputGroup
-          className="bp3-dark"
+          className="bp4-dark"
           style={{ backgroundColor: "#21242D" }}
           id="restore-wallet-username"
           required={true}
@@ -69,7 +69,7 @@ export const RecoverWalletComponent = ({
       <div>
         <RadioGroup
           inline={true}
-          className="bp3-dark"
+          className="bp4-dark"
           label={t("seed")}
           name="seedLength"
           selectedValue={seedLength}

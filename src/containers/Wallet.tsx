@@ -1,5 +1,5 @@
 import React, { Suspense, useCallback } from "react";
-import { Toaster, Position, Intent, Alert } from "@blueprintjs/core";
+import { OverlayToaster, Position, Intent, Alert } from "@blueprintjs/core";
 
 import { ISeed } from "../interfaces/ISeed";
 import { AlertComponent } from "../components/extras/Alert";
@@ -130,7 +130,7 @@ export const WalletContainer = () => {
         setSeed(_seed);
       }
     } catch (error) {
-      Toaster.create({ position: Position.BOTTOM }).show({
+      OverlayToaster.create({ position: Position.BOTTOM }).show({
         message: error.message,
         intent: Intent.DANGER,
         icon: "warning-sign",
@@ -181,7 +181,7 @@ export const WalletContainer = () => {
       ) : null}
       {seed !== undefined ? (
         <Alert
-          className="bp3-dark"
+          className="bp4-dark"
           canEscapeKeyCancel={true}
           canOutsideClickCancel={true}
           onConfirm={() => {

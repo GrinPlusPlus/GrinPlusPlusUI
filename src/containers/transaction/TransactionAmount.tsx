@@ -1,4 +1,4 @@
-import { Intent, Position, Toaster } from "@blueprintjs/core";
+import { Intent, Position, OverlayToaster } from "@blueprintjs/core";
 import React, { useCallback } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
 
@@ -32,7 +32,7 @@ export const TransactionAmountContainer = () => {
         token: token,
         inputs: inputs,
       }).catch((error: { message: string }) => {
-        Toaster.create({ position: Position.BOTTOM }).show({
+        OverlayToaster.create({ position: Position.BOTTOM }).show({
           message: error.message,
           intent: Intent.WARNING,
           icon: "warning-sign",

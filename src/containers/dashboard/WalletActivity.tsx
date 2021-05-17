@@ -2,7 +2,7 @@ import {
   Alert,
   Intent,
   Position,
-  Toaster,
+  OverlayToaster,
   Dialog,
   Button,
 } from "@blueprintjs/core";
@@ -99,13 +99,13 @@ export const WalletActivitiyContainer = () => {
           method: method,
         }).then((response: string) => {
           if (response.trim().toLowerCase() === "success") {
-            Toaster.create({ position: Position.BOTTOM }).show({
+            OverlayToaster.create({ position: Position.BOTTOM }).show({
               message: t("finished_without_errors"),
               intent: Intent.SUCCESS,
               icon: "tick-circle",
             });
           } else {
-            Toaster.create({ position: Position.BOTTOM }).show({
+            OverlayToaster.create({ position: Position.BOTTOM }).show({
               message: response,
               intent: Intent.WARNING,
               icon: "warning-sign",
@@ -124,7 +124,7 @@ export const WalletActivitiyContainer = () => {
     (slatepack: string) => {
       finalizeTxViaSlatepack(slatepack).then((result: { error: string }) => {
         if (result.error == null) {
-          Toaster.create({ position: Position.BOTTOM }).show({
+          OverlayToaster.create({ position: Position.BOTTOM }).show({
             message: t("finished_without_errors"),
             intent: Intent.SUCCESS,
             icon: "tick-circle",
@@ -132,7 +132,7 @@ export const WalletActivitiyContainer = () => {
           setSelectedTxToFinalize(-1);
           setSlatepackMessageToFinalize("");
         } else {
-          Toaster.create({ position: Position.BOTTOM }).show({
+          OverlayToaster.create({ position: Position.BOTTOM }).show({
             message: t("finished_without_errors"),
             intent: Intent.DANGER,
             icon: "warning-sign",
@@ -170,7 +170,7 @@ export const WalletActivitiyContainer = () => {
         confirmations={confirmations}
       />
       <Alert
-        className="bp3-dark"
+        className="bp4-dark"
         cancelButtonText="Close"
         confirmButtonText="Cancel Transaction"
         icon="warning-sign"
@@ -183,7 +183,7 @@ export const WalletActivitiyContainer = () => {
       </Alert>
       <Dialog
         title="Slatepack"
-        className="bp3-dark"
+        className="bp4-dark"
         isOpen={selectedSlatepackMessage.length > 0}
         onClose={() => {
           setSelectedSlatepackMessage("");
@@ -193,7 +193,7 @@ export const WalletActivitiyContainer = () => {
       </Dialog>
       <Dialog
         title="Slatepack"
-        className="bp3-dark"
+        className="bp4-dark"
         isOpen={selectedTxToFinalize > -1}
         onClose={() => {
           setSelectedTxToFinalize(-1);

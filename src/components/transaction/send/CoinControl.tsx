@@ -76,7 +76,7 @@ export const CoinControlComponent = ({
   return (
     <div>
       <RadioGroup
-        className="bp3-dark"
+        className="bp4-dark"
         inline={true}
         disabled={amountSet === undefined || Number(amountSet) <= 0}
         label={t("strategy")}

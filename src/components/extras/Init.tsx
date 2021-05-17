@@ -34,7 +34,7 @@ export const InitComponent = ({ error, message }: InitComponentProps) => {
               <Icon
                 data-testid="init-icon"
                 intent={error ? Intent.DANGER : Intent.SUCCESS}
-                iconSize={28}
+                size={28}
                 icon={error ? "error" : "tick-circle"}
               />
             </HorizontallyCenter>
@@ -48,7 +48,7 @@ export const InitComponent = ({ error, message }: InitComponentProps) => {
             <HorizontallyCenter>
               <Button
                 onClick={() => history.push("/UILogs")}
-                className="bp3-dark"
+                className="bp4-dark"
                 intent={Intent.WARNING}
               >
                 {t("ui_logs")}

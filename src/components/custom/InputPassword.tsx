@@ -23,7 +23,7 @@ export const InputPasswordComponent = ({
   return (
     <InputGroup
       data-testid="password-field"
-      className="bp3-dark"
+      className="bp4-dark"
       style={{ backgroundColor: "#21242D" }}
       type={showPassword ? "text" : "password"}
       value={password}

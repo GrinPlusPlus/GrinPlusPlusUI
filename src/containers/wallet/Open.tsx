@@ -1,4 +1,4 @@
-import { Card, Icon, Intent, Position, Text, Toaster } from "@blueprintjs/core";
+import { Card, Icon, Intent, Position, Text, OverlayToaster } from "@blueprintjs/core";
 import React, { Suspense, useCallback, useEffect } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
 
@@ -63,7 +63,7 @@ export const OpenWalletContainer = () => {
         );
       })
       .catch((error: { message: string }) => {
-        Toaster.create({ position: Position.BOTTOM }).show({
+        OverlayToaster.create({ position: Position.BOTTOM }).show({
           message: error.message,
           intent: Intent.DANGER,
           icon: "warning-sign",
@@ -78,7 +78,7 @@ export const OpenWalletContainer = () => {
           <div key={account} style={{ margin: "10px" }}>
             <Card
               interactive={true}
-              className="bp3-dark"
+              className="bp4-dark"
               onClick={() => setUsername(account)}
               style={{
                 width: "165px",

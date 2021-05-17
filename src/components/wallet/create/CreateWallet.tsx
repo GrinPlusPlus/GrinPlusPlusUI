@@ -61,7 +61,7 @@ export const CreateWalletComponent = ({
         <InputGroup
           placeholder={t("username")}
           type="text"
-          className="bp3-dark"
+          className="bp4-dark"
           style={{ backgroundColor: "#21242D" }}
           autoFocus={true}
           required={true}
@@ -100,7 +100,7 @@ export const CreateWalletComponent = ({
       <div>
         <RadioGroup
           inline={true}
-          className="bp3-dark"
+          className="bp4-dark"
           label={t("seed")}
           name="seedLength"
           selectedValue={seedLength}
@@ -135,7 +135,7 @@ export const CreateWalletComponent = ({
         isOpen={receivedSeed.length > 0}
         title={t("wallet_seed")}
         isCloseButtonShown={false}
-        className="bp3-dark"
+        className="bp4-dark"
         style={{ backgroundColor: "#050505" }}
       >
         {SeedValidationComponent}

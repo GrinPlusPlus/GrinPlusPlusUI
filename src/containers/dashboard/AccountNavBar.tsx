@@ -27,7 +27,7 @@ export const AccountNavBarContainer = () => {
           <WalletUsername>{username}</WalletUsername>
         </NavbarHeading>
       </NavbarGroup>
-      <NavbarGroup align={Alignment.RIGHT} className="bp3-dark">
+      <NavbarGroup align={Alignment.RIGHT} className="bp4-dark">
         <Button
           minimal={true}
           icon="console"

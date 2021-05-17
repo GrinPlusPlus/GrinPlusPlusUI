@@ -20,7 +20,7 @@ export const WalletNavBarContainer = () => {
   const { toggleSettings } = useStoreActions((actions) => actions.ui);
 
   return (
-    <Navbar className="bp3-dark">
+    <Navbar className="bp4-dark">
       <NavbarGroup align={Alignment.LEFT}>
         <Button
           minimal={true}

@@ -20,7 +20,7 @@ export const SendUsingAddressContainer = () => {
     (state) => state.sendCoinsModel
   );
 
-  const classes = classNames("bp3-dark", Classes.CARD, Classes.ELEVATION_4);
+  const classes = classNames("bp4-dark", Classes.CARD, Classes.ELEVATION_4);
 
   return (
     <div>

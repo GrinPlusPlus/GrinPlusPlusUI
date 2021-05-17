@@ -18,7 +18,7 @@ export const TransactionMessageComponent = ({
     <FormGroup label={`${t("message")}:`} inline={true}>
       <InputGroup
         value={message}
-        className="bp3-dark"
+        className="bp4-dark"
         style={{ backgroundColor: "#21242D", width: "365px" }}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setMessageCb(e.target.value)

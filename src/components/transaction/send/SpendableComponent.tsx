@@ -27,7 +27,7 @@ export const SpendableComponent = ({
       >{`${spendable.toFixed(9)} ツ`}</b>
       <Button
         minimal={true}
-        className="bp3-dark"
+        className="bp4-dark"
         intent={Intent.PRIMARY}
         disabled={spendable > 0 ? false : true}
         onClick={onSendMaxButtonClickedCb}

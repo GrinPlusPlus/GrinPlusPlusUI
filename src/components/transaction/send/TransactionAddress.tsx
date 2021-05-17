@@ -14,7 +14,7 @@ export const TransactionAddressComponent = ({
   const pasteButton = (
     <Button
       minimal={true}
-      className="bp3-dark"
+      className="bp4-dark"
       icon="clipboard"
       onClick={async () => setAddressCb(await navigator.clipboard.readText())}
     />
@@ -22,7 +22,7 @@ export const TransactionAddressComponent = ({
 
   return (
     <InputGroup
-      className="bp3-dark"
+      className="bp4-dark"
       style={{ backgroundColor: "#21242D", width: "510px" }}
       value={address}
       fill={true}

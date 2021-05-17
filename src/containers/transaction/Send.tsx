@@ -7,7 +7,7 @@ import {
   Button,
   Classes,
   Dialog,
-  Toaster,
+  OverlayToaster,
   Position,
   Intent,
 } from "@blueprintjs/core";
@@ -140,7 +140,7 @@ export const SendContainer = () => {
       const toast = sent === "FINALIZED" ? alert : t(sent);
 
       if (sent !== "SENT") {
-        Toaster.create({ position: Position.BOTTOM }).show({
+        OverlayToaster.create({ position: Position.BOTTOM }).show({
           message: toast,
           intent: sent === "FINALIZED" ? Intent.SUCCESS : Intent.DANGER,
           icon: sent === "FINALIZED" ? "tick-circle" : "warning-sign",
@@ -156,7 +156,7 @@ export const SendContainer = () => {
       setWaitingResponsePrompt(false);
       require("electron-log").error(`Error sending: ${error.message}`);
       updateLogs(error);
-      Toaster.create({ position: Position.BOTTOM }).show({
+      OverlayToaster.create({ position: Position.BOTTOM }).show({
         message: error.message,
         intent: Intent.DANGER,
         icon: "warning-sign",
@@ -221,7 +221,7 @@ export const SendContainer = () => {
           setReturnedSlatepack("");
           history.push("/wallet");
         }}
-        className="bp3-dark"
+        className="bp4-dark"
         isOpen={returnedSlatepack.length !== 0}
       >
         <div className={Classes.DIALOG_BODY}>

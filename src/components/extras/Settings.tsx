@@ -146,7 +146,7 @@ export const SettingsComponent = ({
       <br />
       <Callout>{t("restart_warning")}.</Callout>
       <Alert
-        className="bp3-dark"
+        className="bp4-dark"
         cancelButtonText={t("cancel")}
         confirmButtonText={t("resync_node")}
         icon="refresh"

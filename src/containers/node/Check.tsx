@@ -57,7 +57,7 @@ export const NodeCheckContainer = () => {
         <ButtonGroup minimal={true}>
           <Button
             onClick={() => history.push("/nodeLogs")}
-            className="bp3-dark"
+            className="bp4-dark"
             intent={Intent.NONE}
           >
             {t("node_logs")}
@@ -65,7 +65,7 @@ export const NodeCheckContainer = () => {
           {isLoggedIn ? (
             <Button
               onClick={() => history.push("/walletLogs")}
-              className="bp3-dark"
+              className="bp4-dark"
               intent={Intent.NONE}
               style={{ marginLeft: "5px" }}
             >
@@ -74,7 +74,7 @@ export const NodeCheckContainer = () => {
           ) : null}
           <Button
             onClick={() => history.push("/UILogs")}
-            className="bp3-dark"
+            className="bp4-dark"
             intent={Intent.NONE}
           >
             {t("ui_logs")}

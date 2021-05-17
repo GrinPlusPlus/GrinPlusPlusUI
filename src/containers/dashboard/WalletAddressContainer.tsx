@@ -83,7 +83,7 @@ export const WalletAddressContainer = () => {
       </div>
       <HorizontallyCenter>
         <div
-          className="bp3-dark"
+          className="bp4-dark"
           style={{
             margin: "0",
             transform: "translateY(15%)",
