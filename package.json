@@ -25,7 +25,7 @@
     "@types/uuid": "^7.0.4",
     "acorn": "^7.4.1",
     "classnames": "^2.3.1",
-    "custom-electron-titlebar": "^3.2.6",
+    "custom-electron-titlebar": "^3.2.7",
     "date-fns": "^2.21.3",
     "easy-peasy": "^4.0.1",
     "electron-log": "^4.3.5",
