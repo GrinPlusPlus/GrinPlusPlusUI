@@ -36,7 +36,9 @@ export const TextFileComponent = ({ content }: TextFileComponentProps) => {
         </Menu>
       }
     >
-      <TextFileBox defaultValue={content}></TextFileBox>
+      <div style={{ width: "100%", height: "calc(100vh - 0px)" }}>
+        <TextFileBox defaultValue={content}></TextFileBox>
+      </div>
     </ContextMenu>
   );
 };

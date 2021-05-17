@@ -32,9 +32,7 @@ export const NodeLogsContainer = () => {
     <Suspense fallback={renderLoader()}>
       <NavigationBarContainer title={t("node_logs")} />
       <div className="content">
-        <div style={{ width: "100%", height: "calc(100vh - 130px)" }}>
-          <TextFileComponent content={readNodeLogs()} />
-        </div>
+        <TextFileComponent content={readNodeLogs()} />
       </div>
       <div className="footer">
         <StatusBarContainer />

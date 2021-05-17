@@ -26,9 +26,7 @@ export const UILogsContainer = () => {
     <Suspense fallback={renderLoader()}>
       <NavigationBarContainer title={t("ui_logs")} />
       <div className="content">
-        <div style={{ width: "100%", height: "calc(100vh - 0px)" }}>
-          <TextFileComponent content={readUILogs()} />
-        </div>
+        <TextFileComponent content={readUILogs()} />
       </div>
     </Suspense>
   );
