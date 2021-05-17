@@ -2,18 +2,16 @@ import {
   Content,
   Flex,
   HorizontallyCenter,
-  Right,
   Title,
 } from "../../components/styled";
 import React, { useCallback } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
 
-import { Intent, Position, OverlayToaster, Button } from "@blueprintjs/core";
+import { Intent, Position, OverlayToaster } from "@blueprintjs/core";
 
 import { useTranslation } from "react-i18next";
 import { ReceiveUsingSlatepackComponent } from "../../components/transaction/receive/ReceiveUsingSlatepack";
 import { SlatepackComponent } from "../../components/extras/Slatepack";
-import { validateSlatepack } from "../../services/utils";
 
 export const ReceiveContainer = () => {
   const { t } = useTranslation();
@@ -69,23 +67,6 @@ export const ReceiveContainer = () => {
           <div style={{ width: "48%" }}>
             <Flex>
               <Title>{t("response")}</Title>
-              <Right>
-                <Button
-                  disabled={!validateSlatepack(returnedSlatepack)}
-                  intent={Intent.SUCCESS}
-                  minimal={true}
-                  text={t("copy_to_clipboard")}
-                  onClick={() => {
-                    navigator.clipboard.writeText(returnedSlatepack);
-                    OverlayToaster.create({ position: Position.BOTTOM }).show({
-                      message: (
-                        <div style={{ color: "white" }}>{t("copied")}</div>
-                      ),
-                      intent: Intent.SUCCESS,
-                    });
-                  }}
-                />
-              </Right>
             </Flex>
             <div style={{ marginTop: "5px", marginBottom: "5px" }}>
               <SlatepackComponent slatepack={returnedSlatepack} />

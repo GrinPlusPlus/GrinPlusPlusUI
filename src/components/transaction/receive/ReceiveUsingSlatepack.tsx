@@ -3,7 +3,6 @@ import {
   Flex,
   Title,
   HorizontallyCenter,
-  Right,
 } from "../../styled";
 
 import React from "react";
@@ -28,20 +27,6 @@ export const ReceiveUsingSlatepackComponent = ({
     <div>
       <Flex>
         <Title>{t("slatepack")}</Title>
-        <Right>
-          <Button
-            disabled={
-              validateSlatepack(require("electron").clipboard.readText()) ===
-              false
-            }
-            intent={Intent.PRIMARY}
-            minimal={true}
-            text={t("paste_from_clipboard")}
-            onClick={() => {
-              setSlatepackTextCb(require("electron").clipboard.readText());
-            }}
-          />
-        </Right>
       </Flex>
       <div style={{ marginTop: "5px", marginBottom: "5px" }}>
         <ContextMenu
