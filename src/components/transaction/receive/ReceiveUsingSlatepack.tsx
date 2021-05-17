@@ -8,7 +8,7 @@ import {
 
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Intent } from "@blueprintjs/core";
+import { Button, Intent, ContextMenu, Menu, MenuItem } from "@blueprintjs/core";
 import { validateSlatepack } from "../../../services/utils";
 
 export type ReceiveUsingSlatepackProps = {
@@ -44,13 +44,27 @@ export const ReceiveUsingSlatepackComponent = ({
         </Right>
       </Flex>
       <div style={{ marginTop: "5px", marginBottom: "5px" }}>
-        <SlatesBox
-          data-testid="slatepack-box"
-          value={slate}
-          onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
-            setSlatepackTextCb(event.target.value);
-          }}
-        ></SlatesBox>
+        <ContextMenu
+          className="bp4-dark"
+          content={
+            <Menu>
+              <MenuItem
+                text={t("paste_from_clipboard")}
+                onClick={() => {
+                  setSlatepackTextCb(require("electron").clipboard.readText());
+                }}
+              />
+            </Menu>
+          }
+        >
+          <SlatesBox
+            data-testid="slatepack-box"
+            value={slate}
+            onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
+              setSlatepackTextCb(event.target.value);
+            }}
+          ></SlatesBox>
+        </ContextMenu>
       </div>
       <HorizontallyCenter>
         <Button
