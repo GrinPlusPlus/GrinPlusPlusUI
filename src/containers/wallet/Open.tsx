@@ -1,8 +1,17 @@
-import { Card, Icon, Intent, Position, Text, OverlayToaster } from "@blueprintjs/core";
+import {
+  Card,
+  Icon,
+  Intent,
+  Position,
+  Text,
+  OverlayToaster,
+} from "@blueprintjs/core";
 import React, { Suspense, useCallback, useEffect } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
 
 import { LoadingComponent } from "../../components/extras/Loading";
+
+import { User } from "@blueprintjs/icons";
 
 import { Redirect } from "react-router-dom";
 
@@ -38,7 +47,7 @@ export const OpenWalletContainer = () => {
   );
 
   useEffect(() => {
-    (async function () {
+    (async function() {
       if (accounts !== undefined) return;
       try {
         const _accounts = await getAccounts();
@@ -88,7 +97,7 @@ export const OpenWalletContainer = () => {
               }}
             >
               <div>
-                <Icon icon="user" style={{ marginBottom: "5px" }} />
+                <Icon icon={<User />} style={{ marginBottom: "5px" }} />
               </div>
               <div>
                 <Text>{account}</Text>

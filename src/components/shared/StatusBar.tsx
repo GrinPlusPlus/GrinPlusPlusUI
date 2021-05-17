@@ -1,7 +1,9 @@
-import { Icon } from "@blueprintjs/core";
+import { Icon, Intent } from "@blueprintjs/core";
 import React from "react";
 import { StatusBarContent } from "../../components/styled";
 import { useTranslation } from "react-i18next";
+
+import { SymbolCircle, ArrowUp, ArrowDown } from "@blueprintjs/icons";
 
 type StatusBarProps = {
   intent: "none" | "primary" | "success" | "warning" | "danger" | undefined;
@@ -20,15 +22,28 @@ export const StatusBarComponent = ({
     <StatusBarContent>
       <div style={{ paddingLeft: "10px", width: "40%" }}>
         <div>
-          <Icon icon="symbol-circle" intent={intent} /> <b>{t("status")}</b>:{" "}
-          {status}
+          <Icon
+            icon={
+              <SymbolCircle
+                color={
+                  intent === Intent.SUCCESS
+                    ? "green"
+                    : intent === Intent.WARNING
+                    ? "orange"
+                    : "red"
+                }
+              />
+            }
+            intent={intent}
+          />{" "}
+          <b>{t("status")}</b>: {status}
         </div>
       </div>
       <div style={{ textAlign: "right", width: "60%", paddingRight: "35px" }}>
         <div>
-          {network?.outbound} <Icon icon="arrow-up" />
+          {network?.outbound} <Icon icon={<ArrowUp />} />
           {"  "}
-          {network?.inbound} <Icon icon="arrow-down" />
+          {network?.inbound} <Icon icon={<ArrowDown />} />
         </div>
       </div>
     </StatusBarContent>

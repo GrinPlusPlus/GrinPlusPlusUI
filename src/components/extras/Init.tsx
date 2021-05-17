@@ -1,5 +1,6 @@
 import { Center, HorizontallyCenter } from "../styled";
 import { Button, Icon, Intent, Spinner, Text } from "@blueprintjs/core";
+import { Error, TickCircle, Help } from "@blueprintjs/icons";
 
 import { GrinPPBannerComponent } from "../shared/GrinPPBanner";
 import React from "react";
@@ -33,9 +34,13 @@ export const InitComponent = ({ error, message }: InitComponentProps) => {
             <HorizontallyCenter>
               <Icon
                 data-testid="init-icon"
-                intent={error ? Intent.DANGER : Intent.SUCCESS}
-                size={28}
-                icon={error ? "error" : "tick-circle"}
+                icon={
+                  error ? (
+                    <Error color="red" size={28} />
+                  ) : (
+                    <TickCircle color="green" size={28} />
+                  )
+                }
               />
             </HorizontallyCenter>
           )}
@@ -60,7 +65,7 @@ export const InitComponent = ({ error, message }: InitComponentProps) => {
       <div className="footer">
         <HorizontallyCenter>
           <Button
-            icon="help"
+            icon={<Help />}
             minimal={true}
             onClick={() => {
               require("electron").shell.openExternal("https://t.me/GrinPP");

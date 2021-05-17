@@ -18,8 +18,8 @@ describe("<InitComponent />", () => {
     expect(spinner).toHaveLength(1);
   });
   test("should display error when can not init", async () => {
-    const { findByTestId } = renderInitComponent({ error: true });
-    const icon = await findByTestId("init-icon");
-    expect(icon.getAttribute("icon")).toEqual("error");
+    const { findByTitle } = renderInitComponent({ error: true });
+    const icon = await findByTitle("error");
+    expect(icon).toBeDefined();
   });
 });
