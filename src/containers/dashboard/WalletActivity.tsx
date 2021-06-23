@@ -15,6 +15,7 @@ import { WalletActivityComponent } from "../../components/dashboard/WalletActivi
 import { useTranslation } from "react-i18next";
 import { HorizontallyCenter, SlatesBox, Title } from "../../components/styled";
 import { validateSlatepack } from "../../services/utils";
+import { ITransaction } from "../../interfaces/ITransaction";
 
 export const WalletActivitiyContainer = () => {
   const { t } = useTranslation();
@@ -63,7 +64,6 @@ export const WalletActivitiyContainer = () => {
   const onViewSlatepackMessageButtonClicked = useCallback(
     (txId: number) => {
       const transaction = getAllTransactions.find((t) => t.Id === txId);
-      require("electron-log").info(transaction);
       if (transaction?.slatepackMessage !== undefined) {
         setSelectedSlatepackMessage(transaction.slatepackMessage);
       }
@@ -148,6 +148,23 @@ export const WalletActivitiyContainer = () => {
     ]
   );
 
+  const getTransactionsJsonCb = useCallback(
+    () => {
+      require("electron-log").info("exporting transaction...");
+      let txs: ITransaction[] =  [];
+      Object.assign(txs, getAllTransactions);
+      txs.forEach(function(t){ delete t.slatepackMessage; })
+      const content = JSON.stringify(txs);
+      const element = document.createElement("a");
+      const file = new Blob([content], {type: "text/plain"});
+      element.href = URL.createObjectURL(file);
+      element.download = "transactions.json";
+      element.click();
+    },
+    [getAllTransactions]
+  );
+
+
   return (
     <div>
       <Title>{t("transactions")}</Title>
@@ -168,6 +185,7 @@ export const WalletActivitiyContainer = () => {
         }
         lastConfirmedHeight={lastConfirmedHeight}
         confirmations={confirmations}
+        getTransactionsJsonCb={getTransactionsJsonCb}
       />
       <Alert
         className="bp4-dark"

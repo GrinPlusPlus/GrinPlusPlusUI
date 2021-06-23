@@ -1,4 +1,4 @@
-import { Tab, Tabs } from "@blueprintjs/core";
+import { Button, Tab, Tabs } from "@blueprintjs/core";
 
 import { ITransaction } from "../../interfaces/ITransaction";
 import React from "react";
@@ -23,6 +23,7 @@ type WalletActivityProps = {
   onViewSlatepackMessageButtonClickedCb: (transactionId: number) => void;
   lastConfirmedHeight: number;
   confirmations: number;
+  getTransactionsJsonCb: () => void;
 };
 
 export const WalletActivityComponent = ({
@@ -40,6 +41,7 @@ export const WalletActivityComponent = ({
   onViewSlatepackMessageButtonClickedCb,
   lastConfirmedHeight,
   confirmations,
+  getTransactionsJsonCb
 }: WalletActivityProps) => {
   const { t } = useTranslation();
 
@@ -212,6 +214,13 @@ export const WalletActivityComponent = ({
               confirmations={confirmations}
             />
           }
+        />
+        <Tabs.Expander />
+        <Button
+          minimal={true}
+          large={true}
+          text={t("export")}
+          onClick={() => getTransactionsJsonCb()}
         />
       </Tabs>
     </div>

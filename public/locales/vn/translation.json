@@ -134,5 +134,6 @@
   "receive_grins": "Nhận Grins",
   "response": "Trả lời",
   "copy_to_clipboard": "Lưu vào Clipboard",
-  "paste_from_clipboard": "Dán từ Clipboard"
+  "paste_from_clipboard": "Dán từ Clipboard",
+  "export": "Export"
 }

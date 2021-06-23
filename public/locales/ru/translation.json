@@ -134,5 +134,6 @@
   "receive_grins": "Получить GRIN",
   "response": "Ответ",
   "copy_to_clipboard": "В буфер обмена",
-  "paste_from_clipboard": "Paste from Clipboard"
+  "paste_from_clipboard": "Paste from Clipboard",
+  "export": "Export"
 }

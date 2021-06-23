@@ -134,5 +134,6 @@
   "receive_grins": "Λάβετε Grins",
   "response": "Ανταπόκριση",
   "copy_to_clipboard": "Αντιγραφή στο Πρόχειρο",
-  "paste_from_clipboard": "Paste from Clipboard"
+  "paste_from_clipboard": "Paste from Clipboard",
+  "export": "Export"
 }

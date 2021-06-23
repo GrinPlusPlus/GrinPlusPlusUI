@@ -134,5 +134,6 @@
   "receive_grins": "Отримати GRIN",
   "response": "Відповідь",
   "copy_to_clipboard": "У буфер обміну",
-  "paste_from_clipboard": "Вставити з буфера обміну"
+  "paste_from_clipboard": "Вставити з буфера обміну",
+  "export": "Export"
 }

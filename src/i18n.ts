@@ -21,6 +21,7 @@ const availableLanguages = [
   "ua",
   "sl",
   "gr",
+  "vn"
 ];
 
 const options = {

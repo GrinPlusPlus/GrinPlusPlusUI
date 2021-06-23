@@ -134,5 +134,6 @@
   "receive_grins": "دریافت گرین",
   "response": "پاسخ",
   "copy_to_clipboard": "کپی کردن",
-  "paste_from_clipboard": "Paste from Clipboard"
+  "paste_from_clipboard": "Paste from Clipboard",
+  "export": "Export"
 }

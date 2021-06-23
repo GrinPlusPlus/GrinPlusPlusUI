@@ -134,5 +134,6 @@
   "receive_grins": "Grins ontvangen",
   "response": "Antwoord (Response)",
   "copy_to_clipboard": "Naar klembord kopiëren",
-  "paste_from_clipboard": "Paste from Clipboard"
+  "paste_from_clipboard": "Paste from Clipboard",
+  "export": "Export"
 }

@@ -134,5 +134,6 @@
   "receive_grins": "Receive Grins",
   "response": "Response",
   "copy_to_clipboard": "Copy to Clipboard",
-  "paste_from_clipboard": "Paste from Clipboard"
+  "paste_from_clipboard": "Paste from Clipboard",
+  "export": "Export"
 }
