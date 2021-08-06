@@ -26,7 +26,7 @@ export const TransactionAmountContainer = () => {
         return;
       }
       await estimateFee({
-        amount: _amount,
+        amount: amount,
         strategy: strategy,
         message: message,
         token: token,

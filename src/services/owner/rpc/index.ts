@@ -1,5 +1,6 @@
 import { BaseApi } from "../../api";
 import { ITransaction } from "../../../interfaces/ITransaction";
+import { cleanTxType } from "../../../helpers";
 
 export class OwnerRPCApi extends BaseApi {
   async createWallet(
@@ -300,12 +301,17 @@ export class OwnerRPCApi extends BaseApi {
       let transactions: ITransaction[] = [];
       if (!response.result?.txs) return transactions;
       transactions = response.result.txs.reverse().map((transaction: any) => {
+        let amount = 0;
+        if (["receiving", "received"].indexOf(cleanTxType(transaction.type)) > -1) {
+            amount = Math.abs(transaction.amount_credited - transaction.amount_debited) ;
+        } else {
+          amount = Math.abs(transaction.amount_credited - transaction.amount_debited)  - transaction.fee;
+        }
         return {
           Id: transaction.id,
           address: transaction.address,
           creationDate: transaction.creation_date_time,
-          amountCredited: transaction.amount_credited,
-          amountDebited: transaction.amount_debited,
+          amount: amount,
           type: transaction.type,
           confirmedHeight: transaction.confirmed_height,
           fee: transaction.fee,
@@ -330,6 +336,7 @@ export class OwnerRPCApi extends BaseApi {
           ),
         };
       });
+
       return transactions;
     });
   }
@@ -342,7 +349,7 @@ export class OwnerRPCApi extends BaseApi {
 
   async estimateFee(
     token: string,
-    amount: number | undefined,
+    amount: string | undefined,
     strategy: string = "SMALLEST",
     inputs: string[] = [],
     message: string = ""
@@ -363,7 +370,7 @@ export class OwnerRPCApi extends BaseApi {
       "estimate_fee",
       {
         session_token: token,
-        amount: amount ? amount * Math.pow(10, 9) : undefined,
+        amount: amount ? Number(amount) * Math.pow(10, 9) : undefined,
         fee_base: 500000,
         selection_strategy: {
           strategy: strategy,

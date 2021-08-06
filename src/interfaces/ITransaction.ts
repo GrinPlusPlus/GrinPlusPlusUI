@@ -1,8 +1,7 @@
 export interface ITransaction {
   Id: number;
   address?: string;
-  amountCredited: number;
-  amountDebited: number;
+  amount: number;
   creationDate: Date;
   type: string;
   confirmedHeight: number;

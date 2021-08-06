@@ -73,7 +73,7 @@ export interface SendCoinsModel {
   estimateFee: Thunk<
     SendCoinsModel,
     {
-      amount: number | undefined;
+      amount: string | undefined;
       strategy: string;
       token: string;
       message: string;
@@ -268,9 +268,6 @@ const sendCoinsModel: SendCoinsModel = {
           getStoreActions().sendCoinsModel.setEstimatedFee(
             utilsService.formatGrinAmount(response.fee)
           );
-          getStoreActions().sendCoinsModel.setAmount(
-            utilsService.formatGrinAmount(response.amount).toString()
-          );
         });
     }
   ),
@@ -323,7 +320,7 @@ const sendCoinsModel: SendCoinsModel = {
       if (getStoreState().sendCoinsModel.amount) {
         await actions
           .estimateFee({
-            amount: Number(getStoreState().sendCoinsModel.amount),
+            amount: getStoreState().sendCoinsModel.amount,
             strategy: getStoreState().sendCoinsModel.strategy,
             message: getStoreState().sendCoinsModel.message,
             token: getStoreState().session.token,
@@ -344,7 +341,7 @@ const sendCoinsModel: SendCoinsModel = {
       if (getStoreState().sendCoinsModel.amount) {
         await actions
           .estimateFee({
-            amount: Number(getStoreState().sendCoinsModel.amount),
+            amount: getStoreState().sendCoinsModel.amount,
             strategy: getStoreState().sendCoinsModel.strategy,
             message: getStoreState().sendCoinsModel.message,
             token: getStoreState().session.token,

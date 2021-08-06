@@ -127,8 +127,7 @@ const walletSummary: WalletSummaryModel = {
             commitment: output.commitment,
           };
         });
-        tx.amountCredited = payload.formatCb(tx.amountCredited);
-        tx.amountDebited = payload.formatCb(tx.amountDebited);
+        tx.amount = payload.formatCb(tx.amount);
         if (tx.fee) tx.fee = payload.formatCb(tx.fee);
         return tx;
       });

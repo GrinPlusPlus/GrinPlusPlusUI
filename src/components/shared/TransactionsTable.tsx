@@ -85,9 +85,7 @@ export const TransactionsTableComponent = ({
             style={{ width: "12%", paddingLeft: "10px" }}
             onClick={() => openTransactionCb(transaction.Id)}
           >
-            {Math.abs(
-              transaction.amountCredited - transaction.amountDebited
-            ).toFixed(9)}
+            {transaction.amount.toFixed(9)}
           </td>
           <td
             style={{ width: "50%", paddingLeft: "10px" }}
