@@ -24,6 +24,7 @@ export const SendUsingAddressComponent = ({
       intent={Intent.PRIMARY}
       style={{ color: "black", width: "120px" }}
       disabled={
+        fee <= 0 ||
         amount <= 0 ||
         spendable <= 0 ||
         !inputsSelected ||
