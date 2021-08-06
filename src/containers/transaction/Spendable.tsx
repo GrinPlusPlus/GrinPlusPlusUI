@@ -9,12 +9,11 @@ export const SpendableContainer = () => {
     (state) => state.sendCoinsModel
   );
   const { token } = useStoreState((state) => state.session);
-  const { estimateFee, setAmount } = useStoreActions(
+  const { estimateFee } = useStoreActions(
     (actions) => actions.sendCoinsModel
   );
 
   const onSendMaxButtonClicked = useCallback(async () => {
-    setAmount(spendable.toString());
     await estimateFee({
       amount: undefined,
       strategy: strategy,
@@ -28,7 +27,7 @@ export const SpendableContainer = () => {
         icon: "warning-sign",
       });
     });
-  }, [strategy, message, token, inputs, estimateFee, setAmount, spendable]);
+  }, [strategy, message, token, inputs, estimateFee]);
 
   return (
     <SpendableComponent

@@ -85,7 +85,7 @@ export interface SendCoinsModel {
   sendGrins: Thunk<
     SendCoinsModel,
     {
-      amount: number | undefined;
+      amount: string | undefined;
       address: string;
       message: string;
       method: string;
@@ -268,6 +268,12 @@ const sendCoinsModel: SendCoinsModel = {
           getStoreActions().sendCoinsModel.setEstimatedFee(
             utilsService.formatGrinAmount(response.fee)
           );
+          // User is trying to send the max...
+          if(payload.amount === undefined) {
+            getStoreActions().sendCoinsModel.setAmount(
+              utilsService.formatGrinAmount(response.amount).toString()
+            );
+          }
         });
     }
   ),

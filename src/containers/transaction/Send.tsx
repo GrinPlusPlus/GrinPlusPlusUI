@@ -118,11 +118,8 @@ export const SendContainer = () => {
       setPasswordPrompt(undefined); // to clean prompt
       setWaitingResponse(true);
 
-      const _amount = Number(amount);
-      const sendingAmount = _amount + fee === spendable ? undefined : _amount;
-
       const sent = await sendGrins({
-        amount: sendingAmount,
+        amount: Number(amount) + fee === spendable ? undefined : amount,
         message: "",
         address: address,
         method: "FLUFF",
