@@ -1,5 +1,5 @@
 import { InitComponent, InitComponentProps } from "../Init";
-import { fireEvent, render, waitForElement } from "@testing-library/react";
+import { findByTestId, fireEvent, render, waitForElement } from "@testing-library/react";
 
 import React from "react";
 
@@ -13,13 +13,15 @@ function renderInitComponent(props: Partial<InitComponentProps> = {}) {
 
 describe("<InitComponent />", () => {
   test("should display loading", async () => {
-    const { queryAllByTestId } = renderInitComponent();
-    const spinner = queryAllByTestId("init-spinner");
-    expect(spinner).toHaveLength(1);
+    const { findByTestId } = renderInitComponent();
+    const spinner = findByTestId("init-spinner");
+    expect(spinner).toBeDefined();
+    const success = findByTestId("init-success-icon");
+    expect(success).toBeDefined();
   });
   test("should display error when can not init", async () => {
-    const { findByTitle } = renderInitComponent({ error: true });
-    const icon = await findByTitle("error");
+    const { findByTestId } = renderInitComponent({ error: true });
+    const icon = await findByTestId("init-error-icon");
     expect(icon).toBeDefined();
   });
 });

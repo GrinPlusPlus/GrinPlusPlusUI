@@ -32,12 +32,11 @@ export const InitComponent = ({ error, message }: InitComponentProps) => {
           ) : (
             <HorizontallyCenter>
               <Icon
-                data-testid="init-icon"
                 icon={
                   error ? (
-                    <Icon icon="error" color="red" size={28} />
+                    <Icon icon="error" data-testid="init-error-icon" color="red" size={28} />
                   ) : (
-                    <Icon icon="tick-circle" color="green" size={28} />
+                    <Icon icon="tick-circle" data-testid="init-success-icon" color="green" size={28} />
                   )
                 }
               />
