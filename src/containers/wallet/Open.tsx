@@ -11,8 +11,6 @@ import { useStoreActions, useStoreState } from "../../hooks";
 
 import { LoadingComponent } from "../../components/extras/Loading";
 
-import { User } from "@blueprintjs/icons";
-
 import { Redirect } from "react-router-dom";
 
 const NoAccountsComponent = React.lazy(() =>
@@ -97,7 +95,7 @@ export const OpenWalletContainer = () => {
               }}
             >
               <div>
-                <Icon icon={<User />} style={{ marginBottom: "5px" }} />
+                <Icon icon="user" style={{ marginBottom: "5px" }} />
               </div>
               <div>
                 <Text>{account}</Text>
