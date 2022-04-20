@@ -177,7 +177,7 @@
     "build": "craco build",
     "test": "craco test",
     "electron": "electron .",
-    "dev": "nf start",
+    "dev": "PORT=5001 nf start",
     "lint": "eslint ./src",
     "lint:fix": "eslint --fix ./src/**/*.{ts,tsx}",
     "postinstall": "electron-builder install-app-deps",
