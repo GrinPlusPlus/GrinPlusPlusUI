@@ -1,6 +1,6 @@
 import { Flex, SendGrinsContent } from "../../components/styled";
 import React, { Suspense, useEffect, useCallback } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useStoreActions, useStoreState } from "../../hooks";
 
 import {
@@ -50,7 +50,7 @@ const SendUsingAddressContainer = React.lazy(() =>
 const renderLoader = () => <LoadingComponent />;
 
 export const SendContainer = () => {
-  const history = useHistory();
+  const history = useNavigate();
 
   const { t } = useTranslation();
 
@@ -64,14 +64,8 @@ export const SendContainer = () => {
 
   const { spendable } = useStoreState((state) => state.walletSummary);
 
-  const {
-    amount,
-    fee,
-    returnedSlatepack,
-    address,
-    strategy,
-    inputs,
-  } = useStoreState((state) => state.sendCoinsModel);
+  const { amount, fee, returnedSlatepack, address, strategy, inputs } =
+    useStoreState((state) => state.sendCoinsModel);
   const { getOutputs, setReturnedSlatepack } = useStoreActions(
     (actions) => actions.sendCoinsModel
   );

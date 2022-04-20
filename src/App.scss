@@ -1,3 +1,6 @@
+@import "~@blueprintjs/core/src/blueprint.scss";
+@import "@blueprintjs/core/src/blueprint.scss";
+
 $pt-link-color: #ffff14;
 $pt-intent-primary: #ffff14;
 $pt-outline-color: #293742;
@@ -5,9 +8,6 @@ $pt-outline-color: #293742;
 $pt-text-color: #ffffff;
 $pt-dark-app-background-color: #21242d;
 $pt-dark-popover-box-shadow: $pt-intent-primary;
-
-@import "~@blueprintjs/core/src/blueprint.scss";
-@import "@blueprintjs/core/src/blueprint.scss";
 
 .content {
   overflow: hidden;

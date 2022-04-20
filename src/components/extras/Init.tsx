@@ -1,10 +1,9 @@
 import { Center, HorizontallyCenter } from "../styled";
 import { Button, Icon, Intent, Spinner, Text } from "@blueprintjs/core";
-import { Error, TickCircle, Help } from "@blueprintjs/icons";
 
 import { GrinPPBannerComponent } from "../shared/GrinPPBanner";
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 export type InitComponentProps = {
@@ -15,7 +14,7 @@ export type InitComponentProps = {
 export const InitComponent = ({ error, message }: InitComponentProps) => {
   const { t } = useTranslation();
 
-  const history = useHistory();
+  const history = useNavigate();
 
   return (
     <div>
@@ -36,9 +35,9 @@ export const InitComponent = ({ error, message }: InitComponentProps) => {
                 data-testid="init-icon"
                 icon={
                   error ? (
-                    <Error color="red" size={28} />
+                    <Icon icon="error" color="red" size={28} />
                   ) : (
-                    <TickCircle color="green" size={28} />
+                    <Icon icon="tick-circle" color="green" size={28} />
                   )
                 }
               />
@@ -65,7 +64,7 @@ export const InitComponent = ({ error, message }: InitComponentProps) => {
       <div className="footer">
         <HorizontallyCenter>
           <Button
-            icon={<Help />}
+            icon={<Icon icon="help" />}
             minimal={true}
             onClick={() => {
               require("electron").shell.openExternal("https://t.me/GrinPP");

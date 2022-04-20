@@ -3,7 +3,7 @@ import React, { Suspense, useCallback } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
 
 import { hideSeedWords } from "../../helpers";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const CreateWalletComponent = React.lazy(() =>
   import("./../../components/wallet/create/CreateWallet").then((module) => ({
@@ -22,7 +22,7 @@ const WalletSeedConfirmation = React.lazy(() =>
 const renderLoader = () => null;
 
 export const CreateWalletContainer = () => {
-  const history = useHistory();
+  const history = useNavigate();
   const {
     username,
     password,

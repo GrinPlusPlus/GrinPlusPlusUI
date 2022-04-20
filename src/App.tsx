@@ -1,6 +1,6 @@
 import "./App.scss";
 
-import { Route, MemoryRouter as Router, Switch } from "react-router-dom";
+import { Route, MemoryRouter as Router } from "react-router-dom";
 
 import { InitializerContainer } from "./containers/Initializer";
 import React from "react";
@@ -73,44 +73,42 @@ const App: React.FC = () => {
   return (
     <StoreProvider store={store}>
       <Router>
-        <Switch>
-          <Route path="/wallet">
-            <WalletContainer />
-          </Route>
-          <Route path="/send">
-            <SendGrinContainer />
-          </Route>
-          <Route path="/receive">
-            <ReceiveGrinContainer />
-          </Route>
-          <Route path="/create">
-            <SignUpContainer />
-          </Route>
-          <Route path="/restore">
-            <RestoreContainer />
-          </Route>
-          <Route path="/login">
-            <SignInContainer />
-          </Route>
-          <Route path="/status">
-            <StatusContainer />
-          </Route>
-          <Route path="/help">
-            <HelpContainer />
-          </Route>
-          <Route path="/nodeLogs">
-            <NodeLogsContainer />
-          </Route>
-          <Route path="/walletLogs">
-            <WalletLogsContainer />
-          </Route>
-          <Route path="/UILogs">
-            <UILogsContainer />
-          </Route>
-          <Route path="/">
-            <InitializerContainer />
-          </Route>
-        </Switch>
+        <Route path="/wallet">
+          <WalletContainer />
+        </Route>
+        <Route path="/send">
+          <SendGrinContainer />
+        </Route>
+        <Route path="/receive">
+          <ReceiveGrinContainer />
+        </Route>
+        <Route path="/create">
+          <SignUpContainer />
+        </Route>
+        <Route path="/restore">
+          <RestoreContainer />
+        </Route>
+        <Route path="/login">
+          <SignInContainer />
+        </Route>
+        <Route path="/status">
+          <StatusContainer />
+        </Route>
+        <Route path="/help">
+          <HelpContainer />
+        </Route>
+        <Route path="/nodeLogs">
+          <NodeLogsContainer />
+        </Route>
+        <Route path="/walletLogs">
+          <WalletLogsContainer />
+        </Route>
+        <Route path="/UILogs">
+          <UILogsContainer />
+        </Route>
+        <Route path="/">
+          <InitializerContainer />
+        </Route>
       </Router>
     </StoreProvider>
   );

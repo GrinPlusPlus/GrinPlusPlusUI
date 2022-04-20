@@ -2,12 +2,12 @@ import { Button, Intent } from "@blueprintjs/core";
 
 import { HorizontallyCenter } from "../styled";
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 export const NoAccountsComponent = () => {
   const { t } = useTranslation();
-  const history = useHistory();
+  const history = useNavigate();
 
   return (
     <div style={{ width: "100%" }}>

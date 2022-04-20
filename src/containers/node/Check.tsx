@@ -12,14 +12,14 @@ import { useTranslation } from "react-i18next";
 import { ConnectedPeersComponent } from "../../components/node/ConnectedPeers";
 import { NodeStatusComponent } from "../../components/node/NodeStatus";
 import { Content, Flex, Title } from "../../components/styled";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { useStoreState } from "../../hooks";
 
 export const NodeCheckContainer = () => {
   const { t } = useTranslation();
 
-  const history = useHistory();
+  const history = useNavigate();
 
   const { isLoggedIn } = useStoreState((state) => state.session);
 

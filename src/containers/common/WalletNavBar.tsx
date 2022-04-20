@@ -8,14 +8,14 @@ import {
 
 import { LanguageMenuContainer } from "./LanguageMenu";
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useStoreActions } from "../../hooks";
 import { useTranslation } from "react-i18next";
 
 export const WalletNavBarContainer = () => {
   const { t } = useTranslation();
 
-  const history = useHistory();
+  const history = useNavigate();
 
   const { toggleSettings } = useStoreActions((actions) => actions.ui);
 

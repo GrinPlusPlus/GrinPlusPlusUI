@@ -6,7 +6,7 @@ import { useStoreActions, useStoreState } from "../../hooks";
 import { useTranslation } from "react-i18next";
 import { QRCodeComponent } from "../../components/extras/QRCode";
 
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const WalletAddressContainer = () => {
   const { t } = useTranslation();
@@ -18,7 +18,7 @@ export const WalletAddressContainer = () => {
   );
   const { walletReachable } = useStoreState((state) => state.walletSummary);
 
-  const history = useHistory();
+  const history = useNavigate();
 
   useLayoutEffect(() => {
     const drawQRCode = async () => {

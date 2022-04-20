@@ -4,25 +4,15 @@ import { useStoreActions, useStoreState } from "../../hooks";
 
 import { Intent } from "@blueprintjs/core";
 import { RecoverWalletComponent } from "./../../components/wallet/recover/RecoverWallet";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const RestoreWalletContainer = () => {
-  const history = useHistory();
+  const history = useNavigate();
 
-  const {
-    username,
-    password,
-    seed,
-    isSeedCompleted,
-    seedLength,
-  } = useStoreState((state) => state.restoreWallet);
-  const {
-    setUsername,
-    setPassword,
-    setSeedWord,
-    restore,
-    setSeedLength,
-  } = useStoreActions((actions) => actions.restoreWallet);
+  const { username, password, seed, isSeedCompleted, seedLength } =
+    useStoreState((state) => state.restoreWallet);
+  const { setUsername, setPassword, setSeedWord, restore, setSeedLength } =
+    useStoreActions((actions) => actions.restoreWallet);
 
   const { status } = useStoreState((state) => state.nodeSummary);
 

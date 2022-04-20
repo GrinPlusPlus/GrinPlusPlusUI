@@ -11,9 +11,7 @@ import { useStoreActions, useStoreState } from "../../hooks";
 
 import { LoadingComponent } from "../../components/extras/Loading";
 
-import { User } from "@blueprintjs/icons";
-
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 const NoAccountsComponent = React.lazy(() =>
   import("../../components/extras/NoAccounts").then((module) => ({
@@ -35,19 +33,15 @@ export const OpenWalletContainer = () => {
   const { username, password, accounts, waitingResponse } = useStoreState(
     (state) => state.signinModel
   );
-  const {
-    setUsername,
-    setPassword,
-    login,
-    setWaitingResponse,
-  } = useStoreActions((actions) => actions.signinModel);
+  const { setUsername, setPassword, login, setWaitingResponse } =
+    useStoreActions((actions) => actions.signinModel);
 
   const { getAccounts, setAccounts } = useStoreActions(
     (actions) => actions.signinModel
   );
 
   useEffect(() => {
-    (async function() {
+    (async function () {
       if (accounts !== undefined) return;
       try {
         const _accounts = await getAccounts();
@@ -97,7 +91,7 @@ export const OpenWalletContainer = () => {
               }}
             >
               <div>
-                <Icon icon={<User />} style={{ marginBottom: "5px" }} />
+                <Icon icon="icon" style={{ marginBottom: "5px" }} />
               </div>
               <div>
                 <Text>{account}</Text>
@@ -115,7 +109,7 @@ export const OpenWalletContainer = () => {
 
   return (
     <Suspense fallback={renderLoader()}>
-      {isLoggedIn ? <Redirect to="/wallet" /> : null}
+      {isLoggedIn ? <Navigate to="/wallet" /> : null}
       {accounts === undefined ? (
         <LoadingComponent />
       ) : accounts.length === 0 ? (
