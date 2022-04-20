@@ -17,7 +17,7 @@
     <div id="root"></div>
     <script>
       const customTitlebar = require("custom-electron-titlebar");
-      document.title = `Grin++ v${require("electron").remote.app.getVersion()}`;
+      document.title = `Grin++ v${require("electron").app.getVersion()}`;
       new customTitlebar.Titlebar({
         backgroundColor: customTitlebar.Color.fromHex("#010101"),
         maximizable: true,

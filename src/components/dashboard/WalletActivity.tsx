@@ -48,10 +48,11 @@ export const WalletActivityComponent = ({
   return (
     <div style={{ marginTop: "10px" }}>
       <Tabs
-        animate={false}
         id="WalletTabs"
+        animate={true}
         renderActiveTabPanelOnly={true}
         vertical={false}
+        selectedTabId="all"
       >
         <Tab
           id="all"

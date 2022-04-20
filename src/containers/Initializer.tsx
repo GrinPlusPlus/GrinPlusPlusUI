@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useStoreActions, useStoreState } from "../hooks";
 
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { InitComponent } from "../components/extras/Init";
 
@@ -35,7 +35,7 @@ export const InitializerContainer = () => {
 
   return (
     <div>
-      {isWalletInitialized ? <Redirect to="/login" /> : null}
+      {isWalletInitialized ? <Navigate to="/login" /> : null}
       <InitComponent error={initializingError} message={t(`${message}`)} />
     </div>
   );

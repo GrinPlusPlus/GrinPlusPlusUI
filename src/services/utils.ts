@@ -50,7 +50,7 @@ export const getUiLogsLocation = function (): string {
   const home = require("os").homedir();
 
   const location = (() => {
-    switch (require("electron").remote.process.platform) {
+    switch (require("os").platform()) {
       case "linux":
         return `${home}${path.sep}.config${path.sep}${appName}${path.sep}logs${path.sep}renderer.log`;
       case "darwin":

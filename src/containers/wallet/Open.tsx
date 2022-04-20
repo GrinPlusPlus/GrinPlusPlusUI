@@ -11,7 +11,7 @@ import { useStoreActions, useStoreState } from "../../hooks";
 
 import { LoadingComponent } from "../../components/extras/Loading";
 
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 const NoAccountsComponent = React.lazy(() =>
   import("../../components/extras/NoAccounts").then((module) => ({
@@ -113,7 +113,7 @@ export const OpenWalletContainer = () => {
 
   return (
     <Suspense fallback={renderLoader()}>
-      {isLoggedIn ? <Redirect to="/wallet" /> : null}
+      {isLoggedIn ? <Navigate to="/wallet" /> : null}
       {accounts === undefined ? (
         <LoadingComponent />
       ) : accounts.length === 0 ? (

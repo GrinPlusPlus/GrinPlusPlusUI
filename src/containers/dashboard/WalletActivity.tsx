@@ -151,7 +151,7 @@ export const WalletActivitiyContainer = () => {
   const getTransactionsJsonCb = useCallback(
     () => {
       require("electron-log").info("exporting transaction...");
-      let txs: ITransaction[] =  [];
+      const txs: ITransaction[] =  [];
       Object.assign(txs, getAllTransactions);
       txs.forEach(function(t){ delete t.slatepackMessage; })
       const content = JSON.stringify(txs);

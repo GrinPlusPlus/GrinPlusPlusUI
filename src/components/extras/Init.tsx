@@ -3,7 +3,7 @@ import { Button, Icon, Intent, Spinner, Text } from "@blueprintjs/core";
 
 import { GrinPPBannerComponent } from "../shared/GrinPPBanner";
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 export type InitComponentProps = {
@@ -14,7 +14,7 @@ export type InitComponentProps = {
 export const InitComponent = ({ error, message }: InitComponentProps) => {
   const { t } = useTranslation();
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <div>
@@ -50,7 +50,7 @@ export const InitComponent = ({ error, message }: InitComponentProps) => {
           {error ? (
             <HorizontallyCenter>
               <Button
-                onClick={() => history.push("/UILogs")}
+                onClick={() => navigate("/UILogs")}
                 className="bp4-dark"
                 intent={Intent.WARNING}
               >

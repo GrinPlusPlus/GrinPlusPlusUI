@@ -112,7 +112,7 @@ const wallet: WalletModel = {
     }
   ),
   reSyncBlockchain: thunk(
-    async (actions, payload, { injections, getStoreState, getStoreActions }) => {
+    async (actions, payload, { injections, getStoreActions }) => {
       const { nodeService } = injections;
       getStoreActions().session.clean();
       nodeService.stopNode();

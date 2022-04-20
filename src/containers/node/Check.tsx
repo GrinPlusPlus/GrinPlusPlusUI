@@ -12,14 +12,14 @@ import { useTranslation } from "react-i18next";
 import { ConnectedPeersComponent } from "../../components/node/ConnectedPeers";
 import { NodeStatusComponent } from "../../components/node/NodeStatus";
 import { Content, Flex, Title } from "../../components/styled";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { useStoreState } from "../../hooks";
 
 export const NodeCheckContainer = () => {
   const { t } = useTranslation();
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const { isLoggedIn } = useStoreState((state) => state.session);
 
@@ -56,7 +56,7 @@ export const NodeCheckContainer = () => {
         <br />
         <ButtonGroup minimal={true}>
           <Button
-            onClick={() => history.push("/nodeLogs")}
+            onClick={() => navigate("/nodeLogs")}
             className="bp4-dark"
             intent={Intent.NONE}
           >
@@ -64,7 +64,7 @@ export const NodeCheckContainer = () => {
           </Button>
           {isLoggedIn ? (
             <Button
-              onClick={() => history.push("/walletLogs")}
+              onClick={() => navigate("/walletLogs")}
               className="bp4-dark"
               intent={Intent.NONE}
               style={{ marginLeft: "5px" }}
@@ -73,7 +73,7 @@ export const NodeCheckContainer = () => {
             </Button>
           ) : null}
           <Button
-            onClick={() => history.push("/UILogs")}
+            onClick={() => navigate("/UILogs")}
             className="bp4-dark"
             intent={Intent.NONE}
           >

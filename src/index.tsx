@@ -4,13 +4,17 @@ import "./i18n";
 //import * as serviceWorker from "./serviceWorker";
 
 import React, { Suspense } from "react";
+import { StoreProvider } from "easy-peasy";
+import store from "./store";
 
 import App from "./App";
 import ReactDOM from "react-dom";
 
 ReactDOM.render(
   <Suspense fallback={<div />}>
-    <App />
+    <StoreProvider store={store}>
+      <App />
+    </StoreProvider>
   </Suspense>,
   document.getElementById("root")
 );

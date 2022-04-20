@@ -9,9 +9,8 @@ class TestOwnerRPCApi extends OwnerRPCApi {}
 class TestNodeAPI extends NodeAPI {}
 
 export const _getCommand = function (): string {
-  const { remote } = require("electron");
   const cmd = (() => {
-    switch (remote.process.platform) {
+    switch (require("os").platform()) {
       case "win32":
         return "GrinNode.exe";
       case "darwin":

@@ -10,7 +10,7 @@ import { WalletSeedInputComponent } from "../components/shared/WalletSeedInput";
 import { useStoreActions, useStoreState } from "../hooks";
 import { useInterval } from "../helpers";
 
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Log from "electron-log";
 
@@ -152,7 +152,7 @@ export const WalletContainer = () => {
 
   return (
     <Suspense fallback={renderLoader()}>
-      {!isLoggedIn ? <Redirect to="/login" /> : null}
+      {!isLoggedIn ? <Navigate to="/login" /> : null}
       <AccountNavBarContainer />
       <div className="content">
         <DashboardContainer />

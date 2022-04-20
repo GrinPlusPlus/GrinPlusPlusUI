@@ -1,6 +1,6 @@
 import { Flex, SendGrinsContent } from "../../components/styled";
 import React, { Suspense, useEffect, useCallback } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useStoreActions, useStoreState } from "../../hooks";
 
 import {
@@ -50,7 +50,7 @@ const SendUsingAddressContainer = React.lazy(() =>
 const renderLoader = () => <LoadingComponent />;
 
 export const SendContainer = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const { t } = useTranslation();
 
@@ -147,7 +147,7 @@ export const SendContainer = () => {
       updateLogs(toast);
       require("electron-log").info(toast);
 
-      if (sent === "FINALIZED") history.push("/wallet");
+      if (sent === "FINALIZED") navigate("/wallet");
     } catch (error: any) {
       setWaitingResponse(false);
       setWaitingResponsePrompt(false);
@@ -216,7 +216,7 @@ export const SendContainer = () => {
         icon="label"
         onClose={() => {
           setReturnedSlatepack("");
-          history.push("/wallet");
+          navigate("/wallet");
         }}
         className="bp4-dark"
         isOpen={returnedSlatepack.length !== 0}
@@ -233,7 +233,7 @@ export const SendContainer = () => {
             <Button
               onClick={() => {
                 setReturnedSlatepack("");
-                history.push("/wallet");
+                navigate("/wallet");
               }}
             >
               {t("close")}

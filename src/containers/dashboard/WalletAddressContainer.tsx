@@ -6,7 +6,7 @@ import { useStoreActions, useStoreState } from "../../hooks";
 import { useTranslation } from "react-i18next";
 import { QRCodeComponent } from "../../components/extras/QRCode";
 
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const WalletAddressContainer = () => {
   const { t } = useTranslation();
@@ -18,7 +18,7 @@ export const WalletAddressContainer = () => {
   );
   const { walletReachable } = useStoreState((state) => state.walletSummary);
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useLayoutEffect(() => {
     const drawQRCode = async () => {
@@ -63,7 +63,7 @@ export const WalletAddressContainer = () => {
                     }}
                     intent={Intent.PRIMARY}
                     text={`${t("send")}`}
-                    onClick={() => history.push("/send")}
+                    onClick={() => navigate("/send")}
                   />
                   <Button
                     style={{
@@ -73,7 +73,7 @@ export const WalletAddressContainer = () => {
                     }}
                     intent={Intent.SUCCESS}
                     text={t("receive")}
-                    onClick={() => history.push("/receive")}
+                    onClick={() => navigate("/receive")}
                   />
                 </Flex>
               </div>

@@ -6,7 +6,7 @@ import { ConfigNode } from "../foreign/rpc";
 
 export const getCommand = function (): string {
   const cmd = (() => {
-    switch (require("electron").remote.process.platform) {
+    switch (require("os").platform()) {
       case "win32":
         return "GrinNode.exe";
       case "darwin":
@@ -22,7 +22,7 @@ export const getCommand = function (): string {
 
 export const getTorCommand = function (): string {
   const cmd = (() => {
-    switch (require("electron").remote.process.platform) {
+    switch (require("os").platform()) {
       case "win32":
         return "tor.exe";
       case "darwin":
@@ -38,7 +38,7 @@ export const getTorCommand = function (): string {
 
 export const getRustNodeProcess = function (): string {
   const cmd = (() => {
-    switch (require("electron").remote.process.platform) {
+    switch (require("os").platform()) {
       case "win32":
         return "Grin.exe";
       case "darwin":
@@ -71,7 +71,7 @@ const isProcessRunning = function (processName: string): Promise<boolean> {
       cmd,
       (err: Error, stdout: string) => {
         if (err) reject(err);
-        if (require("electron").remote.process.platform === "win32") {
+        if (require("os").platform() === "win32") {
           resolve(
             stdout.match(new RegExp("\\b" + processName + "\\b", "g")) !== null
           );
@@ -86,7 +86,7 @@ const isProcessRunning = function (processName: string): Promise<boolean> {
 const killProcess = function (processName: string): void {
   require("electron-log").info("Calling killProcess");
   const cmd = (() => {
-    switch (require("electron").remote.process.platform) {
+    switch (require("os").platform()) {
       case "win32":
         return `taskkill /F /IM ${processName}`;
       case "darwin":
@@ -103,10 +103,9 @@ const killProcess = function (processName: string): void {
 };
 
 export const getNodeDataPath = function (floonet: boolean = false): string {
-  const { remote } = require("electron");
   const path = require("path");
   const net = !floonet ? "MAINNET" : "FLOONET";
-  return path.normalize(path.join(remote.app.getPath("home"), ".GrinPP", net));
+  return path.normalize(path.join(require("electron").app.getPath("home"), ".GrinPP", net));
 };
 
 export const getConfigFilePath = function (floonet: boolean = false): string {
@@ -141,7 +140,7 @@ export const getAbsoluteNodePath = function (
     );
   } else {
     return path.normalize(
-      path.join(require("electron").remote.app.getAppPath(), nodePath)
+      path.join(require("electron").app.getAppPath(), nodePath)
     );
   }
 };
@@ -271,7 +270,7 @@ export const getDefaultSettings = async function (
   const path = require("path");
 
   const settingsFilePath = path.normalize(
-    path.join(path.normalize(require("electron").remote.app.getAppPath()), file)
+    path.join(path.normalize(require("electron").app.getAppPath()), file)
   );
 
   if (!fs.existsSync(settingsFilePath)) {
