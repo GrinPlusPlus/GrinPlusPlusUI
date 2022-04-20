@@ -1,7 +1,7 @@
 {
   "name": "GrinPlusPlus",
   "productName": "Grin++",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "Grin++ Wallet",
   "author": {
     "name": "David Burkett",
@@ -9,8 +9,7 @@
   },
   "contributors": [
     {
-      "name": "David Tavarez",
-      "email": "david@punksec.com"
+      "name": "David Tavarez"
     }
   ],
   "license": "MIT",
