@@ -27,7 +27,7 @@ export const InitializerContainer = () => {
         } else {
           log.info("Backend is not Running.");
         }
-      } catch (error) {
+      } catch (error: any) {
         log.error(`Error trying to Initialize the Backend: ${error.message}`);
       }
     })();

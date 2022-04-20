@@ -81,7 +81,7 @@ export const WalletActivitiyContainer = () => {
           txId: txId,
         });
         require("electron-log").info("Canceled!");
-      } catch (error) {
+      } catch (error: any) {
         require("electron-log").error(`Error trying to Cancel Tx: ${error.message}`);
       }
     },
@@ -113,7 +113,7 @@ export const WalletActivitiyContainer = () => {
           }
         });
         require("electron-log").info("Reposted!");
-      } catch (error) {
+      } catch (error: any) {
         require("electron-log").error(`Error trying to Repost Tx: ${error.message}`);
       }
     },

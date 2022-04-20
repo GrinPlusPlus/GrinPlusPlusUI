@@ -315,7 +315,7 @@ const sendCoinsModel: SendCoinsModel = {
         } else {
           return "FINALIZED";
         }
-      } catch (error) {
+      } catch (error: any) {
         return error;
       }
     }

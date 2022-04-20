@@ -96,14 +96,14 @@ const wallet: WalletModel = {
       const { nodeService } = injections;
       const settings = getStoreState().settings.defaultSettings;
 
-      if (nodeService.isNodeRunning(1)) {
+      if (await nodeService.isNodeRunning(1)) {
         try {
           new nodeService.REST(
             settings.floonet,
             settings.protocol,
             settings.ip
           ).shutdownNode();
-        } catch (error) {
+        } catch (error: any) {
           nodeService.stopNode();
         }
       }
@@ -192,7 +192,7 @@ const wallet: WalletModel = {
         ) {
           throw new Error(`Can't find path: ${defaultSettings.binaryPath}`);
         }
-      } catch (error) {
+      } catch (error: any) {
         require("electron-log").error(`Error running Node: ${error.message}`);
         actions.setIsNodeInstalled(false);
         actions.setInitializingError(true);
@@ -214,7 +214,7 @@ const wallet: WalletModel = {
           require("path").normalize(defaultSettings.binaryPath),
           defaultSettings.floonet
         );
-      } catch (error) {
+      } catch (error: any) {
         require("electron-log").error(`Error running Node: ${error.message}`);
 
         actions.setIsNodeInstalled(false);

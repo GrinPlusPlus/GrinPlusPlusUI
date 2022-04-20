@@ -31,7 +31,7 @@ const App: React.FC = () => {
         .nodeSummary.updateStatus(
           await store.getActions().nodeSummary.checkStatus()
         );
-    } catch (error) {
+    } catch (error: any) {
       require("electron-log").error(
         `Error trying to get Node Status: ${error.message}`
       );
@@ -49,7 +49,7 @@ const App: React.FC = () => {
           "HealthCheck failed: Backend is not Running"
         );
       }
-    } catch (error) {
+    } catch (error: any) {
       require("electron-log").error(`HealthCheck failed: ${error.message}`);
     }
   }, store.getState().nodeSummary.HealthCheckInterval);
@@ -63,7 +63,7 @@ const App: React.FC = () => {
         .nodeSummary.setConnectedPeers(
           await store.getActions().nodeSummary.getConnectedPeers()
         );
-    } catch (error) {
+    } catch (error: any) {
       require("electron-log").error(
         `Error trying to get Connected Peers: ${error.message}`
       );

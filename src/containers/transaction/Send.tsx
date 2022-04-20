@@ -148,7 +148,7 @@ export const SendContainer = () => {
       require("electron-log").info(toast);
 
       if (sent === "FINALIZED") history.push("/wallet");
-    } catch (error) {
+    } catch (error: any) {
       setWaitingResponse(false);
       setWaitingResponsePrompt(false);
       require("electron-log").error(`Error sending: ${error.message}`);

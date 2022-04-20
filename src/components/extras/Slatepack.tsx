@@ -1,7 +1,6 @@
 import React from "react";
 import { SlatesBox } from "../styled";
 import {
-  ContextMenu,
   Menu,
   MenuItem,
   OverlayToaster,
@@ -9,6 +8,8 @@ import {
   Intent,
 } from "@blueprintjs/core";
 import { useTranslation } from "react-i18next";
+
+import { ContextMenu2 } from "@blueprintjs/popover2";
 
 export type SlatepackProps = {
   slatepack: string;
@@ -18,7 +19,7 @@ export const SlatepackComponent = ({ slatepack }: SlatepackProps) => {
   const { t } = useTranslation();
 
   return (
-    <ContextMenu
+    <ContextMenu2
       className="bp4-dark"
       content={
         <Menu>
@@ -37,6 +38,6 @@ export const SlatepackComponent = ({ slatepack }: SlatepackProps) => {
       }
     >
       <SlatesBox readOnly={true} value={slatepack}></SlatesBox>
-    </ContextMenu>
+    </ContextMenu2>
   );
 };

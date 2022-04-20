@@ -204,7 +204,7 @@ export const isNodeRunning = async function (
       },
       { delay: 1000, maxTry: retries }
     );
-  } catch (error) {
+  } catch (error: any) {
     log.error(`${command} is not running: ${error.message}`);
   }
   return isRunning;
@@ -230,7 +230,7 @@ export const isTorRunning = async function (
       },
       { delay: 1000, maxTry: retries }
     );
-  } catch (error) {
+  } catch (error: any) {
     log.error(`${command} is not running: ${error.message}`);
   }
   return isRunning;
@@ -239,8 +239,8 @@ export const isTorRunning = async function (
 export const stopNode = function (): void {
   try {
     killProcess(getCommand());
-  } catch (e) {
-    require("electron-log").info(`${e.message}`);
+  } catch (error: any) {
+    require("electron-log").info(`${error.message}`);
   }
 };
 
@@ -251,16 +251,16 @@ export const deleteData = function (): void {
     const homedir = require('os').homedir();
     const nodeDir = path.join(path.normalize(homedir), path.normalize("./.GrinPP/MAINNET/NODE"));
     fs.rmdirSync(nodeDir, { recursive: true });
-  } catch (e) {
-    require("electron-log").error(`${e.message}`);
+  } catch (error: any) {
+    require("electron-log").error(`${error.message}`);
   }
 };
 
 export const stopRustNode = function (): void {
   try {
     killProcess(getRustNodeProcess());
-  } catch (e) {
-    require("electron-log").info(`${e.message}`);
+  } catch (error: any) {
+    require("electron-log").info(`${error.message}`);
   }
 };
 

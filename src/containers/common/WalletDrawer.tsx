@@ -1,6 +1,6 @@
 import { useStoreActions, useStoreState } from "../../hooks";
 
-import { Drawer } from "@blueprintjs/core";
+import { Drawer, DrawerSize } from "@blueprintjs/core";
 import React, { useEffect } from "react";
 import { SettingsContainer } from "./Settings";
 import { useTranslation } from "react-i18next";
@@ -21,7 +21,7 @@ export const WalletDrawer = () => {
 
       try {
         await getNodeSettings();
-      } catch (error) {
+      } catch (error: any) {
         log.error(
           `Error trying to get Node Settings from the Backend: ${error.message}`
         );
@@ -40,7 +40,7 @@ export const WalletDrawer = () => {
       }}
       title={t("settings")}
       isOpen={showSettings}
-      size={Drawer.SIZE_SMALL}
+      size={DrawerSize.SMALL}
       style={{ paddingTop: "32px" }}
     >
       <SettingsContainer />

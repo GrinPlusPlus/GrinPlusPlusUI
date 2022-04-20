@@ -2,13 +2,15 @@ import React from "react";
 import { TextFileBox } from "../styled";
 
 import {
-  ContextMenu,
   Menu,
   MenuItem,
   OverlayToaster,
   Position,
   Intent,
 } from "@blueprintjs/core";
+
+import { ContextMenu2 } from "@blueprintjs/popover2";
+
 import { useTranslation } from "react-i18next";
 
 type TextFileComponentProps = {
@@ -19,7 +21,7 @@ export const TextFileComponent = ({ content }: TextFileComponentProps) => {
   const { t } = useTranslation();
 
   return (
-    <ContextMenu
+    <ContextMenu2
       className="bp4-dark"
       content={
         <Menu>
@@ -39,6 +41,6 @@ export const TextFileComponent = ({ content }: TextFileComponentProps) => {
       <div style={{ width: "100%", height: "calc(100vh - 0px)" }}>
         <TextFileBox defaultValue={content}></TextFileBox>
       </div>
-    </ContextMenu>
+    </ContextMenu2>
   );
 };

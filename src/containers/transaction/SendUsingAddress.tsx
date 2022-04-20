@@ -1,4 +1,4 @@
-import { Classes, Overlay, Spinner, Text } from "@blueprintjs/core";
+import { Classes, Overlay, Spinner, SpinnerSize, Text } from "@blueprintjs/core";
 import React from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
 
@@ -49,7 +49,7 @@ export const SendUsingAddressContainer = () => {
             transform: "translate(-50%, -50%)",
           }}
         >
-          <Spinner size={Spinner.SIZE_SMALL} />
+          <Spinner size={SpinnerSize.SMALL} />
           <Text>{t("sending_wait")}</Text>
         </div>
       </Overlay>

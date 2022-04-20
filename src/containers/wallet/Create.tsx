@@ -64,7 +64,7 @@ export const CreateWalletContainer = () => {
             icon: "warning-sign",
           });
         });
-    } catch (error) {
+    } catch (error: any) {
       require("electron-log").error(`Error Creating Wallet: ${error.message}`);
     }
   }, [username, password, create, seedLength]);

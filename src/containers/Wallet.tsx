@@ -74,7 +74,7 @@ export const WalletContainer = () => {
       if (token.length === 0) return;
       try {
         await updateWalletBalance(token);
-      } catch (error) {
+      } catch (error: any) {
         Log.error(`Error trying to get Wallet Balance: ${error.message}`);
       }
     }
@@ -85,7 +85,7 @@ export const WalletContainer = () => {
       if (token.length === 0) return;
       try {
         await updateWalletSummary(token);
-      } catch (error) {
+      } catch (error: any) {
         Log.error(`Error trying to get Wallet Summary: ${error.message}`);
       }
     }
@@ -103,7 +103,7 @@ export const WalletContainer = () => {
       } else {
         setWalletReachable(true);
       }
-    } catch (error) {
+    } catch (error: any) {
       Log.error(`Error trying to get Wallet Availability: ${error.message}`);
     }
   }, 20000);
@@ -129,7 +129,7 @@ export const WalletContainer = () => {
         }
         setSeed(_seed);
       }
-    } catch (error) {
+    } catch (error: any) {
       OverlayToaster.create({ position: Position.BOTTOM }).show({
         message: error.message,
         intent: Intent.DANGER,

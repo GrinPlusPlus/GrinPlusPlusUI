@@ -39,7 +39,7 @@ export const ConfigNode = (
           reject("Invalid status code <" + response.statusCode + ">");
         }
         resolve(JSON.parse(body).result);
-      } catch (error) {
+      } catch (error: any) {
         reject(`Service Unavailable ` + body);
       }
     });

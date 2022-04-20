@@ -4,6 +4,7 @@ import {
   Intent,
   Overlay,
   Spinner,
+  SpinnerSize,
   Text,
 } from "@blueprintjs/core";
 
@@ -80,7 +81,7 @@ export const PasswordPromptComponent = ({
               style={{ color: "black", marginTop: "10px" }}
               text={
                 waitingResponse ? (
-                  <Spinner size={Spinner.SIZE_SMALL} />
+                  <Spinner size={SpinnerSize.SMALL} />
                 ) : (
                   buttonText
                 )

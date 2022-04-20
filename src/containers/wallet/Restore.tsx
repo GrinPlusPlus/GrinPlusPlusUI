@@ -32,7 +32,7 @@ export const RestoreWalletContainer = () => {
       await restore({ username: username, password: password, seed: seed });
       require("electron-log").info("Wallet Restored.");
       history.push("/wallet");
-    } catch (error) {
+    } catch (error: any) {
       OverlayToaster.create({ position: Position.BOTTOM }).show({
         message: error.message,
         intent: Intent.DANGER,

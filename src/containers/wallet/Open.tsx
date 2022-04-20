@@ -50,7 +50,7 @@ export const OpenWalletContainer = () => {
       try {
         const _accounts = await getAccounts();
         setAccounts(_accounts);
-      } catch (error) {
+      } catch (error: any) {
         require("electron-log").error(
           `Error trying to get Accounts: ${error.message}`
         );
