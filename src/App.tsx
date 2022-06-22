@@ -1,6 +1,6 @@
 import "./App.scss";
 
-import { Route, MemoryRouter as Router, Switch } from "react-router-dom";
+import { Route, MemoryRouter as Router, Routes } from "react-router-dom";
 
 import { InitializerContainer } from "./containers/Initializer";
 import React from "react";
@@ -32,8 +32,9 @@ const App: React.FC = () => {
           await store.getActions().nodeSummary.checkStatus()
         );
     } catch (error) {
+      const message = error instanceof Error ? error.message : error;
       require("electron-log").error(
-        `Error trying to get Node Status: ${error.message}`
+        `Error trying to get Node Status: ${message}`
       );
       store.getActions().nodeSummary.updateStatus(undefined);
     }
@@ -50,7 +51,9 @@ const App: React.FC = () => {
         );
       }
     } catch (error) {
-      require("electron-log").error(`HealthCheck failed: ${error.message}`);
+      const message = error instanceof Error ? error.message : error;
+      require("electron-log").error(`HealthCheck failed:${message}`);
+      require("electron-log").error(message);
     }
   }, store.getState().nodeSummary.HealthCheckInterval);
 
@@ -64,16 +67,15 @@ const App: React.FC = () => {
           await store.getActions().nodeSummary.getConnectedPeers()
         );
     } catch (error) {
-      require("electron-log").error(
-        `Error trying to get Connected Peers: ${error.message}`
-      );
+      const message = error instanceof Error ? error.message : error;
+      require("electron-log").error(`Error trying to get Connected Peers: ${message}`);
     }
   }, 5000);
 
   return (
     <StoreProvider store={store}>
       <Router>
-        <Switch>
+        <Routes>
           <Route path="/wallet">
             <WalletContainer />
           </Route>
@@ -110,7 +112,7 @@ const App: React.FC = () => {
           <Route path="/">
             <InitializerContainer />
           </Route>
-        </Switch>
+        </Routes>
       </Router>
     </StoreProvider>
   );

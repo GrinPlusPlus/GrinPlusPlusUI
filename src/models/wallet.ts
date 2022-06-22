@@ -96,7 +96,7 @@ const wallet: WalletModel = {
       const { nodeService } = injections;
       const settings = getStoreState().settings.defaultSettings;
 
-      if (nodeService.isNodeRunning(1)) {
+      if (await nodeService.isNodeRunning(1)) {
         try {
           new nodeService.REST(
             settings.floonet,
@@ -112,7 +112,7 @@ const wallet: WalletModel = {
     }
   ),
   reSyncBlockchain: thunk(
-    async (actions, payload, { injections, getStoreState, getStoreActions }) => {
+    async (actions, payload, { injections, getStoreActions }) => {
       const { nodeService } = injections;
       getStoreActions().session.clean();
       nodeService.stopNode();
@@ -193,7 +193,8 @@ const wallet: WalletModel = {
           throw new Error(`Can't find path: ${defaultSettings.binaryPath}`);
         }
       } catch (error) {
-        require("electron-log").error(`Error running Node: ${error.message}`);
+        const message = error instanceof Error ? error.message : error;
+        require("electron-log").error(`Error running Node: ${message}`);
         actions.setIsNodeInstalled(false);
         actions.setInitializingError(true);
         actions.setWalletInitialized(false);
@@ -215,8 +216,8 @@ const wallet: WalletModel = {
           defaultSettings.floonet
         );
       } catch (error) {
-        require("electron-log").error(`Error running Node: ${error.message}`);
-
+        const message = error instanceof Error ? error.message : error;
+        require("electron-log").error(`Error running Node: ${message}`);
         actions.setIsNodeInstalled(false);
         actions.setInitializingError(true);
         actions.setWalletInitialized(false);

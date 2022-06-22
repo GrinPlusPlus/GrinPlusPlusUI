@@ -31,7 +31,7 @@ export const TransactionAmountContainer = () => {
         message: message,
         token: token,
         inputs: inputs,
-      }).catch((error: { message: string }) => {
+      }).catch((error: any) => {
         OverlayToaster.create({ position: Position.BOTTOM }).show({
           message: error.message,
           intent: Intent.WARNING,

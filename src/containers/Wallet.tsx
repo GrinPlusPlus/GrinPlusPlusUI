@@ -10,7 +10,7 @@ import { WalletSeedInputComponent } from "../components/shared/WalletSeedInput";
 import { useStoreActions, useStoreState } from "../hooks";
 import { useInterval } from "../helpers";
 
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Log from "electron-log";
 
@@ -75,7 +75,8 @@ export const WalletContainer = () => {
       try {
         await updateWalletBalance(token);
       } catch (error) {
-        Log.error(`Error trying to get Wallet Balance: ${error.message}`);
+        const message = error instanceof Error ? error.message : error;
+        Log.error(`Error trying to get Wallet Balance: ${message}`);
       }
     }
   }, 2000);
@@ -86,7 +87,8 @@ export const WalletContainer = () => {
       try {
         await updateWalletSummary(token);
       } catch (error) {
-        Log.error(`Error trying to get Wallet Summary: ${error.message}`);
+        const message = error instanceof Error ? error.message : error;
+        Log.error(`Error trying to get Wallet Summary: ${message}`);
       }
     }
   }, 2000);
@@ -104,7 +106,8 @@ export const WalletContainer = () => {
         setWalletReachable(true);
       }
     } catch (error) {
-      Log.error(`Error trying to get Wallet Availability: ${error.message}`);
+      const message = error instanceof Error ? error.message : error;
+      Log.error(`Error trying to get Wallet Availability: ${message}`);
     }
   }, 20000);
 
@@ -130,8 +133,9 @@ export const WalletContainer = () => {
         setSeed(_seed);
       }
     } catch (error) {
+      const message = error instanceof Error ? error.message : "Unknown error";
       OverlayToaster.create({ position: Position.BOTTOM }).show({
-        message: error.message,
+        message: message,
         intent: Intent.DANGER,
         icon: "warning-sign",
       });
@@ -152,7 +156,7 @@ export const WalletContainer = () => {
 
   return (
     <Suspense fallback={renderLoader()}>
-      {!isLoggedIn ? <Redirect to="/login" /> : null}
+      {!isLoggedIn ? <Navigate replace to="/login" /> : null}
       <AccountNavBarContainer />
       <div className="content">
         <DashboardContainer />
@@ -201,7 +205,7 @@ export const WalletContainer = () => {
         >
           <WalletSeedInputComponent
             seed={seed}
-            onWordChangeCb={() => {}}
+            onWordChangeCb={() => { }}
             length={seed.length}
           />
         </Alert>

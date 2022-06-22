@@ -1,10 +1,10 @@
 import Backend from "./electron-i18n-backend";
 import LanguageDetector from "i18next-browser-languagedetector";
-import { getResourcePath } from "./helpers";
+//import { getResourcePath } from "./helpers";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
-const fallbackLng = ["en"];
+const fallbackLng = "en";
 const availableLanguages = [
   "ch",
   "de",
@@ -50,17 +50,18 @@ i18n
   .use(LanguageDetector) // detect user language
   .use(initReactI18next) // pass the i18n instance to react-i18next.
   .init({
-    fallbackLng, // if user computer language is not on the list of available languages, than we will be using the fallback language specified earlier
+    fallbackLng: fallbackLng, // if user computer language is not on the list of available languages, than we will be using the fallback language specified earlier
     debug: true,
-    whitelist: availableLanguages,
+    ns: availableLanguages,
     detection: options,
     interpolation: {
       escapeValue: false,
     },
     backend: {
       // for all available options read the backend's repository readme file
-      loadPath: getResourcePath("./locales/{{lng}}/{{ns}}.json"),
+      //loadPath: getResourcePath("./locales/{{lng}}/{{ns}}.json"),
+      loadPath: "/home/david/Projects/GrinPlusPlusUI/public/locales/{{lng}}/{{ns}}.json"
     },
   });
 
-export default i18n;
+export default i18n;  

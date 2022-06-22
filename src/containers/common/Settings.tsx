@@ -46,8 +46,9 @@ export const SettingsContainer = () => {
     try {
       await reSyncBlockchain();
     } catch (error) {
+      const message = error instanceof Error ? error.message : error;
       require("electron-log").error(
-        `Error trying to ReSync Blockchain: ${error.message}`
+        `Error trying to ReSync Blockchain: ${message}`
       );
     }
   }, [toggleConfirmationDialog, reSyncBlockchain]);

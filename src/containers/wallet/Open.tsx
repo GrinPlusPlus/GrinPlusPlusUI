@@ -11,9 +11,7 @@ import { useStoreActions, useStoreState } from "../../hooks";
 
 import { LoadingComponent } from "../../components/extras/Loading";
 
-import { User } from "@blueprintjs/icons";
-
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 const NoAccountsComponent = React.lazy(() =>
   import("../../components/extras/NoAccounts").then((module) => ({
@@ -53,8 +51,9 @@ export const OpenWalletContainer = () => {
         const _accounts = await getAccounts();
         setAccounts(_accounts);
       } catch (error) {
+        const message = error instanceof Error ? error.message : error;
         require("electron-log").error(
-          `Error trying to get Accounts: ${error.message}`
+          `Error trying to get Accounts: ${message}`
         );
       }
     })();
@@ -71,7 +70,7 @@ export const OpenWalletContainer = () => {
           "User logged in... redirecting to Wallet..."
         );
       })
-      .catch((error: { message: string }) => {
+      .catch((error: any) => {
         OverlayToaster.create({ position: Position.BOTTOM }).show({
           message: error.message,
           intent: Intent.DANGER,
@@ -97,7 +96,7 @@ export const OpenWalletContainer = () => {
               }}
             >
               <div>
-                <Icon icon={<User />} style={{ marginBottom: "5px" }} />
+                <Icon icon="user" style={{ marginBottom: "5px" }} />
               </div>
               <div>
                 <Text>{account}</Text>
@@ -115,7 +114,7 @@ export const OpenWalletContainer = () => {
 
   return (
     <Suspense fallback={renderLoader()}>
-      {isLoggedIn ? <Redirect to="/wallet" /> : null}
+      {isLoggedIn ? <Navigate to="/wallet" /> : null}
       {accounts === undefined ? (
         <LoadingComponent />
       ) : accounts.length === 0 ? (

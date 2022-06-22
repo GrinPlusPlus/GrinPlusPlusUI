@@ -82,7 +82,8 @@ export const WalletActivitiyContainer = () => {
         });
         require("electron-log").info("Canceled!");
       } catch (error) {
-        require("electron-log").error(`Error trying to Cancel Tx: ${error.message}`);
+        const message = error instanceof Error ? error.message : error;
+        require("electron-log").error(`Error trying to Cancel Tx: ${message}`);
       }
     },
     [token, cancelTransaction, setSelectedTxToCancel]
@@ -114,7 +115,8 @@ export const WalletActivitiyContainer = () => {
         });
         require("electron-log").info("Reposted!");
       } catch (error) {
-        require("electron-log").error(`Error trying to Repost Tx: ${error.message}`);
+        const message = error instanceof Error ? error.message : error;
+        require("electron-log").error(`Error trying to Repost Tx: ${message}`);
       }
     },
     [token, repostTransaction, setSelectedTxToRepost, t]
@@ -151,7 +153,7 @@ export const WalletActivitiyContainer = () => {
   const getTransactionsJsonCb = useCallback(
     () => {
       require("electron-log").info("exporting transaction...");
-      let txs: ITransaction[] =  [];
+      const txs: ITransaction[] =  [];
       Object.assign(txs, getAllTransactions);
       txs.forEach(function(t){ delete t.slatepackMessage; })
       const content = JSON.stringify(txs);

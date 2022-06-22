@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import { useStoreActions, useStoreState } from "../hooks";
 
 import { LoadingComponent } from "../components/extras/Loading";
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 const NavBarContainer = React.lazy(() =>
@@ -34,7 +34,7 @@ export const SendGrinContainer = () => {
 
   return (
     <Suspense fallback={renderLoader()}>
-      {!isLoggedIn ? <Redirect to="/login" /> : null}
+      {!isLoggedIn ? <Navigate replace to="/login" /> : null}
       <NavBarContainer
         title={`${t("send_grins")}`}
         onExit={() => setInitialValues()}

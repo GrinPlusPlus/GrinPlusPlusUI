@@ -221,7 +221,7 @@ export const cutAddress = (address: string): string => {
 
 export const getResourcePath = (relativePath: string): string => {
   const electron = require("electron");
-  const app = electron.app || electron.remote.app;
+  const app = electron.app;
   if (app.isPackaged) {
     return require("path").join(__dirname, relativePath);
   } else {
