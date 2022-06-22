@@ -8,7 +8,7 @@ import {
 } from "@blueprintjs/core";
 
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 type NavBarProps = {
   title: string;
@@ -16,7 +16,7 @@ type NavBarProps = {
 };
 
 export const NavigationBarContainer = ({ title, onExit }: NavBarProps) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   return (
     <Navbar>
       <NavbarGroup align={Alignment.LEFT}>
@@ -25,7 +25,7 @@ export const NavigationBarContainer = ({ title, onExit }: NavBarProps) => {
           icon="arrow-left"
           onClick={() => {
             if (onExit) onExit();
-            history.goBack();
+            navigate(-1)
           }}
         />
         <NavbarDivider />

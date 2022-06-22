@@ -269,7 +269,7 @@ const sendCoinsModel: SendCoinsModel = {
             utilsService.formatGrinAmount(response.fee)
           );
           // User is trying to send the max...
-          if(payload.amount === undefined) {
+          if (payload.amount === undefined) {
             getStoreActions().sendCoinsModel.setAmount(
               utilsService.formatGrinAmount(response.amount).toString()
             );
@@ -288,35 +288,31 @@ const sendCoinsModel: SendCoinsModel = {
 
       const destinationAddress = payload.address.replace(/\/?$/, ""); //removing trailing /
 
-      try {
-        const response = await new ownerService.RPC(
-          defaultSettings.floonet,
-          defaultSettings.protocol,
-          defaultSettings.ip
-        ).sendCoins(
-          payload.token,
-          payload.amount,
-          payload.message,
-          payload.strategy,
-          payload.inputs,
-          payload.method,
-          payload.grinJoinAddress,
-          destinationAddress
-        );
-        if (typeof response === "string") {
-          return response;
-        }
+      const response = await new ownerService.RPC(
+        defaultSettings.floonet,
+        defaultSettings.protocol,
+        defaultSettings.ip
+      ).sendCoins(
+        payload.token,
+        payload.amount,
+        payload.message,
+        payload.strategy,
+        payload.inputs,
+        payload.method,
+        payload.grinJoinAddress,
+        destinationAddress
+      );
+      if (typeof response === "string") {
+        return response;
+      }
 
-        actions.setInitialValues(); // alles gut!
+      actions.setInitialValues(); // alles gut!
 
-        if (response.status === "SENT") {
-          actions.setReturnedSlatepack(response.slatepack);
-          return "SENT";
-        } else {
-          return "FINALIZED";
-        }
-      } catch (error) {
-        return error;
+      if (response.status === "SENT") {
+        actions.setReturnedSlatepack(response.slatepack);
+        return "SENT";
+      } else {
+        return "FINALIZED";
       }
     }
   ),
@@ -332,7 +328,7 @@ const sendCoinsModel: SendCoinsModel = {
             token: getStoreState().session.token,
             inputs: getStoreState().sendCoinsModel.inputs,
           })
-          .catch((error: { message: string }) => {
+          .catch((error: { message: string; }) => {
             actions.setError(error.message);
           });
       }
@@ -353,7 +349,7 @@ const sendCoinsModel: SendCoinsModel = {
             token: getStoreState().session.token,
             inputs: getStoreState().sendCoinsModel.inputs,
           })
-          .catch((error: { message: string }) => {
+          .catch((error: { message: string; }) => {
             actions.setError(error.message);
           });
       }

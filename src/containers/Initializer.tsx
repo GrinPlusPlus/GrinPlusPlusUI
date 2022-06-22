@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useStoreActions, useStoreState } from "../hooks";
 
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { InitComponent } from "../components/extras/Init";
 
@@ -28,14 +28,15 @@ export const InitializerContainer = () => {
           log.info("Backend is not Running.");
         }
       } catch (error) {
-        log.error(`Error trying to Initialize the Backend: ${error.message}`);
+        const message = error instanceof Error ? error.message : error;
+        log.error(`Error trying to Initialize the Backend: ${message}`);
       }
     })();
   }, [language, initializeWallet, i18n]);
 
   return (
     <div>
-      {isWalletInitialized ? <Redirect to="/login" /> : null}
+      {isWalletInitialized ? <Navigate replace to="/login" /> : null}
       <InitComponent error={initializingError} message={t(`${message}`)} />
     </div>
   );

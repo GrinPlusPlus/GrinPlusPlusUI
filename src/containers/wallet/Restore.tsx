@@ -4,10 +4,10 @@ import { useStoreActions, useStoreState } from "../../hooks";
 
 import { Intent } from "@blueprintjs/core";
 import { RecoverWalletComponent } from "./../../components/wallet/recover/RecoverWallet";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const RestoreWalletContainer = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const {
     username,
@@ -31,15 +31,16 @@ export const RestoreWalletContainer = () => {
     try {
       await restore({ username: username, password: password, seed: seed });
       require("electron-log").info("Wallet Restored.");
-      history.push("/wallet");
+       navigate("/wallet");
     } catch (error) {
+      const message = error instanceof Error ? error.message : "Unknown error";
       OverlayToaster.create({ position: Position.BOTTOM }).show({
-        message: error.message,
+        message: message,
         intent: Intent.DANGER,
         icon: "warning-sign",
       });
       require("electron-log").error(
-        `Error trying to Restore Wallet: ${error.message}`
+        `Error trying to Restore Wallet: ${message}`
       );
     }
   }, [username, password, seed, restore, history]);

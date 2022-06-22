@@ -273,7 +273,8 @@ const walletSummary: WalletSummaryModel = {
         );
         return reachable;
       } catch (error) {
-        throw new Error(error);
+        if(error instanceof Error) throw error;
+        throw new Error("Unknown error");
       }
     }
   ),

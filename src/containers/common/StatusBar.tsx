@@ -1,7 +1,7 @@
 import { Alert, Intent } from "@blueprintjs/core";
 import React, { Suspense } from "react";
 
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useStoreState } from "../../hooks";
 import { useTranslation } from "react-i18next";
 
@@ -15,7 +15,7 @@ const renderLoader = () => null;
 
 export const StatusBarContainer = () => {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const { intent, status, network } = useStoreState(
     (state) => state.nodeSummary
@@ -29,7 +29,7 @@ export const StatusBarContainer = () => {
         confirmButtonText={t("restart_wallet")}
         isOpen={!nodeHealthCheck}
         intent={Intent.WARNING}
-        onClose={() => history.push("/")}
+        onClose={() =>  navigate("/")}
       >
         <p>{t("node_process_not_running")}</p>
       </Alert>

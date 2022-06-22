@@ -8,14 +8,14 @@ import {
 
 import { LanguageMenuContainer } from "./LanguageMenu";
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useStoreActions } from "../../hooks";
 import { useTranslation } from "react-i18next";
 
 export const WalletNavBarContainer = () => {
   const { t } = useTranslation();
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const { toggleSettings } = useStoreActions((actions) => actions.ui);
 
@@ -33,7 +33,7 @@ export const WalletNavBarContainer = () => {
         <Button
           minimal={true}
           icon="console"
-          onClick={() => history.push("/status")}
+          onClick={() =>  navigate("/status")}
         />
       </NavbarGroup>
       <NavbarGroup align={Alignment.RIGHT}>
@@ -41,21 +41,21 @@ export const WalletNavBarContainer = () => {
           minimal={true}
           icon="build"
           text={t("create")}
-          onClick={() => history.push("/create")}
+          onClick={() =>  navigate("/create")}
         />
         <NavbarDivider />
         <Button
           minimal={true}
           icon="layers"
           text={t("restore")}
-          onClick={() => history.push("/restore")}
+          onClick={() =>  navigate("/restore")}
         />
         <NavbarDivider />
         <LanguageMenuContainer />
         <Button
           minimal={true}
           icon="lifesaver"
-          onClick={() => history.push("/help")}
+          onClick={() =>  navigate("/help")}
         />
       </NavbarGroup>
     </Navbar>

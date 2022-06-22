@@ -11,10 +11,10 @@ import { useStoreActions, useStoreState } from "./../../hooks";
 import { LanguageMenuContainer } from "../common/LanguageMenu";
 import React from "react";
 import { WalletUsername } from "./../../components/styled";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const AccountNavBarContainer = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const { username, token } = useStoreState((state) => state.session);
   const { toggleSettings } = useStoreActions((actions) => actions.ui);
@@ -31,7 +31,7 @@ export const AccountNavBarContainer = () => {
         <Button
           minimal={true}
           icon="console"
-          onClick={() => history.push("/status")}
+          onClick={() =>  navigate("/status")}
         />
         <NavbarDivider />
         <LanguageMenuContainer />
@@ -54,7 +54,8 @@ export const AccountNavBarContainer = () => {
               await logout(token);
               require("electron-log").info("Logged out!");
             } catch (error) {
-              require("electron-log").info(`Trying to Logout: ${error.message}`);
+              const message = error instanceof Error ? error.message : error;
+              require("electron-log").info(`Trying to Logout: ${message}`);
             }
           }}
         />
@@ -62,7 +63,7 @@ export const AccountNavBarContainer = () => {
         <Button
           minimal={true}
           icon="lifesaver"
-          onClick={() => history.push("/help")}
+          onClick={() =>  navigate("/help")}
         />
       </NavbarGroup>
     </Navbar>

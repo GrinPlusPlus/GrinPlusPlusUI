@@ -3,7 +3,7 @@ import React, { Suspense, useCallback } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
 
 import { hideSeedWords } from "../../helpers";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const CreateWalletComponent = React.lazy(() =>
   import("./../../components/wallet/create/CreateWallet").then((module) => ({
@@ -22,7 +22,7 @@ const WalletSeedConfirmation = React.lazy(() =>
 const renderLoader = () => null;
 
 export const CreateWalletContainer = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const {
     username,
     password,
@@ -57,7 +57,7 @@ export const CreateWalletContainer = () => {
             "User created... redirecting to Wallet..."
           );
         })
-        .catch((error: { message: string }) => {
+        .catch((error: any) => {
           OverlayToaster.create({ position: Position.BOTTOM }).show({
             message: error.message,
             intent: Intent.DANGER,
@@ -65,7 +65,8 @@ export const CreateWalletContainer = () => {
           });
         });
     } catch (error) {
-      require("electron-log").error(`Error Creating Wallet: ${error.message}`);
+      const message = error instanceof Error ? error.message : error;
+      require("electron-log").error(`Error Creating Wallet: ${message}`);
     }
   }, [username, password, create, seedLength]);
 
@@ -76,7 +77,7 @@ export const CreateWalletContainer = () => {
       setPasswordConfirmation("");
       setHiddenSeed([]);
       setGeneratedSeed([]);
-      history.push("/wallet");
+       navigate("/wallet");
     }
     setHiddenSeed(hideSeedWords({ seed: [...generatedSeed], words: 5 }));
   }, [

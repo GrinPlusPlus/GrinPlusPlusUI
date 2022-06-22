@@ -24,7 +24,7 @@ export const HelpComponent = () => {
           C:\Users\[USERNAME]\AppData\Local\Programs\GrinPlusPlus\resources\app.asar.unpacked\bin\
         </code>{" "}
         en typ dan <code>dir GrinNode.exe</code>. Type daarna {" "}
-        <code>GrinNode.exe</code> en de 'Enter' toets. Indien de vorige stap
+        <code>GrinNode.exe</code> en de &apos;Enter&apos; toets. Indien de vorige stap
         faalt, zou u meer informatie moeten zien over het probleem. Indien
         u wenst kan u een (Engelstalig) bericht sturen over het probleem
         naar {" "}
@@ -47,16 +47,16 @@ export const HelpComponent = () => {
       </H3>
       <p>
         Wouw! dit zou nooit mogen gebeuren. Dit betekent dat GrinNode.exe
-        plots gestopt is met werken. U kan een 'Issue' aanmaken op Github.com
+        plots gestopt is met werken. U kan een &apos;Issue&apos; aanmaken op Github.com
         of dit laten weten in de het Grin++ Telegram Channel.
       </p>
       <br />
-      <H3>Blijft hangen op &quot;"STATUS: Waiting for Peers"&quot;</H3>
+      <H3>Blijft hangen op &quot;STATUS: Waiting for Peers&quot;</H3>
       <p>
         Dit kan soms gebeuren na het upgraden van Grin++. Dat je blijft hangen
-        op &quot;"STATUS: Waiting for Peers"&quot;. Om dit op te lossen kan u twee
+        op &quot;STATUS: Waiting for Peers&quot;. Om dit op te lossen kan u twee
         dingen doen. Het eerste wat u kan doen is een blockchain <b>(Her)Synchronisatie</b>
-        door te klikken op de instellingen en op '...Synchronyseren" onderaan bij de <b>Node Acties</b>.
+        door te klikken op de instellingen en op &quot;Synchronyseren&quot; onderaan bij de <b>Node Acties</b>.
         Als dit niet lukt kan je hetvolgende doen: Sluit Grin++, ga naar map {" "}
         <code>C:\Users\[USERNAME]\.GrinPP\MAINNET</code>, en wis de
         <code>NODE</code> map. En daarna Grin++ terug starten.
