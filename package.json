@@ -1,7 +1,7 @@
 {
-  "name": "GrinPlusPlus",
+  "name": "grinplusplus",
   "productName": "Grin++",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "description": "Grin++ Wallet",
   "author": {
     "name": "David Burkett",
@@ -172,7 +172,7 @@
     }
   },
   "scripts": {
-    "start": "craco start start",
+    "start": "craco start",
     "build": "craco build",
     "test": "craco test",
     "electron": "electron .",
