@@ -83,18 +83,14 @@ function isRunning(win, mac, linux) {
 async function closeGrinNode(cb) {
   var running = isRunning("GrinNode.exe", "GrinNode", "GrinNode");
   if (!running) {
-    log.info("GrinNode does not appear to be running. Calling app.quit()");
     cb();
   } else {
-    log.info("GrinNode seems to be running...");
     const filePath = require("path").join(
       require("electron").app.getAppPath(),
       "defaults.json"
     );
     try {
       let settings = JSON.parse(require("fs").readFileSync(filePath, "utf8"));
-      log.info("==============================");
-      log.info("Shutdown API called");
       await requestPromise({
         hostname: settings.ip,
         port: settings.floonet
@@ -103,16 +99,12 @@ async function closeGrinNode(cb) {
         path: "/v1/shutdown",
         method: "post",
       });
-      log.info("==============================");
-
       let waitAttempts = 0;
       let waitForCloseInterval = setInterval(() => {
         if (!isRunning("GrinNode.exe", "GrinNode", "GrinNode")) {
-          log.info("GrinNode is no longer running");
           clearInterval(waitForCloseInterval);
           cb();
         } else if (++waitAttempts === 20) {
-          log.info("GrinNode is still running after 10 seconds");
           clearInterval(waitForCloseInterval);
           cb();
         }
@@ -233,7 +225,6 @@ app.on("before-quit", async (event) => {
       mainWindow.close();
 
       await closeGrinNode(() => {
-        log.info("GrinNode stopped. Calling app.quit()");
         nodeClosed = true;
         app.quit();
       });
@@ -261,7 +252,6 @@ app.on("window-all-closed", async (event) => {
   event.preventDefault();
   if (process.platform !== "darwin") {
     await closeGrinNode(() => {
-      log.info("GrinNode stopped. Calling app.quit()");
       app.quit();
     });
   }

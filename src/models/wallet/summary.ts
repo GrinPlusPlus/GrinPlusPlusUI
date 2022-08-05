@@ -132,7 +132,7 @@ const walletSummary: WalletSummaryModel = {
         return tx;
       });
     }
-  }),
+  }),  
   updateBalance: action((state, balance) => {
     if (balance === undefined) {
       state.spendable = 0;
@@ -168,8 +168,8 @@ const walletSummary: WalletSummaryModel = {
           });
         })
         .catch((error) => {
-          require("electron-log").info(
-            `trying to get Wallet Summary: ${error}`
+          require("electron-log").error(
+            `Error trying to get Wallet Summary: ${error}`
           );
         });
       actions.setWaitingResponse(false);

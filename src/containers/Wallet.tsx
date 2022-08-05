@@ -56,7 +56,7 @@ export const WalletContainer = () => {
     (state) => state.passwordPrompt
   );
   const { setAlert } = useStoreActions((actions) => actions.ui);
-  const { setSeed } = useStoreActions((state) => state.session);
+  const { setSeed, updateWalletAddress } = useStoreActions((state) => state.session);
   const {
     updateWalletSummary,
     updateWalletBalance,
@@ -68,6 +68,17 @@ export const WalletContainer = () => {
   const { setAction: setWalletAction, getWalletSeed } = useStoreActions(
     (state) => state.wallet
   );
+  
+  useInterval(async () => {
+    if (token !== undefined && token.length > 0) {
+      if (token.length === 0) return;
+      try {
+        await updateWalletAddress(token);
+      } catch (error) {
+        Log.error(`Error trying to get Wallet address: ${error.message}`);
+      }
+    }
+  }, 2000);
 
   useInterval(async () => {
     if (token !== undefined && token.length > 0) {
@@ -106,7 +117,7 @@ export const WalletContainer = () => {
     } catch (error) {
       Log.error(`Error trying to get Wallet Availability: ${error.message}`);
     }
-  }, 20000);
+  }, 60000);
 
   const backupSeed = useCallback(async () => {
     if (username === undefined || password === undefined) return;

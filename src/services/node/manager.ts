@@ -193,14 +193,7 @@ export const isNodeRunning = async function (
   try {
     isRunning = await retryAsync(
       async () => {
-        log.info(`Checking if ${command} is running...`);
-        const running = await isProcessRunning(command);
-        if (running) {
-          log.info(`${command} is running`);
-        } else {
-          log.info(`${command} is NOT running`);
-        }
-        return running;
+        return await isProcessRunning(command);
       },
       { delay: 1000, maxTry: retries }
     );
@@ -219,14 +212,7 @@ export const isTorRunning = async function (
   try {
     isRunning = await retryAsync(
       async () => {
-        log.info(`Checking if ${command} is running...`);
-        const running = await isProcessRunning(command);
-        if (running) {
-          log.info(`${command} is running`);
-        } else {
-          log.info(`${command} is NOT running`);
-        }
-        return running;
+        return await isProcessRunning(command);
       },
       { delay: 1000, maxTry: retries }
     );

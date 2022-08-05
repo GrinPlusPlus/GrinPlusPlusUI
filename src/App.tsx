@@ -41,11 +41,10 @@ const App: React.FC = () => {
 
   useInterval(async () => {
     try {
-      require("electron-log").info("Performing HealthCheck...");
       if (await store.getActions().wallet.checkNodeHealth()) {
         require("electron-log").info("HealthCheck passed, all good!");
       } else {
-        require("electron-log").info(
+        require("electron-log").error(
           "HealthCheck failed: Backend is not Running"
         );
       }

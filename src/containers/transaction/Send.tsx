@@ -84,8 +84,6 @@ export const SendContainer = () => {
 
   const { getWalletSeed } = useStoreActions((state) => state.wallet);
 
-  const { updateLogs } = useStoreActions((actions) => actions.wallet);
-
   const { sendGrins, setWaitingResponse } = useStoreActions(
     (actions) => actions.sendCoinsModel
   );
@@ -110,10 +108,6 @@ export const SendContainer = () => {
         password: passwordPrompt,
       });
       setWaitingResponsePrompt(false);
-
-      require("electron-log").info(`Trying to Send ${amount} to ${address}...`);
-      updateLogs(`${t("sending")} ${amount} ツ...`);
-
       setUsernamePrompt(undefined); // to close prompt
       setPasswordPrompt(undefined); // to clean prompt
       setWaitingResponse(true);
@@ -144,15 +138,12 @@ export const SendContainer = () => {
         });
       }
       setWaitingResponse(false);
-      updateLogs(toast);
-      require("electron-log").info(toast);
 
       if (sent === "FINALIZED") history.push("/wallet");
     } catch (error) {
       setWaitingResponse(false);
       setWaitingResponsePrompt(false);
       require("electron-log").error(`Error sending: ${error.message}`);
-      updateLogs(error);
       OverlayToaster.create({ position: Position.BOTTOM }).show({
         message: error.message,
         intent: Intent.DANGER,
@@ -169,7 +160,6 @@ export const SendContainer = () => {
     history,
     setWaitingResponse,
     t,
-    updateLogs,
     setUsernamePrompt,
     setPasswordPrompt,
     spendable,

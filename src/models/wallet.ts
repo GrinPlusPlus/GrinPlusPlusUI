@@ -43,7 +43,6 @@ export interface WalletModel {
     StoreModel
   >;
   replaceLogs: Action<WalletModel, string>;
-  updateLogs: Action<WalletModel, string>;
   nodeHealthCheck: boolean;
   setNodeHealthCheck: Action<WalletModel, boolean>;
 }
@@ -82,11 +81,6 @@ const wallet: WalletModel = {
   replaceLogs: action((state, logs) => {
     state.logs = logs;
   }),
-  updateLogs: action((state, payload) => {
-    state.logs = `${
-      state.logs
-    }[${new Date().toLocaleTimeString()}] ${payload}\n`;
-  }),
   restartNode: thunk(
     async (
       actions,
@@ -96,7 +90,7 @@ const wallet: WalletModel = {
       const { nodeService } = injections;
       const settings = getStoreState().settings.defaultSettings;
 
-      if (nodeService.isNodeRunning(1)) {
+      if (await nodeService.isNodeRunning(1)) {
         try {
           new nodeService.REST(
             settings.floonet,
@@ -208,7 +202,6 @@ const wallet: WalletModel = {
       }
 
       try {
-        require("electron-log").info("Running Node...");
         nodeService.runNode(
           defaultSettings.mode,
           require("path").normalize(defaultSettings.binaryPath),

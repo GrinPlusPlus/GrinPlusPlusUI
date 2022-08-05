@@ -54,7 +54,7 @@ export const CreateWalletContainer = () => {
       })
         .then(() => {
           require("electron-log").info(
-            "User created... redirecting to Wallet..."
+            "User created... redirecting to Dashboard..."
           );
         })
         .catch((error: { message: string }) => {

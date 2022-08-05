@@ -31,6 +31,16 @@ export interface SessionModel {
   clean: Thunk<SessionModel, undefined, Injections, StoreModel>;
   setEncodedAddress: Action<SessionModel, string>;
   setDisplayQRCode: Action<SessionModel, boolean>;
+  updateAddress: Action<
+    SessionModel,
+    {slatepack: string, onion: string, key: string}
+  >;
+  updateWalletAddress: Thunk<
+    SessionModel,
+    string,
+    Injections,
+    StoreModel
+  >;
 }
 
 const session: SessionModel = {
@@ -93,11 +103,31 @@ const session: SessionModel = {
       slatepack_address: "",
     });
   }),
+  updateWalletAddress: thunk(
+    async (actions, token, { injections, getStoreState }) => {
+      const { ownerService } = injections;
+      const apiSettings = getStoreState().settings.defaultSettings;
+
+      await new ownerService.RPC(
+        apiSettings.floonet,
+        apiSettings.protocol,
+        apiSettings.ip
+      )
+        .getWalletAddress(token)
+        .then((address) => {
+          actions.updateAddress(address);
+        });
+    }
+  ),
   setDisplayQRCode: action((state, payload) => {
     state.displayQRCode = payload;
   }),
   setEncodedAddress: action((state, payload) => {
     state.encodedAddress = payload;
+  }),
+  updateAddress: action((state, address) => {
+    state.slatepackAddress = address.slatepack;
+    state.address = address.onion;
   }),
 };
 

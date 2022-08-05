@@ -60,7 +60,7 @@ const settings: SettingsModel = {
   maximumPeers: 50,
   confirmations: 10,
   nodeDataPath: "/.GrinPP/",
-  nodeBinaryPath: "./bin/",
+  nodeBinaryPath: "../GrinPlusPlus/bin/Release/",
   useGrinJoin: false,
   grinJoinAddress: "grinjoin5pzzisnne3naxx4w2knwxsyamqmzfnzywnzdk7ra766u7vid",
   grinChckAddress: "http://74.208.28.172:8443/check/",
