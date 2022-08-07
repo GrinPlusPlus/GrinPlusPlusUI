@@ -75,12 +75,11 @@ export const WalletActivitiyContainer = () => {
     async (txId: number) => {
       setSelectedTxToCancel(-1); // not the best practice, but it's faster
       try {
-        require("electron-log").info(`Trying to Cancel Tx with Id: ${txId}`);
         await cancelTransaction({
           token: token,
           txId: txId,
         });
-        require("electron-log").info("Canceled!");
+        require("electron-log").info(`Canceled Transaction with Id: ${txId}`);
       } catch (error) {
         require("electron-log").error(`Error trying to Cancel Tx: ${error.message}`);
       }
