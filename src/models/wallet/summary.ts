@@ -264,12 +264,12 @@ const walletSummary: WalletSummaryModel = {
     state.walletReachable = undefined;
   }),
   checkWalletAvailability: thunk(
-    async (actions, wallet, { injections, getStoreState }) => {
+    async (actions, address, { injections, getStoreState }) => {
       const { foreignService } = injections;
       try {
         const reachable = await foreignService.GrinChck(
           getStoreState().settings.grinChckAddress,
-          wallet
+          address
         );
         return reachable;
       } catch (error) {

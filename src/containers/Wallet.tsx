@@ -78,7 +78,7 @@ export const WalletContainer = () => {
         Log.error(`Error trying to get Wallet address: ${error.message}`);
       }
     }
-  }, 2000);
+  }, 3000);
 
   useInterval(async () => {
     if (token !== undefined && token.length > 0) {
@@ -89,7 +89,7 @@ export const WalletContainer = () => {
         Log.error(`Error trying to get Wallet Balance: ${error.message}`);
       }
     }
-  }, 2000);
+  }, 4000);
 
   useInterval(async () => {
     if (token !== undefined && token.length > 0) {
@@ -100,24 +100,25 @@ export const WalletContainer = () => {
         Log.error(`Error trying to get Wallet Summary: ${error.message}`);
       }
     }
-  }, 2000);
+  }, 4000);
 
   useInterval(async () => {
     if (!isLoggedIn) return;
-    Log.info(`Checking address: http://${address}.onion/`);
+    Log.info(`Checking wallet reachability...`);
 
     try {
-      if (!(await checkWalletAvailability(`http://${address}.onion/`))) {
-        if (!isLoggedIn) return;
-        Log.error("Wallet is not Reachable");
+      if (!isLoggedIn) return;
+      if (!(await checkWalletAvailability(address))) {
+        Log.error("Wallet is not reachable");
         setWalletReachable(false);
       } else {
         setWalletReachable(true);
+        Log.info("Wallet is reachable");
       }
     } catch (error) {
-      Log.error(`Error trying to get Wallet Availability: ${error.message}`);
+      Log.error(`Error trying to get wallet reachability: ${error.message}`);
     }
-  }, 60000);
+  }, 40000);
 
   const backupSeed = useCallback(async () => {
     if (username === undefined || password === undefined) return;
