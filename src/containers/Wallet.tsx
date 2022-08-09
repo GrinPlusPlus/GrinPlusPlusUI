@@ -104,7 +104,7 @@ export const WalletContainer = () => {
 
   useInterval(async () => {
     if (!isLoggedIn) return;
-    Log.info(`Checking wallet reachability...`);
+    Log.info(`Testing wallet reachability...`);
 
     try {
       if (!isLoggedIn) return;
