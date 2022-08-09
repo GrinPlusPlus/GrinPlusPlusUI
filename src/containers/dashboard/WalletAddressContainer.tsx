@@ -74,7 +74,7 @@ export const WalletAddressContainer = () => {
         className="bp4-dark"
         cancelButtonText={t("cancel")}
         confirmButtonText={t("continue")}
-        icon="refresh"
+        icon="key"
         intent={Intent.WARNING}
         isOpen={isConfirmationDialogOpen}
         onCancel={toggleDialog}
