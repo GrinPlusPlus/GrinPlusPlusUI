@@ -135,5 +135,7 @@
   "response": "Response",
   "copy_to_clipboard": "Copy to Clipboard",
   "paste_from_clipboard": "Paste from Clipboard",
-  "export": "Export"
+  "export": "Export",
+  "generate_new_address": "Generate new Slatepack Address",
+  "new_address_confirmation": "Are you sure you want to generate a new Slatepack Address?"
 }

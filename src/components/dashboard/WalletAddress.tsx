@@ -13,10 +13,12 @@ import { useTranslation } from "react-i18next";
 type WalletAddressComponentProps = {
   slatepackAddress: string;
   isWalletReachable: boolean | undefined;
+  onGenerateNewAddressClickedCb: () => void
 };
 export const WalletAddressComponent = ({
   slatepackAddress,
   isWalletReachable,
+  onGenerateNewAddressClickedCb ,
 }: WalletAddressComponentProps) => {
   const { t } = useTranslation();
 
@@ -40,8 +42,8 @@ export const WalletAddressComponent = ({
           isWalletReachable === undefined
             ? Intent.NONE
             : isWalletReachable
-            ? Intent.SUCCESS
-            : Intent.WARNING
+              ? Intent.SUCCESS
+              : Intent.WARNING
         }
         text={slatepackAddress}
       />
@@ -57,6 +59,13 @@ export const WalletAddressComponent = ({
             intent: Intent.SUCCESS,
           });
         }}
+      />
+      <Button
+        minimal={true}
+        className="bp4-dark"
+        style={{ color: "black" }}
+        icon="refresh"
+        onClick={onGenerateNewAddressClickedCb}
       />
     </ControlGroup>
   );

@@ -117,10 +117,10 @@ export class OwnerRPCApi extends BaseApi {
       response.error
         ? response.error.message
         : {
-            slate: response.result.slate,
-            slatepack: response.result.slatepack,
-            status: response.result.status,
-          }
+          slate: response.result.slate,
+          slatepack: response.result.slatepack,
+          status: response.result.status,
+        }
     );
   }
 
@@ -191,7 +191,7 @@ export class OwnerRPCApi extends BaseApi {
     );
   }
 
-  async getWalletAddress(token: string): Promise<{slatepack: string, onion: string, key: string}> {
+  async getWalletAddress(token: string): Promise<{ slatepack: string, onion: string, key: string }> {
     return await this.makeRPCRequest(
       this.getRequestURL("get_address"),
       "get_slatepack_address",
@@ -201,7 +201,21 @@ export class OwnerRPCApi extends BaseApi {
     ).then((response) => {
       return response.result?.slatepack
         ? response.result
-        : {};
+        : { slatepack: "", onion: "", key: "" };
+    });
+  }
+
+  async generateAddress(token: string): Promise<{ slatepack: string, onion: string, key: string }> {
+    return await this.makeRPCRequest(
+      this.getRequestURL("new_address"),
+      "get_new_slatepack_address",
+      {
+        session_token: token,
+      }
+    ).then((response) => {
+      return response.result?.slatepack
+        ? response.result
+        : { slatepack: "", onion: "", key: "" };
     });
   }
 
@@ -298,9 +312,9 @@ export class OwnerRPCApi extends BaseApi {
       transactions = response.result.txs.reverse().map((transaction: any) => {
         let amount = 0;
         if (["receiving", "received"].indexOf(cleanTxType(transaction.type)) > -1) {
-            amount = Math.abs(transaction.amount_credited - transaction.amount_debited) ;
+          amount = Math.abs(transaction.amount_credited - transaction.amount_debited);
         } else {
-          amount = Math.abs(transaction.amount_credited - transaction.amount_debited)  - transaction.fee;
+          amount = Math.abs(transaction.amount_credited - transaction.amount_debited) - transaction.fee;
         }
         return {
           Id: transaction.id,

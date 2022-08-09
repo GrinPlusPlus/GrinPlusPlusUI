@@ -86,6 +86,7 @@ export class BaseApi {
       | "list_txs"
       | "delete_wallet"
       | "scan_for_outputs"
+      | "new_address"
   ): string {
     switch (call) {
       case "node_status":
@@ -131,6 +132,8 @@ export class BaseApi {
       case "list_outputs":
         return this.getOwnerRPCURL();
       case "scan_for_outputs":
+        return this.getOwnerRPCURL();
+      case "new_address":
         return this.getOwnerRPCURL();
       default:
         return "";

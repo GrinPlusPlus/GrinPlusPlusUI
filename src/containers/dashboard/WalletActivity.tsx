@@ -32,7 +32,9 @@ export const WalletActivitiyContainer = () => {
     selectedSlatepackMessage,
   } = useStoreState((state) => state.walletSummary);
 
+
   const { token } = useStoreState((state) => state.session);
+
   const { transactionOpened } = useStoreState((state) => state.ui);
   const { blocks: lastConfirmedHeight } = useStoreState(
     (state) => state.nodeSummary
@@ -150,12 +152,12 @@ export const WalletActivitiyContainer = () => {
   const getTransactionsJsonCb = useCallback(
     () => {
       require("electron-log").info("exporting transaction...");
-      let txs: ITransaction[] =  [];
+      let txs: ITransaction[] = [];
       Object.assign(txs, getAllTransactions);
-      txs.forEach(function(t){ delete t.slatepackMessage; })
+      txs.forEach(function (t) { delete t.slatepackMessage; })
       const content = JSON.stringify(txs);
       const element = document.createElement("a");
-      const file = new Blob([content], {type: "text/plain"});
+      const file = new Blob([content], { type: "text/plain" });
       element.href = URL.createObjectURL(file);
       element.download = "transactions.json";
       element.click();
