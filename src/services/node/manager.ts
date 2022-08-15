@@ -122,11 +122,11 @@ export const updateSettings = async function (
 ): Promise<{} | null> {
   switch (property) {
     case "min_peers":
-      return await ConfigNode("127.0.0.1", { min_peers: value });
+      return await ConfigNode({ min_peers: value });
     case "max_peers":
-      return await ConfigNode("127.0.0.1", { max_peers: value });
+      return await ConfigNode({ max_peers: value });
     case "min_confirmations":
-      return await ConfigNode("127.0.0.1", { min_confirmations: value });
+      return await ConfigNode({ min_confirmations: value });
   }
 };
 
