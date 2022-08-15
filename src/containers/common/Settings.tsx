@@ -1,9 +1,26 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
 
 import { SettingsComponent } from "../../components/extras/Settings";
 
 export const SettingsContainer = () => {
+  const { getNodeSettings } = useStoreActions((actions) => actions.settings);
+
+  useEffect(() => {
+    (async function () {
+      const log = require("electron-log");
+      log.info("Getting node settings...");
+
+      try {
+        await getNodeSettings();
+      } catch (error) {
+        log.error(
+          `Error trying to get Node Settings from the Backend: ${error.message}`
+        );
+      }
+    })();
+  }, [getNodeSettings]);
+
   const {
     mininumPeers,
     maximumPeers,

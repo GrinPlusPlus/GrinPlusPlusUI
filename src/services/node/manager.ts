@@ -1,5 +1,5 @@
-import { IWalletSettings } from "../../interfaces/IWalletSettings";
 import { retryAsync } from "ts-retry";
+import { IWalletSettings } from "../../interfaces/IWalletSettings";
 import { getTextFileContent } from "../utils";
 
 import { ConfigNode } from "../foreign/rpc";
@@ -273,9 +273,9 @@ export const getDefaultSettings = async function (
     mode: defaults.mode,
     binaryPath: defaults.binaryPath,
     floonet: defaults.floonet,
-    minimumPeers: 10, // default value
-    maximumPeers: 35, // default value
-    minimumConfirmations: 10, // default value
+    minimumPeers: defaults.minimumPeers, // default value
+    maximumPeers: defaults.maximumPeers, // default value
+    minimumConfirmations: defaults.minimumConfirmations, // default value
     ports: {
       node: defaults.ports.node,
       foreignRPC: defaults.ports.foreignRPC,
@@ -292,11 +292,11 @@ export const getNodeSettings = async function (): Promise<{
   maximumPeers: number;
   minimumConfirmations: number;
 }> {
-  let minimumPeers = 10;
-  let maximumPeers = 35;
-  let minimumConfirmations = 10;
+  let minimumPeers = 8;
+  let maximumPeers = 10;
+  let minimumConfirmations = 8;
 
-  const node = await ConfigNode("127.0.0.1");
+  const node = await ConfigNode();
   if (node !== null) {
     minimumPeers = node.min_peers;
     maximumPeers = node.max_peers;

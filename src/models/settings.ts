@@ -134,7 +134,7 @@ const settings: SettingsModel = {
       const { nodeService } = injections;
 
       const settings = await nodeService.getNodeSettings();
-
+      
       actions.setNodeSettings({
         mininumPeers: settings.minimumPeers,
         maximumPeers: settings.maximumPeers,

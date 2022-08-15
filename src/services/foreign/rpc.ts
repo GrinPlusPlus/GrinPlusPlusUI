@@ -1,7 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 
 export const ConfigNode = (
-  host: string,
   values?: {
     max_peers?: number;
     min_peers?: number;
@@ -18,7 +17,7 @@ export const ConfigNode = (
 
   const options = {
     timeout: 60000,
-    url: `http://${host}:3413/v2/foreign`,
+    url: `http://127.0.0.1:3413/v2/foreign`,
     method: "post",
     body: JSON.stringify({
       jsonrpc: "2.0",

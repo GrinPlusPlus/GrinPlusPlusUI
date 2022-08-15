@@ -172,9 +172,9 @@ const wallet: WalletModel = {
     ): Promise<boolean> => {
       const { nodeService } = injections;
 
-      const defaultSettings = await nodeService.getDefaultSettings();
-
       nodeService.stopRustNode();
+
+      const defaultSettings = await nodeService.getDefaultSettings();
 
       // Check if we can find the node...
       try {
