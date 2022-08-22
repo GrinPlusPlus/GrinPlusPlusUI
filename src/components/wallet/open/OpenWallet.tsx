@@ -4,6 +4,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 type OpenWalletProps = {
+  action: "open_wallet" | "delete_wallet" | undefined;
   username: string;
   password: string;
   accounts: JSX.Element[];
@@ -15,6 +16,7 @@ type OpenWalletProps = {
 };
 
 export const OpenWalletComponent = ({
+  action,
   username,
   password,
   accounts,
@@ -37,7 +39,9 @@ export const OpenWalletComponent = ({
         waitingResponse={waitingResponse}
         passwordButtonCb={passwordButtonCb}
         connected={connected}
-        buttonText={t("open_wallet")}
+        buttonText={
+          action == "open_wallet" ? t("open_wallet") : t("delete_wallet")
+        }
       />
       <AccountListContent>{accounts}</AccountListContent>
     </div>

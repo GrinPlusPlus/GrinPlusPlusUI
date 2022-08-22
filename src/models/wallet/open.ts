@@ -8,12 +8,23 @@ export interface SigninModel {
   password: string;
   accounts: string[] | undefined;
   waitingResponse: boolean;
+  action: "delete_wallet" | "open_wallet" | undefined;
   setUsername: Action<SigninModel, string>;
   setPassword: Action<SigninModel, string>;
+  setAction: Action<SigninModel, "delete_wallet" | "open_wallet" | undefined>;
   setAccounts: Action<SigninModel, string[] | undefined>;
   setWaitingResponse: Action<SigninModel, boolean>;
   getAccounts: Thunk<SigninModel, undefined, Injections, StoreModel>;
   login: Thunk<
+    SigninModel,
+    {
+      username: string;
+      password: string;
+    },
+    Injections,
+    StoreModel
+  >;
+  deleteWallet: Thunk<
     SigninModel,
     {
       username: string;
@@ -27,6 +38,7 @@ export interface SigninModel {
 const openWallet: SigninModel = {
   username: "",
   password: "",
+  action: undefined,
   accounts: undefined,
   waitingResponse: false,
   setUsername: action((state, username) => {
@@ -34,6 +46,9 @@ const openWallet: SigninModel = {
   }),
   setPassword: action((state, password) => {
     state.password = password;
+  }),
+  setAction: action((state, action) => {
+    state.action = action;
   }),
   setAccounts: action((state, accounts) => {
     if (accounts === null) state.accounts = [];
@@ -85,6 +100,28 @@ const openWallet: SigninModel = {
           getStoreActions().walletSummary.updateWalletSummary(response.token);
           getStoreActions().walletSummary.updateWalletBalance(response.token);
 
+          return response;
+        })
+        .finally(() => {
+          actions.setWaitingResponse(false);
+        });
+    }
+  ),
+  deleteWallet: thunk(
+    async (
+      actions,
+      payload,
+      { injections, getStoreActions, getStoreState }
+    ) => {
+      const { ownerService } = injections;
+      const apiSettings = getStoreState().settings.defaultSettings;
+      return await new ownerService.RPC(
+        apiSettings.floonet,
+        apiSettings.protocol,
+        apiSettings.ip
+      )
+        .deleteWallet(payload.username, payload.password)
+        .then((response) => {
           return response;
         })
         .finally(() => {

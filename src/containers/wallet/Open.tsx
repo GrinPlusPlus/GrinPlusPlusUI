@@ -1,3 +1,5 @@
+import React, { Suspense, useCallback, useEffect } from "react";
+import { useStoreActions, useStoreState } from "../../hooks";
 import {
   Card,
   Icon,
@@ -5,15 +7,18 @@ import {
   Position,
   Text,
   OverlayToaster,
+  ContextMenu,
+  Menu,
+  MenuItem,
 } from "@blueprintjs/core";
-import React, { Suspense, useCallback, useEffect } from "react";
-import { useStoreActions, useStoreState } from "../../hooks";
 
 import { LoadingComponent } from "../../components/extras/Loading";
 
 import { User } from "@blueprintjs/icons";
 
 import { Redirect } from "react-router-dom";
+
+import { useTranslation } from "react-i18next";
 
 const NoAccountsComponent = React.lazy(() =>
   import("../../components/extras/NoAccounts").then((module) => ({
@@ -32,14 +37,20 @@ const renderLoader = () => null;
 export const OpenWalletContainer = () => {
   const { status } = useStoreState((state) => state.nodeSummary);
 
-  const { username, password, accounts, waitingResponse } = useStoreState(
-    (state) => state.signinModel
-  );
+  const {
+    username,
+    password,
+    accounts,
+    waitingResponse,
+    action,
+  } = useStoreState((state) => state.signinModel);
   const {
     setUsername,
     setPassword,
     login,
+    deleteWallet,
     setWaitingResponse,
+    setAction,
   } = useStoreActions((actions) => actions.signinModel);
 
   const { getAccounts, setAccounts } = useStoreActions(
@@ -50,8 +61,7 @@ export const OpenWalletContainer = () => {
     (async function() {
       if (accounts !== undefined) return;
       try {
-        const _accounts = await getAccounts();
-        setAccounts(_accounts);
+        setAccounts(await getAccounts());
       } catch (error) {
         require("electron-log").error(
           `Error trying to get Accounts: ${error.message}`
@@ -62,48 +72,94 @@ export const OpenWalletContainer = () => {
 
   const onOpenWalletButtonClicked = useCallback(async () => {
     setWaitingResponse(true);
-    await login({
-      username: username,
-      password: password,
-    })
-      .then(() => {
-        require("electron-log").info(
-          "User logged in... redirecting to Wallet..."
-        );
+    if (action == "open_wallet") {
+      await login({
+        username: username,
+        password: password,
       })
-      .catch((error: { message: string }) => {
-        OverlayToaster.create({ position: Position.BOTTOM }).show({
-          message: error.message,
-          intent: Intent.DANGER,
-          icon: "warning-sign",
+        .then(() => {
+          require("electron-log").info(
+            "User logged in... redirecting to Wallet..."
+          );
+        })
+        .catch((error: { message: string }) => {
+          OverlayToaster.create({ position: Position.BOTTOM }).show({
+            message: error.message,
+            intent: Intent.DANGER,
+            icon: "warning-sign",
+          });
         });
-      });
-  }, [username, password, login, setWaitingResponse]);
+    } else if (action == "delete_wallet") {
+      await deleteWallet({
+        username: username,
+        password: password,
+      })
+        .then(() => {
+          require("electron-log").info("Wallet deleted.");
+          setAccounts(undefined);
+        })
+        .catch((error: { message: string }) => {
+          OverlayToaster.create({ position: Position.BOTTOM }).show({
+            message: error.message,
+            intent: Intent.DANGER,
+            icon: "warning-sign",
+          });
+        });
+    }
+  }, [
+    username,
+    password,
+    login,
+    deleteWallet,
+    setAccounts,
+    setWaitingResponse,
+  ]);
+
+  const { t } = useTranslation();
 
   const getAccountsList = useCallback(
     (accounts: string[]) => {
       const buttons: JSX.Element[] = accounts?.map((account) => {
         return (
-          <div key={account} style={{ margin: "10px" }}>
-            <Card
-              interactive={true}
-              className="bp4-dark"
-              onClick={() => setUsername(account)}
-              style={{
-                width: "165px",
-                height: "75px",
-                backgroundColor: "#252D31",
-                textAlign: "center",
-              }}
-            >
-              <div>
-                <Icon icon={<User />} style={{ marginBottom: "5px" }} />
-              </div>
-              <div>
-                <Text>{account}</Text>
-              </div>
-            </Card>
-          </div>
+          <ContextMenu
+            className="bp4-dark"
+            content={
+              <Menu>
+                <MenuItem
+                  text={t("delete_wallet")}
+                  intent={Intent.DANGER}
+                  onClick={() => {
+                    setUsername(account);
+                    setAction("delete_wallet");
+                  }}
+                />
+              </Menu>
+            }
+          >
+            <div key={account} style={{ margin: "10px" }}>
+              <Card
+                interactive={true}
+                className="bp4-dark"
+                onClick={() => {
+                  setUsername(account);
+                  setAction("open_wallet");
+                }}
+                style={{
+                  width: "165px",
+                  height: "75px",
+                  backgroundColor: "#252D31",
+                  textAlign: "center",
+                }}
+              >
+                <div>
+                  <Icon icon={<User />} style={{ marginBottom: "5px" }} />
+                </div>
+                <div>
+                  <Text>{account}</Text>
+                </div>
+              </Card>
+            </div>
+          </ContextMenu>
         );
       });
       return buttons;
@@ -122,6 +178,7 @@ export const OpenWalletContainer = () => {
         <NoAccountsComponent />
       ) : (
         <OpenWalletComponent
+          action={action}
           username={username}
           password={password}
           accounts={getAccountsList(accounts)}
@@ -129,6 +186,7 @@ export const OpenWalletContainer = () => {
           onCloseCb={() => {
             setUsername("");
             setPassword("");
+            setAction(undefined);
           }}
           waitingResponse={waitingResponse}
           passwordButtonCb={onOpenWalletButtonClicked}
