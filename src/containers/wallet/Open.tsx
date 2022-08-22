@@ -72,7 +72,7 @@ export const OpenWalletContainer = () => {
 
   const onOpenWalletButtonClicked = useCallback(async () => {
     setWaitingResponse(true);
-    if (action == "open_wallet") {
+    if (action === "open_wallet") {
       await login({
         username: username,
         password: password,
@@ -89,7 +89,7 @@ export const OpenWalletContainer = () => {
             icon: "warning-sign",
           });
         });
-    } else if (action == "delete_wallet") {
+    } else if (action === "delete_wallet") {
       await deleteWallet({
         username: username,
         password: password,
@@ -110,6 +110,7 @@ export const OpenWalletContainer = () => {
     username,
     password,
     login,
+    action,
     deleteWallet,
     setAccounts,
     setWaitingResponse,
@@ -164,7 +165,7 @@ export const OpenWalletContainer = () => {
       });
       return buttons;
     },
-    [setUsername]
+    [setUsername, setAction, t]
   );
 
   const { isLoggedIn } = useStoreState((state) => state.session);

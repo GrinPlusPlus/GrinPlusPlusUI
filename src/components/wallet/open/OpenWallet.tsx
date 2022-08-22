@@ -40,7 +40,7 @@ export const OpenWalletComponent = ({
         passwordButtonCb={passwordButtonCb}
         connected={connected}
         buttonText={
-          action == "open_wallet" ? t("open_wallet") : t("delete_wallet")
+          action === "open_wallet" ? t("open_wallet") : t("delete_wallet")
         }
       />
       <AccountListContent>{accounts}</AccountListContent>
