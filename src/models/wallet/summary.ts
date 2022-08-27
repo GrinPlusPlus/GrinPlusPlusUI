@@ -132,7 +132,7 @@ const walletSummary: WalletSummaryModel = {
         return tx;
       });
     }
-  }),  
+  }),
   updateBalance: action((state, balance) => {
     if (balance === undefined) {
       state.spendable = 0;
@@ -264,17 +264,12 @@ const walletSummary: WalletSummaryModel = {
     state.walletReachable = undefined;
   }),
   checkWalletAvailability: thunk(
-    async (actions, address, { injections, getStoreState }) => {
+    (actions, address, { injections, getStoreState }) => {
       const { foreignService } = injections;
-      try {
-        const reachable = await foreignService.GrinChck(
-          getStoreState().settings.grinChckAddress,
-          address
-        );
-        return reachable;
-      } catch (error) {
-        throw new Error(error);
-      }
+      return foreignService.GrinChck(
+        getStoreState().settings.grinChckAddress,
+        address
+      );
     }
   ),
 };

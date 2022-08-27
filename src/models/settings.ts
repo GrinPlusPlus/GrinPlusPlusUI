@@ -63,7 +63,7 @@ const settings: SettingsModel = {
   nodeBinaryPath: "../GrinPlusPlus/bin/Release/",
   useGrinJoin: false,
   grinJoinAddress: "grinjoin5pzzisnne3naxx4w2knwxsyamqmzfnzywnzdk7ra766u7vid",
-  grinChckAddress: "http://74.208.28.172:8443/check/",
+  grinChckAddress: "http://192.227.214.130/",
   isConfirmationDialogOpen: false,
   setDefaultSettings: action((state, settings) => {
     state.defaultSettings = {
@@ -134,7 +134,7 @@ const settings: SettingsModel = {
       const { nodeService } = injections;
 
       const settings = await nodeService.getNodeSettings();
-      
+
       actions.setNodeSettings({
         mininumPeers: settings.minimumPeers,
         maximumPeers: settings.maximumPeers,

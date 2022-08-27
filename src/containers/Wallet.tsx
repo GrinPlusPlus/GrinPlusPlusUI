@@ -43,7 +43,7 @@ const renderLoader = () => <LoadingComponent />;
 export const WalletContainer = () => {
   const { t } = useTranslation();
 
-  const { isLoggedIn, seed, token, address } = useStoreState(
+  const { isLoggedIn, seed, token, slatepackAddress } = useStoreState(
     (state) => state.session
   );
   const { alert } = useStoreState((state) => state.ui);
@@ -56,7 +56,9 @@ export const WalletContainer = () => {
     (state) => state.passwordPrompt
   );
   const { setAlert } = useStoreActions((actions) => actions.ui);
-  const { setSeed, updateWalletAddress } = useStoreActions((state) => state.session);
+  const { setSeed, updateWalletAddress } = useStoreActions(
+    (state) => state.session
+  );
   const {
     updateWalletSummary,
     updateWalletBalance,
@@ -68,7 +70,7 @@ export const WalletContainer = () => {
   const { setAction: setWalletAction, getWalletSeed } = useStoreActions(
     (state) => state.wallet
   );
-  
+
   useInterval(async () => {
     if (token !== undefined && token.length > 0) {
       if (token.length === 0) return;
@@ -103,22 +105,16 @@ export const WalletContainer = () => {
   }, 4000);
 
   useInterval(async () => {
-    if (!isLoggedIn) return;
-    Log.info(`Testing wallet reachability...`);
-
-    try {
-      if (!isLoggedIn) return;
-      if (!(await checkWalletAvailability(address))) {
-        Log.error("Wallet is not reachable");
+    if (!isLoggedIn || slatepackAddress.trim().length === 0) return;
+    checkWalletAvailability(slatepackAddress)
+      .then(function(available: boolean) {
+        setWalletReachable(available);
+      })
+      .catch(function() {
         setWalletReachable(false);
-      } else {
-        setWalletReachable(true);
-        Log.info("Wallet is reachable");
-      }
-    } catch (error) {
-      Log.error(`Error trying to get wallet reachability: ${error.message}`);
-    }
-  }, 40000);
+        Log.error("Error trying to get wallet reachability");
+      });
+  }, 30000);
 
   const backupSeed = useCallback(async () => {
     if (username === undefined || password === undefined) return;
