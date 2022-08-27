@@ -94,9 +94,9 @@ export const OpenWalletContainer = () => {
         username: username,
         password: password,
       })
-        .then(() => {
+        .then(async () => {
           require("electron-log").info("Wallet deleted.");
-          setAccounts(undefined);
+          setAccounts(await getAccounts());
         })
         .catch((error: { message: string }) => {
           OverlayToaster.create({ position: Position.BOTTOM }).show({
@@ -114,6 +114,7 @@ export const OpenWalletContainer = () => {
     deleteWallet,
     setAccounts,
     setWaitingResponse,
+    getAccounts,
   ]);
 
   const { t } = useTranslation();
