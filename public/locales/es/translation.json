@@ -137,5 +137,7 @@
   "paste_from_clipboard": "Paste from Clipboard",
   "export": "Export",
   "generate_new_address": "Generar nueva Slatepack Address",
-  "new_address_confirmation": "¿Está seguro de que quiere generar una nueva Slatepack Address?"
+  "new_address_confirmation": "¿Está seguro de que quiere generar una nueva Slatepack Address?",
+  "inbound_peers": "Inbounds",
+  "outbound_peers": "Outbounds"
 }

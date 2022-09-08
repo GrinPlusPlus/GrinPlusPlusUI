@@ -1,6 +1,6 @@
 import { Action, Thunk, ThunkOn, action, thunk, thunkOn } from "easy-peasy";
 
-import { Injections } from "../store";
+import store, { Injections } from "../store";
 import { StoreModel } from ".";
 
 export interface SettingsModel {
@@ -73,11 +73,14 @@ const settings: SettingsModel = {
       mode: settings.mode,
     };
   }),
-  setMininumPeers: action((state, mininumPeers) => {
-    state.mininumPeers = mininumPeers;
+  setMininumPeers: action((state, value) => {
+    state.mininumPeers = value;
+    if (state.mininumPeers > state.maximumPeers) {
+      state.maximumPeers = state.mininumPeers;
+    }
   }),
-  setMaximumPeers: action((state, maximumPeers) => {
-    state.maximumPeers = maximumPeers;
+  setMaximumPeers: action((state, value) => {
+    state.maximumPeers = state.mininumPeers + value;
   }),
   setConfirmations: action((state, confirmations) => {
     state.confirmations = confirmations;
@@ -107,26 +110,9 @@ const settings: SettingsModel = {
       storeActions.settings.setConfirmations,
     ],
     (actions, target, { injections }) => {
-      const [
-        setMininumPeers,
-        setMaximumPeers,
-        setConfirmations,
-      ] = target.resolvedTargets;
-
-      switch (target.type) {
-        case setMininumPeers:
-          injections.nodeService.updateSettings("min_peers", target.payload);
-          break;
-        case setMaximumPeers:
-          injections.nodeService.updateSettings("max_peers", target.payload);
-          break;
-        case setConfirmations:
-          injections.nodeService.updateSettings(
-            "min_confirmations",
-            target.payload
-          );
-          break;
-      }
+      injections.nodeService.updateSettings(store.getState().settings.mininumPeers,
+                                            store.getState().settings.maximumPeers,
+                                            store.getState().settings.confirmations);
     }
   ),
   getNodeSettings: thunk(

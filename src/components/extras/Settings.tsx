@@ -51,25 +51,28 @@ export const SettingsComponent = ({
     <div>
       <div className={Classes.DIALOG_BODY}>
         <FormGroup
-          label={t("minimum_number_of_peers")}
+          label={t("outbound_peers")}
           labelFor="mininum-number-peers"
         >
           <NumericInput
             data-testid="mininum-number-peers-input"
             id="mininum-number-peers"
-            min={8}
+            min={3}
+            allowNumericCharactersOnly={true}
             value={mininumPeers}
             onValueChange={(value) => setMininumPeersCb(value)}
           />
         </FormGroup>
         <FormGroup
-          label={t("maximum_number_of_peers")}
+          label={t("inbound_peers")}
           labelFor="maximum-number-peers"
         >
           <NumericInput
             data-testid="maximum-number-peers-input"
             id="maximum-number-peers"
-            value={maximumPeers}
+            allowNumericCharactersOnly={true}
+            min={0}
+            value={maximumPeers - mininumPeers}
             onValueChange={(value) => setMaximumPeersCb(value)}
           />
         </FormGroup>
@@ -77,10 +80,10 @@ export const SettingsComponent = ({
         <br />
         <FormGroup label={t("confirmations")}>
           <Slider
-            min={0}
-            max={60}
-            stepSize={2}
-            labelStepSize={10}
+            min={3}
+            max={30}
+            stepSize={3}
+            labelStepSize={3}
             data-testid="confirmations-slider"
             value={confirmations}
             showTrackFill={false}

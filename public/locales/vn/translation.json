@@ -137,5 +137,7 @@
   "paste_from_clipboard": "Dán từ Clipboard",
   "export": "Export",
   "generate_new_address": "Generate new Slatepack Address",
-  "new_address_confirmation": "Are you sure you want to generate a new Slatepack Address?"
+  "new_address_confirmation": "Are you sure you want to generate a new Slatepack Address?",
+  "inbound_peers": "Inbounds",
+  "outbound_peers": "Outbounds"
 }
