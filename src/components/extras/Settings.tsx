@@ -58,6 +58,7 @@ export const SettingsComponent = ({
             data-testid="mininum-number-peers-input"
             id="mininum-number-peers"
             min={3}
+            max={8}
             allowNumericCharactersOnly={true}
             value={mininumPeers}
             onValueChange={(value) => setMininumPeersCb(value)}

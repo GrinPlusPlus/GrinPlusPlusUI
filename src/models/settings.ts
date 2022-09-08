@@ -74,10 +74,9 @@ const settings: SettingsModel = {
     };
   }),
   setMininumPeers: action((state, value) => {
+    const diff = value - state.mininumPeers;
+    state.maximumPeers += state.maximumPeers + diff > 0 ? diff : 0;
     state.mininumPeers = value;
-    if (state.mininumPeers > state.maximumPeers) {
-      state.maximumPeers = state.mininumPeers;
-    }
   }),
   setMaximumPeers: action((state, value) => {
     state.maximumPeers = state.mininumPeers + value;
@@ -111,8 +110,8 @@ const settings: SettingsModel = {
     ],
     (actions, target, { injections }) => {
       injections.nodeService.updateSettings(store.getState().settings.mininumPeers,
-                                            store.getState().settings.maximumPeers,
-                                            store.getState().settings.confirmations);
+        store.getState().settings.maximumPeers,
+        store.getState().settings.confirmations);
     }
   ),
   getNodeSettings: thunk(
