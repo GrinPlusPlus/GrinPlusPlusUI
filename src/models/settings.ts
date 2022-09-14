@@ -13,6 +13,10 @@ export interface SettingsModel {
   mininumPeers: number;
   maximumPeers: number;
   confirmations: number;
+  shouldReuseAddress: boolean;
+  preferredPeers: string[];
+  allowedPeers: string[];
+  blockedPeers: string[];
   nodeDataPath: string;
   nodeBinaryPath: string;
   useGrinJoin: boolean;
@@ -45,6 +49,10 @@ export interface SettingsModel {
       mininumPeers: number;
       maximumPeers: number;
       minimumConfirmations: number;
+      shouldReuseAddress: boolean;
+      preferredPeers: string[];
+      allowedPeers: string[];
+      blockedPeers: string[];
     }
   >;
 }
@@ -56,9 +64,13 @@ const settings: SettingsModel = {
     ip: "127.0.0.1",
     mode: "DEV",
   },
-  mininumPeers: 15,
-  maximumPeers: 50,
-  confirmations: 10,
+  mininumPeers: 6,
+  maximumPeers: 6,
+  confirmations: 3,
+  shouldReuseAddress: true,
+  preferredPeers: [],
+  allowedPeers: [],
+  blockedPeers: [],
   nodeDataPath: "/.GrinPP/",
   nodeBinaryPath: "../GrinPlusPlus/bin/Release/",
   useGrinJoin: false,
@@ -119,11 +131,15 @@ const settings: SettingsModel = {
       const { nodeService } = injections;
 
       const settings = await nodeService.getNodeSettings();
-
+      
       actions.setNodeSettings({
         mininumPeers: settings.minimumPeers,
         maximumPeers: settings.maximumPeers,
         minimumConfirmations: settings.minimumConfirmations,
+        shouldReuseAddress: settings.shouldReuseAddresses,
+        preferredPeers: settings.preferredPeers,
+        allowedPeers: settings.allowedPeers,
+        blockedPeers:  settings.blockedPeers,
       });
 
       return true;
@@ -133,6 +149,10 @@ const settings: SettingsModel = {
     state.mininumPeers = settings.mininumPeers;
     state.maximumPeers = settings.maximumPeers;
     state.confirmations = settings.minimumConfirmations;
+    state.shouldReuseAddress = settings.shouldReuseAddress;
+    state.preferredPeers = settings.preferredPeers;
+    state.allowedPeers = settings.allowedPeers;
+    state.blockedPeers = settings.blockedPeers;
   }),
 };
 

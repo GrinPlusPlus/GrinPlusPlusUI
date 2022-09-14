@@ -14,14 +14,16 @@ import {
 
 import { useTranslation } from "react-i18next";
 
-type SettingsProps = {
-  grinChckAddress: string;
+type NodeSettingsProps = {
   mininumPeers: number;
   maximumPeers: number;
   confirmations: number;
+  shouldReuseAddress: boolean;
+  preferredPeers: string;
+  allowedPeers: string;
+  blockedPeers: string;
   isConfirmationDialogOpen: boolean;
   isLoggedIn: boolean;
-  setGrinChckAddressCb: (address: string) => void;
   setMininumPeersCb: (peers: number) => void;
   setMaximumPeersCb: (peers: number) => void;
   setConfirmationsCb: (confirmations: number) => void;
@@ -32,10 +34,14 @@ type SettingsProps = {
   backupButtonCb: () => void;
 };
 
-export const SettingsComponent = ({
+export const NodeSettingsComponent = ({
   mininumPeers,
   maximumPeers,
   confirmations,
+  shouldReuseAddress,
+  preferredPeers,
+  allowedPeers,
+  blockedPeers,
   isConfirmationDialogOpen,
   isLoggedIn,
   setMininumPeersCb,
@@ -44,7 +50,7 @@ export const SettingsComponent = ({
   toggleConfirmationDialogCb,
   confirmReSyncBlockchainCb,
   backupButtonCb,
-}: SettingsProps) => {
+}: NodeSettingsProps) => {
   const { t } = useTranslation();
 
   return (
@@ -96,7 +102,7 @@ export const SettingsComponent = ({
         <FormGroup label={t("node_actions")}>
           <ControlGroup>
             <Button
-              text={t("resync")}
+              text={t("resync_node")}
               style={{ width: "50%" }}
               intent={Intent.WARNING}
               onClick={() => toggleConfirmationDialogCb()}

@@ -1,16 +1,14 @@
 import React, { useCallback, useEffect } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
 
-import { SettingsComponent } from "../../components/extras/Settings";
+import { TorSettingsComponent } from "../../components/extras/TorSettings";
 
-export const SettingsContainer = () => {
+export const TorSettingsContainer = () => {
   const { getNodeSettings } = useStoreActions((actions) => actions.settings);
 
   useEffect(() => {
     (async function () {
       const log = require("electron-log");
-      log.info("Getting node settings...");
-
       try {
         await getNodeSettings();
       } catch (error) {
@@ -25,7 +23,10 @@ export const SettingsContainer = () => {
     mininumPeers,
     maximumPeers,
     confirmations,
-    grinChckAddress,
+    shouldReuseAddress,
+    preferredPeers,
+    allowedPeers,
+    blockedPeers,
     isConfirmationDialogOpen,
   } = useStoreState((state) => state.settings);
 
@@ -40,8 +41,7 @@ export const SettingsContainer = () => {
     setMininumPeers,
     setMaximumPeers,
     setConfirmations,
-    toggleConfirmationDialog,
-    setGrinChckAddress,
+    toggleConfirmationDialog
   } = useStoreActions((actions) => actions.settings);
 
   const {
@@ -51,7 +51,7 @@ export const SettingsContainer = () => {
     setAction: setWalletAction,
   } = useStoreActions((state) => state.wallet);
 
-  const { toggleSettings } = useStoreActions((actions) => actions.ui);
+  const { toggleTorSettings } = useStoreActions((actions) => actions.ui);
 
   const toggleDialog = useCallback(() => {
     toggleConfirmationDialog();
@@ -74,35 +74,38 @@ export const SettingsContainer = () => {
   }, [restartNode]);
 
   return (
-    <SettingsComponent
-      grinChckAddress={grinChckAddress}
+    <TorSettingsComponent
       mininumPeers={mininumPeers}
       maximumPeers={maximumPeers}
       confirmations={confirmations}
+      shouldReuseAddress={shouldReuseAddress}
+      preferredPeers={preferredPeers.join("\n")}
+      allowedPeers={allowedPeers.join("\n")}
+      blockedPeers={blockedPeers.join("\n")}
       isConfirmationDialogOpen={isConfirmationDialogOpen}
-      setGrinChckAddressCb={setGrinChckAddress}
       setMininumPeersCb={setMininumPeers}
       setMaximumPeersCb={setMaximumPeers}
       setConfirmationsCb={setConfirmations}
       toggleConfirmationDialogCb={toggleDialog}
       confirmReSyncBlockchainCb={() => {
-        toggleSettings(false);
+        toggleTorSettings(false);
         confirmReSyncBlockchain();
       }}
       restartNodeCb={() => {
-        toggleSettings(false);
+        toggleTorSettings(false);
         restartGrinNode();
       }}
       scanForOutputsCb={() => {
-        toggleSettings(false);
+        toggleTorSettings(false);
         scanForOutputs();
       }}
-      isLoggedIn={isLoggedIn}
       backupButtonCb={() => {
-        toggleSettings(false);
+        toggleTorSettings(false);
         setPasswordPromptUsername(sessionUsername);
         setWalletAction("backup");
       }}
+      isLoggedIn={isLoggedIn}
+
     />
   );
 };

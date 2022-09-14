@@ -121,7 +121,7 @@ export const updateSettings = async function (
   max_peers: number,
   min_confirmations: number,
 ): Promise<{} | null> {
-  return await ConfigNode({ min_peers: min_peers, max_peers: max_peers, min_confirmations: min_confirmations });  
+  return await ConfigNode({ min_peers: min_peers, max_peers: max_peers, min_confirmations: min_confirmations });
 };
 
 export const getAbsoluteNodePath = function (
@@ -285,22 +285,38 @@ export const getNodeSettings = async function (): Promise<{
   minimumPeers: number;
   maximumPeers: number;
   minimumConfirmations: number;
+  shouldReuseAddresses: boolean;
+  preferredPeers: string[];
+  allowedPeers: string[];
+  blockedPeers: string[];
 }> {
-  let minimumPeers = 8;
-  let maximumPeers = 10;
-  let minimumConfirmations = 8;
+  let minimumPeers = 6;
+  let maximumPeers = 6;
+  let minimumConfirmations = 3;
+  let shouldReuseAddresses = true;
+  let preferredPeers: string[] = [];
+  let allowedPeers: string[] = [];
+  let blockedPeers: string[] = [];
 
   const node = await ConfigNode();
   if (node !== null) {
     minimumPeers = node.min_peers;
     maximumPeers = node.max_peers;
     minimumConfirmations = node.min_confirmations;
+    shouldReuseAddresses = node.reuse_address;
+    preferredPeers = node.preferred_peers;
+    allowedPeers = node.allowed_peers;
+    blockedPeers = node.blocked_peers;
   }
 
   return {
     minimumPeers: minimumPeers,
     maximumPeers: maximumPeers,
     minimumConfirmations: minimumConfirmations,
+    shouldReuseAddresses: shouldReuseAddresses,
+    preferredPeers: preferredPeers ? preferredPeers : [],
+    allowedPeers: allowedPeers ? allowedPeers : [],
+    blockedPeers: blockedPeers ? blockedPeers : [],
   };
 };
 

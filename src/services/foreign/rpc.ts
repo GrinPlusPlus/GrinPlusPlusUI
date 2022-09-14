@@ -5,11 +5,19 @@ export const ConfigNode = (
     max_peers?: number;
     min_peers?: number;
     min_confirmations?: number;
+    reuse_address?: boolean;
+    preferred_peers?: string[];
+    allowed_peers?: string[];
+    blocked_peers?: string[];
   }
 ): Promise<{
   max_peers: number;
-  min_confirmations: number;
   min_peers: number;
+  min_confirmations: number;
+  reuse_address: boolean;
+  preferred_peers: string[];
+  allowed_peers: string[];
+  blocked_peers: string[];
 } | null> => {
   const request = window.require("request");
   const method: string = values === undefined ? "get_config" : "update_config";

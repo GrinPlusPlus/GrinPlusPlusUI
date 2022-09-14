@@ -80,7 +80,7 @@
   "restore_wallet": "Restore Wallet",
   "resync": "Resync",
   "resync_confirmation": "Are you sure you want to resync the Node? This will download around 1GB and will take time",
-  "resync_node": "Resync Node",
+  "resync_node": "(re)Sync Node",
   "save_tx": "Save Tx",
   "seed": "Seed",
   "seed_message": "The words below are needed if you ever need to restore your wallet. Please, write them down and keep them in a safe place",

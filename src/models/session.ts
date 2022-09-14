@@ -86,7 +86,9 @@ const session: SessionModel = {
     state.seed = seed;
   }),
   clean: thunk((actions, payload, { getStoreActions }): void => {
-    getStoreActions().ui.toggleSettings(false);
+    getStoreActions().ui.toggleNodeSettings(false);
+    getStoreActions().ui.toggleP2PSettings(false);
+    getStoreActions().ui.toggleTorSettings(false);
     getStoreActions().walletSummary.updateBalance(undefined);
     getStoreActions().walletSummary.updateSummary(undefined);
     getStoreActions().walletSummary.clearWalletReachable(undefined);

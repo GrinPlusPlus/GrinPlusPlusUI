@@ -17,16 +17,30 @@ export const WalletNavBarContainer = () => {
 
   const history = useHistory();
 
-  const { toggleSettings } = useStoreActions((actions) => actions.ui);
+  const { toggleNodeSettings, toggleP2PSettings, toggleTorSettings } = useStoreActions((actions) => actions.ui);
 
   return (
     <Navbar className="bp4-dark">
       <NavbarGroup align={Alignment.LEFT}>
         <Button
           minimal={true}
-          icon="cog"
+          icon="settings"
           onClick={() => {
-            toggleSettings(true);
+            toggleNodeSettings(true);
+          }}
+        />
+        <Button
+          minimal={true}
+          icon="ip-address"
+          onClick={() => {
+            toggleP2PSettings(true);
+          }}
+        />
+        <Button
+          minimal={true}
+          icon="shield"
+          onClick={() => {
+            toggleTorSettings(true);
           }}
         />
         <NavbarDivider />

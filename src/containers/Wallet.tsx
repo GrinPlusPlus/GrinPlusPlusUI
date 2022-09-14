@@ -26,9 +26,21 @@ const StatusBarContainer = React.lazy(() =>
   }))
 );
 
-const WalletDrawer = React.lazy(() =>
-  import("./common/WalletDrawer").then((module) => ({
-    default: module.WalletDrawer,
+const NodeSettingsDrawer = React.lazy(() =>
+  import("./common/NodeSettingsDrawer").then((module) => ({
+    default: module.NodeSettingsDrawer,
+  }))
+);
+
+const P2PSettingsDrawer = React.lazy(() =>
+  import("./common/P2PSettingsDrawer").then((module) => ({
+    default: module.P2PSettingsDrawer,
+  }))
+);
+
+const TorSettingsDrawer = React.lazy(() =>
+  import("./common/TorSettingsDrawer").then((module) => ({
+    default: module.TorSettingsDrawer,
   }))
 );
 
@@ -168,7 +180,9 @@ export const WalletContainer = () => {
       <div className="footer">
         <StatusBarContainer />
       </div>
-      <WalletDrawer />
+      <NodeSettingsDrawer />
+      <P2PSettingsDrawer />
+      <TorSettingsDrawer />
       <AlertComponent message={alert} setMessage={setAlert} />
       {isLoggedIn ? (
         <PasswordPromptComponent

@@ -17,7 +17,7 @@ export const AccountNavBarContainer = () => {
   const history = useHistory();
 
   const { username, token } = useStoreState((state) => state.session);
-  const { toggleSettings } = useStoreActions((actions) => actions.ui);
+  const { toggleNodeSettings, toggleP2PSettings, toggleTorSettings } = useStoreActions((actions) => actions.ui);
   const { logout } = useStoreActions((actions) => actions.session);
 
   return (
@@ -38,9 +38,23 @@ export const AccountNavBarContainer = () => {
         <NavbarDivider />
         <Button
           minimal={true}
-          icon="cog"
+          icon="settings"
           onClick={() => {
-            toggleSettings(true);
+            toggleNodeSettings(true);
+          }}
+        />
+        <Button
+          minimal={true}
+          icon="ip-address"
+          onClick={() => {
+            toggleP2PSettings(true);
+          }}
+        />
+        <Button
+          minimal={true}
+          icon="shield"
+          onClick={() => {
+            toggleTorSettings(true);
           }}
         />
         <NavbarDivider />
