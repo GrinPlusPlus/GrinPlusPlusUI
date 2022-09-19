@@ -59,11 +59,11 @@ export const TorSettingsComponent = ({
         <Divider />
         <Text className={Classes.TEXT_MUTED}>{t("tor_bridges_help")}</Text>
       </FormGroup>
-      <FormGroup label="snowflake">
-        <TextArea growVertically={false} title="obfs4" style={{ width: "98%", minHeight: "50px" }}>{allowedPeers}</TextArea>
+      <FormGroup label={t("snowflake")}>
+        <TextArea growVertically={false} title="obfs4" style={{ width: "98%", minHeight: "50px", fontFamily: "Courier New"  }}>{allowedPeers}</TextArea>
       </FormGroup>
-      <FormGroup label="obfs4">
-        <TextArea growVertically={false} title="obfs4" style={{ width: "98%", minHeight: "100px" }}>{allowedPeers}</TextArea>
+      <FormGroup label={t("obfs4")}>
+        <TextArea growVertically={false} title="obfs4" style={{ width: "98%", minHeight: "100px", fontFamily: "Courier New"  }}>{allowedPeers}</TextArea>
       </FormGroup>
       <Button
         text={t("save")}

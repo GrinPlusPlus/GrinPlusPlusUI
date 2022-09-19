@@ -52,13 +52,13 @@ export const P2PSettingsComponent = ({
   return (
     <div className={Classes.DIALOG_BODY} >
       <FormGroup label={t("preferred_peers")}>
-        <TextArea style={{ width: "98%", minHeight: "250px" }}>{preferredPeers}</TextArea>
+        <TextArea style={{ width: "98%", minHeight: "250px", fontFamily: "Courier New" }} value={preferredPeers} />
       </FormGroup>
       <FormGroup label={t("allowed_peers")}>
-        <TextArea style={{ width: "98%", minHeight: "100px" }}>{allowedPeers}</TextArea>
+        <TextArea style={{ width: "98%", minHeight: "100px", fontFamily: "Courier New" }} value={preferredPeers} />
       </FormGroup>
       <FormGroup label={t("blocked_peers")}>
-        <TextArea style={{ width: "98%", minHeight: "100px" }}>{blockedPeers}</TextArea>
+        <TextArea style={{ width: "98%", minHeight: "100px", fontFamily: "Courier New" }} value={preferredPeers} />
       </FormGroup>
       <Button
         text={t("save")}
