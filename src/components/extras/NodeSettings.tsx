@@ -18,10 +18,6 @@ type NodeSettingsProps = {
   mininumPeers: number;
   maximumPeers: number;
   confirmations: number;
-  shouldReuseAddress: boolean;
-  preferredPeers: string;
-  allowedPeers: string;
-  blockedPeers: string;
   isConfirmationDialogOpen: boolean;
   isLoggedIn: boolean;
   setMininumPeersCb: (peers: number) => void;
@@ -29,8 +25,6 @@ type NodeSettingsProps = {
   setConfirmationsCb: (confirmations: number) => void;
   toggleConfirmationDialogCb: () => void;
   confirmReSyncBlockchainCb: () => void;
-  restartNodeCb: () => void;
-  scanForOutputsCb: () => void;
   backupButtonCb: () => void;
 };
 
@@ -38,10 +32,6 @@ export const NodeSettingsComponent = ({
   mininumPeers,
   maximumPeers,
   confirmations,
-  shouldReuseAddress,
-  preferredPeers,
-  allowedPeers,
-  blockedPeers,
   isConfirmationDialogOpen,
   isLoggedIn,
   setMininumPeersCb,

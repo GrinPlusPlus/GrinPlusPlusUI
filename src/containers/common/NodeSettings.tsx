@@ -23,10 +23,6 @@ export const NodeSettingsContainer = () => {
     mininumPeers,
     maximumPeers,
     confirmations,
-    shouldReuseAddress,
-    preferredPeers,
-    allowedPeers,
-    blockedPeers,
     isConfirmationDialogOpen,
   } = useStoreState((state) => state.settings);
 
@@ -46,8 +42,6 @@ export const NodeSettingsContainer = () => {
 
   const {
     reSyncBlockchain,
-    restartNode,
-    scanForOutputs,
     setAction: setWalletAction,
   } = useStoreActions((state) => state.wallet);
 
@@ -69,19 +63,11 @@ export const NodeSettingsContainer = () => {
     }
   }, [toggleConfirmationDialog, reSyncBlockchain]);
 
-  const restartGrinNode = useCallback(async () => {
-    await restartNode();
-  }, [restartNode]);
-
   return (
     <NodeSettingsComponent
       mininumPeers={mininumPeers}
       maximumPeers={maximumPeers}
       confirmations={confirmations}
-      shouldReuseAddress={shouldReuseAddress}
-      preferredPeers={preferredPeers.join("\n")}
-      allowedPeers={allowedPeers.join("\n")}
-      blockedPeers={blockedPeers.join("\n")}
       isConfirmationDialogOpen={isConfirmationDialogOpen}
       setMininumPeersCb={setMininumPeers}
       setMaximumPeersCb={setMaximumPeers}
@@ -90,14 +76,6 @@ export const NodeSettingsContainer = () => {
       confirmReSyncBlockchainCb={() => {
         toggleNodeSettings(false);
         confirmReSyncBlockchain();
-      }}
-      restartNodeCb={() => {
-        toggleNodeSettings(false);
-        restartGrinNode();
-      }}
-      scanForOutputsCb={() => {
-        toggleNodeSettings(false);
-        scanForOutputs();
       }}
       backupButtonCb={() => {
         toggleNodeSettings(false);

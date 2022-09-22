@@ -11,40 +11,16 @@ import {
 import { useTranslation } from "react-i18next";
 
 type P2PSettingsProps = {
-  mininumPeers: number;
-  maximumPeers: number;
-  confirmations: number;
-  shouldReuseAddress: boolean;
   preferredPeers: string;
   allowedPeers: string;
   blockedPeers: string;
-  isConfirmationDialogOpen: boolean;
-  isLoggedIn: boolean;
-  setMininumPeersCb: (peers: number) => void;
-  setMaximumPeersCb: (peers: number) => void;
-  setConfirmationsCb: (confirmations: number) => void;
-  toggleConfirmationDialogCb: () => void;
-  confirmReSyncBlockchainCb: () => void;
-  restartNodeCb: () => void;
-  scanForOutputsCb: () => void;
   backupButtonCb: () => void;
 };
 
 export const P2PSettingsComponent = ({
-  mininumPeers,
-  maximumPeers,
-  confirmations,
-  shouldReuseAddress,
   preferredPeers,
   allowedPeers,
   blockedPeers,
-  isConfirmationDialogOpen,
-  isLoggedIn,
-  setMininumPeersCb,
-  setMaximumPeersCb,
-  setConfirmationsCb,
-  toggleConfirmationDialogCb,
-  confirmReSyncBlockchainCb,
   backupButtonCb,
 }: P2PSettingsProps) => {
   const { t } = useTranslation();
@@ -55,10 +31,10 @@ export const P2PSettingsComponent = ({
         <TextArea style={{ width: "98%", minHeight: "250px", fontFamily: "Courier New" }} value={preferredPeers} />
       </FormGroup>
       <FormGroup label={t("allowed_peers")}>
-        <TextArea style={{ width: "98%", minHeight: "100px", fontFamily: "Courier New" }} value={preferredPeers} />
+        <TextArea style={{ width: "98%", minHeight: "100px", fontFamily: "Courier New" }} value={allowedPeers} />
       </FormGroup>
       <FormGroup label={t("blocked_peers")}>
-        <TextArea style={{ width: "98%", minHeight: "100px", fontFamily: "Courier New" }} value={preferredPeers} />
+        <TextArea style={{ width: "98%", minHeight: "100px", fontFamily: "Courier New" }} value={blockedPeers} />
       </FormGroup>
       <Button
         text={t("save")}
