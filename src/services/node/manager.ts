@@ -116,12 +116,20 @@ export const getConfigFilePath = function (floonet: boolean = false): string {
   );
 };
 
-export const updateSettings = async function (
+export const updateNodeSettings = async function (
   min_peers: number,
   max_peers: number,
   min_confirmations: number,
 ): Promise<{} | null> {
   return await ConfigNode({ min_peers: min_peers, max_peers: max_peers, min_confirmations: min_confirmations });
+};
+
+export const updatePeersSettings = async function (
+  preferred_peers: string[],
+  allowed_peers: string[],
+  blocked_peers: string[]
+): Promise<{} | null> {
+  return await ConfigNode({ preferred_peers: preferred_peers, allowed_peers: allowed_peers, blocked_peers: blocked_peers });
 };
 
 export const getAbsoluteNodePath = function (

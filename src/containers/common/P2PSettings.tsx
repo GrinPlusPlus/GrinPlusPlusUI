@@ -25,29 +25,21 @@ export const P2PSettingsContainer = () => {
     blockedPeers,
   } = useStoreState((state) => state.settings);
 
-  const { username: sessionUsername } = useStoreState(
-    (state) => state.session
-  );
-
-  const { setUsername: setPasswordPromptUsername } = useStoreActions(
-    (state) => state.passwordPrompt
-  );
-
-  const {
-    setAction: setWalletAction,
-  } = useStoreActions((state) => state.wallet);
-
   const { toggleP2PSettings } = useStoreActions((actions) => actions.ui);
+
+  const { setPreferredPeers, setAllowedPeers, setBlockedPeers, updatePeferredPeers } = useStoreActions((actions) => actions.settings);
 
   return (
     <P2PSettingsComponent
-      preferredPeers={preferredPeers.join("\n")}
-      allowedPeers={allowedPeers.join("\n")}
-      blockedPeers={blockedPeers.join("\n")}
-      backupButtonCb={() => {
+      preferredPeers={preferredPeers}
+      allowedPeers={allowedPeers}
+      blockedPeers={blockedPeers}
+      setPreferredPeersCb={setPreferredPeers}
+      setAllowedPeersCb={setAllowedPeers}
+      setBlockedPeersCb={setBlockedPeers}
+      saveButtonCb={() => {
+        updatePeferredPeers();
         toggleP2PSettings(false);
-        setPasswordPromptUsername(sessionUsername);
-        setWalletAction("backup");
       }}
     />
   );

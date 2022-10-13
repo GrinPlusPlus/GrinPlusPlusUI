@@ -55,6 +55,10 @@ export interface SettingsModel {
       blockedPeers: string[];
     }
   >;
+  setPreferredPeers: Action<SettingsModel, string>;
+  setAllowedPeers: Action<SettingsModel, string>;
+  setBlockedPeers: Action<SettingsModel, string>;
+  updatePeferredPeers: Thunk<SettingsModel, undefined, Injections, StoreModel>;
 }
 
 const settings: SettingsModel = {
@@ -121,7 +125,7 @@ const settings: SettingsModel = {
       storeActions.settings.setConfirmations,
     ],
     (actions, target, { injections }) => {
-      injections.nodeService.updateSettings(store.getState().settings.mininumPeers,
+      injections.nodeService.updateNodeSettings(store.getState().settings.mininumPeers,
         store.getState().settings.maximumPeers,
         store.getState().settings.confirmations);
     }
@@ -131,7 +135,7 @@ const settings: SettingsModel = {
       const { nodeService } = injections;
 
       const settings = await nodeService.getNodeSettings();
-      
+
       actions.setNodeSettings({
         mininumPeers: settings.minimumPeers,
         maximumPeers: settings.maximumPeers,
@@ -139,7 +143,7 @@ const settings: SettingsModel = {
         shouldReuseAddress: settings.shouldReuseAddresses,
         preferredPeers: settings.preferredPeers,
         allowedPeers: settings.allowedPeers,
-        blockedPeers:  settings.blockedPeers,
+        blockedPeers: settings.blockedPeers,
       });
 
       return true;
@@ -154,6 +158,23 @@ const settings: SettingsModel = {
     state.allowedPeers = settings.allowedPeers;
     state.blockedPeers = settings.blockedPeers;
   }),
+  setPreferredPeers: action((state, peers) => {
+    state.preferredPeers = peers.trim().replace(/\r?\n|\r/g, ",").split(",");
+  }),
+  setAllowedPeers: action((state, peers) => {
+    state.allowedPeers = peers.trim().replace(/\r?\n|\r/g, ",").split(",");
+  }),
+  setBlockedPeers: action((state, peers) => {
+    state.blockedPeers = peers.trim().replace(/\r?\n|\r/g, ",").split(",");
+  }),
+  updatePeferredPeers: thunk(
+    async (actions, payload, { injections, getStoreState }): Promise<boolean> => {
+      const { nodeService } = injections;
+      const settings = getStoreState().settings;
+      nodeService.updatePeersSettings(settings.preferredPeers, settings.allowedPeers, settings.blockedPeers);
+      return true;
+    }
+  ),
 };
 
 export default settings;
