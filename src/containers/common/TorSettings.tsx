@@ -36,8 +36,6 @@ export const TorSettingsContainer = () => {
     setObfs4BridgesFromDialog
   } = useStoreActions((actions) => actions.settings);
 
-  const { toggleTorSettings } = useStoreActions((actions) => actions.ui);
-
   useEffect(() => {
     (async function () {
       const log = require("electron-log");
