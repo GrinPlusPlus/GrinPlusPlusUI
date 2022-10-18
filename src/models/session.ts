@@ -71,11 +71,11 @@ const session: SessionModel = {
   logout: thunk(async (actions, token, { injections, getStoreState }) => {
     const { ownerService } = injections;
     const apiSettings = getStoreState().settings.defaultSettings;
-    await new ownerService.RPC(
+    await (new ownerService.RPC(
       apiSettings.floonet,
       apiSettings.protocol,
       apiSettings.ip
-    ).logout(token);
+    )).logout(token);
     actions.clean();
   }),
   isLoggedIn: computed((state) => {

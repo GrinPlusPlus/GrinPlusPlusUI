@@ -5,7 +5,7 @@ export const ConfigNode = (
     max_peers?: number;
     min_peers?: number;
     min_confirmations?: number;
-    reuse_address?: boolean;
+    reuse_address?: number;
     preferred_peers?: string[];
     allowed_peers?: string[];
     blocked_peers?: string[];

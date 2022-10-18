@@ -64,11 +64,11 @@ export const AccountNavBarContainer = () => {
           icon="log-out"
           onClick={async () => {
             try {
-              require("electron-log").info(`Trying to logout`);
+              require("electron-log").info(`Trying to logout...`);
               await logout(token);
               require("electron-log").info("Logged out!");
             } catch (error) {
-              require("electron-log").info(`Trying to Logout: ${error.message}`);
+              require("electron-log").error(`Error trying to Logout: ${error.message}`);
             }
           }}
         />

@@ -153,5 +153,8 @@
   "tor_bridges_help": "Bridges help you access the Tor Network in places where Tor is blocked. Depending on where you are, one bridge may work better than another",
   "snowflake": "Snowflake",
   "obfs4": "Obfs4",
-  "save": "Save"
+  "save": "Save",
+  "reuse_address": "Reuse Slatepack address",
+  "add_obfs4_bridges": "Add Obfs4 Bridges",
+  "reuse_address_help": "Disable Slatepack address reuse to increase your privacy. A new address will be automatically generated after receiving funds."
 }

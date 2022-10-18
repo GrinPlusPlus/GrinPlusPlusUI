@@ -116,6 +116,12 @@ export const getConfigFilePath = function (floonet: boolean = false): string {
   );
 };
 
+export const setIfShouldReuseAddress = async function (
+  reuse_address: boolean,
+): Promise<{} | null> {
+  return await ConfigNode({ reuse_address: reuse_address ? 1 : 0});
+};
+
 export const updateNodeSettings = async function (
   min_peers: number,
   max_peers: number,
@@ -172,7 +178,7 @@ export const runNode = function (
     encoding: "utf-8",
     detached: true,
     shell: false,
-    cwd: absolutePath,
+    cwd: absolutePath
   });
   require("electron-log").info(`Backend spawned pid: ${node.pid}`);
   node.stdout.on("data", function (data: any) {
@@ -307,6 +313,7 @@ export const getNodeSettings = async function (): Promise<{
   let blockedPeers: string[] = [];
 
   const node = await ConfigNode();
+  
   if (node !== null) {
     minimumPeers = node.min_peers;
     maximumPeers = node.max_peers;

@@ -87,6 +87,8 @@ export class BaseApi {
       | "delete_wallet"
       | "scan_for_outputs"
       | "new_address"
+      | "get_tor_config"
+      | "set_tor_config"
   ): string {
     switch (call) {
       case "node_status":
@@ -96,6 +98,10 @@ export class BaseApi {
       case "connected_peers":
         return `${this.getNodeURL()}/peers/connected`;
       case "list_wallets":
+        return this.getOwnerRPCURL();
+      case "get_tor_config":
+        return this.getOwnerRPCURL();
+      case "set_tor_config":
         return this.getOwnerRPCURL();
       case "shutdown":
         return `${this.getNodeURL()}/shutdown`;
