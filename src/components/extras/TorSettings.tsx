@@ -21,7 +21,8 @@ type TorSettingsProps = {
   obfs4Bridges: string;
   onChangeShouldReuseAddressSwitchCb: (reuse: boolean) => void;
   onChangeTorBrigesSwitchCb: (reuse: boolean) => void;
-  addTorBridgesButtonCb: () => void;
+  addTorObfs4BridgesButtonCb: () => void;
+  disableTorObfs4BridgesButtonCb: () => void;
 };
 
 export const TorSettingsComponent = ({
@@ -32,7 +33,8 @@ export const TorSettingsComponent = ({
   obfs4Bridges,
   onChangeShouldReuseAddressSwitchCb,
   onChangeTorBrigesSwitchCb,
-  addTorBridgesButtonCb,
+  addTorObfs4BridgesButtonCb,
+  disableTorObfs4BridgesButtonCb
 }: TorSettingsProps) => {
   const { t } = useTranslation();
 
@@ -68,12 +70,21 @@ export const TorSettingsComponent = ({
           value={obfs4Bridges}
           style={{ width: "98%", minHeight: "160px", fontFamily: "Courier New" }}>{""}</TextArea>
       </FormGroup>
-      <Button
-        text={t("add_obfs4_bridges")}
+      {obfs4Bridges.trim().length === 0 ? (
+        <Button
+          hidden={obfs4Bridges.length >= 0}
+          text={t("add_obfs4_bridges")}
+          style={{ float: "right" }}
+          intent={Intent.NONE}
+          onClick={() => addTorObfs4BridgesButtonCb()}
+        />
+      ) : <Button
+        hidden={obfs4Bridges.length >= 0}
+        text={t("disable")}
         style={{ float: "right" }}
-        intent={Intent.NONE}
-        onClick={() => addTorBridgesButtonCb()}
-      />
+        intent={Intent.WARNING}
+        onClick={disableTorObfs4BridgesButtonCb}
+      />}
     </div>
   );
 };

@@ -74,6 +74,7 @@ export interface SettingsModel {
   enableSnowflakeTorBridges: Thunk<SettingsModel, boolean, Injections, StoreModel>;
   enableObfs4TorBridges: Thunk<SettingsModel, string, Injections, StoreModel>;
   enableAddressReuse: Thunk<SettingsModel, boolean, Injections, StoreModel>;
+  disableObfs4BridgesDialog: Thunk<SettingsModel, undefined, Injections, StoreModel>;
 }
 
 const settings: SettingsModel = {
@@ -291,6 +292,32 @@ const settings: SettingsModel = {
         apiSettings.protocol,
         apiSettings.ip
       ).updateTorSettings(payload.split("\n"), false);
+      actions.setIsTorBridgesFeaturesEnabled(false);
+      actions.setSnowflakeBridges([]);
+      actions.setObfs4Bridges([]);
+      if (torSettings.bridges.length > 0) {
+        if (torSettings.bridges_type === "obfs4") {
+          actions.setObfs4Bridges(torSettings.bridges);
+        }
+        else {
+          actions.setSnowflakeBridges(torSettings.bridges);
+        }
+      }
+    }
+  ),
+  disableObfs4BridgesDialog: thunk(
+    async (
+      actions,
+      payload,
+      { injections, getStoreState }
+    ) => {
+      const { ownerService } = injections;
+      const apiSettings = getStoreState().settings.defaultSettings;
+      const torSettings = await new ownerService.RPC(
+        apiSettings.floonet,
+        apiSettings.protocol,
+        apiSettings.ip
+      ).updateTorSettings([], false);
       actions.setIsTorBridgesFeaturesEnabled(false);
       actions.setSnowflakeBridges([]);
       actions.setObfs4Bridges([]);

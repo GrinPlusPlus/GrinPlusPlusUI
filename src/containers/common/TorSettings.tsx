@@ -2,14 +2,16 @@ import React, { useEffect } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
 
 import {
-  Alert,
+  Dialog,
   TextArea,
+  Button,
   Intent
 } from "@blueprintjs/core";
 
 import { useTranslation } from "react-i18next";
 
 import { TorSettingsComponent } from "../../components/extras/TorSettings";
+import { HorizontallyCenter } from "../../components/styled";
 
 export const TorSettingsContainer = () => {
   const { t } = useTranslation();
@@ -33,7 +35,8 @@ export const TorSettingsContainer = () => {
     enableSnowflakeTorBridges,
     toggleObfs4BridgesDialog,
     enableObfs4TorBridges,
-    setObfs4BridgesFromDialog
+    setObfs4BridgesFromDialog,
+    disableObfs4BridgesDialog
   } = useStoreActions((actions) => actions.settings);
 
   useEffect(() => {
@@ -60,21 +63,25 @@ export const TorSettingsContainer = () => {
         obfs4Bridges={obfs4Bridges.join("\n")}
         onChangeShouldReuseAddressSwitchCb={enableAddressReuse}
         onChangeTorBrigesSwitchCb={enableSnowflakeTorBridges}
-        addTorBridgesButtonCb={() => {
+        addTorObfs4BridgesButtonCb={() => {
           toggleObfs4BridgesDialog();
         }}
+        disableTorObfs4BridgesButtonCb={() => {
+          disableObfs4BridgesDialog();
+        }}
       />
-      <Alert
+      <Dialog
         className="bp4-dark"
-        cancelButtonText={t("cancel")}
-        confirmButtonText={t("save")}
         icon="random"
-        intent={Intent.WARNING}
         isOpen={isObfs4BridgesDialogOpen}
-        onCancel={() => toggleObfs4BridgesDialog()}
-        onConfirm={async () => {
-          toggleObfs4BridgesDialog();
-          await enableObfs4TorBridges(obfs4BridgesFromDialog);
+        onOpening={() => {
+          const remote = require('electron').remote;
+          const BrowserWindow = remote.BrowserWindow;
+          const win = new BrowserWindow({
+            height: 800,
+            width: 800
+          });
+          win.loadURL("https://bridges.torproject.org/bridges?transport=obfs4");
         }}
       >
         <TextArea
@@ -84,8 +91,30 @@ export const TorSettingsContainer = () => {
           onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
             setObfs4BridgesFromDialog(event.target.value);
           }}
-          style={{ fontFamily: "Courier New" }}>{""}</TextArea>
-      </Alert>
+          style={{ fontFamily: "Courier New", minHeight: "270px" }}>{""}</TextArea>
+        <HorizontallyCenter>
+          <Button
+            minimal={true}
+            large={true}
+            text={t("cancel")}
+            onClick={() => {
+              toggleObfs4BridgesDialog();
+              setObfs4BridgesFromDialog("");
+            }}
+          />
+          <Button
+            minimal={true}
+            disabled={obfs4BridgesFromDialog.length === 0}
+            intent={Intent.PRIMARY}
+            text={t("save")}
+            onClick={() => {
+              enableObfs4TorBridges(obfs4BridgesFromDialog);
+              toggleObfs4BridgesDialog();
+              setObfs4BridgesFromDialog("");
+            }}
+          />
+        </HorizontallyCenter>
+      </Dialog>
     </div>
   );
 };
