@@ -13,12 +13,21 @@ export interface SettingsModel {
   mininumPeers: number;
   maximumPeers: number;
   confirmations: number;
+  shouldReuseAddress: boolean;
+  preferredPeers: string[];
+  allowedPeers: string[];
+  blockedPeers: string[];
   nodeDataPath: string;
   nodeBinaryPath: string;
   useGrinJoin: boolean;
   grinJoinAddress: string;
   grinChckAddress: string;
   isConfirmationDialogOpen: boolean;
+  isTorBridgesFeaturesEnabled: boolean;
+  snowflakeBridges: string[];
+  obfs4Bridges: string[];
+  obfs4BridgesFromDialog: string;
+  isObfs4BridgesDialogOpen: boolean;
   setDefaultSettings: Action<
     SettingsModel,
     {
@@ -37,6 +46,7 @@ export interface SettingsModel {
   setGrinJoinAddress: Action<SettingsModel, string>;
   setGrinChckAddress: Action<SettingsModel, string>;
   toggleConfirmationDialog: Action<SettingsModel>;
+  toggleObfs4BridgesDialog: Action<SettingsModel>;
   onSettingsChanged: ThunkOn<SettingsModel, Injections, StoreModel>;
   getNodeSettings: Thunk<SettingsModel, undefined, Injections, StoreModel>;
   setNodeSettings: Action<
@@ -45,8 +55,26 @@ export interface SettingsModel {
       mininumPeers: number;
       maximumPeers: number;
       minimumConfirmations: number;
+      shouldReuseAddress: boolean;
+      preferredPeers: string[];
+      allowedPeers: string[];
+      blockedPeers: string[];
     }
   >;
+  setPreferredPeers: Action<SettingsModel, string>;
+  setAllowedPeers: Action<SettingsModel, string>;
+  setBlockedPeers: Action<SettingsModel, string>;
+  updatePeferredPeers: Thunk<SettingsModel, undefined, Injections, StoreModel>;
+  getTorSettings: Thunk<SettingsModel, undefined, Injections, StoreModel>;
+  setSnowflakeBridges: Action<SettingsModel, string[]>;
+  setObfs4Bridges: Action<SettingsModel, string[]>;
+  setObfs4BridgesFromDialog: Action<SettingsModel, string>;
+  setIsTorBridgesFeaturesEnabled: Action<SettingsModel, boolean>;
+  setIfShouldReuseAddress: Action<SettingsModel, boolean>;
+  enableSnowflakeTorBridges: Thunk<SettingsModel, boolean, Injections, StoreModel>;
+  enableObfs4TorBridges: Thunk<SettingsModel, string, Injections, StoreModel>;
+  enableAddressReuse: Thunk<SettingsModel, boolean, Injections, StoreModel>;
+  disableObfs4BridgesDialog: Thunk<SettingsModel, undefined, Injections, StoreModel>;
 }
 
 const settings: SettingsModel = {
@@ -56,15 +84,24 @@ const settings: SettingsModel = {
     ip: "127.0.0.1",
     mode: "DEV",
   },
-  mininumPeers: 15,
-  maximumPeers: 50,
-  confirmations: 10,
+  mininumPeers: 6,
+  maximumPeers: 6,
+  confirmations: 3,
+  shouldReuseAddress: false,
+  preferredPeers: [],
+  allowedPeers: [],
+  blockedPeers: [],
   nodeDataPath: "/.GrinPP/",
   nodeBinaryPath: "../GrinPlusPlus/bin/Release/",
   useGrinJoin: false,
   grinJoinAddress: "grinjoin5pzzisnne3naxx4w2knwxsyamqmzfnzywnzdk7ra766u7vid",
   grinChckAddress: "http://192.227.214.130/",
   isConfirmationDialogOpen: false,
+  isTorBridgesFeaturesEnabled: false,
+  snowflakeBridges: [],
+  obfs4Bridges: [],
+  obfs4BridgesFromDialog: "",
+  isObfs4BridgesDialogOpen: false,
   setDefaultSettings: action((state, settings) => {
     state.defaultSettings = {
       floonet: settings.floonet,
@@ -99,8 +136,23 @@ const settings: SettingsModel = {
   setGrinChckAddress: action((state, payload) => {
     state.grinChckAddress = payload;
   }),
+  setSnowflakeBridges: action((state, bridges) => {
+    state.snowflakeBridges = bridges;
+  }),
+  setObfs4Bridges: action((state, bridges) => {
+    state.obfs4Bridges = bridges;
+  }),
+  setObfs4BridgesFromDialog: action((state, payload) => {
+    state.obfs4BridgesFromDialog = payload;
+  }),
+  setIsTorBridgesFeaturesEnabled: action((state, status) => {
+    state.isTorBridgesFeaturesEnabled = status;
+  }),
   toggleConfirmationDialog: action((state) => {
     state.isConfirmationDialogOpen = !state.isConfirmationDialogOpen;
+  }),
+  toggleObfs4BridgesDialog: action((state) => {
+    state.isObfs4BridgesDialogOpen = !state.isObfs4BridgesDialogOpen;
   }),
   onSettingsChanged: thunkOn(
     (actions, storeActions) => [
@@ -109,7 +161,7 @@ const settings: SettingsModel = {
       storeActions.settings.setConfirmations,
     ],
     (actions, target, { injections }) => {
-      injections.nodeService.updateSettings(store.getState().settings.mininumPeers,
+      injections.nodeService.updateNodeSettings(store.getState().settings.mininumPeers,
         store.getState().settings.maximumPeers,
         store.getState().settings.confirmations);
     }
@@ -124,6 +176,10 @@ const settings: SettingsModel = {
         mininumPeers: settings.minimumPeers,
         maximumPeers: settings.maximumPeers,
         minimumConfirmations: settings.minimumConfirmations,
+        shouldReuseAddress: settings.shouldReuseAddresses,
+        preferredPeers: settings.preferredPeers,
+        allowedPeers: settings.allowedPeers,
+        blockedPeers: settings.blockedPeers,
       });
 
       return true;
@@ -133,7 +189,148 @@ const settings: SettingsModel = {
     state.mininumPeers = settings.mininumPeers;
     state.maximumPeers = settings.maximumPeers;
     state.confirmations = settings.minimumConfirmations;
+    state.shouldReuseAddress = settings.shouldReuseAddress;
+    state.preferredPeers = settings.preferredPeers;
+    state.allowedPeers = settings.allowedPeers;
+    state.blockedPeers = settings.blockedPeers;
   }),
+  setPreferredPeers: action((state, peers) => {
+    state.preferredPeers = peers.trim().replace(/\r?\n|\r/g, ",").split(",");
+  }),
+  setAllowedPeers: action((state, peers) => {
+    state.allowedPeers = peers.trim().replace(/\r?\n|\r/g, ",").split(",");
+  }),
+  setBlockedPeers: action((state, peers) => {
+    state.blockedPeers = peers.trim().replace(/\r?\n|\r/g, ",").split(",");
+  }),
+  setIfShouldReuseAddress: action((state, resuseAddress) => {
+    state.shouldReuseAddress = resuseAddress;
+  }),
+  updatePeferredPeers: thunk(
+    async (actions, payload, { injections, getStoreState }): Promise<boolean> => {
+      const { nodeService } = injections;
+      const settings = getStoreState().settings;
+      await nodeService.updatePeersSettings(settings.preferredPeers, settings.allowedPeers, settings.blockedPeers);
+      return true;
+    }
+  ),
+  getTorSettings: thunk(
+    async (
+      actions,
+      payload,
+      { injections, getStoreState }
+    ) => {
+      const { ownerService } = injections;
+      const apiSettings = getStoreState().settings.defaultSettings;
+      const torSettings = await new ownerService.RPC(
+        apiSettings.floonet,
+        apiSettings.protocol,
+        apiSettings.ip
+      ).getTorSettings();
+      actions.setSnowflakeBridges([]);
+      actions.setObfs4Bridges([]);
+      actions.setIsTorBridgesFeaturesEnabled(false);
+      if (torSettings.bridges.length > 0) {
+        if (torSettings.bridges_type === "obfs4") actions.setObfs4Bridges(torSettings.bridges);
+        else {
+          actions.setSnowflakeBridges(torSettings.bridges);
+          actions.setIsTorBridgesFeaturesEnabled(true);
+        }
+      }
+    }
+  ),
+  enableSnowflakeTorBridges: thunk(
+    async (
+      actions,
+      payload,
+      { injections, getStoreState }
+    ) => {
+      const { ownerService } = injections;
+      const apiSettings = getStoreState().settings.defaultSettings;
+      const torSettings = await new ownerService.RPC(
+        apiSettings.floonet,
+        apiSettings.protocol,
+        apiSettings.ip
+      ).updateTorSettings([], payload);
+      actions.setIsTorBridgesFeaturesEnabled(payload);
+      actions.setSnowflakeBridges([]);
+      actions.setObfs4Bridges([]);
+      if (torSettings.bridges.length > 0) {
+        actions.setIsTorBridgesFeaturesEnabled(true);
+        if (torSettings.bridges_type === "obfs4") {
+          actions.setObfs4Bridges(torSettings.bridges);
+        }
+        else {
+          actions.setSnowflakeBridges(torSettings.bridges);
+        }
+      } else {
+        actions.setIsTorBridgesFeaturesEnabled(false);
+      }
+    }
+  ),
+  enableAddressReuse: thunk(
+    async (
+      actions,
+      payload,
+      { injections, getStoreState }
+    ) => {
+      const { nodeService } = injections;
+      await nodeService.setIfShouldReuseAddress(payload);
+      actions.setIfShouldReuseAddress(payload);
+    }
+  ),
+  enableObfs4TorBridges: thunk(
+    async (
+      actions,
+      payload,
+      { injections, getStoreState }
+    ) => {
+      const { ownerService } = injections;
+      const apiSettings = getStoreState().settings.defaultSettings;
+      const torSettings = await new ownerService.RPC(
+        apiSettings.floonet,
+        apiSettings.protocol,
+        apiSettings.ip
+      ).updateTorSettings(payload.split("\n"), false);
+      actions.setIsTorBridgesFeaturesEnabled(false);
+      actions.setSnowflakeBridges([]);
+      actions.setObfs4Bridges([]);
+      if (torSettings.bridges.length > 0) {
+        if (torSettings.bridges_type === "obfs4") {
+          actions.setObfs4Bridges(torSettings.bridges);
+        }
+        else {
+          actions.setSnowflakeBridges(torSettings.bridges);
+        }
+      }
+    }
+  ),
+  disableObfs4BridgesDialog: thunk(
+    async (
+      actions,
+      payload,
+      { injections, getStoreState }
+    ) => {
+      const { ownerService } = injections;
+      const apiSettings = getStoreState().settings.defaultSettings;
+      const torSettings = await new ownerService.RPC(
+        apiSettings.floonet,
+        apiSettings.protocol,
+        apiSettings.ip
+      ).updateTorSettings([], false);
+      actions.setIsTorBridgesFeaturesEnabled(false);
+      actions.setSnowflakeBridges([]);
+      actions.setObfs4Bridges([]);
+      if (torSettings.bridges.length > 0) {
+        if (torSettings.bridges_type === "obfs4") {
+          actions.setObfs4Bridges(torSettings.bridges);
+        }
+        else {
+          actions.setSnowflakeBridges(torSettings.bridges);
+        }
+      }
+    }
+  )
 };
 
 export default settings;

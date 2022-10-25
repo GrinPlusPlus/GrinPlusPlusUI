@@ -1,16 +1,14 @@
 import React, { useCallback, useEffect } from "react";
 import { useStoreActions, useStoreState } from "../../hooks";
 
-import { SettingsComponent } from "../../components/extras/Settings";
+import { NodeSettingsComponent } from "../../components/extras/NodeSettings";
 
-export const SettingsContainer = () => {
+export const NodeSettingsContainer = () => {
   const { getNodeSettings } = useStoreActions((actions) => actions.settings);
 
   useEffect(() => {
     (async function () {
       const log = require("electron-log");
-      log.info("Getting node settings...");
-
       try {
         await getNodeSettings();
       } catch (error) {
@@ -25,7 +23,6 @@ export const SettingsContainer = () => {
     mininumPeers,
     maximumPeers,
     confirmations,
-    grinChckAddress,
     isConfirmationDialogOpen,
   } = useStoreState((state) => state.settings);
 
@@ -40,18 +37,15 @@ export const SettingsContainer = () => {
     setMininumPeers,
     setMaximumPeers,
     setConfirmations,
-    toggleConfirmationDialog,
-    setGrinChckAddress,
+    toggleConfirmationDialog
   } = useStoreActions((actions) => actions.settings);
 
   const {
     reSyncBlockchain,
-    restartNode,
-    scanForOutputs,
     setAction: setWalletAction,
   } = useStoreActions((state) => state.wallet);
 
-  const { toggleSettings } = useStoreActions((actions) => actions.ui);
+  const { toggleNodeSettings } = useStoreActions((actions) => actions.ui);
 
   const toggleDialog = useCallback(() => {
     toggleConfirmationDialog();
@@ -69,40 +63,27 @@ export const SettingsContainer = () => {
     }
   }, [toggleConfirmationDialog, reSyncBlockchain]);
 
-  const restartGrinNode = useCallback(async () => {
-    await restartNode();
-  }, [restartNode]);
-
   return (
-    <SettingsComponent
-      grinChckAddress={grinChckAddress}
+    <NodeSettingsComponent
       mininumPeers={mininumPeers}
       maximumPeers={maximumPeers}
       confirmations={confirmations}
       isConfirmationDialogOpen={isConfirmationDialogOpen}
-      setGrinChckAddressCb={setGrinChckAddress}
       setMininumPeersCb={setMininumPeers}
       setMaximumPeersCb={setMaximumPeers}
       setConfirmationsCb={setConfirmations}
       toggleConfirmationDialogCb={toggleDialog}
       confirmReSyncBlockchainCb={() => {
-        toggleSettings(false);
+        toggleNodeSettings(false);
         confirmReSyncBlockchain();
       }}
-      restartNodeCb={() => {
-        toggleSettings(false);
-        restartGrinNode();
-      }}
-      scanForOutputsCb={() => {
-        toggleSettings(false);
-        scanForOutputs();
-      }}
-      isLoggedIn={isLoggedIn}
       backupButtonCb={() => {
-        toggleSettings(false);
+        toggleNodeSettings(false);
         setPasswordPromptUsername(sessionUsername);
         setWalletAction("backup");
       }}
+      isLoggedIn={isLoggedIn}
+
     />
   );
 };

@@ -71,11 +71,11 @@ const session: SessionModel = {
   logout: thunk(async (actions, token, { injections, getStoreState }) => {
     const { ownerService } = injections;
     const apiSettings = getStoreState().settings.defaultSettings;
-    await new ownerService.RPC(
+    await (new ownerService.RPC(
       apiSettings.floonet,
       apiSettings.protocol,
       apiSettings.ip
-    ).logout(token);
+    )).logout(token);
     actions.clean();
   }),
   isLoggedIn: computed((state) => {
@@ -86,7 +86,9 @@ const session: SessionModel = {
     state.seed = seed;
   }),
   clean: thunk((actions, payload, { getStoreActions }): void => {
-    getStoreActions().ui.toggleSettings(false);
+    getStoreActions().ui.toggleNodeSettings(false);
+    getStoreActions().ui.toggleP2PSettings(false);
+    getStoreActions().ui.toggleTorSettings(false);
     getStoreActions().walletSummary.updateBalance(undefined);
     getStoreActions().walletSummary.updateSummary(undefined);
     getStoreActions().walletSummary.clearWalletReachable(undefined);

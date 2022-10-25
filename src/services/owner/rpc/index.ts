@@ -430,6 +430,36 @@ export class OwnerRPCApi extends BaseApi {
       });
   }
 
+  async getTorSettings(): Promise<{ torrc: string, bridges: string[], bridges_type: string }> {
+    return await this.makeRPCRequest(
+      `${this.getRequestURL("get_tor_config")}`,
+      "get_tor_config",
+      {}
+    )
+      .then((response) => {
+        if (response.error) throw new Error(response.error.message);
+        return response.result;
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
+  }
+
+  async updateTorSettings(bridges_list: string[], enable_snowflake: boolean): Promise<{ bridges: string[], bridges_type: string }> {
+    return await this.makeRPCRequest(
+      `${this.getRequestURL("set_tor_config")}`,
+      "set_tor_config",
+      { bridges_list: bridges_list, enable_snowflake: enable_snowflake }
+    )
+      .then((response) => {
+        if (response.error) throw new Error(response.error.message);
+        return response.result;
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
+  }
+
   async getOutputs(
     token: string
   ): Promise<
