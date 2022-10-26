@@ -26,7 +26,7 @@ export const getTorCommand = function (): string {
       case "win32":
         return "tor.exe";
       case "darwin":
-        return "tor.real";
+        return "tor";
       case "linux":
         return "tor";
       default:
