@@ -17,23 +17,6 @@ export const WalletBalanceDetailsComponent = ({
   return (
     <div>
       <p>
-        {t("immature")}:{" "}
-        <strong>
-          <NumberFormat
-            data-testid="immature"
-            value={immature.toLocaleString("en-US", {
-              useGrouping: true,
-              maximumSignificantDigits: 9,
-            })}
-            displayType={"text"}
-            thousandSeparator={true}
-            decimalScale={9}
-            fixedDecimalScale={true}
-          />
-        </strong>{" "}
-        ツ
-      </p>
-      <p>
         {t("unconfirmed")}:{" "}
         <strong>
           <NumberFormat

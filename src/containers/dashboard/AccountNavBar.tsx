@@ -72,12 +72,6 @@ export const AccountNavBarContainer = () => {
             }
           }}
         />
-        <NavbarDivider />
-        <Button
-          minimal={true}
-          icon="lifesaver"
-          onClick={() => history.push("/help")}
-        />
       </NavbarGroup>
     </Navbar>
   );

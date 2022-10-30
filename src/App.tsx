@@ -10,7 +10,6 @@ import { ReceiveGrinContainer } from "./containers/ReceiveGrins";
 import { SignInContainer } from "./containers/SignIn";
 import { SignUpContainer } from "./containers/SignUp";
 import { StatusContainer } from "./containers/Status";
-import { HelpContainer } from "./containers/Help";
 import { NodeLogsContainer } from "./containers/node/Logs";
 import { WalletLogsContainer } from "./containers/wallet/Logs";
 import { UILogsContainer } from "./containers/ui/Logs";
@@ -91,9 +90,6 @@ const App: React.FC = () => {
           </Route>
           <Route path="/status">
             <StatusContainer />
-          </Route>
-          <Route path="/help">
-            <HelpContainer />
           </Route>
           <Route path="/nodeLogs">
             <NodeLogsContainer />
