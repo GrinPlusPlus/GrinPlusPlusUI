@@ -4,12 +4,10 @@ import { useTranslation } from "react-i18next";
 
 export type WalletBalanceProps = {
   immature: number;
-  unconfirmed: number;
   locked: number;
 };
 export const WalletBalanceDetailsComponent = ({
   immature,
-  unconfirmed,
   locked,
 }: WalletBalanceProps) => {
   const { t } = useTranslation();
@@ -22,23 +20,6 @@ export const WalletBalanceDetailsComponent = ({
           <NumberFormat
             data-testid="immature"
             value={immature.toLocaleString("en-US", {
-              useGrouping: true,
-              maximumSignificantDigits: 9,
-            })}
-            displayType={"text"}
-            thousandSeparator={true}
-            decimalScale={9}
-            fixedDecimalScale={true}
-          />
-        </strong>{" "}
-        ツ
-      </p>
-      <p>
-        {t("unconfirmed")}:{" "}
-        <strong>
-          <NumberFormat
-            data-testid="unconfirmed"
-            value={unconfirmed.toLocaleString("en-US", {
               useGrouping: true,
               maximumSignificantDigits: 9,
             })}

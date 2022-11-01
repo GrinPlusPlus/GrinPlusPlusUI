@@ -3,14 +3,13 @@ import { WalletBalanceDetailsComponent } from "../../components/dashboard/Wallet
 import { useStoreState } from "../../hooks";
 
 export const WalletBalanceDetailsContainer = () => {
-  const { immature, unconfirmed, locked } = useStoreState(
+  const { immature, locked } = useStoreState(
     (state) => state.walletSummary
   );
 
   return (
     <WalletBalanceDetailsComponent
       immature={immature}
-      unconfirmed={unconfirmed}
       locked={locked}
     />
   );
