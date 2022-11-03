@@ -134,7 +134,7 @@ export const WalletActivitiyContainer = () => {
           setSlatepackMessageToFinalize("");
         } else {
           OverlayToaster.create({ position: Position.BOTTOM }).show({
-            message: t("finished_without_errors"),
+            message: result.error,
             intent: Intent.DANGER,
             icon: "warning-sign",
           });
