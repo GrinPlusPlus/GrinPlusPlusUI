@@ -198,7 +198,7 @@ export class BaseApi {
   ): Promise<any> {
     const request = window.require("request");
     const options = {
-      timeout: 30000,
+      timeout: 120000,
       url: url,
       agent: false,
       pool: { maxSockets: 5 },
