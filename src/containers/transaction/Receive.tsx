@@ -28,10 +28,8 @@ export const ReceiveContainer = () => {
 
   const onReceiveSlatepack = useCallback(
     (slatepack: string) => {
-      require("electron-log").info("Receiving Slatepack...");
       receiveTxViaSlatepack(slatepack).then(
         (result: { error: string; slatepack: string }) => {
-          require("electron-log").info(result);
           if (result.slatepack.trim().length > 0) {
             OverlayToaster.create({ position: Position.BOTTOM }).show({
               message: t("received"),
