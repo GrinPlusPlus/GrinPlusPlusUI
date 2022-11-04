@@ -15,6 +15,9 @@ export const GrinChck = (api: string, address: string): Promise<boolean> => {
       if (error) {
         reject(error);
       }
+      if (typeof response !== 'undefined') {
+        reject("Unknown error");
+      }
       resolve(response.statusCode === 200);
     });
   });
