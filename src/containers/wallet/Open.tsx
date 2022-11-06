@@ -58,7 +58,7 @@ export const OpenWalletContainer = () => {
   );
 
   useEffect(() => {
-    (async function() {
+    (async function () {
       if (accounts !== undefined) return;
       try {
         setAccounts(await getAccounts());
@@ -97,6 +97,9 @@ export const OpenWalletContainer = () => {
         .then(async () => {
           require("electron-log").info("Wallet deleted.");
           setAccounts(await getAccounts());
+          setUsername("");
+          setPassword("");
+          setAction(undefined);
         })
         .catch((error: { message: string }) => {
           OverlayToaster.create({ position: Position.BOTTOM }).show({
@@ -115,6 +118,9 @@ export const OpenWalletContainer = () => {
     setAccounts,
     setWaitingResponse,
     getAccounts,
+    setUsername,
+    setPassword,
+    setAction
   ]);
 
   const { t } = useTranslation();
