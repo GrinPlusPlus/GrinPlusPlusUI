@@ -92,7 +92,7 @@ const settings: SettingsModel = {
   allowedPeers: [],
   blockedPeers: [],
   nodeDataPath: "/.GrinPP/",
-  nodeBinaryPath: "../GrinPlusPlus/bin/Release/",
+  nodeBinaryPath: "./../GrinPlusPlus/bin/Release/",
   useGrinJoin: false,
   grinJoinAddress: "grinjoin5pzzisnne3naxx4w2knwxsyamqmzfnzywnzdk7ra766u7vid",
   grinChckAddress: "http://192.227.214.130/",

@@ -2,7 +2,7 @@
   "ip": "127.0.0.1",
   "protocol": "http",
   "mode": "PROD",
-  "binaryPath": "./bin",
+  "binaryPath": "./../GrinPlusPlus/bin/Release/",
   "floonet": false,
   "minimumPeers": 15,
   "maximumPeers": 50,

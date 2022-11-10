@@ -3,7 +3,7 @@
   "protocol": "http",
   "mode": "DEV",
   "floonet": false,
-  "binaryPath": "./GrinPlusPlus/bin/Release",
+  "binaryPath": "./../GrinPlusPlus/bin/Release/",
   "minimumPeers": 15,
   "maximumPeers": 50,
   "minimumConfirmations": 10,
