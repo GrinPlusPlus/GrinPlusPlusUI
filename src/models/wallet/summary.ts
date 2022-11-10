@@ -87,7 +87,7 @@ export interface WalletSummaryModel {
     StoreModel
   >;
   walletReachable: boolean | undefined;
-  setWalletReachable: Action<WalletSummaryModel, boolean>;
+  setWalletReachable: Action<WalletSummaryModel, boolean | undefined>;
   clearWalletReachable: Action<WalletSummaryModel>;
 }
 

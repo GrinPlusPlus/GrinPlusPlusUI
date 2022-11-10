@@ -123,7 +123,7 @@ export const WalletContainer = () => {
         setWalletReachable(available);
       })
       .catch(function() {
-        setWalletReachable(false);
+        setWalletReachable(undefined);
         Log.error("Error trying to get wallet reachability");
       });
   }, 30000);
