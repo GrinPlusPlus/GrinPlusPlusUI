@@ -195,13 +195,19 @@ const settings: SettingsModel = {
     state.blockedPeers = settings.blockedPeers;
   }),
   setPreferredPeers: action((state, peers) => {
-    state.preferredPeers = peers.trim().replace(/\r?\n|\r/g, ",").split(",");
+    peers = peers.trim().replace(/\r?\n|\r/g, ",");
+    if(!peers) state.preferredPeers = [];
+    else state.preferredPeers = peers.split(",");
   }),
   setAllowedPeers: action((state, peers) => {
-    state.allowedPeers = peers.trim().replace(/\r?\n|\r/g, ",").split(",");
+    peers = peers.trim().replace(/\r?\n|\r/g, ",");
+    if(!peers) state.allowedPeers = [];
+    else state.allowedPeers = peers.split(",");
   }),
   setBlockedPeers: action((state, peers) => {
-    state.blockedPeers = peers.trim().replace(/\r?\n|\r/g, ",").split(",");
+    peers = peers.trim().replace(/\r?\n|\r/g, ",");
+    if(!peers) state.blockedPeers = [];
+    else state.blockedPeers = peers.split(",");
   }),
   setIfShouldReuseAddress: action((state, resuseAddress) => {
     state.shouldReuseAddress = resuseAddress;
@@ -210,7 +216,7 @@ const settings: SettingsModel = {
     async (actions, payload, { injections, getStoreState }): Promise<boolean> => {
       const { nodeService } = injections;
       const settings = getStoreState().settings;
-      await nodeService.updatePeersSettings(settings.preferredPeers, settings.allowedPeers, settings.blockedPeers);
+      await nodeService.updatePeersSettings(settings.preferredPeers.sort(), settings.allowedPeers.sort(), settings.blockedPeers.sort());
       return true;
     }
   ),
