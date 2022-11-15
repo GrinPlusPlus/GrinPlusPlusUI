@@ -12,13 +12,11 @@ export const GrinChck = (api: string, address: string): Promise<boolean> => {
   };
   return new Promise((resolve, reject) => {
     request.post(options, (error: string, response: any, body: string) => {
+      if (response.hasOwnProperty("statusCode")) resolve(response.statusCode === 200);
       if (error) {
         reject(error);
       }
-      if (typeof response !== 'undefined') {
-        reject("Unknown error");
-      }
-      resolve(response.statusCode === 200);
+      reject("Unknown error");
     });
   });
 };
