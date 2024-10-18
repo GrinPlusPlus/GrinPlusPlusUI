@@ -13,6 +13,7 @@ exports.default = async function notarizing(context) {
   const appName = context.packager.appInfo.productFilename;
   console.log(`afterSign: Notarizing ${config.build.appId}`);
   await notarize({
+    tool: "notarytool",
     appBundleId: config.build.appId,
     appPath: `${outDir}/${appName}.app`,
     appleId: "davidburkett38@gmail.com",
